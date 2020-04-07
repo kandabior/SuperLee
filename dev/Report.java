@@ -14,6 +14,16 @@ public class Report {
         lines=new LinkedList<>();
     }
 
+    public int getReportId() {
+        return reportId;
+    }
+    public String getTitle() {
+        return title;
+    }
+    public List<ReportLine> getLines() {
+        return lines;
+    }
+
     public static Report makeCategoryReport(List<Product> products){
         Report report= new Report("Category Report");
         report.lines= makeReportLines(products);

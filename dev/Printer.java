@@ -1,3 +1,5 @@
+import java.util.List;
+
 public class Printer {
 
     private static Printer instance;
@@ -15,7 +17,15 @@ public class Printer {
         return instance;
     }
 
-    public String printStock(){
-        return null;
+    public String printByCategories(){
+        List<Product> products=inventory.getProductsByCategories();
+        Report report= Report.makeCategoryReport(products);
+        String output="Report Id: "+report.getReportId()+"\n"+
+                        "Report Name: "+report.getTitle()+"\n";
+        for(ReportLine line : report.getLines()){
+
+        }
+        return output;
+
     }
 }

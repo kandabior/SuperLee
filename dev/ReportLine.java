@@ -19,9 +19,10 @@ public class ReportLine {
 
     public static List<ReportLine> makeReportLines(List<Product> products){
         List<ReportLine> output= new LinkedList<>();
+        ReportLine line;
         for (Product product:products) {
-
-
+            line=new ReportLine(product.id, product.name, , product.categories);
+            output.add(line);
         }
         return output;
     }
