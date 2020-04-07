@@ -4,4 +4,8 @@ public class Main {
         System.out.println("check for commit to branch");
         System.out.println("hide erez");
     }
+
+    public static void Print(){
+        System.out.println("semek");
+    }
 }
