@@ -1,6 +1,7 @@
 import javafx.util.Pair;
 import sun.awt.image.ImageWatched;
 
+import java.time.LocalDate;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
@@ -64,19 +65,57 @@ public class Inventory {
         return expiredProducts;
     }
 
-    public void setPriceById(int id, int price){
+    public boolean setPriceById(int id, int price){
+        if(!inventory.containsKey(id))
+            return false;
         inventory.get(id).setSalePrice(price);
+        return true;
     }
 
-    public void setPriceByCategory(List<String> category, int price){
+    public boolean setPriceByCategory(List<String> category, int price){
         List<Integer> cat = getProductsByCategories(category);
         for(Integer id : cat){
             inventory.get(id).setSalePrice(price);
         }
+        return true;
     }
-    public void setExpired(int productId, Integer amount){ //removing a specific amount of expired products from the storage inventory to the expired inventory.
+    public boolean setExpired(int productId, Integer amount){ //removing a specific amount of expired products from the storage inventory to the expired inventory.
+        if(!inventory.containsKey(productId))
+            return false;
         quantities.put(productId, new Pair(quantities.get(productId).getKey() - amount,quantities.get(productId).getValue()));
         expired.put(productId, expired.get(productId)+amount);
+        return true;
     }
 
+    public boolean addProduct(int id,int amount, String name, int costPrice, int salePrice, LocalDate expDate, List<String> category, String manufacturer, int minAmount, String place) {
+        if(!inventory.containsKey(id)) {
+            inventory.put(id, new Product(id, name, costPrice, salePrice, expDate, category, manufacturer, minAmount, place));
+            quantities.put(id, new Pair(0,amount));
+        }
+        else {
+            quantities.put(id, new Pair(quantities.get(id).getKey(), quantities.get(id).getValue() + amount));
+        }
+        return true;
+    }
+
+    public boolean removeProduct(int id, int amount) {
+        if(!inventory.containsKey(id))
+            return false;
+        quantities.put(id, new Pair(quantities.get(id).getKey(),quantities.get(id).getValue() - amount));
+        return true;
+    }
+
+    public boolean setSalePrice(int id, int price) {
+        if(!inventory.containsKey(id))
+            return false;
+        inventory.get(id).setSalePrice(price);
+        return true;
+    }
+
+    public boolean setCategory(int id, List<String> category) {
+        if(!inventory.containsKey(id))
+            return false;
+        inventory.get(id).setCategory(category);
+        return true;
+    }
 }
