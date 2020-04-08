@@ -8,10 +8,15 @@ import java.util.Map;
 
 public class Inventory {
     private static Inventory instance;
-    private Map<Integer, Pair<Product, Pair<Integer,Integer>>> storage; //Map<Integer = productID>  , in the second Pair : pair[0] = storageQnty, pair[1] = shelfQnty
+
+    private Map<Integer, Product> inventory;
+    private Map<Integer, Pair<Integer,Integer>> quantities; //Pair[0] = storage , Pair[1] = shelf
+    private Map<Integer, Integer> expired; //Id, amount
 
     private Inventory() {
-        storage = new HashMap<>();
+        inventory = new HashMap<>();
+        quantities = new HashMap<>();
+        expired = new HashMap<>();
     }
     public static Inventory getInventory() {
         if (instance == null)
@@ -19,34 +24,31 @@ public class Inventory {
         return instance;
     }
 
-    public Map<Integer, Pair<Product, Pair<Integer,Integer>>> getStorage() {
-        return storage;
-    }
 
     public List<Pair<Integer,Integer>> getQuantity(){ // Pair[0] = productId, Pair[1] = totalQuantity (storage+shelf)
         List<Pair<Integer,Integer>> qnty = new LinkedList<>();
-        for(Integer id : storage.keySet()){
-            Pair<Integer,Integer> p = new Pair<>(id,storage.get(id).getValue().getKey() +storage.get(id).getValue().getValue() );
+        for(Integer id : quantities.keySet()){
+            Pair<Integer,Integer> p = new Pair<>(id,quantities.get(id).getKey() + quantities.get(id).getValue());
             qnty.add(p);
         }
         return qnty;
     }
 
-    public List<Pair<Integer,Integer>> NeedToBuyProducts() {   //get the products id that their quantity is equal or less than their minimum quantity. Pair[0] = productId, Pair[1] = shelf+storage Quantity
+    public List<Pair<Integer,Integer>> NeedToBuyProducts() {   //Pair[0] = productId, Pair[1] = shelf+storage Quantity.  get the products id that their quantity is equal or less than their minimum quantity.
         List<Pair<Integer,Integer>> needToBuy = new LinkedList<>();
-        for (Integer id : storage.keySet()) {
-            if (storage.get(id).getValue().getKey()+storage.get(id).getValue().getKey() <= storage.get(id).getKey().getMinAmount())
-                needToBuy.add(new Pair<>(id,storage.get(id).getValue().getKey()+storage.get(id).getValue().getKey()));
+        for (Integer id : inventory.keySet()) {
+            if (inventory.get(id).getMinAmount() >= quantities.get(id).getKey() + quantities.get(id).getValue())
+                needToBuy.add(new Pair<>(id,quantities.get(id).getKey() + quantities.get(id).getValue()));
         }
         return needToBuy;
     }
 
     public List<Integer> getProductsByCategories(List<String> category){  //Integer = productId
         List<Integer> categoryList = new LinkedList<>();
-        for(Integer id : storage.keySet()){
+        for(Integer id : inventory.keySet()){
             boolean found = false;
             for (int i = 0; i<category.size() & !found; i++)
-                if(storage.get(id).getKey().getCategory().contains(category.get(i))) {
+                if(inventory.get(id).getCategory().contains(category.get(i))) {
                     categoryList.add(id);
                     found = true;
                 }
@@ -54,24 +56,27 @@ public class Inventory {
         return categoryList;
     }
 
-    public List<Integer> ExpiredProducts(){  //Integer = productId
-        List<Integer> expiredProducts = new LinkedList<>();
-        for(Integer id : storage.keySet()){
-            if(storage.get(id).getKey().isExpirated())
-                expiredProducts.add(id);
+    public List<Pair<Integer,Integer>> ExpiredProducts(){  //Integer = productId
+        List<Pair<Integer,Integer>> expiredProducts = new LinkedList<>();
+        for(Integer id : expired.keySet()){
+                expiredProducts.add(new Pair(id,expired.get(id)));
         }
         return expiredProducts;
     }
 
     public void setPriceById(int id, int price){
-        storage.get(id).getKey().setSalePrice(price);
+        inventory.get(id).setSalePrice(price);
     }
 
-    public void setPriceByCategory(String category, int price){
-        for(Integer id : storage.keySet()){
-            if(storage.get(id).getKey().getCategory().contains(category))
-                storage.get(id).getKey().setSalePrice(price);
+    public void setPriceByCategory(List<String> category, int price){
+        List<Integer> cat = getProductsByCategories(category);
+        for(Integer id : cat){
+            inventory.get(id).setSalePrice(price);
         }
+    }
+    public void setExpired(int productId, Integer amount){ //removing a specific amount of expired products from the storage inventory to the expired inventory.
+        quantities.put(productId, new Pair(quantities.get(productId).getKey() - amount,quantities.get(productId).getValue()));
+        expired.put(productId, expired.get(productId)+amount);
     }
 
 }
