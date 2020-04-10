@@ -5,7 +5,7 @@ import java.util.*;
 import java.util.List;
 
 public class Main {
-
+//TODO elad ya zain
     static FacadeController fc = FacadeController.getFacadeController();
 
     public static void main(String[] args) {
@@ -42,7 +42,7 @@ public class Main {
                     manageSupplier(suppId);
                     break;
                 case "3":
-                    orderIdCounter= addOrder(orderIdCounter);
+                    orderIdCounter = addOrder(orderIdCounter);
                     break;
                 case "4":
                     showPreviouslyOrders();
