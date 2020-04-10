@@ -29,15 +29,13 @@ public class Printer {
         return report.toString();
     }
 
-    public String printMissingProducts(){
-        List<Pair<Integer,Integer>> quantity= inventory.NeedToBuyProducts();
+    public String printMissingProducts(List<Pair<Integer,Integer>> quantity){
         Report report=Report.makeMissingReport(quantity);
         reports.add(report);
         return report.toString();
     }
 
-    public String MakeDefectiveReport(){
-        List<Pair<Integer,Integer>> quantity= inventory.ExpiredProducts();
+    public String MakeDefectiveReport(List<Pair<Integer,Integer>> quantity){
         Report report=Report.makeDefectiveReport(quantity);
         reports.add(report);
         return report.toString();
@@ -45,15 +43,9 @@ public class Printer {
 
 
 
-    public String printByCategories(){
-        List<Product> products=inventory.getProductsByCategories();
-        Report report= Report.makeCategoryReport(products);
-        String output="Report Id: "+report.getReportId()+"\n"+
-                        "Report Name: "+report.getTitle()+"\n";
-        for(ReportLine line : report.getLines()){
+    public String printByCategories(List<Pair<Integer,Integer>> quantity){
+        Report report=Report.makeDefectiveReport(quantity);
 
-        }
-        return output;
 
     }
 }

@@ -81,16 +81,23 @@ public class Register {
     //Reports
     // @TODO - OR you need to implement in the Printer and Reporter (:
     // @TODO : makeBuyingReport() , makeCategoryReport(), makeExpiredReport()
-    public boolean NeedToBuyReport(){
+    public String NeedToBuyReport(){
         List<Pair<Integer,Integer>> toBuy = inventory.NeedToBuyProducts();
-        return printer.makeBuyingReport(toBuy);
+        return printer.printMissingProducts(toBuy);
     }
-    public boolean CategoryReport(List<String> category){
-        return printer.makeCategoryReport(category);
+
+    public String totalStockReport(){
+        List<Pair<Integer,Integer>> totalStock = inventory.getQuantity();
+        return printer.printMissingProducts(totalStock);
     }
-    public boolean ExpiredReport(){
+
+    public String CategoryReport(List<String> category){
+        List<Pair<Integer,Integer>> prodByCategories = inventory.getProductsByCategories(category);
+        return printer.printByCategories(prodByCategories);
+    }
+    public String ExpiredReport(){
         List<Pair<Integer,Integer>> expiredProducts = inventory.ExpiredProducts();
-        return printer.makeExpiredReport(expiredProducts);
+        return printer.MakeDefectiveReport(expiredProducts);
     }
 
 }
