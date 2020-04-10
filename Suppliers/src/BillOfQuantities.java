@@ -10,16 +10,12 @@ public class BillOfQuantities {
         this.bill = bill;
     }
 
-    public void insert(Integer itemId, Pair<Integer, Double> quantity_disc) {
-        bill.put(itemId,quantity_disc);
-    }
-
     public void updateBillOfQuantities(Integer itemId, Pair<Integer, Double> quantity_disc) {
         bill.remove(itemId);
         bill.put(itemId, quantity_disc);
     }
 
-    public void deleteBillOfQuantities(Integer itemId) {
+    public void deleteFromBillOfQuantities(Integer itemId) {
         bill.remove(itemId);
     }
 
@@ -31,4 +27,6 @@ public class BillOfQuantities {
     public Map<Integer, Pair<Integer, Double>> getBillOfQuantities() {
         return this.bill;
     }
+
+    public int getBillSize() { return bill.size(); }
 }

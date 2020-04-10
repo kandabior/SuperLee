@@ -32,9 +32,15 @@ public class FacadeController {
         this.supplierController.updateBillOfQuantities(supplierId, itemId, quantity_disc);
     }
 
-    public void deleteBillOfQuantities(int supplierId,Integer itemId) {
-        this.supplierController.deleteBillOfQuantities(supplierId, itemId);
+    public void deleteFromBillOfQuantities(int supplierId,Integer itemId) {
+        this.supplierController.deleteFromBillOfQuantities(supplierId, itemId);
     }
+
+    public void deleteBillOfQuantities(int suppId) {
+        this.supplierController.deleteBillOfQuantities(suppId);
+    }
+
+    public int getBillSize(int suppId) { return supplierController.getBillSize(suppId); }
 
     public boolean addOrder(int id, List<Pair<Integer, Integer>> items, int supplierId) {
         return orderController.addOrder(id, items, supplierId);
@@ -85,4 +91,6 @@ public class FacadeController {
     public String getItemNameById(int suppId, Integer itemId) { return supplierController.getItemName(suppId, itemId); }
 
     public void setItemPrice(int suppId, int itemId, double newPrice) { supplierController.setItemPrice(suppId, itemId, newPrice);}
+
+    public boolean validateItemId(int suppId, int itemId) { return supplierController.validateItemId(suppId, itemId); }
 }

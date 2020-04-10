@@ -55,12 +55,19 @@ public class SupplierController {
        }
     }
 
-    public void deleteBillOfQuantities(int supplierId, Integer itemId) {
-        if(getSuppById(supplierId)!=null)
-        {
-            getSuppById(supplierId).deleteBillOfQuantities(itemId);
+    public void deleteFromBillOfQuantities(int suppId, Integer itemId) {
+        if (getSuppById(suppId) != null) {
+            getSuppById(suppId).deleteFromBillOfQuantities(itemId);
         }
     }
+
+    public void deleteBillOfQuantities(int suppId) {
+        if (getSuppById(suppId) != null) {
+            getSuppById(suppId).deleteBillOfQuantities();
+        }
+    }
+
+    public int getBillSize(int suppId) { return getSuppById(suppId).getBillSize(); }
 
     public LinkedHashMap<Integer, Double> showSuppItems(int suppId){
         Supplier supplier = getSuppById(suppId);
@@ -109,5 +116,9 @@ public class SupplierController {
 
     public void setItemPrice(int suppId, int itemId, double newPrice) {
         getSuppById(suppId).setItemPrice(itemId, newPrice);
+    }
+
+    public boolean validateItemId(int suppId, int itemId) {
+        return getSuppById(suppId).validateItemId(itemId);
     }
 }

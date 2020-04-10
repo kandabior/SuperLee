@@ -54,21 +54,23 @@ public class Supplier {
         this.agreement.updateBillOfQuantities(itemId,quantity_disc);
     }
 
-    public void deleteBillOfQuantities(Integer itemId) {
-        this.agreement.deleteBillOfQuantities(itemId);
+    public void deleteFromBillOfQuantities(Integer itemId) {
+        this.agreement.deleteFromBillOfQuantities(itemId);
     }
+
+    public void deleteBillOfQuantities() { this.agreement.deleteBillOfQuantities(); }
 
     public void addItemToAgreement(Integer item_id, Double cost) {
         this.agreement.insertItem(item_id,cost);
     }
 
-    public List<Item> getItems() {
+ /*   public List<Item> getItems() {
         LinkedList items = new LinkedList();
         for(int i=0; i < this.items.size(); i++){
             items.add(this.items.get(i).getKey());
         }
         return items;
-    }
+    }*/
 
     public double getPriceOfItem(int index) {
         return  this.agreement.getPriceOfItem(index);
@@ -117,4 +119,14 @@ public class Supplier {
     }
 
     public void setItemPrice(int itemId, double newPrice) { getAgreement().setPrice(itemId, newPrice);}
+
+    public boolean validateItemId(int itemId){
+        for(int i=0; i<items.size();i++) {
+            if(items.get(i).getKey().getId() == itemId)
+                return false;
+        }
+        return true;
+    }
+
+    public int getBillSize() { return this.agreement.getBillSize(); }
 }

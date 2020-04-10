@@ -20,9 +20,11 @@ public class Agreement {
         this.bill.updateBillOfQuantities(itemId,quantity_disc);
     }
 
-    public void deleteBillOfQuantities(Integer itemId) {
-        this.bill.deleteBillOfQuantities(itemId);
+    public void deleteFromBillOfQuantities(Integer itemId) {
+        this.bill.deleteFromBillOfQuantities(itemId);
     }
+
+    public void deleteBillOfQuantities() { this.bill = null; }
 
     public void insertItem(Integer itemId, Double price) {
         terms.put(itemId, price);
@@ -51,4 +53,5 @@ public class Agreement {
         return this.bill.getBillOfQuantities();
     }
 
+    public int getBillSize() { return this.bill.getBillSize(); }
 }
