@@ -22,8 +22,7 @@ public class Printer {
         return instance;
     }
 
-    public String printStock(){
-        List<Pair<Integer,Integer>> quantity= inventory.getQuantity();
+    public String printStock(List<Pair<Integer,Integer>> quantity){
         Report report=Report.totalStockReport(quantity);
         reports.add(report);
         return report.toString();

@@ -79,8 +79,6 @@ public class Register {
     }
 
     //Reports
-    // @TODO - OR you need to implement in the Printer and Reporter (:
-    // @TODO : makeBuyingReport() , makeCategoryReport(), makeExpiredReport()
     public String NeedToBuyReport(){
         List<Pair<Integer,Integer>> toBuy = inventory.NeedToBuyProducts();
         return printer.printMissingProducts(toBuy);
@@ -88,7 +86,7 @@ public class Register {
 
     public String totalStockReport(){
         List<Pair<Integer,Integer>> totalStock = inventory.getQuantity();
-        return printer.printMissingProducts(totalStock);
+        return printer.printStock(totalStock);
     }
 
     public String CategoryReport(List<String> category){
