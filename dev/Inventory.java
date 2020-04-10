@@ -26,14 +26,51 @@ public class Inventory {
         return instance;
     }
 
+    public static String getProdactName(int prodId) {
+        if(!instance.inventory.containsKey(prodId))
+            return "product ID doesnt exist";
+        return instance.inventory.get(prodId).getName();
+    }
 
-    public List<Pair<Integer,Integer>> getQuantity(){ // Pair[0] = productId, Pair[1] = totalQuantity (storage+shelf)
+    public static int getProductMin(int prodId) {
+        if(!instance.inventory.containsKey(prodId))
+            return -1;
+        return instance.inventory.get(prodId).getMinAmount();
+    }
+
+    public List<Pair<Integer,Integer>> getQuantity(){ // Pair[0] = productId, Pair[1] = StorageQuantity
         List<Pair<Integer,Integer>> qnty = new LinkedList<>();
         for(Integer id : quantities.keySet()){
             Pair<Integer,Integer> p = new Pair<>(id,quantities.get(id).getKey() + quantities.get(id).getValue());
             qnty.add(p);
         }
         return qnty;
+    }
+    public List<Pair<Integer,Integer>> getStorageQuantity(){ // Pair[0] = productId, Pair[1] = StorageQuantity
+        List<Pair<Integer,Integer>> qnty = new LinkedList<>();
+        for(Integer id : quantities.keySet()){
+            Pair<Integer,Integer> p = new Pair<>(id,quantities.get(id).getKey());
+            qnty.add(p);
+        }
+        return qnty;
+    }
+    public List<Pair<Integer,Integer>> getShelfQuantity(){ // Pair[0] = productId, Pair[1] = ShelfQuantity
+        List<Pair<Integer,Integer>> qnty = new LinkedList<>();
+        for(Integer id : quantities.keySet()){
+            Pair<Integer,Integer> p = new Pair<>(id,quantities.get(id).getValue());
+            qnty.add(p);
+        }
+        return qnty;
+    }
+    public int getShelfQntyByProdId(int prodId){
+        if(!quantities.containsKey(prodId))
+            return -1;
+        return quantities.get(prodId).getValue();
+    }
+    public int getStorageQntyByProdId(int prodId){
+        if(!quantities.containsKey(prodId))
+            return -1;
+        return quantities.get(prodId).getKey();
     }
 
     public List<Pair<Integer,Integer>> NeedToBuyProducts() {   //Pair[0] = productId, Pair[1] = shelf+storage Quantity.  get the products id that their quantity is equal or less than their minimum quantity.
