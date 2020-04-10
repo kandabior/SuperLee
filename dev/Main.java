@@ -15,7 +15,7 @@ public class Main {
     private static void mainLoop() {
         Printer.Print("Welcom to erez & or SuperMarket!\n" +
                             "please choose an action\n");
-        int choose=0;
+        int choose;
         do{
             Printer.Print(
                     "1. Register global manager.\n" +
