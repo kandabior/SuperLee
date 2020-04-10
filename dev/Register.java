@@ -1,5 +1,4 @@
 import javafx.util.Pair;
-import jdk.nashorn.internal.objects.Global;
 
 import java.time.LocalDate;
 import java.util.HashMap;
@@ -14,12 +13,12 @@ public class Register {
     //inventory Manager : less than Global Manager, a manager that can change products but not prices
     private Map<String,String> inventoryManagers; // userName and Passwords of the inventory managers.
 
-    private Printer printer;
+    private ReportMaker printer;
     private Inventory inventory;
 
     public Register(){
         inventory = Inventory.getInventory();
-        printer = Printer.getPrinter(inventory);
+        printer = ReportMaker.getPrinter(inventory);
         inventoryManagers = new HashMap<>();
         GlobalManager = new HashMap<>();
     }

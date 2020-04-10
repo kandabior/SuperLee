@@ -6,7 +6,14 @@ import java.util.List;
 public class Main {
     public static void main(String[]args) {
         initiateSystem();
+        mainLoop();
+
     }
+
+    private static void mainLoop() {
+
+    }
+
     private static void initiateSystem(){
         Register register = new Register();
 
