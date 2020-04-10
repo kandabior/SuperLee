@@ -74,6 +74,7 @@ public class Report {
         Integer count=1;
         for (ReportLine reportLine: getLines()){
             output=output+count.toString()+". "+reportLine.toString()+"\n";
+            count++;
         }
         return output;
     }

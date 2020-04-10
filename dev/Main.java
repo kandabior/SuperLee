@@ -1,10 +1,10 @@
-
-import java.lang.reflect.Array;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.*;
+import java.text.SimpleDateFormat;
 
 public class Main {
-    public static Scanner scanner;
+    public static Scanner scanner=new Scanner(System.in);
     private static Register register;
     public static void main(String[]args) {
         initiateSystem();
@@ -17,8 +17,8 @@ public class Main {
                             "please choose an action\n");
         int choose;
         do{
-            Printer.Print(
-                    "1. Register global manager.\n" +
+            Printer.Print("\nplease choose an action\n"+
+                            "1. Register global manager.\n" +
                             "2. Register inventory manager.\n" +
                             "3. Add product.\n" +
                             "4. Remove products.\n" +
@@ -75,14 +75,14 @@ public class Main {
     }
 
     private static void changeProductByCategory() {
-        Printer.Print("\nPlease Enter the following by given order:");
-        Printer.Print("\nusername: ");
+        Printer.Print("\nPlease Enter the following by given order:\n");
+        Printer.Print("username: ");
         String userName=scanner.next();
-        Printer.Print("\npassword: ");
+        Printer.Print("password: ");
         String password=scanner.next();
-        Printer.Print("\ncategories: ");
+        Printer.Print("categories: ");
         String categories=scanner.nextLine();
-        Printer.Print("\nprice: ");
+        Printer.Print("price: ");
         String price=scanner.next();
         List<String> categoriesList= Arrays.asList(categories.split(" "));
         register.setPriceByCategory(userName,password,categoriesList ,Integer.parseInt(price));
@@ -90,59 +90,64 @@ public class Main {
 
 
     private static void ChangePriceById() {
-        Printer.Print("\nPlease Enter the following by given order:");
-        Printer.Print("\nusername: ");
+        Printer.Print("\nPlease Enter the following by given order:\n");
+        Printer.Print("username: ");
         String userName=scanner.next();
-        Printer.Print("\npassword: ");
+        Printer.Print("password: ");
         String password=scanner.next();
-        Printer.Print("\nproduct Id: ");
+        Printer.Print("product Id: ");
         String prodId=scanner.next();
-        Printer.Print("\nprice: ");
+        Printer.Print("price: ");
         String price=scanner.next();
         register.setSalePriceById(userName,password,Integer.parseInt(prodId),Integer.parseInt(price));
     }
 
     private static void RemoveProduct() {
-        Printer.Print("\nPlease Enter the following by given order:");
-        Printer.Print("\nusername: ");
+        Printer.Print("\nPlease Enter the following by given order:\n");
+        Printer.Print("username: ");
         String userName=scanner.next();
-        Printer.Print("\npassword: ");
+        Printer.Print("password: ");
         String password=scanner.next();
-        Printer.Print("\nproduct Id: ");
+        Printer.Print("product Id: ");
         String prodId=scanner.next();
-        Printer.Print("\namount: ");
+        Printer.Print("amount: ");
         String amount=scanner.next();
         register.removeProduct(userName,password,Integer.parseInt( prodId),Integer.parseInt(amount));
     }
 
     private static void AddProduct() {
-        Printer.Print("\nPlease Enter the following by given order:");
-        Printer.Print("\nusername: ");
+        Printer.Print("\nPlease Enter the following by given order:\n");
+        Printer.Print("username: ");
         String userName=scanner.next();
-        Printer.Print("\npassword: ");
+        Printer.Print("password: ");
         String password=scanner.next();
-        Printer.Print("\nproduct Id: ");
+        Printer.Print("product Id: ");
         String prodId=scanner.next();
-        Printer.Print("\nname: ");
+        Printer.Print("name: ");
         String name=scanner.next();
-        Printer.Print("\namount: ");
+        Printer.Print("amount: ");
         String amount=scanner.next();
-        Printer.Print("\ncost price: ");
+        Printer.Print("cost price: ");
         String costPrice=scanner.next();
-        Printer.Print("\nsalePrice: ");
+        Printer.Print("salePrice: ");
         String salePrice=scanner.next();
-        Printer.Print("\nEXP date: ");
+        Printer.Print("EXP date: ");
         String expdate=scanner.next();
-        Printer.Print("\ncategories: ");
+        Printer.Print("categories: ");
         String categories=scanner.nextLine();
-        Printer.Print("\nmanufacturer: ");
+        Printer.Print("manufacturer: ");
         String manufacturer=scanner.next();
-        Printer.Print("\nminimum amount: ");
+        Printer.Print("minimum amount: ");
         String minAmount=scanner.next();
-        Printer.Print("\nplace: ");
+        Printer.Print("place: ");
         String place=scanner.next();
         List<String> categoriesList= Arrays.asList(categories.split(" "));
-        register.addProduct(userName,password,Integer.parseInt(prodId),Integer.parseInt(amount),name,Integer.parseInt(costPrice),Integer.parseInt(salePrice), LocalDate.parse(expdate),categoriesList,manufacturer,Integer.parseInt(minAmount),place);
+        LocalDate date=null;
+        try {
+            date = LocalDate.parse(expdate);
+        }
+        catch (Exception e){}
+        register.addProduct(userName,password,Integer.parseInt(prodId),Integer.parseInt(amount),name,Integer.parseInt(costPrice),Integer.parseInt(salePrice), date,categoriesList,manufacturer,Integer.parseInt(minAmount),place);
     }
 
     private static void AddInventoryManager() {

@@ -21,9 +21,17 @@ public class ReportLine {
 
     @Override
     public String toString() {
-        return  "prodId: " + prodId +
-                ", prodName: " + prodName +
-                ", amount: " + amount +
-                ", " + optional;
+        if(optional.size()==0){
+            return  "prodId: " + prodId +
+                    ", prodName: " + prodName +
+                    ", amount: " + amount +
+                    ".";
+        }
+        else{
+            return  "prodId: " + prodId +
+                    ", prodName: " + prodName +
+                    ", amount: " + amount +
+                    ", "+optional;
+        }
     }
 }
