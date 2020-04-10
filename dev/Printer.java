@@ -1,3 +1,5 @@
+import javafx.util.Pair;
+
 import java.util.List;
 
 public class Printer {
@@ -15,6 +17,19 @@ public class Printer {
             instance=new Printer(inventory);
         }
         return instance;
+    }
+
+    public String printStock(){
+        List<Pair<Integer,Integer>> quantity= inventory.getQuantity();
+        Report report=Report.totalStockReport(quantity);
+        String output="";
+        output= output+"Report name:"+report.getTitle()+"\n";
+        output=output+"Report Id: "+ report.getReportId()+"\n";
+        Integer count=1;
+        for (ReportLine reportLine: report.getLines()){
+            output=output+count.toString()+". "+reportLine.toString()+"\n";
+        }
+        return output;
     }
 
     public String printByCategories(){

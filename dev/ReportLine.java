@@ -5,37 +5,27 @@ public class ReportLine {
 
     private int prodId;
     private String prodName;
-    private int storageAmount;
-    private int shelfAmount;
-    private List<String> categories;
+    private int amount;
+    private List<String> optional;
 
-    private ReportLine(int prodId, String name, int StorageAmount,int shelffAmount, List<String> categories ){
+    public ReportLine(int prodId, String name, int amount){
         this.prodId= prodId;
         this.prodName=name;
-        this.storageAmount=StorageAmount;
-        this.shelfAmount=shelffAmount;
-        this.categories=categories;
+        this.amount=amount;
+        optional=new LinkedList<>();
     }
 
-    public static List<ReportLine> makeReportLines(List<Product> products){
-        List<ReportLine> output= new LinkedList<>();
-        ReportLine line;
-        for (Product product:products) {
-            line=new ReportLine(product.getId(), product.getName(),product. , product.categories);
-            output.add(line);
-        }
-        return output;
+    private boolean addToLine(String toAdd){
+        return optional.add(toAdd);
     }
-
 
     @Override
     public String toString() {
-        return "{" +
+        return "ReportLine{" +
                 "prodId=" + prodId +
                 ", prodName='" + prodName + '\'' +
-                ", storageAmount=" + storageAmount +
-                ", shelfAmount=" + shelfAmount +
-                ", categories=" + categories +
+                ", amount=" + amount +
+                ", optional=" + optional +
                 '}';
     }
 }
