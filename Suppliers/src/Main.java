@@ -193,7 +193,7 @@ public class Main {
     }
 
     private static void editBillOfQuantities(int suppId) {
-        String ans;
+        String ans="";
         if (!fc.checkBillOfQuantity(suppId)) {
             System.out.println("No bill of quantities was found.");
         } else {
@@ -216,10 +216,12 @@ public class Main {
                     deleteFromBillOfQuantities(suppId, itemId);
                 else {
                     System.out.println("Invalid input.");
-                    displayManageSupplierMenu(suppId);
+                    ans = "n";
                 }
-                System.out.print("Update any more items? [Y/N] ");
-                ans = scanner2.nextLine();
+                if(!ans.equals("n")) {
+                    System.out.print("Update any more items? [Y/N] ");
+                    ans = scanner2.nextLine();
+                }
             } while (ans.equals("y") | ans.equals("Y"));
         }
     }
