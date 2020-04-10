@@ -1,5 +1,6 @@
 import javafx.util.Pair;
 
+import java.util.LinkedList;
 import java.util.List;
 
 public class Printer {
@@ -7,9 +8,11 @@ public class Printer {
     private static Printer instance;
 
     private Inventory inventory;
+    private List<Report> reports;
 
     private Printer(Inventory inventory){
         this.inventory=inventory;
+        this.reports=new LinkedList<>();
     }
 
     public static Printer getPrinter(Inventory inventory){
@@ -22,15 +25,25 @@ public class Printer {
     public String printStock(){
         List<Pair<Integer,Integer>> quantity= inventory.getQuantity();
         Report report=Report.totalStockReport(quantity);
-        String output="";
-        output= output+"Report name:"+report.getTitle()+"\n";
-        output=output+"Report Id: "+ report.getReportId()+"\n";
-        Integer count=1;
-        for (ReportLine reportLine: report.getLines()){
-            output=output+count.toString()+". "+reportLine.toString()+"\n";
-        }
-        return output;
+        reports.add(report);
+        return report.toString();
     }
+
+    public String printMissingProducts(){
+        List<Pair<Integer,Integer>> quantity= inventory.NeedToBuyProducts();
+        Report report=Report.makeMissingReport(quantity);
+        reports.add(report);
+        return report.toString();
+    }
+
+    public String MakeDefectiveReport(){
+        List<Pair<Integer,Integer>> quantity= inventory.ExpiredProducts();
+        Report report=Report.makeDefectiveReport(quantity);
+        reports.add(report);
+        return report.toString();
+    }
+
+
 
     public String printByCategories(){
         List<Product> products=inventory.getProductsByCategories();

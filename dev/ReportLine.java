@@ -15,17 +15,15 @@ public class ReportLine {
         optional=new LinkedList<>();
     }
 
-    private boolean addToLine(String toAdd){
+    public boolean addToLine(String toAdd){
         return optional.add(toAdd);
     }
 
     @Override
     public String toString() {
-        return "ReportLine{" +
-                "prodId=" + prodId +
-                ", prodName='" + prodName + '\'' +
-                ", amount=" + amount +
-                ", optional=" + optional +
-                '}';
+        return  "prodId: " + prodId +
+                ", prodName: " + prodName +
+                ", amount: " + amount +
+                ", " + optional;
     }
 }

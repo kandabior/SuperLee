@@ -38,28 +38,41 @@ public class Report {
         lines.add(reportLine);
     }
 
+    public static Report makeMissingReport(List<Pair<Integer, Integer>> quantity){
+        Report report= new Report("Missing Product Report");
+        for(Pair<Integer,Integer> line: quantity){
+            ReportLine reportLine= new ReportLine(line.getKey(),Inventory.getProdactName(line.getKey()),line.getValue());
+            reportLine.addToLine("minimum amount: "+ Inventory.getProductMin(line.getKey()));
+            report.addLine(reportLine);
+        }
+        return report;
+    }
 
+    public static Report makeDefectiveReport(List<Pair<Integer, Integer>> quantity){
+        Report report= new Report("Defective Product Report");
+        for(Pair<Integer,Integer> line: quantity){
+            ReportLine reportLine= new ReportLine(line.getKey(),Inventory.getProdactName(line.getKey()),line.getValue());
+            report.addLine(reportLine);
+        }
+        return report;
+    }
 
     public static Report makeCategoryReport(List<Product> products){
         Report report= new Report("Category Report");
-        report.lines= makeReportLines(products);
+
         return report;
     }
 
-    public static Report makeDefectiveReport(List<Product> products){
-        Report report= new Report("Defective Product Report");
-        report.lines= makeReportLines(products);
-        return report;
-    }
 
-    public static Report makeMissingReport(List<Product> products){
-        Report report= new Report("Missing Product Report");
-        report.lines= makeReportLines(products);
-        return report;
-    }
-
-    public static List<ReportLine> makeReportLines(List<Product> products){
-        return ReportLine.makeReportLines(products);
+    public String toString(){
+        String output="";
+        output= output+"Report name:"+getTitle()+"\n";
+        output=output+"Report Id: "+ getReportId()+"\n";
+        Integer count=1;
+        for (ReportLine reportLine: getLines()){
+            output=output+count.toString()+". "+reportLine.toString()+"\n";
+        }
+        return output;
     }
 
 
