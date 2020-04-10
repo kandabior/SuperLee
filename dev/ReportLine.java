@@ -21,7 +21,7 @@ public class ReportLine {
         List<ReportLine> output= new LinkedList<>();
         ReportLine line;
         for (Product product:products) {
-            line=new ReportLine(product.id, product.name, , product.categories);
+            line=new ReportLine(product.getId(), product.getName(),product. , product.categories);
             output.add(line);
         }
         return output;

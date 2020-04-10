@@ -13,6 +13,7 @@ public class Inventory {
     private Inventory() {
         storage = new HashMap<>();
     }
+    
     public static Inventory getInventory() {
         if (instance == null)
             instance = new Inventory();
@@ -38,6 +39,7 @@ public class Inventory {
             if (storage.get(id).getValue().getKey()+storage.get(id).getValue().getKey() <= storage.get(id).getKey().getMinAmount())
                 needToBuy.add(new Pair<>(id,storage.get(id).getValue().getKey()+storage.get(id).getValue().getKey()));
         }
+
         return needToBuy;
     }
 
