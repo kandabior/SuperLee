@@ -1,8 +1,7 @@
 
+import java.lang.reflect.Array;
 import java.time.LocalDate;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Scanner;
+import java.util.*;
 
 public class Main {
     public static Scanner scanner;
@@ -64,35 +63,100 @@ public class Main {
     }
 
     private static void PrintProductByCategories() {
-
+        Printer.Print("\nPlease Enter category/ies to print: ");
+        Printer.Print("\ncategories: ");
+        String categories=scanner.nextLine();
+        List<String> categoriesList= Arrays.asList(categories.split(" "));
+        Printer.Print(register.CategoryReport(categoriesList));
     }
 
     private static void PrintTotalStock() {
+        Printer.Print(register.totalStockReport());
     }
 
     private static void changeProductByCategory() {
-
+        Printer.Print("\nPlease Enter the following by given order:");
+        Printer.Print("\nusername: ");
+        String userName=scanner.next();
+        Printer.Print("\npassword: ");
+        String password=scanner.next();
+        Printer.Print("\ncategories: ");
+        String categories=scanner.nextLine();
+        Printer.Print("\nprice: ");
+        String price=scanner.next();
+        List<String> categoriesList= Arrays.asList(categories.split(" "));
+        register.setPriceByCategory(userName,password,categoriesList ,Integer.parseInt(price));
     }
 
 
     private static void ChangePriceById() {
-
+        Printer.Print("\nPlease Enter the following by given order:");
+        Printer.Print("\nusername: ");
+        String userName=scanner.next();
+        Printer.Print("\npassword: ");
+        String password=scanner.next();
+        Printer.Print("\nproduct Id: ");
+        String prodId=scanner.next();
+        Printer.Print("\nprice: ");
+        String price=scanner.next();
+        register.setSalePriceById(userName,password,Integer.parseInt(prodId),Integer.parseInt(price));
     }
 
     private static void RemoveProduct() {
-
+        Printer.Print("\nPlease Enter the following by given order:");
+        Printer.Print("\nusername: ");
+        String userName=scanner.next();
+        Printer.Print("\npassword: ");
+        String password=scanner.next();
+        Printer.Print("\nproduct Id: ");
+        String prodId=scanner.next();
+        Printer.Print("\namount: ");
+        String amount=scanner.next();
+        register.removeProduct(userName,password,Integer.parseInt( prodId),Integer.parseInt(amount));
     }
 
     private static void AddProduct() {
-
+        Printer.Print("\nPlease Enter the following by given order:");
+        Printer.Print("\nusername: ");
+        String userName=scanner.next();
+        Printer.Print("\npassword: ");
+        String password=scanner.next();
+        Printer.Print("\nproduct Id: ");
+        String prodId=scanner.next();
+        Printer.Print("\nname: ");
+        String name=scanner.next();
+        Printer.Print("\namount: ");
+        String amount=scanner.next();
+        Printer.Print("\ncost price: ");
+        String costPrice=scanner.next();
+        Printer.Print("\nsalePrice: ");
+        String salePrice=scanner.next();
+        Printer.Print("\nEXP date: ");
+        String expdate=scanner.next();
+        Printer.Print("\ncategories: ");
+        String categories=scanner.nextLine();
+        Printer.Print("\nmanufacturer: ");
+        String manufacturer=scanner.next();
+        Printer.Print("\nminimum amount: ");
+        String minAmount=scanner.next();
+        Printer.Print("\nplace: ");
+        String place=scanner.next();
+        List<String> categoriesList= Arrays.asList(categories.split(" "));
+        register.addProduct(userName,password,Integer.parseInt(prodId),Integer.parseInt(amount),name,Integer.parseInt(costPrice),Integer.parseInt(salePrice), LocalDate.parse(expdate),categoriesList,manufacturer,Integer.parseInt(minAmount),place);
     }
 
     private static void AddInventoryManager() {
-
+        Printer.Print("Please enter username and password:");
+        String userName=scanner.next();
+        String password=scanner.next();
+        register.addInventoryManager(userName, password);
     }
 
     private static void AddGlobalManager() {
-
+        Printer.Print("Please enter username and password:");
+        String userName=scanner.next();
+        String password=scanner.next();
+        register.addGlobalManager(userName, password);
 
     }
 
