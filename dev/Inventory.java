@@ -83,13 +83,13 @@ public class Inventory {
         return needToBuy;
     }
 
-    public List<Integer> getProductsByCategories(List<String> category){  //Integer = productId
-        List<Integer> categoryList = new LinkedList<>();
+    public List<Pair<Integer,Integer>> getProductsByCategories(List<String> category){  //Integer = productId
+        List<Pair<Integer,Integer>> categoryList = new LinkedList<>();
         for(Integer id : inventory.keySet()){
             boolean found = false;
             for (int i = 0; i<category.size() & !found; i++)
                 if(inventory.get(id).getCategory().contains(category.get(i))) {
-                    categoryList.add(id);
+                    categoryList.add(new Pair<>(id,quantities.get(i).getKey()+quantities.get(i).getValue()));
                     found = true;
                 }
         }
@@ -112,9 +112,9 @@ public class Inventory {
     }
 
     public boolean setPriceByCategory(List<String> category, int price){
-        List<Integer> cat = getProductsByCategories(category);
-        for(Integer id : cat){
-            inventory.get(id).setSalePrice(price);
+        List<Pair<Integer,Integer>> cat = getProductsByCategories(category);
+        for(Pair<Integer,Integer> pair : cat){
+            inventory.get(pair.getKey()).setSalePrice(price);
         }
         return true;
     }
