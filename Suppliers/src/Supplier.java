@@ -82,8 +82,8 @@ public class Supplier {
         this.agreement.addItemToBillOfQuantities(itemId,itemQuantity,itemDiscount);
     }
 
-    public Map<Integer, Pair<Integer, Double>> getbillOfQuantities() {
-        return this.agreement.getbillOfQuantities();
+    public Map<Integer, Pair<Integer, Double>> getBillOfQuantities() {
+        return this.agreement.getBillOfQuantities();
     }
 
     public String getItemName(Integer itemId) {
@@ -115,4 +115,6 @@ public class Supplier {
     public int getItemsListSize() {
         return this.items.size();
     }
+
+    public void setItemPrice(int itemId, double newPrice) { getAgreement().setPrice(itemId, newPrice);}
 }

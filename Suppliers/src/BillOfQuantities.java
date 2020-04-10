@@ -28,7 +28,7 @@ public class BillOfQuantities {
         this.bill.put(itemId,p);
     }
 
-    public Map<Integer, Pair<Integer, Double>> getbillOfQuantities() {
+    public Map<Integer, Pair<Integer, Double>> getBillOfQuantities() {
         return this.bill;
     }
 }

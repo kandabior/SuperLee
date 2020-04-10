@@ -34,8 +34,8 @@ public class OrderController {
         return this.orders.size();
     }
 
-    public List<Pair<Integer, Integer>> getItemsInOrderById(int i) {
-        return this.orders.get(i).getItemsInOrderById();
+    public List<Pair<Integer, Integer>> getItemsInOrderById(int id) {
+        return this.orders.get(id).getItemsInOrderById();
     }
 
     public int getSupplierIdOfOrder(int i) {

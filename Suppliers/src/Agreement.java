@@ -1,6 +1,4 @@
 import javafx.util.Pair;
-
-import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
@@ -18,10 +16,6 @@ public class Agreement {
         this.bill = new BillOfQuantities(bill);
     }
 
-    public void insertBillOfQuantities(Integer itemId, Pair<Integer, Double> quantity_disc) {
-        this.bill.insert(itemId,quantity_disc);
-    }
-
     public void updateBillOfQuantities( Integer itemId, Pair<Integer, Double> quantity_disc) {
         this.bill.updateBillOfQuantities(itemId,quantity_disc);
     }
@@ -30,8 +24,8 @@ public class Agreement {
         this.bill.deleteBillOfQuantities(itemId);
     }
 
-    public void insertItem(Integer item_id, Double cost) {
-        terms.put(item_id,cost);
+    public void insertItem(Integer itemId, Double price) {
+        terms.put(itemId, price);
     }
 
     public LinkedHashMap<Integer, Double> getTerms() { return this.terms; }
@@ -53,8 +47,8 @@ public class Agreement {
         this.bill.addItemToBillOfQuantities(itemId,itemQuantity,itemDiscount);
     }
 
-    public Map<Integer, Pair<Integer, Double>> getbillOfQuantities() {
-        return this.bill.getbillOfQuantities();
+    public Map<Integer, Pair<Integer, Double>> getBillOfQuantities() {
+        return this.bill.getBillOfQuantities();
     }
 
 }

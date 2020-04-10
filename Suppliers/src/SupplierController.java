@@ -28,6 +28,11 @@ public class SupplierController {
         return null;
     }
 
+    public boolean findSupplier(int id) {
+        if(getSuppById(id) != null) return true;
+        return false;
+    }
+
     public void addSupplier(int id, String name, String phoneNum, int bankAccount, String payment, String supplySchedule, String supplyLocation) {
         Supplier sup = new Supplier(id, name, phoneNum, bankAccount, payment, supplySchedule, supplyLocation);
         this.suppliers.add(sup);
@@ -41,13 +46,6 @@ public class SupplierController {
 
     public void addItemToAgreement(Integer supp_id ,Integer item_id,Double cost){
         getSuppById(supp_id).addItemToAgreement(item_id,cost);
-    }
-
-    public void insertBillOfQuantities(int supplierId, Integer itemId, Pair<Integer, Double> quantity_disc) {
-        if(getSuppById(supplierId)!=null)
-        {
-            getSuppById(supplierId).getAgreement().insertBillOfQuantities(itemId,quantity_disc);
-        }
     }
 
     public void updateBillOfQuantities(int supplierId, Integer itemId, Pair<Integer, Double> quantity_disc) {
@@ -73,7 +71,7 @@ public class SupplierController {
         return getSuppById(suppId).getPriceOfItem(index);
     }
 
-    public Boolean checkBillOfQuantity(int suppId) {
+    public boolean checkBillOfQuantity(int suppId) {
         return getSuppById(suppId).checkBillOfQuantity();
     }
 
@@ -81,8 +79,8 @@ public class SupplierController {
         getSuppById(suppId).addItemToBillOfQuantities(itemId,itemQuantity,itemDiscount);
     }
 
-    public Map<Integer, Pair<Integer, Double>> getbillOfQuantities(int suppId) {
-        return getSuppById(suppId).getbillOfQuantities();
+    public Map<Integer, Pair<Integer, Double>> getBillOfQuantities(int suppId) {
+        return getSuppById(suppId).getBillOfQuantities();
     }
 
     public String getItemName(int suppId, Integer item) {
@@ -107,5 +105,9 @@ public class SupplierController {
 
     public int getItemsListSize(int suppId) {
         return this.getSuppById(suppId).getItemsListSize();
+    }
+
+    public void setItemPrice(int suppId, int itemId, double newPrice) {
+        getSuppById(suppId).setItemPrice(itemId, newPrice);
     }
 }
