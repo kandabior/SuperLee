@@ -28,7 +28,7 @@ public class Report {
     public static Report totalStockReport(List<Pair<Integer, Integer>> quantity) {
         Report report=new Report("Total Stock Report");
         for(Pair<Integer,Integer> line: quantity){
-            ReportLine reportLine= new ReportLine(line.getKey(),Inventory.getProdactName(line.getKey(),line.getValue()));
+            ReportLine reportLine= new ReportLine(line.getKey(),Inventory.getProdactName(line.getKey()),line.getValue());
             report.addLine(reportLine);
         }
         return report;
@@ -57,9 +57,12 @@ public class Report {
         return report;
     }
 
-    public static Report makeCategoryReport(List<Product> products){
+    public static Report makeCategoryReport(List<Pair<Integer,Integer>> quantity){
         Report report= new Report("Category Report");
-
+        for(Pair<Integer,Integer> line: quantity){
+            ReportLine reportLine= new ReportLine(line.getKey(),Inventory.getProdactName(line.getKey()),line.getValue());
+            report.addLine(reportLine);
+        }
         return report;
     }
 

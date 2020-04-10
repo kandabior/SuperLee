@@ -44,8 +44,9 @@ public class Printer {
 
 
     public String printByCategories(List<Pair<Integer,Integer>> quantity){
-        Report report=Report.makeDefectiveReport(quantity);
-
+        Report report=Report.makeCategoryReport(quantity);
+        reports.add(report);
+        return report.toString();
 
     }
 }
