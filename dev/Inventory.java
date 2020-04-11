@@ -38,7 +38,7 @@ public class Inventory {
         return instance.inventory.get(prodId).getMinAmount();
     }
 
-    public List<Pair<Integer,Integer>> getQuantity(){ // Pair[0] = productId, Pair[1] = StorageQuantity
+    public List<Pair<Integer,Integer>> getQuantity(){ // Pair[0] = productId, Pair[1] = storage + shelf Quantity
         List<Pair<Integer,Integer>> qnty = new LinkedList<>();
         for(Integer id : quantities.keySet()){
             Pair<Integer,Integer> p = new Pair<>(id,quantities.get(id).getKey() + quantities.get(id).getValue());
@@ -89,7 +89,7 @@ public class Inventory {
             boolean found = false;
             for (int i = 0; i<category.size() & !found; i++)
                 if(inventory.get(id).getCategory().contains(category.get(i))) {
-                    categoryList.add(new Pair<>(id,quantities.get(i).getKey()+quantities.get(i).getValue()));
+                    categoryList.add(new Pair<>(id,quantities.get(id).getKey()+quantities.get(id).getValue()));
                     found = true;
                 }
         }
@@ -104,57 +104,51 @@ public class Inventory {
         return expiredProducts;
     }
 
-    public boolean setPriceById(int id, int price){
+    public String setSalePrice(int id, int price) {
         if(!inventory.containsKey(id))
-            return false;
+            return "product ID doesnt exist";
         inventory.get(id).setSalePrice(price);
-        return true;
+        return "product " + id + "- price changed to: " + price;
     }
 
-    public boolean setPriceByCategory(List<String> category, int price){
+    public String setPriceByCategory(List<String> category, int price){
         List<Pair<Integer,Integer>> cat = getProductsByCategories(category);
         for(Pair<Integer,Integer> pair : cat){
             inventory.get(pair.getKey()).setSalePrice(price);
         }
-        return true;
+        return "categories: " + category.toString() + "price changed to: " + price;
     }
-    public boolean setExpired(int productId, Integer amount){ //removing a specific amount of expired products from the storage inventory to the expired inventory.
+    public String setExpired(int productId, Integer amount){ //removing a specific amount of expired products from the storage inventory to the expired inventory.
         if(!inventory.containsKey(productId))
-            return false;
+            return "product ID doesnt exist";
         quantities.put(productId, new Pair(quantities.get(productId).getKey() - amount,quantities.get(productId).getValue()));
         expired.put(productId, expired.get(productId)+amount);
-        return true;
+        return "product " + productId + "- quantity of " + amount + " was changed to expired";
     }
 
-    public boolean addProduct(int id,int amount, String name, int costPrice, int salePrice, LocalDate expDate, List<String> category, String manufacturer, int minAmount, String place) {
+    public String addProduct(int id,int amount, String name, int costPrice, int salePrice, LocalDate expDate, List<String> category, String manufacturer, int minAmount, String place) {
         if(!inventory.containsKey(id)) {
             inventory.put(id, new Product(id, name, costPrice, salePrice, expDate, category, manufacturer, minAmount, place));
             quantities.put(id, new Pair(0,amount));
+            return " product id: " + id + " - added to the inventory";
         }
         else {
             quantities.put(id, new Pair(quantities.get(id).getKey(), quantities.get(id).getValue() + amount));
+            return "product id: " + id + " - amount of " + amount + " added to the inventory";
         }
-        return true;
     }
 
-    public boolean removeProduct(int id, int amount) {
+    public String removeProduct(int id, int amount) {
         if(!inventory.containsKey(id))
-            return false;
+            return "product ID doesnt exist";
         quantities.put(id, new Pair(quantities.get(id).getKey(),quantities.get(id).getValue() - amount));
-        return true;
+        return "product id: " + id + "- amount of " + amount + " was removed from the inventory";
     }
 
-    public boolean setSalePrice(int id, int price) {
+    public String setCategory(int id, List<String> category) {
         if(!inventory.containsKey(id))
-            return false;
-        inventory.get(id).setSalePrice(price);
-        return true;
-    }
-
-    public boolean setCategory(int id, List<String> category) {
-        if(!inventory.containsKey(id))
-            return false;
+            return "product ID doesnt exist";
         inventory.get(id).setCategory(category);
-        return true;
+        return "product id: " + id + "- category changed to : " + category.toString();
     }
 }

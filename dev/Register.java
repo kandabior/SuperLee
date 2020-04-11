@@ -24,57 +24,57 @@ public class Register {
     }
 
     //Managers
-    public boolean addInventoryManager(String username, String password){
+    public String addInventoryManager(String username, String password){
         if(inventoryManagers.containsKey(username))
-            return false;
+            return "can't register - username already exist";
         inventoryManagers.put(username,password);
-        return true;
+        return "Inventory Manager " + username  +" - registered successfully";
     }
-    public boolean removeInventoryManager(String username, int password){
+    public String removeInventoryManager(String username, int password){
         if(!inventoryManagers.containsKey(username))
-            return false;
+            return "can't remove inventory manager - username doesnt exist";
         inventoryManagers.remove(username,password);
-        return true;
+        return "Inventory Manager - " + username + " removed";
     }
-    public boolean addGlobalManager(String username, String password){
+    public String addGlobalManager(String username, String password){
         if(GlobalManager.containsKey(username))
-            return false;
+            return "can't register - username already exist";
         GlobalManager.put(username,password);
-        return true;
+        return "Global Manager " + username  +" - registered successfully";
     }
-    public boolean removeGlobalManager(String username, int password){
+    public String removeGlobalManager(String username, int password){
         if(!GlobalManager.containsKey(username))
-            return false;
+            return "can't remove Global Manager - username doesnt exist";
         GlobalManager.remove(username,password);
-        return true;
+        return "Global Manager - " + username + " removed";
     }
 
 
     //Inventory
-    public boolean addProduct(String username, String password, int prodid, int amount, String name, int costPrice, int salePrice, LocalDate expDate, List<String> category, String manufacturer, int minAmount, String place){
+    public String addProduct(String username, String password, int prodid, int amount, String name, int costPrice, int salePrice, LocalDate expDate, List<String> category, String manufacturer, int minAmount, String place){
         if((GlobalManager.containsKey(username) && GlobalManager.get(username) == password) || (inventoryManagers.containsKey(username) && inventoryManagers.get(username) == password))
              return inventory.addProduct(prodid, amount,name,costPrice,salePrice,expDate,category, manufacturer, minAmount, place);
-        return false;
+        return "can't add product - you are need to be a Manager";
     }
-    public boolean removeProduct(String username, String password, int prodid, int amount){
+    public String removeProduct(String username, String password, int prodid, int amount){
         if((GlobalManager.containsKey(username) && GlobalManager.get(username) == password) || (inventoryManagers.containsKey(username) && inventoryManagers.get(username) == password))
             return inventory.removeProduct(prodid,amount);
-        return false;
+        return "can't remove product - you are need to be a Manager";
     }
-    public boolean setSalePriceById(String username, String password ,int prodid, int price){
+    public String setSalePriceById(String username, String password ,int prodid, int price){
         if(GlobalManager.containsKey(username) && GlobalManager.get(username) == password)
            return inventory.setSalePrice(prodid,price);
-        return false;
+        return "can't change peice of product - you are need to be a Global Manager";
     }
-    public boolean setPriceByCategory(String username, String password , List<String> category,int price){
+    public String setPriceByCategory(String username, String password , List<String> category,int price){
         if(GlobalManager.containsKey(username) && GlobalManager.get(username) == password)
             return inventory.setPriceByCategory(category, price);
-        return false;
+        return "can't change peice of product - you are need to be a Global Manager";
     }
-    public boolean setCategory(String username, String password, int id, List<String> category){
+    public String setCategory(String username, String password, int id, List<String> category){
         if((GlobalManager.containsKey(username) && GlobalManager.get(username) == password) || (inventoryManagers.containsKey(username) && inventoryManagers.get(username) == password))
             return inventory.setCategory(id,category);
-        return false;
+        return "can't remove product - you are need to be a Manager";
     }
 
     //Reports
