@@ -1,4 +1,5 @@
 import java.time.LocalDate;
+import java.util.LinkedList;
 import java.util.List;
 
 public class Product {
@@ -11,6 +12,8 @@ public class Product {
     private String manufacturer;
     private int minAmount;
     private String place;
+    private List<Integer> lastCostPrice;
+    private List<Integer> lastSalePrice;
 
     public Product(int id, String name, int costPrice,int salePrice, LocalDate expDate, List<String> category, String manufacturer, int minAmount, String place){
         this.id = id;
@@ -22,6 +25,10 @@ public class Product {
         this.manufacturer = manufacturer;
         this.minAmount = minAmount;
         this.place = place;
+        lastCostPrice = new LinkedList<>();
+        lastSalePrice = new LinkedList<>();
+        lastCostPrice.add(costPrice);
+        lastSalePrice.add(salePrice);
     }
 
     public LocalDate getExpDate() {
@@ -56,6 +63,11 @@ public class Product {
     }
     public void setSalePrice(int price){
         this.salePrice = price;
+        this.lastSalePrice.add(price);
+    }
+    public void setCostPrice(int price){
+        this.costPrice = price;
+        this.lastCostPrice.add(price);
     }
     public void setCategory(List<String> category) {
         this.category = category;
