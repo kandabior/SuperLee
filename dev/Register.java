@@ -52,27 +52,27 @@ public class Register {
 
     //Inventory
     public String addProduct(String username, String password, int prodid, int amount, String name, int costPrice, int salePrice, LocalDate expDate, List<String> category, String manufacturer, int minAmount, String place){
-        if((GlobalManager.containsKey(username) && GlobalManager.get(username) == password) || (inventoryManagers.containsKey(username) && inventoryManagers.get(username) == password))
-             return inventory.addProduct(prodid, amount,name,costPrice,salePrice,expDate,category, manufacturer, minAmount, place);
+        if((GlobalManager.containsKey(username) && GlobalManager.get(username).equals(password)) || (inventoryManagers.containsKey(username) && inventoryManagers.get(username).equals(password)))
+            return inventory.addProduct(prodid, amount,name,costPrice,salePrice,expDate,category, manufacturer, minAmount, place);
         return "can't add product - you are need to be a Manager";
     }
     public String removeProduct(String username, String password, int prodid, int amount){
-        if((GlobalManager.containsKey(username) && GlobalManager.get(username) == password) || (inventoryManagers.containsKey(username) && inventoryManagers.get(username) == password))
+        if((GlobalManager.containsKey(username) && GlobalManager.get(username).equals(password)) || (inventoryManagers.containsKey(username) && inventoryManagers.get(username).equals(password)))
             return inventory.removeProduct(prodid,amount);
         return "can't remove product - you are need to be a Manager";
     }
     public String setSalePriceById(String username, String password ,int prodid, int price){
-        if(GlobalManager.containsKey(username) && GlobalManager.get(username) == password)
+        if(GlobalManager.containsKey(username) && GlobalManager.get(username).equals(password))
            return inventory.setSalePrice(prodid,price);
-        return "can't change peice of product - you are need to be a Global Manager";
+        return "can't change price of product - you are need to be a Global Manager";
     }
     public String setPriceByCategory(String username, String password , List<String> category,int price){
-        if(GlobalManager.containsKey(username) && GlobalManager.get(username) == password)
+        if(GlobalManager.containsKey(username) && GlobalManager.get(username).equals(password))
             return inventory.setPriceByCategory(category, price);
-        return "can't change peice of product - you are need to be a Global Manager";
+        return "can't change price of product - you are need to be a Global Manager";
     }
     public String setCategory(String username, String password, int id, List<String> category){
-        if((GlobalManager.containsKey(username) && GlobalManager.get(username) == password) || (inventoryManagers.containsKey(username) && inventoryManagers.get(username) == password))
+        if((GlobalManager.containsKey(username) && GlobalManager.get(username).equals(password)) || (inventoryManagers.containsKey(username) && inventoryManagers.get(username).equals(password)))
             return inventory.setCategory(id,category);
         return "can't remove product - you are need to be a Manager";
     }
