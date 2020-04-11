@@ -13,12 +13,12 @@ public class Register {
     //inventory Manager : less than Global Manager, a manager that can change products but not prices
     private Map<String,String> inventoryManagers; // userName and Passwords of the inventory managers.
 
-    private ReportMaker printer;
+    private ReportMaker reportMaker;
     private Inventory inventory;
 
     public Register(){
         inventory = Inventory.getInventory();
-        printer = ReportMaker.getPrinter(inventory);
+        reportMaker = ReportMaker.getPrinter();
         inventoryManagers = new HashMap<>();
         GlobalManager = new HashMap<>();
     }
@@ -80,21 +80,21 @@ public class Register {
     //Reports
     public String NeedToBuyReport(){
         List<Pair<Integer,Integer>> toBuy = inventory.NeedToBuyProducts();
-        return printer.printMissingProducts(toBuy);
+        return reportMaker.printMissingProducts(toBuy);
     }
 
     public String totalStockReport(){
         List<Pair<Integer,Integer>> totalStock = inventory.getQuantity();
-        return printer.printStock(totalStock);
+        return reportMaker.printStock(totalStock);
     }
 
     public String CategoryReport(List<String> category){
         List<Pair<Integer,Integer>> prodByCategories = inventory.getProductsByCategories(category);
-        return printer.printByCategories(prodByCategories);
+        return reportMaker.printByCategories(prodByCategories);
     }
     public String ExpiredReport(){
         List<Pair<Integer,Integer>> expiredProducts = inventory.ExpiredProducts();
-        return printer.MakeDefectiveReport(expiredProducts);
+        return reportMaker.MakeDefectiveReport(expiredProducts);
     }
 
 }

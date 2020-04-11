@@ -7,17 +7,16 @@ public class ReportMaker {
 
     private static ReportMaker instance;
 
-    private Inventory inventory;
     private List<Report> reports;
 
-    private ReportMaker(Inventory inventory){
-        this.inventory=inventory;
+    private ReportMaker(){
+
         this.reports=new LinkedList<>();
     }
 
-    public static ReportMaker getPrinter(Inventory inventory){
+    public static ReportMaker getPrinter(){
         if(instance==null){
-            instance=new ReportMaker(inventory);
+            instance=new ReportMaker();
         }
         return instance;
     }
