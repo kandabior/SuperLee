@@ -72,4 +72,10 @@ public class Product {
     public void setCategory(List<String> category) {
         this.category = category;
     }
+    public List<Integer> getLastCostPrice() {
+        return lastCostPrice;
+    }
+    public List<Integer> getLastSalePrice() {
+        return lastSalePrice;
+    }
 }

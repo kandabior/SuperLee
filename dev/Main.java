@@ -16,19 +16,21 @@ public class Main {
         Printer.Print("Welcome to Erez & Or Digital Storage !\n");
         int choose;
         do{
-            Printer.Print("\nPlease choose an action:\n"+
+            Printer.Print("\n\nPlease choose an action:\n"+
                             "1. Register global manager\n" +
                             "2. Register inventory manager\n" +
                             "3. Add product   (Manager Only)\n" +
                             "4. Remove products   (Manager Only)\n" +
                             "5. Change product price by id   (Global Manager Only)\n" +
-                            "6. Change product price by category   (Global Manager Only)\n\n" +
+                            "6. Change product price by category   (Global Manager Only)\n" +
+                            "7. Get cost price history\n" +
+                            "8. Get sale price history\n\n" +
                             "Reports:\n"+
-                            "7. Print total stock report\n" +
-                            "8. print product report by categories\n" +
-                            "9. print missing products report\n" +
-                            "10. print expired and defective products report\n" +
-                            "11. Quit.\n");
+                            "9. Print total stock report\n" +
+                            "10. print product report by categories\n" +
+                            "11. print missing products report\n" +
+                            "12. print expired and defective products report\n" +
+                            "13. Quit.\n");
             choose=scanner.nextInt();
             switch (choose){
                 case 1: AddGlobalManager(); break;
@@ -37,21 +39,33 @@ public class Main {
                 case 4: RemoveProduct();break;
                 case 5: ChangePriceById(); break;
                 case 6: changeProductByCategory(); break;
-                case 7: PrintTotalStock();break;
-                case 8: PrintProductByCategories(); break;
-                case 9: PrintMissingProduct(); break;
-                case 10: PrintEXPProducts(); break;
-                case 11: Quit(); break;
+                case 7: LastCostPrice(); break;
+                case 8: LastSalePrice(); break;
+                case 9: PrintTotalStock();break;
+                case 10: PrintProductByCategories(); break;
+                case 11: PrintMissingProduct(); break;
+                case 12: PrintEXPProducts(); break;
+                case 13: Quit(); break;
             }
 
 
         }
         while(choose!=11);
-
     }
 
     private static void Quit() {
         Printer.Print("Shutting down system...");
+    }
+
+    private static void LastCostPrice(){
+        Printer.Print("\nPlease Enter Product Id:\n");
+        String id = scanner.next();
+        Printer.Print(register.getLastCostPrice(Integer.parseInt(id)));
+    }
+    private static void LastSalePrice(){
+        Printer.Print("\nPlease Enter Product Id:\n");
+        String id = scanner.next();
+        Printer.Print(register.getLastSalePrice(Integer.parseInt(id)));
     }
 
     private static void PrintEXPProducts() {

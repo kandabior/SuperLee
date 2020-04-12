@@ -76,18 +76,22 @@ public class Register {
             return inventory.setCategory(id,category);
         return "can't remove product - you are need to be a Manager";
     }
+    public String getLastCostPrice(int prodId){
+        return inventory.getLastCostPrice(prodId);
+    }
+    public String getLastSalePrice(int prodId){
+        return inventory.getLastSalePrice(prodId);
+    }
 
     //Reports
     public String NeedToBuyReport(){
         List<Pair<Integer,Integer>> toBuy = inventory.NeedToBuyProducts();
         return reportMaker.printMissingProducts(toBuy);
     }
-
     public String totalStockReport(){
         List<Pair<Integer,Integer>> totalStock = inventory.getQuantity();
         return reportMaker.printStock(totalStock);
     }
-
     public String CategoryReport(List<String> category){
         List<Pair<Integer,Integer>> prodByCategories = inventory.getProductsByCategories(category);
         return reportMaker.printByCategories(prodByCategories);
