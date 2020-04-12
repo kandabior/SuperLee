@@ -53,7 +53,7 @@ public class Main {
                     orderIdCounter = addOrder(orderIdCounter);
                     break;
                 case "5":
-                    showPreviouslyOrders();
+                    showPreviousOrders();
                     break;
                 case "6":
                     System.out.println("Thank you for using our system.\nFor your information, no data is being saved so far.\nGoodbye!");
@@ -70,7 +70,8 @@ public class Main {
         else
             System.out.println("classs.Supplier id does not exist in the system.");
     }
-    private static void showPreviouslyOrders() {
+
+    private static void showPreviousOrders() {
         int sizeOfOrders = fc.getOrdersSize();
         if (sizeOfOrders == 0)
             System.out.println("No orders were found.");
@@ -132,14 +133,13 @@ public class Main {
             addItems = scanner.nextLine();
         }
         int size =fc.getItemsListSize(supplierIdCounter);
-        LinkedHashMap agreement = new LinkedHashMap();
         if(size > 0) {
             System.out.println("Please insert supplier's agreement (for each item insert it's cost).");
             for (int i = 0; i < size; i++) {
                 System.out.print(fc.getItemNameByIndex(supplierIdCounter,i) + ": ");
                 double itemPrice = scanner.nextInt();
-                fc.addItemToAgreement(supplierIdCounter,fc.getItemIdByIndex(supplierIdCounter,i),itemPrice);
-                //agreement.put(items.get(i).getKey().getId(), itemPrice);
+                fc.addItemToAgreement(supplierIdCounter, fc.getItemIdByIndex(supplierIdCounter, i), itemPrice);
+
             }
         }
         System.out.println("classs.Supplier added successfully. Id is: " + supplierIdCounter);
