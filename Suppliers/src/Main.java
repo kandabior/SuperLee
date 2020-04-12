@@ -1,3 +1,4 @@
+import com.sun.org.apache.xpath.internal.objects.XString;
 import javafx.util.Pair;
 
 import java.awt.*;
@@ -7,7 +8,8 @@ import java.util.List;
 public class Main {
 
     static FacadeController fc = FacadeController.getFacadeController();
-
+    static int supplierIdCounter = 0;
+    static int orderIdCounter = 0;
     public static void main(String[] args) {
         boolean exit;
         System.out.println("Hello!");
@@ -18,8 +20,7 @@ public class Main {
 
     private static boolean displayMainMenu(){
         boolean exit = false;
-        int supplierIdCounter = 0;
-        int orderIdCounter = 0;
+
         String choice;
         do {
             System.out.println("\nPlease choose a function:");
@@ -83,6 +84,7 @@ public class Main {
             itemId = scanner.nextInt();
         }
         System.out.print("Name: ");
+        scanner=new Scanner(System.in);
         String itemName = scanner.nextLine();
         System.out.print("Description (optional): ");
         String itemDescription = scanner.nextLine();
@@ -128,7 +130,8 @@ public class Main {
             }
         }
         System.out.println("Supplier added successfully. Id is: " + supplierIdCounter);
-        return supplierIdCounter++;
+        supplierIdCounter++;
+        return supplierIdCounter;
 
     }
 
@@ -205,15 +208,16 @@ public class Main {
                     Double itemDiscount = map.get(itemId).getValue();
                     System.out.println(itemName + ", id: " + itemId + ", quantity: " + itemQuantity + ", discount: " + itemDiscount);
                 }
-                System.out.println("Choose the id of the item you wish to change: ");
+                System.out.print("Choose the id of the item you wish to change: ");
                 Scanner scanner2 = new Scanner(System.in);
                 int itemId = scanner2.nextInt();
-                System.out.println("Change [c] or delete [d]? ");
+                System.out.print("Change [c] or delete [d]? ");
+                scanner2 =new Scanner(System.in);
                 String choice = scanner2.nextLine();
                 if(choice.equals("C") | choice.equals("c"))
                     changeInBillOfQuantities(suppId, itemId);
                 else if(choice.equals("D") | choice.equals("d"))
-                    deleteFromBillOfQuantities(suppId, itemId);
+                    ans =deleteFromBillOfQuantities(suppId, itemId);
                 else {
                     System.out.println("Invalid input.");
                     ans = "n";
@@ -235,12 +239,14 @@ public class Main {
         fc.updateBillOfQuantities(suppId, itemId, new Pair(newAmount, newDiscount));
     }
 
-    private static void deleteFromBillOfQuantities(int suppId, int itemId){
+    private static String deleteFromBillOfQuantities(int suppId, int itemId){
         fc.deleteFromBillOfQuantities(suppId, itemId);
         if(fc.getBillSize(suppId) == 0) {
             fc.deleteBillOfQuantities(suppId);
             System.out.println("No more items in this bill of quantities, therefor it was deleted.");
+            return "n";
         }
+        return "y";
     }
 
     private static void addBillOfQuantities(int suppId) {
