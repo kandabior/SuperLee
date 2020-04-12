@@ -1,3 +1,5 @@
+import sun.security.mscapi.PRNG;
+
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.*;
@@ -8,12 +10,18 @@ public class Main {
     private static Register register;
 
     public static void main(String[]args) {
-        initiateSystem();
         mainLoop();
     }
 
     private static void mainLoop() {
+        register= new Register();
         Printer.Print("Welcome to Erez & Or Digital Storage !\n");
+        Printer.Print("Do you Want to initiate the System with 4 managers and 2 product (Corn and Milk)? Y/N");
+        String ans = scanner.next();
+        if(ans.equals("Y"))
+            initiateSystem();
+        else
+            Printer.Print("system was not initiate");
         int choose;
         do{
             Printer.Print("\n\nPlease choose an action:\n"+
@@ -201,20 +209,22 @@ public class Main {
         Printer.Print(register.addProduct(userName,password,Integer.parseInt(prodId),Integer.parseInt(amount),name,Integer.parseInt(costPrice),Integer.parseInt(salePrice), date,categoriesList,manufacturer,Integer.parseInt(minAmount),place));
     }
     private static void AddInventoryManager() {
-        Printer.Print("Please enter username and password:");
+        Printer.Print("Please enter new username:");
         String userName=scanner.next();
+        Printer.Print("Please enter new password:");
         String password=scanner.next();
         Printer.Print(register.addInventoryManager(userName, password));
     }
     private static void AddGlobalManager() {
-        Printer.Print("Please enter username and password:");
+        Printer.Print("Please enter new username:");
         String userName=scanner.next();
+        Printer.Print("Please enter new password:");
         String password=scanner.next();
         Printer.Print(register.addGlobalManager(userName, password));
 
     }
     private static void initiateSystem(){
-        register= new Register();
+        Printer.Print("System initiate successfully (:");
 
         register.addGlobalManager("Erez", "1234");
         register.addGlobalManager("Or", "1234");
@@ -224,10 +234,9 @@ public class Main {
 
         List<String> cat1 = new LinkedList<>();
         cat1.add("Shimurim");
-        cat1.add("Cartons");
         LocalDate date1 = LocalDate.of(20, 12,31);
         register.addProduct("Erez", "1234",1, 20, "Corn",5,
-                8, date1,cat1,"Rami Levi", 50, "area1");
+                8, date1,cat1,"Osem", 10, "area1");
 
         List<String> cat2 = new LinkedList<>();
         cat2.add("Halavi");
