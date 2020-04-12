@@ -1,4 +1,5 @@
-import java.util.LinkedHashMap;
+package classs;
+
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
@@ -64,7 +65,7 @@ public class Supplier {
         this.agreement.insertItem(item_id,cost);
     }
 
- /*   public List<Item> getItems() {
+ /*   public List<classs.Item> getItems() {
         LinkedList items = new LinkedList();
         for(int i=0; i < this.items.size(); i++){
             items.add(this.items.get(i).getKey());

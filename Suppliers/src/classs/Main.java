@@ -1,7 +1,7 @@
-import com.sun.org.apache.xpath.internal.objects.XString;
+package classs;
+
 import javafx.util.Pair;
 
-import java.awt.*;
 import java.util.*;
 import java.util.List;
 
@@ -24,10 +24,10 @@ public class Main {
         String choice;
         do {
             System.out.println("\nPlease choose a function:");
-            System.out.println("1. Add Supplier");
-            System.out.println("2. Delete Supplier");
-            System.out.println("3. Manage Supplier");
-            System.out.println("4. Make Order");
+            System.out.println("1. Add classs.Supplier");
+            System.out.println("2. Delete classs.Supplier");
+            System.out.println("3. Manage classs.Supplier");
+            System.out.println("4. Make classs.Order");
             System.out.println("5. View previous orders");
             System.out.println("6. Quit");
             System.out.print("Option: ");
@@ -38,13 +38,13 @@ public class Main {
                     supplierIdCounter = addSupplier(supplierIdCounter);
                     break;
                 case "2":
-                    System.out.print("Supplier's id: ");
+                    System.out.print("classs.Supplier's id: ");
                     Scanner scanner2 = new Scanner(System.in);
                     suppId = scanner2.nextInt();
                     deleteSupplier(suppId);
                     break;
                 case "3":
-                    System.out.print("Supplier's id: ");
+                    System.out.print("classs.Supplier's id: ");
                     Scanner scanner3 = new Scanner(System.in);
                     suppId = scanner3.nextInt();
                     manageSupplier(suppId);
@@ -66,9 +66,9 @@ public class Main {
 
     private static void deleteSupplier(int suppId) {
         if(fc.deleteSupplier(suppId))
-            System.out.println("Supplier was deleted.");
+            System.out.println("classs.Supplier was deleted.");
         else
-            System.out.println("Supplier id does not exist in the system.");
+            System.out.println("classs.Supplier id does not exist in the system.");
     }
     private static void showPreviouslyOrders() {
         int sizeOfOrders = fc.getOrdersSize();
@@ -78,9 +78,9 @@ public class Main {
             for (int i = 0; i < sizeOfOrders; i++) {
                 List<Pair<Integer, Integer>> list = fc.getItemsInOrderById(i);
                 int supplierId = fc.getSupplierIdOfOrder(i);
-                System.out.println("Supplier's id: " + supplierId + ", order number: " + i);
+                System.out.println("classs.Supplier's id: " + supplierId + ", order number: " + i);
                 for (int j = 0; j < list.size(); j++) {
-                    System.out.println("Item's id :" + list.get(j).getKey() + ", quantity: " + list.get(j).getValue());
+                    System.out.println("classs.Item's id :" + list.get(j).getKey() + ", quantity: " + list.get(j).getValue());
                 }
                 System.out.println();
             }
@@ -89,11 +89,11 @@ public class Main {
 
     private static void addItems(int suppId) {
         Scanner scanner = new Scanner(System.in);
-        System.out.print("Item's identifier: ");
+        System.out.print("classs.Item's identifier: ");
         int itemId = scanner.nextInt();
         while(!fc.validateItemId(suppId, itemId)) {
             System.out.println("This id is taken, please insert another.");
-            System.out.print("Item's identifier: ");
+            System.out.print("classs.Item's identifier: ");
             itemId = scanner.nextInt();
         }
         System.out.print("Name: ");
@@ -109,7 +109,7 @@ public class Main {
 
     private static int addSupplier(int supplierIdCounter){
         Scanner scanner = new Scanner(System.in);
-        System.out.print("Supplier's name: ");
+        System.out.print("classs.Supplier's name: ");
         String suppName = scanner.nextLine();
         System.out.print("Phone number: ");
         String suppPhone = scanner.nextLine();
@@ -142,7 +142,7 @@ public class Main {
                 //agreement.put(items.get(i).getKey().getId(), itemPrice);
             }
         }
-        System.out.println("Supplier added successfully. Id is: " + supplierIdCounter);
+        System.out.println("classs.Supplier added successfully. Id is: " + supplierIdCounter);
         supplierIdCounter++;
         return supplierIdCounter;
 
@@ -151,7 +151,7 @@ public class Main {
     private static void manageSupplier(int suppId){
         boolean backToManageSupplierMenu;
         if(!fc.findSupplier(suppId)) {
-            System.out.println("Supplier with this id does not exist in the system.");
+            System.out.println("classs.Supplier with this id does not exist in the system.");
             return;
         }
         do{
@@ -169,7 +169,7 @@ public class Main {
             System.out.println("2. Edit agreement");
             System.out.println("3. Add bill of quantities");
             System.out.println("4. Edit bill of quantities");
-            System.out.println("5. Main menu");
+            System.out.println("5. classs.Main menu");
             System.out.print("Option: ");
             choice = scanner.nextLine();
             switch (choice) {
@@ -313,7 +313,7 @@ public class Main {
         LinkedHashMap<Integer, Double> terms = fc.showSuppItems(suppId);
         displayItems(suppId);
 
-        System.out.print("Item's number: ");
+        System.out.print("classs.Item's number: ");
         int itemNum = scanner.nextInt() - 1;
         int itemId = new ArrayList<>(terms.keySet()).get(itemNum);
         for(int i=0; i<fc.showSuppItems(suppId).size(); i++){
@@ -343,7 +343,7 @@ public class Main {
         List<Pair<Integer, Integer>> items = new LinkedList<>();
         String choice;
         do {
-            System.out.print("Item's number: ");
+            System.out.print("classs.Item's number: ");
             int itemNum = scanner.nextInt() - 1;
             int itemId = new ArrayList<>(fc.showSuppItems(suppId).keySet()).get(itemNum);
             System.out.print("Amount: ");
@@ -355,10 +355,10 @@ public class Main {
         } while (choice.equals("y") | choice.equals("Y"));
         boolean result = fc.addOrder(orderIdCounter, items, suppId);
         if (result) {
-            System.out.println("\nOrder was added successfully.\n");
+            System.out.println("\nclasss.Order was added successfully.\n");
             return orderIdCounter++;
         } else {
-            System.out.println("\nOrder failed, pleas try again.\n");
+            System.out.println("\nclasss.Order failed, pleas try again.\n");
             return orderIdCounter;
         }
     }
