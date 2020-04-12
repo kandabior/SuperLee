@@ -20,15 +20,16 @@ public class Main {
 
     private static boolean displayMainMenu(){
         boolean exit = false;
-
+        int suppId;
         String choice;
         do {
             System.out.println("\nPlease choose a function:");
             System.out.println("1. Add Supplier");
-            System.out.println("2. Manage Supplier");
-            System.out.println("3. Make Order");
-            System.out.println("4. View previous orders");
-            System.out.println("5. Quit");
+            System.out.println("2. Delete Supplier");
+            System.out.println("3. Manage Supplier");
+            System.out.println("4. Make Order");
+            System.out.println("5. View previous orders");
+            System.out.println("6. Quit");
             System.out.print("Option: ");
             Scanner scanner = new Scanner(System.in);
             choice = scanner.nextLine();
@@ -39,16 +40,22 @@ public class Main {
                 case "2":
                     System.out.print("Supplier's id: ");
                     Scanner scanner2 = new Scanner(System.in);
-                    int suppId =scanner2.nextInt();
-                    manageSupplier(suppId);
+                    suppId = scanner2.nextInt();
+                    deleteSupplier(suppId);
                     break;
                 case "3":
-                    orderIdCounter = addOrder(orderIdCounter);
+                    System.out.print("Supplier's id: ");
+                    Scanner scanner3 = new Scanner(System.in);
+                    suppId = scanner3.nextInt();
+                    manageSupplier(suppId);
                     break;
                 case "4":
-                    showPreviouslyOrders();
+                    orderIdCounter = addOrder(orderIdCounter);
                     break;
                 case "5":
+                    showPreviouslyOrders();
+                    break;
+                case "6":
                     System.out.println("Thank you for using our system.\nFor your information, no data is being saved so far.\nGoodbye!");
                     exit = true;
                     break;
@@ -57,6 +64,12 @@ public class Main {
         return true;
     }
 
+    private static void deleteSupplier(int suppId) {
+        if(fc.deleteSupplier(suppId))
+            System.out.println("Supplier was deleted.");
+        else
+            System.out.println("Supplier id does not exist in the system.");
+    }
     private static void showPreviouslyOrders() {
         int sizeOfOrders = fc.getOrdersSize();
         if (sizeOfOrders == 0)
@@ -137,6 +150,10 @@ public class Main {
 
     private static void manageSupplier(int suppId){
         boolean backToManageSupplierMenu;
+        if(!fc.findSupplier(suppId)) {
+            System.out.println("Supplier with this id does not exist in the system.");
+            return;
+        }
         do{
             backToManageSupplierMenu = displayManageSupplierMenu(suppId);
         } while (!backToManageSupplierMenu);

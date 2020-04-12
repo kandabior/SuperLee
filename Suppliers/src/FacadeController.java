@@ -24,6 +24,8 @@ public class FacadeController {
         supplierController.addSupplier(id, name, phoneNum, bankAccount, payment, supplySchedule, supplyLocation);
     }
 
+    public boolean deleteSupplier(int suppId) { return supplierController.deleteSupplier(suppId); }
+
     public void addBillOfQuantities (int supplierId, Map<Integer, Pair<Integer, Double>> bill ) {
         supplierController.addBillOfQuantities(supplierId, bill);
     }
