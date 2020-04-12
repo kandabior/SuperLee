@@ -118,28 +118,35 @@ public class Inventory {
         return "product " + productId + "- quantity of " + amount + " was changed to expired";
     }
     public String addProduct(int id,int amount, String name, int costPrice, int salePrice, LocalDate expDate, List<String> category, String manufacturer, int minAmount, String place) {
-        if(!inventory.containsKey(id)) {
-            inventory.put(id, new Product(id, name, costPrice, salePrice, expDate, category, manufacturer, minAmount, place));
-            quantities.put(id, new Pair(0,amount));
-            return " product id: " + id + " - added to the inventory";
-        }
-        else {
-            quantities.put(id, new Pair(quantities.get(id).getKey(), quantities.get(id).getValue() + amount));
-            if(inventory.get(id).getLastCostPrice().get(inventory.get(id).getLastCostPrice().size()-1) != costPrice)
-                inventory.get(id).getLastCostPrice().add(costPrice);
-            if(inventory.get(id).getLastSalePrice().get(inventory.get(id).getLastSalePrice().size()-1) != salePrice)
-                inventory.get(id).getLastSalePrice().add(salePrice);
-            return "product id: " + id + " - amount of " + amount + " added to the inventory";
-        }
+        if(inventory.containsKey(id))
+            return "product ID already exist";
+        inventory.put(id, new Product(id, name, costPrice, salePrice, expDate, category, manufacturer, minAmount, place));
+        quantities.put(id, new Pair(0,amount));
+        return " product id: " + id + " - added to the inventory";
     }
-    public String removeProduct(int id, int amount) {
+    public String removeProduct(int id) {
         if(!inventory.containsKey(id))
             return "product ID doesnt exist";
-        quantities.put(id, new Pair(quantities.get(id).getKey(),quantities.get(id).getValue() - amount));
+        inventory.remove(id);
+        quantities.remove(id);
+        expired.remove(id);
+        return "product id: " + id + " was removed from the inventory";
+    }
+    public String addAmountToProduct(int id, int amount){
+        if(!inventory.containsKey(id))
+            return "product ID doesnt exist";
+        quantities.put(id, new Pair(quantities.get(id).getKey(), quantities.get(id).getValue() + amount));
+        return "product id: " + id + " - amount of " + amount + " added to the inventory";
+    }
+    public String removeAmountFromProduct(int id, int amount){
+        if(!inventory.containsKey(id))
+            return "product ID doesnt exist";
+        if(quantities.get(id).getKey() + quantities.get(id).getValue() < amount)
+            return "cant remove - there is less than " + amount + " items from this product in the inventory";
+        quantities.put(id, new Pair(quantities.get(id).getKey() - amount, quantities.get(id).getValue()));
         if(quantities.get(id).getKey() + quantities.get(id).getValue() < inventory.get(id).getMinAmount()) //less than the minimum amount
             return "product id: " + id + "- amount of " + amount + " was removed from the inventory. (Less than the Minimum amount - Need to buy more from this product)";
-        else
-            return "product id: " + id + "- amount of " + amount + " was removed from the inventory";
+        return "product id: " + id + " - amount of " + amount + " was removed from the storage";
     }
     public String setCategory(int id, List<String> category) {
         if(!inventory.containsKey(id))
@@ -151,7 +158,7 @@ public class Inventory {
         if(!inventory.containsKey(id))
             return "product ID doesnt exist";
         if(quantities.get(id).getValue() < amount)
-            return "There is Less than " + amount + " items from product number " + id + " in the shelf";
+            return "Cant transform -There is Less than " + amount + " items from product number " + id + " in the shelf";
         quantities.put(id, new Pair(quantities.get(id).getKey() + amount, quantities.get(id).getValue() - amount));
         return "product id: " + id + " - amount of " + amount + " removed from the shelf to the Storage";
     }
@@ -159,7 +166,7 @@ public class Inventory {
         if(!inventory.containsKey(id))
             return "product ID doesnt exist";
         if(quantities.get(id).getKey() < amount)
-            return "There is Less than " + amount + " items from product number " + id + " in the storage";
+            return "Cant transform - There is Less than " + amount + " items from product number " + id + " in the storage";
         quantities.put(id, new Pair(quantities.get(id).getKey() - amount, quantities.get(id).getValue() + amount));
         return "product id: " + id + " - amount of " + amount + " removed from the storage to the shelf";
     }

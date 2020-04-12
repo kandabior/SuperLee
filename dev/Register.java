@@ -30,11 +30,15 @@ public class Register {
         inventoryManagers.put(username,password);
         return "Inventory Manager " + username  +" - registered successfully";
     }
-    public String removeInventoryManager(String username, int password){
+    public String removeInventoryManager(String username, String password , String usernameToRemove, String passwordToRemove){
         if(!inventoryManagers.containsKey(username))
             return "can't remove inventory manager - username doesnt exist";
-        inventoryManagers.remove(username,password);
-        return "Inventory Manager - " + username + " removed";
+        if((GlobalManager.containsKey(username) && GlobalManager.get(username).equals(password))) {
+            inventoryManagers.remove(usernameToRemove, passwordToRemove);
+            return "Inventory Manager - " + username + " removed";
+        }
+        else
+            return "Only Global Manager can remove Inventory Manager";
     }
     public String addGlobalManager(String username, String password){
         if(GlobalManager.containsKey(username))
@@ -56,10 +60,16 @@ public class Register {
             return inventory.addProduct(prodid, amount,name,costPrice,salePrice,expDate,category, manufacturer, minAmount, place);
         return "can't add product - you are need to be a Manager";
     }
-    public String removeProduct(String username, String password, int prodid, int amount){
+    public String removeProduct(String username, String password, int prodid){
         if((GlobalManager.containsKey(username) && GlobalManager.get(username).equals(password)) || (inventoryManagers.containsKey(username) && inventoryManagers.get(username).equals(password)))
-            return inventory.removeProduct(prodid,amount);
+            return inventory.removeProduct(prodid);
         return "can't remove product - you are need to be a Manager";
+    }
+    public String addAmountToProduct(int id, int amount){
+        return inventory.addAmountToProduct(id, amount);
+    }
+    public String removeAmountFromProduct(int id, int amount){
+        return inventory.removeAmountFromProduct(id,amount);
     }
     public String setSalePriceById(String username, String password ,int prodid, int price){
         if(GlobalManager.containsKey(username) && GlobalManager.get(username).equals(password))
@@ -81,6 +91,12 @@ public class Register {
     }
     public String getLastSalePrice(int prodId){
         return inventory.getLastSalePrice(prodId);
+    }
+    public String shelfToStorage(int id, int amount){
+        return inventory.shelfToStorage(id,amount);
+    }
+    public String storageToShelf(int id, int amount){
+        return inventory.storageToShelf(id,amount);
     }
 
     //Reports
