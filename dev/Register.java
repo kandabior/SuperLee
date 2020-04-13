@@ -111,6 +111,17 @@ public class Register {
         List<Pair<Integer,Integer>> totalStock = inventory.getQuantity();
         return reportMaker.printStock(totalStock);
     }
+    public String ShelfReport() {
+        List<Pair<Integer,Integer>> shelfStock=inventory.getShelfQuantity();
+        return reportMaker.printShelfReport(shelfStock);
+    }
+
+    public String StorageReport() {
+        List<Pair<Integer,Integer>> storageStock=inventory.getStorageQuantity();
+        return reportMaker.printStorageReport(storageStock);
+
+    }
+
     public String CategoryReport(List<String> category){
         List<Pair<Integer,Integer>> prodByCategories = inventory.getProductsByCategories(category);
         return reportMaker.printByCategories(prodByCategories);
@@ -123,11 +134,11 @@ public class Register {
 
     public String SalePricesReport(Integer id){
         Pair<Integer,List<Integer>> prices= inventory.SalePricesById(id);
-        return reportMaker.printProductPrices(prices);
+        return reportMaker.printSaleProductPrices(prices);
     }
 
     public String CostPriceReport(Integer id){
         Pair<Integer,List<Integer>> prices= inventory.CostPricesById(id);
-        return reportMaker.printProductPrices(prices);
+        return reportMaker.printCostProductPrices(prices);
     }
 }

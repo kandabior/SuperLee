@@ -23,12 +23,30 @@ public class Report {
     public String getTitle() {
         return title;
     }
+
     public List<ReportLine> getLines() {
         return lines;
     }
     public static Report totalStockReport(List<Pair<Integer, Integer>> quantity) {
         Report report=new Report("Total Stock Report");
         for(Pair<Integer,Integer> line: quantity){
+            ReportLine reportLine= new ReportLine(line.getKey(),Inventory.getProdactName(line.getKey()),line.getValue());
+            report.addLine(reportLine);
+        }
+        return report;
+    }
+    public static Report makeShelfReport(List<Pair<Integer, Integer>> shelfStock) {
+        Report report=new Report("Shelf Report");
+        for(Pair<Integer,Integer> line: shelfStock){
+            ReportLine reportLine= new ReportLine(line.getKey(),Inventory.getProdactName(line.getKey()),line.getValue());
+            report.addLine(reportLine);
+        }
+        return report;
+    }
+
+    public static Report makeStorageReport(List<Pair<Integer, Integer>> storageStock) {
+        Report report=new Report("Storage Report");
+        for(Pair<Integer,Integer> line: storageStock){
             ReportLine reportLine= new ReportLine(line.getKey(),Inventory.getProdactName(line.getKey()),line.getValue());
             report.addLine(reportLine);
         }
@@ -68,8 +86,16 @@ public class Report {
     }
 
 
-    public static Report makePriceReport(Pair<Integer, List<Integer>> prices) {
+    public static Report makeSalePriceReport(Pair<Integer, List<Integer>> prices) {
         Report report= new Report("Sale Prices Report");
+        ReportLine reportLine=new ReportLine(prices.getKey(),Inventory.getProdactName(prices.getKey()),Inventory.getAmount(prices.getKey()));
+        reportLine.addToLine("Prices: "+prices.getValue().toString());
+
+        report.addLine(reportLine);
+        return report;
+    }
+    public static Report makeCostPriceReport(Pair<Integer, List<Integer>> prices) {
+        Report report= new Report("Cost Prices Report");
         ReportLine reportLine=new ReportLine(prices.getKey(),Inventory.getProdactName(prices.getKey()),Inventory.getAmount(prices.getKey()));
         reportLine.addToLine("Prices: "+prices.getValue().toString());
 
@@ -79,7 +105,8 @@ public class Report {
 
 
     public String toString(){
-        String output="";
+        String output="--------------------------------------------------\n";
+
         output= output+"Report name:"+getTitle()+"\n";
         output=output+"Report Id: "+ getReportId()+"\n";
         Integer count=1;
@@ -87,6 +114,7 @@ public class Report {
             output=output+count.toString()+". "+reportLine.toString()+"\n";
             count++;
         }
+        output=output+"--------------------------------------------------\n";
         return output;
     }
 

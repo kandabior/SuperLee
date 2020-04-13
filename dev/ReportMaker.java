@@ -49,11 +49,27 @@ public class ReportMaker {
     }
 
 
-    public String printProductPrices(Pair<Integer, List<Integer>> prices) {
-        Report report= Report.makePriceReport(prices);
+    public String printSaleProductPrices(Pair<Integer, List<Integer>> prices) {
+        Report report= Report.makeSalePriceReport(prices);
+        reports.add(report);
+        return report.toString();
+    }
+    public String printCostProductPrices(Pair<Integer, List<Integer>> prices) {
+        Report report= Report.makeCostPriceReport(prices);
         reports.add(report);
         return report.toString();
     }
 
 
+    public String printShelfReport(List<Pair<Integer, Integer>> shelfStock) {
+        Report report= Report.makeShelfReport(shelfStock);
+        reports.add(report);
+        return report.toString();
+    }
+
+    public String printStorageReport(List<Pair<Integer, Integer>> storageStock) {
+        Report report= Report.makeStorageReport(storageStock);
+        reports.add(report);
+        return report.toString();
+    }
 }

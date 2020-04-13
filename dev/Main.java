@@ -37,15 +37,16 @@ public class Main {
                             "10. Transfer amount of Product from the storage to the shelf\n" +
                             "11. Transfer amount of Product from the shelf to the storage\n" +
                             "12. Set amount of defective products\n" +
-                            "13. Get sale price history of Product\n\n" +
                             "Reports:\n"+
-                            "14. Print total stock report\n" +
-                            "15. print product report by categories\n" +
-                            "16. print missing products report\n" +
-                            "17. print expired and defective products report\n" +
-                            "18. Print sale price report\n"+
-                            "19. Print cost price report\n"+
-                            "20. Quit.\n");
+                            "13. Print total stock report\n" +
+                            "14. print storage amount report\n"+
+                            "15. print shelf amount report\n"+
+                            "16. print product report by categories\n" +
+                            "17. print missing products report\n" +
+                            "18. print expired and defective products report\n" +
+                            "19. Print sale price report\n"+
+                            "20. Print cost price report\n"+
+                            "21. Quit.\n");
             choose=scanner.nextInt();
             switch (choose){
                 case 1: AddGlobalManager(); break;
@@ -60,17 +61,19 @@ public class Main {
                 case 10: StorageToShelf(); break;
                 case 11: shelfToStorage(); break;
                 case 12: setDefectiveProducts(); break;
-                case 13: LastSalePrice(); break;
-                case 14: PrintTotalStock();break;
-                case 15: PrintProductByCategories(); break;
-                case 16: PrintMissingProduct(); break;
-                case 17: PrintEXPProducts(); break;
-                case 18: PrintSalePriceReport(); break;
-                case 19: PrintCostPriceReport(); break;
-                case 20: Quit();break;
+                //case 13: LastSalePrice(); break;
+                case 13: PrintTotalStock();break;
+                case 14: printStorageStock(); break;
+                case 15: printShelfStock(); break;
+                case 16: PrintProductByCategories(); break;
+                case 17: PrintMissingProduct(); break;
+                case 18: PrintEXPProducts(); break;
+                case 19: PrintSalePriceReport(); break;
+                case 20: PrintCostPriceReport(); break;
+                case 21: Quit();break;
             }
         }
-        while(choose!=20);
+        while(choose!=21);
     }
 
     private static void setDefectiveProducts() {
@@ -111,6 +114,7 @@ public class Main {
         List<String> categoriesList= Arrays.asList(cat.split(","));
         Printer.Print(register.setCategory(userName,password,Integer.parseInt(prodId),categoriesList));
     }
+
     private static void shelfToStorage(){
         Printer.Print("\nPlease Enter Product Id:\n");
         String prodId = scanner.next();
@@ -161,6 +165,14 @@ public class Main {
         String categories=scanner.next();
         List<String> categoriesList= Arrays.asList(categories.split(","));
         Printer.Print(register.CategoryReport(categoriesList));
+    }
+    private static void printShelfStock() {
+        Printer.Print(register.ShelfReport());
+    }
+
+    private static void printStorageStock() {
+        Printer.Print(register.StorageReport());
+
     }
     private static void PrintTotalStock() {
         Printer.Print(register.totalStockReport());
@@ -254,7 +266,7 @@ public class Main {
 
         register.addGlobalManager("Erez", "1234");
         register.addGlobalManager("Or", "1234");
-        register.addInventoryManager("yossi", "1234");
+        register.addInventoryManager("dana", "1234");
         register.addInventoryManager("david", "1234");
 
 
