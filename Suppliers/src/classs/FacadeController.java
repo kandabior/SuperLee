@@ -97,4 +97,16 @@ public class FacadeController {
     public void setItemPrice(int suppId, int itemId, double newPrice) { supplierController.setItemPrice(suppId, itemId, newPrice);}
 
     public boolean validateItemId(int suppId, int itemId) { return supplierController.validateItemId(suppId, itemId); }
+
+    public double getTotalOrderMoney(int orderId) {
+       return orderController.getTotalOrderMoney(orderId);
+    }
+
+    public void setOrderCost(int orderIdCounter, double totalMoney) {
+        this.orderController.setOrderCost(orderIdCounter,totalMoney);
+    }
+
+    public int getOrderIdByIndex(int i) {
+       return orderController.getOrderIdByIndex(i);
+    }
 }

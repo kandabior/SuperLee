@@ -31,4 +31,18 @@ public class BillOfQuantities {
     }
 
     public int getBillSize() { return bill.size(); }
+
+    public boolean checkItemInBill(int itemId, int quantity) {
+        if(bill.get(itemId)!=null)
+        {
+            if(bill.get(itemId).getKey()<=quantity)
+                return true;
+        }
+        return false;
+    }
+
+    public double getMoneyAmountofItemInBill(int itemId, int quantity) {
+       return bill.get(itemId).getValue();
+    }
+
 }
