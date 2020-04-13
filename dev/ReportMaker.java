@@ -47,4 +47,13 @@ public class ReportMaker {
         return report.toString();
 
     }
+
+
+    public String printProductPrices(Pair<Integer, List<Integer>> prices) {
+        Report report= Report.makePriceReport(prices);
+        reports.add(report);
+        return report.toString();
+    }
+
+
 }

@@ -15,16 +15,17 @@ public class Report {
         this.title=title;
         lines=new LinkedList<>();
     }
+
     public int getReportId() {
         return reportId;
     }
+
     public String getTitle() {
         return title;
     }
     public List<ReportLine> getLines() {
         return lines;
     }
-
     public static Report totalStockReport(List<Pair<Integer, Integer>> quantity) {
         Report report=new Report("Total Stock Report");
         for(Pair<Integer,Integer> line: quantity){
@@ -63,6 +64,16 @@ public class Report {
             ReportLine reportLine= new ReportLine(line.getKey(),Inventory.getProdactName(line.getKey()),line.getValue());
             report.addLine(reportLine);
         }
+        return report;
+    }
+
+
+    public static Report makePriceReport(Pair<Integer, List<Integer>> prices) {
+        Report report= new Report("Sale Prices Report");
+        ReportLine reportLine=new ReportLine(prices.getKey(),Inventory.getProdactName(prices.getKey()),Inventory.getAmount(prices.getKey()));
+        reportLine.addToLine("Prices: "+prices.getValue().toString());
+
+        report.addLine(reportLine);
         return report;
     }
 

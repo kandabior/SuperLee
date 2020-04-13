@@ -86,6 +86,9 @@ public class Register {
             return inventory.setCategory(id,category);
         return "can't remove product - you are need to be a Manager";
     }
+    public String setDefectiveProducts(Integer prodId, Integer amount) {
+        return inventory.setDefectiveProducts(prodId,amount);
+    }
     public String getLastCostPrice(int prodId){
         return inventory.getLastCostPrice(prodId);
     }
@@ -95,10 +98,10 @@ public class Register {
     public String shelfToStorage(int id, int amount){
         return inventory.shelfToStorage(id,amount);
     }
+
     public String storageToShelf(int id, int amount){
         return inventory.storageToShelf(id,amount);
     }
-
     //Reports
     public String NeedToBuyReport(){
         List<Pair<Integer,Integer>> toBuy = inventory.NeedToBuyProducts();
@@ -112,9 +115,19 @@ public class Register {
         List<Pair<Integer,Integer>> prodByCategories = inventory.getProductsByCategories(category);
         return reportMaker.printByCategories(prodByCategories);
     }
+
     public String ExpiredReport(){
         List<Pair<Integer,Integer>> expiredProducts = inventory.ExpiredProducts();
         return reportMaker.MakeDefectiveReport(expiredProducts);
     }
 
+    public String SalePricesReport(Integer id){
+        Pair<Integer,List<Integer>> prices= inventory.SalePricesById(id);
+        return reportMaker.printProductPrices(prices);
+    }
+
+    public String CostPriceReport(Integer id){
+        Pair<Integer,List<Integer>> prices= inventory.CostPricesById(id);
+        return reportMaker.printProductPrices(prices);
+    }
 }

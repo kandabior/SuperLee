@@ -1,6 +1,7 @@
 import javafx.util.Pair;
 import sun.awt.image.ImageWatched;
 
+import java.nio.IntBuffer;
 import java.time.LocalDate;
 import java.util.HashMap;
 import java.util.LinkedList;
@@ -35,6 +36,13 @@ public class Inventory {
             return -1;
         return instance.inventory.get(prodId).getMinAmount();
     }
+
+    public static int getAmount(Integer key) {
+        if(!instance.inventory.containsKey(key))
+            return -1;
+        return instance.quantities.get(key).getKey()+instance.quantities.get(key).getValue();
+    }
+
     public List<Pair<Integer,Integer>> getQuantity(){ // Pair[0] = productId, Pair[1] = storage + shelf Quantity
         List<Pair<Integer,Integer>> qnty = new LinkedList<>();
         for(Integer id : quantities.keySet()){
@@ -141,12 +149,18 @@ public class Inventory {
     public String removeAmountFromProduct(int id, int amount){
         if(!inventory.containsKey(id))
             return "product ID doesnt exist";
-        if(quantities.get(id).getKey() + quantities.get(id).getValue() < amount)
+        Pair<Integer,Integer> amounts= quantities.get(id);
+        if(amounts.getKey() + amounts.getValue() < amount)
             return "cant remove - there is less than " + amount + " items from this product in the inventory";
-        quantities.put(id, new Pair(quantities.get(id).getKey() - amount, quantities.get(id).getValue()));
+        if(amounts.getValue()>=amount){
+            quantities.put(id,new Pair<>(amounts.getKey(),amounts.getValue()-amount));
+        }
+        else {
+            quantities.put(id,new Pair<>(amounts.getKey()-(amount-amounts.getValue()),0));
+        }
         if(quantities.get(id).getKey() + quantities.get(id).getValue() < inventory.get(id).getMinAmount()) //less than the minimum amount
             return "product id: " + id + "- amount of " + amount + " was removed from the inventory. (Less than the Minimum amount - Need to buy more from this product)";
-        return "product id: " + id + " - amount of " + amount + " was removed from the storage";
+        return "product id: " + id + " - amount of " + amount + " was removed from the inventory";
     }
     public String setCategory(int id, List<String> category) {
         if(!inventory.containsKey(id))
@@ -179,5 +193,40 @@ public class Inventory {
         if(!inventory.containsKey(id))
             return "product ID doesnt exist";
         return inventory.get(id).getLastSalePrice().toString();
+    }
+
+    public Pair<Integer, List<Integer>> SalePricesById(Integer id) {
+        Pair<Integer, List<Integer>> output=new Pair<>(id,inventory.get(id).getLastSalePrice());
+        return output;
+    }
+
+    public Pair<Integer, List<Integer>> CostPricesById(Integer id) {
+        Pair<Integer, List<Integer>> output=new Pair<>(id,inventory.get(id).getLastCostPrice());
+        return output;
+    }
+
+    public String setDefectiveProducts(Integer prodId, Integer amount) {
+        if(!inventory.containsKey(prodId)){
+            return "product doesnt exist";
+        }
+        Pair<Integer,Integer> amounts=quantities.get(prodId);
+        if(amounts.getKey()+amounts.getValue()<amount){
+            return "Cant transform - There is Less than " + amount + " items from product number " + prodId + " in the inventory";
+        }
+        if(amounts.getValue()>=amount){
+            quantities.put(prodId,new Pair<>(amounts.getKey(),amounts.getValue()-amount));
+        }
+        else {
+            quantities.put(prodId,new Pair<>(amounts.getKey()-(amount-amounts.getValue()),0));
+        }
+        if(expired.containsKey(prodId)){
+            expired.put(prodId,expired.get(prodId)+amount);
+        }
+        else{
+            expired.put(prodId,amount);
+        }
+        if(quantities.get(prodId).getKey() + quantities.get(prodId).getValue() < inventory.get(prodId).getMinAmount()) //less than the minimum amount
+            return "product id: " + prodId + "- amount of " + amount + " set us expired. (Less than the Minimum amount - Need to buy more from this product)";
+        return "product id: " + prodId + " - amount of " + amount + " set us expired";
     }
 }
