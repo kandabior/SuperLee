@@ -1,13 +1,19 @@
 package Test;
-import InterfaceLayer.FacadeController;
+import classs.*;
 import javafx.util.Pair;
+import org.junit.Before;
+import org.junit.BeforeClass;
 import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
 
 import java.util.*;
+import java.util.function.Supplier;
 
+import static junit.framework.TestCase.*;
 import static org.junit.Assert.assertNotEquals;
 import static org.junit.Assert.assertEquals;
 class Tests {

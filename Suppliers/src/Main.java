@@ -1,15 +1,15 @@
-import com.sun.org.apache.xpath.internal.objects.XString;
+package classs;
+
 import javafx.util.Pair;
 
-import java.awt.*;
 import java.util.*;
 import java.util.List;
 
 public class Main {
 
     static FacadeController fc = FacadeController.getFacadeController();
-    static int supplierIdCounter = 0;
-    static int orderIdCounter = 0;
+    static int supplierIdCounter = 1;
+    static int orderIdCounter = 1;
     public static void main(String[] args) {
         boolean exit;
         System.out.println("Hello!");
@@ -79,10 +79,12 @@ public class Main {
             for (int i = 0; i < sizeOfOrders; i++) {
                 List<Pair<Integer, Integer>> list = fc.getItemsInOrderById(i);
                 int supplierId = fc.getSupplierIdOfOrder(i);
-                System.out.println("Supplier's id: " + supplierId + ", order number: " + i);
+                System.out.println("Supplier's id: " + supplierId +  ", order number: " + i);
                 for (int j = 0; j < list.size(); j++) {
-                    System.out.println("Item's id :" + list.get(j).getKey() + ", quantity: " + list.get(j).getValue());
+                    System.out.println("Item's id :" + list.get(j).getKey() +"name : "+fc.getItemNameByIndex(supplierId,j) + ", quantity: " + list.get(j).getValue());
                 }
+                int orderId=fc.getOrderIdByIndex(i);
+                System.out.println("Total amount: " + fc.getTotalOrderMoney(orderId));
                 System.out.println();
             }
         }
@@ -277,7 +279,7 @@ public class Main {
             int itemId = new ArrayList<>(terms.keySet()).get(itemNum);
             System.out.print("Enter item's amount: ");
             int itemQuantity = scanner.nextInt();
-            System.out.print("Enter item's discount(%): ");
+            System.out.print("Enter item's discount: (e.g 0.5)");
             Double itemDiscount = scanner.nextDouble();
             Pair<Integer, Double> pair = new Pair(itemQuantity, itemDiscount);
             if (!fc.checkBillOfQuantity(suppId)) {
@@ -287,7 +289,7 @@ public class Main {
             } else {
                 fc.addItemToBillOfQuantities(suppId, itemId, itemQuantity, itemDiscount);
             }
-            System.out.print("Add items to this bill? [Y/N] ");
+            System.out.print("Add more items to this bill? [Y/N] ");
             Scanner scanner2 = new Scanner(System.in);
             ans = scanner2.nextLine();
         } while (ans.equals("y") | ans.equals("Y"));
@@ -354,9 +356,14 @@ public class Main {
             choice = scanner2.nextLine();
         } while (choice.equals("y") | choice.equals("Y"));
         boolean result = fc.addOrder(orderIdCounter, items, suppId);
+
         if (result) {
+            double totalMoney = fc.getTotalOrderMoney(orderIdCounter);
+            fc.setOrderCost(orderIdCounter,totalMoney);
             System.out.println("\nOrder was added successfully.\n");
-            return orderIdCounter++;
+            System.out.println("\nTotal Order Money : "+totalMoney+"\n");
+            orderIdCounter++;
+            return orderIdCounter;
         } else {
             System.out.println("\nOrder failed, pleas try again.\n");
             return orderIdCounter;

@@ -6,11 +6,17 @@ public class Order {
     int id;
     List<ItemInOrder> items;
     Supplier supplier;
+    double totalCost;
 
     public Order(int id, List<Pair<Integer, Integer>> items, int supplierId) {
         this.id = id;
         this.items = makeItemsInOrder(items);
-        this.supplier = getSuppById(id);
+        this.supplier = getSuppById(supplierId);
+        totalCost=0;
+    }
+
+    public void setTotalCost(double totalCost) {
+        this.totalCost = totalCost;
     }
 
     public Supplier getSuppById(int id) {
@@ -41,5 +47,14 @@ public class Order {
 
     public int getSupplierIdOfOrder() {
         return this.supplier.getId();
+    }
+
+    public double getTotalOrderMoney() {
+        double totalAmount=0;
+        for (int i =0;i<items.size();i++)
+        {
+            totalAmount+= supplier.getTotalMoneyOfItemInOrder(items.get(i).getItemId(),items.get(i).getQuantity());
+        }
+        return totalAmount;
     }
 }
