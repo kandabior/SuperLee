@@ -1,3 +1,7 @@
+package IntefaceLayer;
+
+import LogicLayer.Inventory;
+import LogicLayer.ReportMaker;
 import javafx.util.Pair;
 
 import java.time.LocalDate;
@@ -28,17 +32,17 @@ public class Register {
         if(inventoryManagers.containsKey(username))
             return "can't register - username already exist";
         inventoryManagers.put(username,password);
-        return "Inventory Manager " + username  +" - registered successfully";
+        return "LogicLayer.Inventory Manager " + username  +" - registered successfully";
     }
     public String removeInventoryManager(String username, String password , String usernameToRemove, String passwordToRemove){
         if(!inventoryManagers.containsKey(username))
             return "can't remove inventory manager - username doesnt exist";
         if((GlobalManager.containsKey(username) && GlobalManager.get(username).equals(password))) {
             inventoryManagers.remove(usernameToRemove, passwordToRemove);
-            return "Inventory Manager - " + username + " removed";
+            return "LogicLayer.Inventory Manager - " + username + " removed";
         }
         else
-            return "Only Global Manager can remove Inventory Manager";
+            return "Only Global Manager can remove LogicLayer.Inventory Manager";
     }
     public String addGlobalManager(String username, String password){
         if(GlobalManager.containsKey(username))
@@ -54,7 +58,7 @@ public class Register {
     }
 
 
-    //Inventory
+    //LogicLayer.Inventory
     public String addProduct(String username, String password, int prodid, int amount, String name, int costPrice, int salePrice, LocalDate expDate, List<String> category, String manufacturer, int minAmount, String place){
         if((GlobalManager.containsKey(username) && GlobalManager.get(username).equals(password)) || (inventoryManagers.containsKey(username) && inventoryManagers.get(username).equals(password)))
             return inventory.addProduct(prodid, amount,name,costPrice,salePrice,expDate,category, manufacturer, minAmount, place);
