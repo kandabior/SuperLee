@@ -8,8 +8,8 @@ import java.util.List;
 public class Main {
 
     static FacadeController fc = FacadeController.getFacadeController();
-    static int supplierIdCounter = 0;
-    static int orderIdCounter = 0;
+    static int supplierIdCounter = 1;
+    static int orderIdCounter = 1;
     public static void main(String[] args) {
         boolean exit;
         System.out.println("Hello!");
@@ -279,7 +279,7 @@ public class Main {
             int itemId = new ArrayList<>(terms.keySet()).get(itemNum);
             System.out.print("Enter item's amount: ");
             int itemQuantity = scanner.nextInt();
-            System.out.print("Enter item's discount(%): ");
+            System.out.print("Enter item's discount: (e.g 0.5)");
             Double itemDiscount = scanner.nextDouble();
             Pair<Integer, Double> pair = new Pair(itemQuantity, itemDiscount);
             if (!fc.checkBillOfQuantity(suppId)) {
@@ -289,7 +289,7 @@ public class Main {
             } else {
                 fc.addItemToBillOfQuantities(suppId, itemId, itemQuantity, itemDiscount);
             }
-            System.out.print("Add items to this bill? [Y/N] ");
+            System.out.print("Add more items to this bill? [Y/N] ");
             Scanner scanner2 = new Scanner(System.in);
             ans = scanner2.nextLine();
         } while (ans.equals("y") | ans.equals("Y"));
@@ -365,7 +365,7 @@ public class Main {
             orderIdCounter++;
             return orderIdCounter;
         } else {
-            System.out.println("\nclasss.Order failed, pleas try again.\n");
+            System.out.println("\nOrder failed, pleas try again.\n");
             return orderIdCounter;
         }
     }
