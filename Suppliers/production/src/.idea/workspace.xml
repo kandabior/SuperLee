@@ -1,216 +1,35 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="d79db2f4-4f8c-4850-860d-17ddd0750602" name="Default Changelist" comment="">
-      <change beforePath="$PROJECT_DIR$/FacadeController.java" beforeDir="false" afterPath="$PROJECT_DIR$/FacadeController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Main.java" beforeDir="false" afterPath="$PROJECT_DIR$/Main.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/SupplierController.java" beforeDir="false" afterPath="$PROJECT_DIR$/SupplierController.java" afterDir="false" />
-    </list>
+    <list default="true" id="2b2519ab-c948-4876-b9b9-4ef76993112b" name="Default Changelist" comment="" />
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
     <option name="LAST_RESOLUTION" value="IGNORE" />
   </component>
-  <component name="DefaultGradleProjectSettings">
-    <option name="testRunner" value="GRADLE" />
-    <option name="delegatedBuild" value="true" />
-  </component>
-  <component name="FileEditorManager">
-    <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/FacadeController.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="220">
-              <caret line="26" column="98" selection-start-line="26" selection-start-column="98" selection-end-line="26" selection-end-column="98" />
-              <folding>
-                <element signature="method#FacadeController#0;class#FacadeController#0" />
-                <element signature="method#getFacadeController#0;class#FacadeController#0" />
-                <element signature="method#addSupplier#0;class#FacadeController#0" />
-                <element signature="method#addBillOfQuantities#0;class#FacadeController#0" />
-                <element signature="method#updateBillOfQuantities#0;class#FacadeController#0" />
-                <element signature="method#addOrder#0;class#FacadeController#0" />
-                <element signature="method#addItemToBillOfQuantities#0;class#FacadeController#0" />
-                <element signature="method#getItemNameByIndex#0;class#FacadeController#0" />
-                <element signature="method#getItemDescByIndex#0;class#FacadeController#0" />
-                <element signature="method#getItemIdByIndex#0;class#FacadeController#0" />
-                <element signature="method#getPriceOfItem#0;class#FacadeController#0" />
-                <element signature="method#getOrdersSize#0;class#FacadeController#0" />
-                <element signature="method#getItemsInOrderById#0;class#FacadeController#0" />
-                <element signature="method#getSupplierIdOfOrder#0;class#FacadeController#0" />
-                <element signature="method#addItemToSupplier#0;class#FacadeController#0" />
-                <element signature="method#getItemsListSize#0;class#FacadeController#0" />
-                <element signature="method#addItemToAgreement#0;class#FacadeController#0" />
-                <element signature="method#findSupplier#0;class#FacadeController#0" />
-                <element signature="method#getBillOfQuantities#0;class#FacadeController#0" />
-                <element signature="method#getItemNameById#0;class#FacadeController#0" />
-                <element signature="method#setItemPrice#0;class#FacadeController#0" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/SupplierController.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="196">
-              <caret line="30" column="5" selection-start-line="30" selection-start-column="5" selection-end-line="30" selection-end-column="5" />
-              <folding>
-                <element signature="method#getSupplierController#0;class#SupplierController#0" />
-                <element signature="method#deleteSupplier#0;class#SupplierController#0" />
-                <element signature="method#getSuppById#0;class#SupplierController#0" />
-                <element signature="e#656#755#1" />
-                <element signature="method#findSupplier#0;class#SupplierController#0" />
-                <element signature="method#addSupplier#0;class#SupplierController#0" />
-                <element signature="method#addBillOfQuantities#0;class#SupplierController#0" />
-                <element signature="e#1342#1431#1" />
-                <element signature="method#addItemToAgreement#0;class#SupplierController#0" />
-                <element signature="method#updateBillOfQuantities#0;class#SupplierController#0" />
-                <element signature="e#1749#1840#1" />
-                <element signature="method#deleteFromBillOfQuantities#0;class#SupplierController#0" />
-                <element signature="e#1962#2041#1" />
-                <element signature="method#deleteBillOfQuantities#0;class#SupplierController#0" />
-                <element signature="e#2143#2212#1" />
-                <element signature="method#getBillSize#0;class#SupplierController#0" />
-                <element signature="method#showSuppItems#0;class#SupplierController#0" />
-                <element signature="e#2872#2873#0" expanded="true" />
-                <element signature="e#2990#2991#0" expanded="true" />
-                <element signature="method#addItemToBillOfQuantities#0;class#SupplierController#0" />
-                <element signature="method#getBillOfQuantities#0;class#SupplierController#0" />
-                <element signature="e#3458#3459#0" expanded="true" />
-                <element signature="e#3581#3582#0" expanded="true" />
-                <element signature="e#3704#3705#0" expanded="true" />
-                <element signature="e#3820#3821#0" expanded="true" />
-                <element signature="method#addItemToSupplier#0;class#SupplierController#0" />
-                <element signature="e#4158#4159#0" expanded="true" />
-                <element signature="method#setItemPrice#0;class#SupplierController#0" />
-                <element signature="e#4423#4424#0" expanded="true" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/Main.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="880">
-              <caret line="70" column="73" selection-start-line="70" selection-start-column="73" selection-end-line="70" selection-end-column="73" />
-              <folding>
-                <element signature="method#main#0;class#Main#0" />
-                <element signature="e#430#479#1" />
-                <element signature="method#showPreviouslyOrders#0;class#Main#0" />
-                <element signature="e#2197#2740#1" />
-                <element signature="e#2250#2730#1" />
-                <element signature="e#2539#2678#1" />
-                <element signature="method#addItems#0;class#Main#0" />
-                <element signature="e#2984#3164#1" />
-                <element signature="method#addSupplier#0;class#Main#0" />
-                <element signature="e#4651#4746#1" />
-                <element signature="e#4881#5378#1" />
-                <element signature="e#5030#5368#1" />
-                <element signature="method#manageSupplier#0;class#Main#0" />
-                <element signature="e#5642#5727#1" />
-                <element signature="method#displayManageSupplierMenu#0;class#Main#0" />
-                <element signature="e#6001#8072#1" />
-                <element signature="e#6449#8062#0" />
-                <element signature="e#6707#6859#1" />
-                <element signature="e#6894#7437#1" />
-                <element signature="e#7073#7415#1" />
-                <element signature="e#7570#7653#1" />
-                <element signature="method#editBillOfQuantities#0;class#Main#0" />
-                <element signature="e#8248#8327#1" />
-                <element signature="e#8333#9847#1" />
-                <element signature="e#8350#9794#1" />
-                <element signature="e#8494#8860#1" />
-                <element signature="e#9497#9605#1" />
-                <element signature="e#9643#9780#1" />
-                <element signature="method#changeInBillOfQuantities#0;class#Main#0" />
-                <element signature="method#deleteFromBillOfQuantities#0;class#Main#0" />
-                <element signature="e#10448#10632#1" />
-                <element signature="method#addBillOfQuantities#0;class#Main#0" />
-                <element signature="e#10521#11708#1" />
-                <element signature="e#11249#11429#1" />
-                <element signature="e#11435#11540#1" />
-                <element signature="method#displayItems#0;class#Main#0" />
-                <element signature="e#11925#12383#1" />
-                <element signature="method#editAgreement#0;class#Main#0" />
-                <element signature="e#12905#13542#1" />
-                <element signature="e#12962#13532#1" />
-                <element signature="method#addOrder#0;class#Main#0" />
-                <element signature="e#14088#14611#1" />
-                <element signature="e#14750#14867#1" />
-                <element signature="e#14873#14989#1" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-    </leaf>
-  </component>
-  <component name="FindInProjectRecents">
-    <findStrings>
-      <find>dele</find>
-    </findStrings>
+  <component name="FileTemplateManagerImpl">
+    <option name="RECENT_TEMPLATES">
+      <list>
+        <option value="Class" />
+      </list>
+    </option>
   </component>
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$/../.." />
   </component>
-  <component name="IdeDocumentHistory">
-    <option name="CHANGED_PATHS">
-      <list>
-        <option value="$PROJECT_DIR$/Agreement.java" />
-        <option value="$PROJECT_DIR$/Supplier.java" />
-        <option value="$PROJECT_DIR$/BillOfQuantities.java" />
-        <option value="$PROJECT_DIR$/SupplierController.java" />
-        <option value="$PROJECT_DIR$/FacadeController.java" />
-        <option value="$PROJECT_DIR$/Main.java" />
-      </list>
-    </option>
-  </component>
-  <component name="ProjectConfigurationFiles">
-    <option name="files">
-      <list>
-        <option value="$PROJECT_DIR$/.idea/src.iml" />
-        <option value="$PROJECT_DIR$/.idea/misc.xml" />
-        <option value="$PROJECT_DIR$/.idea/vcs.xml" />
-        <option value="$PROJECT_DIR$/.idea/modules.xml" />
-      </list>
-    </option>
-  </component>
-  <component name="ProjectFrameBounds" extendedState="6">
-    <option name="x" value="-13" />
-    <option name="width" value="1440" />
-    <option name="height" value="775" />
-  </component>
+  <component name="ProjectId" id="1aLn4UZ7vayw58LZeWx7BAobWTp" />
   <component name="ProjectLevelVcsManager" settingsEditedManually="true" />
-  <component name="ProjectView">
-    <navigator proportions="" version="1">
-      <foldersAlwaysOnTop value="true" />
-    </navigator>
-    <panes>
-      <pane id="Scope" />
-      <pane id="ProjectPane">
-        <subPane>
-          <expand>
-            <path>
-              <item name="src" type="b2602c69:ProjectViewProjectNode" />
-              <item name="src" type="462c0819:PsiDirectoryNode" />
-            </path>
-          </expand>
-          <select />
-        </subPane>
-      </pane>
-      <pane id="PackagesPane" />
-    </panes>
-  </component>
   <component name="PropertiesComponent">
-    <property name="WebServerToolWindowFactoryState" value="false" />
-    <property name="aspect.path.notification.shown" value="true" />
+    <property name="ASKED_SHARE_PROJECT_CONFIGURATION_FILES" value="true" />
+    <property name="Downloaded.Files.Path.Enabled" value="false" />
+    <property name="Repository.Attach.Annotations" value="false" />
+    <property name="Repository.Attach.JavaDocs" value="false" />
+    <property name="Repository.Attach.Sources" value="false" />
+    <property name="SHARE_PROJECT_CONFIGURATION_FILES" value="true" />
     <property name="last_opened_file_path" value="$PROJECT_DIR$" />
-    <property name="nodejs_interpreter_path.stuck_in_default_project" value="undefined stuck path" />
-    <property name="nodejs_npm_path_reset_for_default_project" value="true" />
     <property name="project.structure.last.edited" value="Project" />
-    <property name="project.structure.proportion" value="0.15" />
+    <property name="project.structure.proportion" value="0.0" />
     <property name="project.structure.side.proportion" value="0.0" />
   </component>
   <component name="RunDashboard">
@@ -225,348 +44,103 @@
       </list>
     </option>
   </component>
-  <component name="RunManager">
-    <configuration name="Unnamed" type="Application" factoryName="Application" nameIsGenerated="true">
-      <option name="MAIN_CLASS_NAME" value="Main" />
+  <component name="RunManager" selected="Application.Main">
+    <configuration name="Main" type="Application" factoryName="Application" nameIsGenerated="true">
+      <option name="MAIN_CLASS_NAME" value="classs.Main" />
       <module name="src" />
       <method v="2">
         <option name="Make" enabled="true" />
       </method>
     </configuration>
+    <configuration name="Tests" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+      <module name="src" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="Test.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <option name="PACKAGE_NAME" value="Test" />
+      <option name="MAIN_CLASS_NAME" value="Test.Tests" />
+      <option name="TEST_OBJECT" value="class" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <recent_temporary>
+      <list>
+        <item itemvalue="JUnit.Tests" />
+      </list>
+    </recent_temporary>
   </component>
   <component name="SvnConfiguration">
     <configuration />
   </component>
   <component name="TaskManager">
     <task active="true" id="Default" summary="Default task">
-      <changelist id="d79db2f4-4f8c-4850-860d-17ddd0750602" name="Default Changelist" comment="" />
-      <created>1586523250580</created>
+      <changelist id="2b2519ab-c948-4876-b9b9-4ef76993112b" name="Default Changelist" comment="" />
+      <created>1586523551033</created>
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
-      <updated>1586523250580</updated>
-      <workItem from="1586523251927" duration="6405000" />
-      <workItem from="1586690450816" duration="462000" />
+      <updated>1586523551033</updated>
     </task>
-    <task id="LOCAL-00001" summary="first updated commit">
-      <created>1586523440461</created>
+    <task id="LOCAL-00001" summary="i love nituz!">
+      <created>1586690194273</created>
       <option name="number" value="00001" />
       <option name="presentableId" value="LOCAL-00001" />
       <option name="project" value="LOCAL" />
-      <updated>1586523440462</updated>
+      <updated>1586690194273</updated>
     </task>
-    <task id="LOCAL-00002" summary="validation of item id in insertion, adding delete bill of quantities">
-      <created>1586528710530</created>
+    <task id="LOCAL-00002" summary="i love nituz2!">
+      <created>1586693614306</created>
       <option name="number" value="00002" />
       <option name="presentableId" value="LOCAL-00002" />
       <option name="project" value="LOCAL" />
-      <updated>1586528710530</updated>
+      <updated>1586693614307</updated>
     </task>
-    <task id="LOCAL-00003" summary="fixes">
-      <created>1586530003954</created>
+    <task id="LOCAL-00003" summary="finish 1.0">
+      <created>1586783193084</created>
       <option name="number" value="00003" />
       <option name="presentableId" value="LOCAL-00003" />
       <option name="project" value="LOCAL" />
-      <updated>1586530003954</updated>
+      <updated>1586783193084</updated>
     </task>
     <option name="localTasksCounter" value="4" />
     <servers />
   </component>
-  <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="6867000" />
-  </component>
-  <component name="ToolWindowManager">
-    <frame x="-7" y="-7" width="1550" height="838" extended-state="6" />
-    <editor active="true" />
-    <layout>
-      <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.1328859" />
-      <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
-      <window_info id="Image Layers" order="2" />
-      <window_info id="Designer" order="3" />
-      <window_info id="UI Designer" order="4" />
-      <window_info id="Capture Tool" order="5" />
-      <window_info id="Favorites" order="6" side_tool="true" />
-      <window_info anchor="bottom" id="Message" order="0" />
-      <window_info anchor="bottom" id="Find" order="1" />
-      <window_info anchor="bottom" id="Run" order="2" />
-      <window_info anchor="bottom" id="Debug" order="3" weight="0.4" />
-      <window_info anchor="bottom" id="Cvs" order="4" weight="0.25" />
-      <window_info anchor="bottom" id="Inspection" order="5" weight="0.4" />
-      <window_info anchor="bottom" id="TODO" order="6" />
-      <window_info anchor="bottom" id="Docker" order="7" show_stripe_button="false" />
-      <window_info anchor="bottom" id="Version Control" order="8" visible="true" weight="0.18271954" />
-      <window_info anchor="bottom" id="Database Changes" order="9" />
-      <window_info anchor="bottom" id="Terminal" order="10" />
-      <window_info anchor="bottom" id="Event Log" order="11" side_tool="true" />
-      <window_info anchor="bottom" id="Messages" order="12" weight="0.3286119" />
-      <window_info anchor="right" id="Commander" internal_type="SLIDING" order="0" type="SLIDING" weight="0.4" />
-      <window_info anchor="right" id="Ant Build" order="1" weight="0.25" />
-      <window_info anchor="right" content_ui="combo" id="Hierarchy" order="2" weight="0.25" />
-      <window_info anchor="right" id="Palette" order="3" />
-      <window_info anchor="right" id="Database" order="4" />
-      <window_info anchor="right" id="Theme Preview" order="5" />
-      <window_info anchor="right" id="Maven" order="6" />
-      <window_info anchor="right" id="Capture Analysis" order="7" />
-      <window_info anchor="right" id="Palette&#9;" order="8" />
-    </layout>
-  </component>
-  <component name="TypeScriptGeneratedFilesManager">
-    <option name="version" value="1" />
+  <component name="Vcs.Log.Tabs.Properties">
+    <option name="TAB_STATES">
+      <map>
+        <entry key="MAIN">
+          <value>
+            <State>
+              <option name="COLUMN_ORDER" />
+            </State>
+          </value>
+        </entry>
+      </map>
+    </option>
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="first updated commit" />
-    <MESSAGE value="validation of item id in insertion, adding delete bill of quantities" />
-    <MESSAGE value="fixes" />
-    <option name="LAST_COMMIT_MESSAGE" value="fixes" />
+    <MESSAGE value="i love nituz!" />
+    <MESSAGE value="i love nituz2!" />
+    <MESSAGE value="finish 1.0" />
+    <option name="LAST_COMMIT_MESSAGE" value="finish 1.0" />
   </component>
-  <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/Supplier.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="460">
-          <caret line="57" column="37" selection-start-line="57" selection-start-column="37" selection-end-line="57" selection-end-column="37" />
-          <folding>
-            <element signature="method#Supplier#0;class#Supplier#0" />
-            <element signature="method#getId#0;class#Supplier#0" />
-            <element signature="method#getAgreement#0;class#Supplier#0" />
-            <element signature="method#makeOrder#0;class#Supplier#0" />
-            <element signature="e#1148#1366#1" />
-            <element signature="e#1230#1356#1" />
-            <element signature="e#1465#1784#1" />
-            <element signature="e#1547#1774#1" />
-            <element signature="method#updateBillOfQuantities#0;class#Supplier#0" />
-            <element signature="method#addItemToBillOfQuantities#0;class#Supplier#0" />
-            <element signature="method#getItemName#0;class#Supplier#0" />
-            <element signature="method#addItemsToSupplier#0;class#Supplier#0" />
-            <element signature="method#setItemPrice#0;class#Supplier#0" />
-            <element signature="method#validateItemId#0;class#Supplier#0" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/Agreement.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="260">
-          <caret line="23" column="33" selection-start-line="23" selection-start-column="33" selection-end-line="23" selection-end-column="33" />
-          <folding>
-            <element signature="method#Agreement#0;class#Agreement#0" />
-            <element signature="method#addBillOfQuantities#0;class#Agreement#0" />
-            <element signature="method#updateBillOfQuantities#0;class#Agreement#0" />
-            <element signature="method#getTerms#0;class#Agreement#0" />
-            <element signature="method#checkBillOfQuantity#0;class#Agreement#0" />
-            <element signature="method#addItemToBillOfQuantities#0;class#Agreement#0" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/BillOfQuantities.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="340">
-          <caret line="23" column="32" selection-start-line="23" selection-start-column="32" selection-end-line="23" selection-end-column="32" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/SupplierController.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="196">
-          <caret line="30" column="5" selection-start-line="30" selection-start-column="5" selection-end-line="30" selection-end-column="5" />
-          <folding>
-            <element signature="method#getSupplierController#0;class#SupplierController#0" />
-            <element signature="method#deleteSupplier#0;class#SupplierController#0" />
-            <element signature="method#getSuppById#0;class#SupplierController#0" />
-            <element signature="e#656#755#1" />
-            <element signature="method#findSupplier#0;class#SupplierController#0" />
-            <element signature="method#addSupplier#0;class#SupplierController#0" />
-            <element signature="method#addBillOfQuantities#0;class#SupplierController#0" />
-            <element signature="e#1342#1431#1" />
-            <element signature="method#addItemToAgreement#0;class#SupplierController#0" />
-            <element signature="method#updateBillOfQuantities#0;class#SupplierController#0" />
-            <element signature="e#1749#1840#1" />
-            <element signature="method#deleteFromBillOfQuantities#0;class#SupplierController#0" />
-            <element signature="e#1962#2041#1" />
-            <element signature="method#deleteBillOfQuantities#0;class#SupplierController#0" />
-            <element signature="e#2143#2212#1" />
-            <element signature="method#getBillSize#0;class#SupplierController#0" />
-            <element signature="method#showSuppItems#0;class#SupplierController#0" />
-            <element signature="e#2872#2873#0" expanded="true" />
-            <element signature="e#2990#2991#0" expanded="true" />
-            <element signature="method#addItemToBillOfQuantities#0;class#SupplierController#0" />
-            <element signature="method#getBillOfQuantities#0;class#SupplierController#0" />
-            <element signature="e#3458#3459#0" expanded="true" />
-            <element signature="e#3581#3582#0" expanded="true" />
-            <element signature="e#3704#3705#0" expanded="true" />
-            <element signature="e#3820#3821#0" expanded="true" />
-            <element signature="method#addItemToSupplier#0;class#SupplierController#0" />
-            <element signature="e#4158#4159#0" expanded="true" />
-            <element signature="method#setItemPrice#0;class#SupplierController#0" />
-            <element signature="e#4423#4424#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/FacadeController.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="220">
-          <caret line="26" column="98" selection-start-line="26" selection-start-column="98" selection-end-line="26" selection-end-column="98" />
-          <folding>
-            <element signature="method#FacadeController#0;class#FacadeController#0" />
-            <element signature="method#getFacadeController#0;class#FacadeController#0" />
-            <element signature="method#addSupplier#0;class#FacadeController#0" />
-            <element signature="method#addBillOfQuantities#0;class#FacadeController#0" />
-            <element signature="method#updateBillOfQuantities#0;class#FacadeController#0" />
-            <element signature="method#addOrder#0;class#FacadeController#0" />
-            <element signature="method#addItemToBillOfQuantities#0;class#FacadeController#0" />
-            <element signature="method#getItemNameByIndex#0;class#FacadeController#0" />
-            <element signature="method#getItemDescByIndex#0;class#FacadeController#0" />
-            <element signature="method#getItemIdByIndex#0;class#FacadeController#0" />
-            <element signature="method#getPriceOfItem#0;class#FacadeController#0" />
-            <element signature="method#getOrdersSize#0;class#FacadeController#0" />
-            <element signature="method#getItemsInOrderById#0;class#FacadeController#0" />
-            <element signature="method#getSupplierIdOfOrder#0;class#FacadeController#0" />
-            <element signature="method#addItemToSupplier#0;class#FacadeController#0" />
-            <element signature="method#getItemsListSize#0;class#FacadeController#0" />
-            <element signature="method#addItemToAgreement#0;class#FacadeController#0" />
-            <element signature="method#findSupplier#0;class#FacadeController#0" />
-            <element signature="method#getBillOfQuantities#0;class#FacadeController#0" />
-            <element signature="method#getItemNameById#0;class#FacadeController#0" />
-            <element signature="method#setItemPrice#0;class#FacadeController#0" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/Main.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="880">
-          <caret line="70" column="73" selection-start-line="70" selection-start-column="73" selection-end-line="70" selection-end-column="73" />
-          <folding>
-            <element signature="method#main#0;class#Main#0" />
-            <element signature="e#430#479#1" />
-            <element signature="method#showPreviouslyOrders#0;class#Main#0" />
-            <element signature="e#2197#2740#1" />
-            <element signature="e#2250#2730#1" />
-            <element signature="e#2539#2678#1" />
-            <element signature="method#addItems#0;class#Main#0" />
-            <element signature="e#2984#3164#1" />
-            <element signature="method#addSupplier#0;class#Main#0" />
-            <element signature="e#4651#4746#1" />
-            <element signature="e#4881#5378#1" />
-            <element signature="e#5030#5368#1" />
-            <element signature="method#manageSupplier#0;class#Main#0" />
-            <element signature="e#5642#5727#1" />
-            <element signature="method#displayManageSupplierMenu#0;class#Main#0" />
-            <element signature="e#6001#8072#1" />
-            <element signature="e#6449#8062#0" />
-            <element signature="e#6707#6859#1" />
-            <element signature="e#6894#7437#1" />
-            <element signature="e#7073#7415#1" />
-            <element signature="e#7570#7653#1" />
-            <element signature="method#editBillOfQuantities#0;class#Main#0" />
-            <element signature="e#8248#8327#1" />
-            <element signature="e#8333#9847#1" />
-            <element signature="e#8350#9794#1" />
-            <element signature="e#8494#8860#1" />
-            <element signature="e#9497#9605#1" />
-            <element signature="e#9643#9780#1" />
-            <element signature="method#changeInBillOfQuantities#0;class#Main#0" />
-            <element signature="method#deleteFromBillOfQuantities#0;class#Main#0" />
-            <element signature="e#10448#10632#1" />
-            <element signature="method#addBillOfQuantities#0;class#Main#0" />
-            <element signature="e#10521#11708#1" />
-            <element signature="e#11249#11429#1" />
-            <element signature="e#11435#11540#1" />
-            <element signature="method#displayItems#0;class#Main#0" />
-            <element signature="e#11925#12383#1" />
-            <element signature="method#editAgreement#0;class#Main#0" />
-            <element signature="e#12905#13542#1" />
-            <element signature="e#12962#13532#1" />
-            <element signature="method#addOrder#0;class#Main#0" />
-            <element signature="e#14088#14611#1" />
-            <element signature="e#14750#14867#1" />
-            <element signature="e#14873#14989#1" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-  </component>
-  <component name="masterDetails">
-    <states>
-      <state key="ArtifactsStructureConfigurable.UI">
-        <settings>
-          <artifact-editor />
-          <splitter-proportions>
-            <option name="proportions">
-              <list>
-                <option value="0.2" />
-              </list>
-            </option>
-          </splitter-proportions>
-        </settings>
-      </state>
-      <state key="FacetStructureConfigurable.UI">
-        <settings>
-          <splitter-proportions>
-            <option name="proportions">
-              <list>
-                <option value="0.2" />
-              </list>
-            </option>
-          </splitter-proportions>
-        </settings>
-      </state>
-      <state key="GlobalLibrariesConfigurable.UI">
-        <settings>
-          <splitter-proportions>
-            <option name="proportions">
-              <list>
-                <option value="0.2" />
-              </list>
-            </option>
-          </splitter-proportions>
-        </settings>
-      </state>
-      <state key="JdkListConfigurable.UI">
-        <settings>
-          <splitter-proportions>
-            <option name="proportions">
-              <list>
-                <option value="0.2" />
-              </list>
-            </option>
-          </splitter-proportions>
-        </settings>
-      </state>
-      <state key="ModuleStructureConfigurable.UI">
-        <settings>
-          <splitter-proportions>
-            <option name="proportions">
-              <list>
-                <option value="0.2" />
-              </list>
-            </option>
-          </splitter-proportions>
-        </settings>
-      </state>
-      <state key="ProjectJDKs.UI">
-        <settings>
-          <last-edited>1.8</last-edited>
-          <splitter-proportions>
-            <option name="proportions">
-              <list>
-                <option value="0.2" />
-              </list>
-            </option>
-          </splitter-proportions>
-        </settings>
-      </state>
-      <state key="ProjectLibrariesConfigurable.UI">
-        <settings>
-          <splitter-proportions>
-            <option name="proportions">
-              <list>
-                <option value="0.2" />
-              </list>
-            </option>
-          </splitter-proportions>
-        </settings>
-      </state>
-    </states>
+  <component name="XDebuggerManager">
+    <breakpoint-manager>
+      <breakpoints>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/classs/BillOfQuantities.java</url>
+          <line>35</line>
+          <option name="timeStamp" value="14" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/classs/Main.java</url>
+          <line>340</line>
+          <option name="timeStamp" value="16" />
+        </line-breakpoint>
+      </breakpoints>
+    </breakpoint-manager>
   </component>
 </project>
