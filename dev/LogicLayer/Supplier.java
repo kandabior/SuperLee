@@ -136,8 +136,8 @@ public class Supplier {
 
     public int getBillSize() { return this.agreement.getBillSize(); }
 
-    public double getTotalMoneyOfItemInOrder(int itemId, int quantity) {
-        return this.agreement.getTotalMoneyOfItemInOrder(itemId,quantity);
+    public double getOrderCost(int itemId, int quantity) {
+        return this.agreement.getOrderCost(itemId,quantity);
     }
 
     public int getItemAmountByIndex(int i) {

@@ -53,7 +53,7 @@ public class Order {
         double totalAmount=0;
         for (int i =0;i<items.size();i++)
         {
-            totalAmount+= supplier.getTotalMoneyOfItemInOrder(items.get(i).getItemId(),items.get(i).getQuantity());
+            totalAmount+= supplier.getOrderCost(items.get(i).getItemId(),items.get(i).getQuantity());
         }
         return totalAmount;
     }

@@ -57,18 +57,15 @@ public class Agreement {
 
     public int getBillSize() { return this.bill.getBillSize(); }
 
-    public double getTotalMoneyOfItemInOrder(int itemId, int quantity) {
-        if(bill!=null&&bill.checkItemInBill(itemId,quantity)==true)
-        {
-            double discount= bill.getMoneyAmountofItemInBill(itemId,quantity);
-            double cost= terms.get(itemId);
-            double costMulQuantity= (cost*quantity);
-            return  costMulQuantity*discount;
-        }
-        else
-        {
-           double cost= terms.get(itemId);
-            return (cost*quantity);
+    public double getOrderCost(int itemId, int quantity) {
+        if (bill != null && bill.checkItemInBill(itemId, quantity) == true) {
+            double discount = bill.getMoneyAmountofItemInBill(itemId, quantity);
+            double cost = terms.get(itemId);
+            double costMulQuantity = (cost * quantity);
+            return costMulQuantity * (1 - discount);
+        } else {
+            double cost = terms.get(itemId);
+            return (cost * quantity);
         }
     }
 }

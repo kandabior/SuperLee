@@ -275,13 +275,14 @@ public class Main {
         do {
             displayItems(suppId);
             Scanner scanner = new Scanner(System.in);
-            System.out.println("Choose the id of the item you want to add to this bill: ");
-            int itemNum = scanner.nextInt() - 1;
-            LinkedHashMap<Integer, Double> terms = fc.showSuppItems(suppId);
-            int itemId = new ArrayList<>(terms.keySet()).get(itemNum);
+            System.out.print("Choose the id of the item you want to add to this bill: ");
+            //int itemNum = scanner.nextInt();
+            //LinkedHashMap<Integer, Double> terms = fc.showSuppItems(suppId);
+            //int itemId = new ArrayList<>(terms.keySet()).get(itemNum);
+            int itemId = scanner.nextInt();
             System.out.print("Enter item's amount: ");
             int itemQuantity = scanner.nextInt();
-            System.out.print("Enter item's discount: (i.e. 0.5)");
+            System.out.print("Enter item's discount: (i.e. 0.5) ");
             Double itemDiscount = scanner.nextDouble();
             Pair<Integer, Double> pair = new Pair(itemQuantity, itemDiscount);
             if (!fc.checkBillOfQuantity(suppId)) {

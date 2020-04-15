@@ -55,7 +55,7 @@ public class Agreement {
 
     public int getBillSize() { return this.bill.getBillSize(); }
 
-    public double getTotalMoneyOfItemInOrder(int itemId, int quantity) {
+    public double getOrderCost(int itemId, int quantity) {
         if(bill!=null&&bill.checkItemInBill(itemId,quantity)==true)
         {
             double discount= bill.getMoneyAmountofItemInBill(itemId,quantity);
