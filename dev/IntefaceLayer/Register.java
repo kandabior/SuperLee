@@ -50,7 +50,7 @@ public class Register {
         GlobalManager.put(username,password);
         return "Global Manager " + username  +" - registered successfully";
     }
-    public String removeGlobalManager(String username, int password){
+    public String removeGlobalManager(String username, Integer password){
         if(!GlobalManager.containsKey(username))
             return "can't remove Global Manager - username doesnt exist";
         GlobalManager.remove(username,password);
@@ -93,12 +93,7 @@ public class Register {
     public String setDefectiveProducts(Integer prodId, Integer amount) {
         return inventory.setDefectiveProducts(prodId,amount);
     }
-    public String getLastCostPrice(int prodId){
-        return inventory.getLastCostPrice(prodId);
-    }
-    public String getLastSalePrice(int prodId){
-        return inventory.getLastSalePrice(prodId);
-    }
+
     public String shelfToStorage(int id, int amount){
         return inventory.shelfToStorage(id,amount);
     }

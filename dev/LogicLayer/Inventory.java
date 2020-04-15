@@ -67,16 +67,7 @@ public class Inventory {
         }
         return qnty;
     }
-    public int getShelfQntyByProdId(int prodId){
-        if(!quantities.containsKey(prodId))
-            return -1;
-        return quantities.get(prodId).getValue();
-    }
-    public int getStorageQntyByProdId(int prodId){
-        if(!quantities.containsKey(prodId))
-            return -1;
-        return quantities.get(prodId).getKey();
-    }
+
     public List<Pair<Integer,Integer>> NeedToBuyProducts() {   //Pair[0] = productId, Pair[1] = shelf+storage Quantity.  get the products id that their quantity is equal or less than their minimum quantity.
         List<Pair<Integer,Integer>> needToBuy = new LinkedList<>();
         for (Integer id : inventory.keySet()) {
@@ -101,7 +92,7 @@ public class Inventory {
     public List<Pair<Integer,Integer>> ExpiredProducts(){  //Integer = productId
         List<Pair<Integer,Integer>> expiredProducts = new LinkedList<>();
         for(Integer id : expired.keySet()){
-                expiredProducts.add(new Pair(id,expired.get(id)));
+                expiredProducts.add(new Pair<>(id,expired.get(id)));
         }
         return expiredProducts;
     }
@@ -121,7 +112,7 @@ public class Inventory {
     public String setExpired(int productId, Integer amount){ //removing a specific amount of expired products from the storage inventory to the expired inventory.
         if(!inventory.containsKey(productId))
             return "product ID doesnt exist";
-        quantities.put(productId, new Pair(quantities.get(productId).getKey() - amount,quantities.get(productId).getValue()));
+        quantities.put(productId, new Pair<>(quantities.get(productId).getKey() - amount,quantities.get(productId).getValue()));
         expired.put(productId, expired.get(productId)+amount);
         return "product " + productId + "- quantity of " + amount + " was changed to expired";
     }
@@ -129,7 +120,7 @@ public class Inventory {
         if(inventory.containsKey(id))
             return "product ID already exist";
         inventory.put(id, new Product(id, name, costPrice, salePrice, expDate, category, manufacturer, minAmount, place));
-        quantities.put(id, new Pair(0,amount));
+        quantities.put(id, new Pair<>(0,amount));
         return " product id: " + id + " - added to the inventory";
     }
     public String removeProduct(int id) {
@@ -143,7 +134,7 @@ public class Inventory {
     public String addAmountToProduct(int id, int amount){
         if(!inventory.containsKey(id))
             return "product ID doesnt exist";
-        quantities.put(id, new Pair(quantities.get(id).getKey(), quantities.get(id).getValue() + amount));
+        quantities.put(id, new Pair<>(quantities.get(id).getKey(), quantities.get(id).getValue() + amount));
         return "product id: " + id + " - amount of " + amount + " added to the inventory";
     }
     public String removeAmountFromProduct(int id, int amount){
@@ -173,7 +164,7 @@ public class Inventory {
             return "product ID doesnt exist";
         if(quantities.get(id).getValue() < amount)
             return "Cant transform -There is Less than " + amount + " items from product number " + id + " in the shelf";
-        quantities.put(id, new Pair(quantities.get(id).getKey() + amount, quantities.get(id).getValue() - amount));
+        quantities.put(id, new Pair<>(quantities.get(id).getKey() + amount, quantities.get(id).getValue() - amount));
         return "product id: " + id + " - amount of " + amount + " removed from the shelf to the Storage";
     }
     public String storageToShelf(int id, int amount){
@@ -181,7 +172,7 @@ public class Inventory {
             return "product ID doesnt exist";
         if(quantities.get(id).getKey() < amount)
             return "Cant transform - There is Less than " + amount + " items from product number " + id + " in the storage";
-        quantities.put(id, new Pair(quantities.get(id).getKey() - amount, quantities.get(id).getValue() + amount));
+        quantities.put(id, new Pair<>(quantities.get(id).getKey() - amount, quantities.get(id).getValue() + amount));
         return "product id: " + id + " - amount of " + amount + " removed from the storage to the shelf";
     }
     public String getLastCostPrice(int id){
@@ -196,13 +187,11 @@ public class Inventory {
     }
 
     public Pair<Integer, List<Integer>> SalePricesById(Integer id) {
-        Pair<Integer, List<Integer>> output=new Pair<>(id,inventory.get(id).getLastSalePrice());
-        return output;
+        return new Pair<>(id,inventory.get(id).getLastSalePrice());
     }
 
     public Pair<Integer, List<Integer>> CostPricesById(Integer id) {
-        Pair<Integer, List<Integer>> output=new Pair<>(id,inventory.get(id).getLastCostPrice());
-        return output;
+        return new Pair<>(id,inventory.get(id).getLastCostPrice());
     }
 
     public String setDefectiveProducts(Integer prodId, Integer amount) {

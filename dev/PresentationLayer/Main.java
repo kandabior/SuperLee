@@ -1,12 +1,8 @@
 package PresentationLayer;
 
 import IntefaceLayer.Register;
-import sun.security.mscapi.PRNG;
-
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.util.*;
-import java.text.SimpleDateFormat;
 
 public class Main {
     public static Scanner scanner=new Scanner(System.in);
@@ -146,16 +142,7 @@ public class Main {
         String amount = scanner.next();
         Printer.Print(register.removeAmountFromProduct(Integer.parseInt(prodId),Integer.parseInt(amount)));
     }
-    private static void LastCostPrice(){
-        Printer.Print("\nPlease Enter Product Id:\n");
-        String id = scanner.next();
-        Printer.Print(register.getLastCostPrice(Integer.parseInt(id)));
-    }
-    private static void LastSalePrice(){
-        Printer.Print("\nPlease Enter Product Id:\n");
-        String id = scanner.next();
-        Printer.Print(register.getLastSalePrice(Integer.parseInt(id)));
-    }
+
     private static void PrintEXPProducts() {
         Printer.Print(register.ExpiredReport());
     }
@@ -242,11 +229,7 @@ public class Main {
         Printer.Print("place: ");
         String place=scanner.next();
         List<String> categoriesList= Arrays.asList(categories.split(","));
-        LocalDate date=null;
-        try {
-            date = LocalDate.parse(expdate);
-        }
-        catch (Exception e){}
+        LocalDate date = LocalDate.parse(expdate);
         Printer.Print(register.addProduct(userName,password,Integer.parseInt(prodId),Integer.parseInt(amount),name,Integer.parseInt(costPrice),Integer.parseInt(salePrice), date,categoriesList,manufacturer,Integer.parseInt(minAmount),place));
     }
     private static void AddInventoryManager() {

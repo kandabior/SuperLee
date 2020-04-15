@@ -111,9 +111,9 @@ public class Report {
 
         output= output+"LogicLayer.Report name:"+getTitle()+"\n";
         output=output+"LogicLayer.Report Id: "+ getReportId()+"\n";
-        Integer count=1;
+        int count=1;
         for (ReportLine reportLine: getLines()){
-            output=output+count.toString()+". "+reportLine.toString()+"\n";
+            output=output+ count +". "+reportLine.toString()+"\n";
             count++;
         }
         output=output+"--------------------------------------------------\n";
