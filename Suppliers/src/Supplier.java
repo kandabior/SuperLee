@@ -38,7 +38,7 @@ public class Supplier {
                 if (this.items.get(i).getValue() >= items.get(i).getQuantity())
                     counter++;
             }
-        }//
+        }
         if (counter != items.size()) return false;
         for (int i = 0; i < items.size(); i++) {
             if (this.items.get(i).getKey().getId() == items.get(i).getItemId()) {

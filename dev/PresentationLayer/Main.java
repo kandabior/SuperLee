@@ -82,7 +82,7 @@ public class Main {
                 int supplierId = fc.getSupplierIdOfOrder(i);
                 System.out.println("Supplier's id: " + supplierId +  ", order number: " + i);
                 for (int j = 0; j < list.size(); j++) {
-                    System.out.println("Item's id :" + list.get(j).getKey() +" name : "+fc.getItemNameByIndex(supplierId,j) + ", quantity: " + list.get(j).getValue());
+                    System.out.println("Item's name: " + fc.getItemNameByIndex(supplierId,j) + ", id: " + list.get(j).getKey() + ", quantity: " + list.get(j).getValue());
                 }
                 int orderId=fc.getOrderIdByIndex(i);
                 System.out.println("Total amount: " + fc.getTotalOrderMoney(orderId));
@@ -217,7 +217,7 @@ public class Main {
     }
 
     private static void editBillOfQuantities(int suppId) {
-        String ans="";
+        String ans = "";
         if (!fc.checkBillOfQuantity(suppId)) {
             System.out.println("No bill of quantities was found.");
         } else {
@@ -233,17 +233,17 @@ public class Main {
                 Scanner scanner2 = new Scanner(System.in);
                 int itemId = scanner2.nextInt();
                 System.out.print("Change [c] or delete [d]? ");
-                scanner2 =new Scanner(System.in);
+                scanner2 = new Scanner(System.in);
                 String choice = scanner2.nextLine();
-                if(choice.equals("C") | choice.equals("c"))
+                if (choice.equals("C") | choice.equals("c"))
                     changeInBillOfQuantities(suppId, itemId);
-                else if(choice.equals("D") | choice.equals("d"))
-                    ans =deleteFromBillOfQuantities(suppId, itemId);
+                else if (choice.equals("D") | choice.equals("d"))
+                    ans = deleteFromBillOfQuantities(suppId, itemId);
                 else {
                     System.out.println("Invalid input.");
                     ans = "n";
                 }
-                if(!ans.equals("n")) {
+                if (!ans.equals("n")) {
                     System.out.print("Update any more items? [Y/N] ");
                     ans = scanner2.nextLine();
                 }
@@ -281,7 +281,7 @@ public class Main {
             int itemId = new ArrayList<>(terms.keySet()).get(itemNum);
             System.out.print("Enter item's amount: ");
             int itemQuantity = scanner.nextInt();
-            System.out.print("Enter item's discount: (e.g 0.5)");
+            System.out.print("Enter item's discount: (i.e. 0.5)");
             Double itemDiscount = scanner.nextDouble();
             Pair<Integer, Double> pair = new Pair(itemQuantity, itemDiscount);
             if (!fc.checkBillOfQuantity(suppId)) {
@@ -319,7 +319,7 @@ public class Main {
         LinkedHashMap<Integer, Double> terms = fc.showSuppItems(suppId);
         displayItems(suppId);
 
-        System.out.print("Item's number: ");
+        System.out.print("Item's id: ");
         int itemNum = scanner.nextInt() - 1;
         int itemId = new ArrayList<>(terms.keySet()).get(itemNum);
         for(int i=0; i<fc.showSuppItems(suppId).size(); i++){
@@ -355,7 +355,7 @@ public class Main {
             System.out.print("Amount: ");
             int itemAmount = scanner.nextInt();
             items.add(new Pair(itemId, itemAmount));
-            System.out.print("Do you want to add more items to the order? [Y|N] ");
+            System.out.print("Do you want to add more items to the order? [Y/N] ");
             Scanner scanner2 = new Scanner(System.in);
             choice = scanner2.nextLine();
         } while (choice.equals("y") | choice.equals("Y"));
@@ -363,13 +363,13 @@ public class Main {
 
         if (result) {
             double totalMoney = fc.getTotalOrderMoney(orderIdCounter);
-            fc.setOrderCost(orderIdCounter,totalMoney);
+            fc.setOrderCost(orderIdCounter, totalMoney);
             System.out.println("\nOrder was added successfully.\n");
-            System.out.println("\nTotal Order Money : "+totalMoney+"\n");
+            System.out.println("\nTotal order's cost: " + totalMoney + "\n");
             orderIdCounter++;
             return orderIdCounter;
         } else {
-            System.out.println("\nOrder failed, pleas try again.\n");
+            System.out.println("\nOrder failed, please try again.\n");
             return orderIdCounter;
         }
     }
