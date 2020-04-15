@@ -25,12 +25,13 @@ public class Main {
         String choice;
         do {
             System.out.println("\nPlease choose a function:");
-            System.out.println("1. Add Supplier");
-            System.out.println("2. Delete Supplier");
-            System.out.println("3. Manage Supplier");
-            System.out.println("4. Make Order");
+            System.out.println("1. Add supplier");
+            System.out.println("2. Delete supplier");
+            System.out.println("3. Manage supplier");
+            System.out.println("4. Make order");
             System.out.println("5. View previous orders");
-            System.out.println("6. Quit");
+            System.out.println("6. Update order status");
+            System.out.println("7. Quit");
             System.out.print("Option: ");
             Scanner scanner = new Scanner(System.in);
             choice = scanner.nextLine();
@@ -57,12 +58,27 @@ public class Main {
                     showPreviousOrders();
                     break;
                 case "6":
+                    updateOrderStatus();
+                    break;
+                case "7":
                     System.out.println("Thank you for using our system.\nFor your information, no data is being saved so far.\nGoodbye!");
                     exit = true;
                     break;
             }
         } while (!exit);
         return true;
+    }
+
+    private static void updateOrderStatus() {
+        Scanner scanner = new Scanner(System.in);
+        System.out.print("Enter id of the arrived order: ");
+        int choice = scanner.nextInt();
+        if (fc.checkIfOrderExists(choice)) {
+            fc.updateOrderStatus(choice);
+            System.out.println("Status order is update to complete");
+        } else {
+            System.out.println("Order id was not found.");
+        }
     }
 
     private static void deleteSupplier(int suppId) {
@@ -86,6 +102,7 @@ public class Main {
                 }
                 int orderId=fc.getOrderIdByIndex(i);
                 System.out.println("Total amount: " + fc.getTotalOrderMoney(orderId));
+                System.out.println("Status: " + fc.getOrderStatus(orderId));
                 System.out.println();
             }
         }

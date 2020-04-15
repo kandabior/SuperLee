@@ -117,4 +117,16 @@ public class FacadeController {
     public void updateItemQuantity(int suppId, int itemId, int itemQuantity) {
         supplierController.updateItemQuantity(suppId, itemId, itemQuantity);
     }
+
+    public boolean checkIfOrderExists(int orderId) {
+       return orderController.checkIfOrderExists(orderId);
+    }
+
+    public void updateOrderStatus(int orderId) {
+        orderController.updateOrderStatus(orderId);
+    }
+
+    public String getOrderStatus(int orderId) {
+        return orderController.getOrderStatus(orderId);
+    }
 }

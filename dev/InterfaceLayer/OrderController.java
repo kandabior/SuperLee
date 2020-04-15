@@ -27,7 +27,8 @@ public class OrderController {
         if (result) {
             orders.add(order);
             return true;
-        } else return false;
+        }
+        return false;
     }
 
     public int getOrdersSize() {
@@ -62,5 +63,34 @@ public class OrderController {
     }
     public int getOrderIdByIndex(int i) {
         return this.orders.get(i).getId();
+    }
+
+    public boolean checkIfOrderExists(int orderId) {
+        for (int i =0 ;i<orders.size();i++)
+        {
+            if (orders.get(i).getId()==orderId)
+                return true;
+        }
+        return false;
+    }
+
+    public void updateOrderStatus(int orderId) {
+        for (int i =0;i<orders.size();i++)
+        {
+            if(orders.get(i).getId()==orderId)
+            {
+                orders.get(i).setStatus();
+                break;
+            }
+        }
+    }
+
+    public String getOrderStatus(int orderId) {
+        for (int i = 0; i < orders.size(); i++) {
+            if (orders.get(i).getId() == orderId) {
+                return orders.get(i).getStatus();
+            }
+        }
+        return "";
     }
 }

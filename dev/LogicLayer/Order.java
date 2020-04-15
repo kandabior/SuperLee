@@ -5,17 +5,31 @@ import javafx.util.Pair;
 import java.util.LinkedList;
 import java.util.List;
 
+enum Status{Pending,Complete}
+
 public class Order {
     int id;
     List<ItemInOrder> items;
     Supplier supplier;
     double totalCost;
+    Status status;
 
     public Order(int id, List<Pair<Integer, Integer>> items, int supplierId) {
         this.id = id;
         this.items = makeItemsInOrder(items);
         this.supplier = getSuppById(supplierId);
         totalCost=0;
+        status=Status.Pending;
+    }
+
+    public String getStatus() {
+        if(this.status==Status.Complete)
+            return "COMPLETE";
+        return "PENDING";
+    }
+
+    public void setStatus() {
+        this.status = Status.Complete;
     }
 
     public int getId() {
