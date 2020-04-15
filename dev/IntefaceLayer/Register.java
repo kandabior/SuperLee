@@ -32,17 +32,17 @@ public class Register {
         if(inventoryManagers.containsKey(username))
             return "can't register - username already exist";
         inventoryManagers.put(username,password);
-        return "LogicLayer.Inventory Manager " + username  +" - registered successfully";
+        return "Inventory Manager " + username  +" - registered successfully";
     }
     public String removeInventoryManager(String username, String password , String usernameToRemove, String passwordToRemove){
         if(!inventoryManagers.containsKey(username))
             return "can't remove inventory manager - username doesnt exist";
         if((GlobalManager.containsKey(username) && GlobalManager.get(username).equals(password))) {
             inventoryManagers.remove(usernameToRemove, passwordToRemove);
-            return "LogicLayer.Inventory Manager - " + username + " removed";
+            return "Inventory Manager - " + username + " removed";
         }
         else
-            return "Only Global Manager can remove LogicLayer.Inventory Manager";
+            return "Only Global Manager can remove Inventory Manager";
     }
     public String addGlobalManager(String username, String password){
         if(GlobalManager.containsKey(username))
@@ -58,7 +58,7 @@ public class Register {
     }
 
 
-    //LogicLayer.Inventory
+    //Inventory
     public String addProduct(String username, String password, int prodid, int amount, String name, int costPrice, int salePrice, LocalDate expDate, List<String> category, String manufacturer, int minAmount, String place){
         if((GlobalManager.containsKey(username) && GlobalManager.get(username).equals(password)) || (inventoryManagers.containsKey(username) && inventoryManagers.get(username).equals(password)))
             return inventory.addProduct(prodid, amount,name,costPrice,salePrice,expDate,category, manufacturer, minAmount, place);

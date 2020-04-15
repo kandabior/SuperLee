@@ -30,7 +30,7 @@ public class Report {
         return lines;
     }
     public static Report totalStockReport(List<Pair<Integer, Integer>> quantity) {
-        Report report=new Report("Total Stock LogicLayer.Report");
+        Report report=new Report("Total Stock Report");
         for(Pair<Integer,Integer> line: quantity){
             ReportLine reportLine= new ReportLine(line.getKey(),Inventory.getProdactName(line.getKey()),line.getValue());
             report.addLine(reportLine);
@@ -38,7 +38,7 @@ public class Report {
         return report;
     }
     public static Report makeShelfReport(List<Pair<Integer, Integer>> shelfStock) {
-        Report report=new Report("Shelf LogicLayer.Report");
+        Report report=new Report("Shelf Report");
         for(Pair<Integer,Integer> line: shelfStock){
             ReportLine reportLine= new ReportLine(line.getKey(),Inventory.getProdactName(line.getKey()),line.getValue());
             report.addLine(reportLine);
@@ -47,7 +47,7 @@ public class Report {
     }
 
     public static Report makeStorageReport(List<Pair<Integer, Integer>> storageStock) {
-        Report report=new Report("Storage LogicLayer.Report");
+        Report report=new Report("Storage Report");
         for(Pair<Integer,Integer> line: storageStock){
             ReportLine reportLine= new ReportLine(line.getKey(),Inventory.getProdactName(line.getKey()),line.getValue());
             report.addLine(reportLine);
@@ -60,7 +60,7 @@ public class Report {
     }
 
     public static Report makeMissingReport(List<Pair<Integer, Integer>> quantity){
-        Report report= new Report("Missing LogicLayer.Product LogicLayer.Report");
+        Report report= new Report("Missing Product Report");
         for(Pair<Integer,Integer> line: quantity){
             ReportLine reportLine= new ReportLine(line.getKey(),Inventory.getProdactName(line.getKey()),line.getValue());
             reportLine.addToLine("minimum amount: "+ Inventory.getProductMin(line.getKey()));
@@ -70,7 +70,7 @@ public class Report {
     }
 
     public static Report makeDefectiveReport(List<Pair<Integer, Integer>> quantity){
-        Report report= new Report("Defective LogicLayer.Product LogicLayer.Report");
+        Report report= new Report("Defective Product Report");
         for(Pair<Integer,Integer> line: quantity){
             ReportLine reportLine= new ReportLine(line.getKey(),Inventory.getProdactName(line.getKey()),line.getValue());
             report.addLine(reportLine);
@@ -79,7 +79,7 @@ public class Report {
     }
 
     public static Report makeCategoryReport(List<Pair<Integer,Integer>> quantity){
-        Report report= new Report("Category LogicLayer.Report");
+        Report report= new Report("Category Report");
         for(Pair<Integer,Integer> line: quantity){
             ReportLine reportLine= new ReportLine(line.getKey(),Inventory.getProdactName(line.getKey()),line.getValue());
             report.addLine(reportLine);
@@ -89,7 +89,7 @@ public class Report {
 
 
     public static Report makeSalePriceReport(Pair<Integer, List<Integer>> prices) {
-        Report report= new Report("Sale Prices LogicLayer.Report");
+        Report report= new Report("Sale Prices Report");
         ReportLine reportLine=new ReportLine(prices.getKey(),Inventory.getProdactName(prices.getKey()),Inventory.getAmount(prices.getKey()));
         reportLine.addToLine("Prices: "+prices.getValue().toString());
 
@@ -97,7 +97,7 @@ public class Report {
         return report;
     }
     public static Report makeCostPriceReport(Pair<Integer, List<Integer>> prices) {
-        Report report= new Report("Cost Prices LogicLayer.Report");
+        Report report= new Report("Cost Prices Report");
         ReportLine reportLine=new ReportLine(prices.getKey(),Inventory.getProdactName(prices.getKey()),Inventory.getAmount(prices.getKey()));
         reportLine.addToLine("Prices: "+prices.getValue().toString());
 
@@ -109,8 +109,8 @@ public class Report {
     public String toString(){
         String output="--------------------------------------------------\n";
 
-        output= output+"LogicLayer.Report name:"+getTitle()+"\n";
-        output=output+"LogicLayer.Report Id: "+ getReportId()+"\n";
+        output= output+"Report name:"+getTitle()+"\n";
+        output=output+"Report Id: "+ getReportId()+"\n";
         int count=1;
         for (ReportLine reportLine: getLines()){
             output=output+ count +". "+reportLine.toString()+"\n";
