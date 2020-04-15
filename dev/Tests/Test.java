@@ -3,11 +3,8 @@ import InterfaceLayer.FacadeController;
 import javafx.util.Pair;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
-
 import org.junit.jupiter.api.Test;
-
 import java.util.*;
-
 import static org.junit.Assert.assertNotEquals;
 import static org.junit.Assert.assertEquals;
 class Tests {
