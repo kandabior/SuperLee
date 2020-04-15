@@ -113,4 +113,8 @@ public class FacadeController {
     public int getItemAmountByIndex(int suppId, int i) {
         return supplierController.getItemAmountByIndex(suppId,i);
     }
+
+    public void updateItemQuantity(int suppId, int itemId, int itemQuantity) {
+        supplierController.updateItemQuantity(suppId, itemId, itemQuantity);
+    }
 }

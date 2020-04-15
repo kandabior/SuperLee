@@ -137,4 +137,8 @@ public class SupplierController {
     public int getItemAmountByIndex(int suppId, int i) {
         return getSuppById(suppId).getItemAmountByIndex(i);
     }
+
+    public void updateItemQuantity(int suppId, int itemId, int itemQuantity) {
+        getSuppById(suppId).updateItemQuantity(itemId, itemQuantity);
+    }
 }

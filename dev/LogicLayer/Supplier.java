@@ -49,7 +49,6 @@ public class Supplier {
                 if (this.items.get(j).getKey().getId() == items.get(i).getItemId()) {
                     Pair<Item, Integer> p = new Pair(this.items.get(j).getKey(), (this.items.get(j).getValue() - items.get(i).getQuantity()));
                     this.items.set(j, p);
-                    //this.items.add(p);
                 }
             }
         }
@@ -69,14 +68,6 @@ public class Supplier {
     public void addItemToAgreement(Integer item_id, Double cost) {
         this.agreement.insertItem(item_id,cost);
     }
-
- /*   public List<LogicLayer.Item> getItems() {
-        LinkedList items = new LinkedList();
-        for(int i=0; i < this.items.size(); i++){
-            items.add(this.items.get(i).getKey());
-        }
-        return items;
-    }*/
 
     public double getPriceOfItem(int index) {
         return  this.agreement.getPriceOfItem(index);
@@ -142,5 +133,13 @@ public class Supplier {
 
     public int getItemAmountByIndex(int i) {
         return items.get(i).getValue();
+    }
+
+    public void updateItemQuantity(int itemId, int quantity){
+        for (int i = 0; i < this.items.size(); i++) {
+            if(this.items.get(i).getKey().getId() == itemId){
+                this.items.set(i, new Pair<>(this.items.get(i).getKey(), quantity));
+            }
+        }
     }
 }
