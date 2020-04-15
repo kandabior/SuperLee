@@ -109,4 +109,8 @@ public class FacadeController {
     public int getOrderIdByIndex(int i) {
        return orderController.getOrderIdByIndex(i);
     }
+
+    public int getItemAmountByIndex(int suppId, int i) {
+        return supplierController.getItemAmountByIndex(suppId,i);
+    }
 }

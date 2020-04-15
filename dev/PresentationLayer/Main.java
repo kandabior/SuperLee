@@ -82,7 +82,7 @@ public class Main {
                 int supplierId = fc.getSupplierIdOfOrder(i);
                 System.out.println("Supplier's id: " + supplierId +  ", order number: " + i);
                 for (int j = 0; j < list.size(); j++) {
-                    System.out.println("Item's id :" + list.get(j).getKey() +"name : "+fc.getItemNameByIndex(supplierId,j) + ", quantity: " + list.get(j).getValue());
+                    System.out.println("Item's id :" + list.get(j).getKey() +" name : "+fc.getItemNameByIndex(supplierId,j) + ", quantity: " + list.get(j).getValue());
                 }
                 int orderId=fc.getOrderIdByIndex(i);
                 System.out.println("Total amount: " + fc.getTotalOrderMoney(orderId));
@@ -304,10 +304,12 @@ public class Main {
             String itemDesc = fc.getItemDescByIndex(suppId,i);
             int itemId= fc.getItemIdByIndex(suppId,i);
             double itemPrice = fc.getPriceOfItem(suppId,itemId);
-            System.out.print(i+1 + ". " + itemName + ", ");
+            System.out.print(itemId + ". " + itemName + ", ");
             if(itemDesc.length() > 0)
                 System.out.print(itemDesc + ", ");
-            System.out.print(itemPrice + " NIS\n");
+            System.out.print(itemPrice + " NIS");
+            int itemAmount = fc.getItemAmountByIndex(suppId,i);
+            System.out.print( ", amount: "+itemAmount+"\n");
         }
     }
 
@@ -348,8 +350,8 @@ public class Main {
         String choice;
         do {
             System.out.print("Item's number: ");
-            int itemNum = scanner.nextInt() - 1;
-            int itemId = new ArrayList<>(fc.showSuppItems(suppId).keySet()).get(itemNum);
+            int itemId = scanner.nextInt() ;
+            //int itemId = new ArrayList<>(fc.showSuppItems(suppId).keySet()).get(itemNum);
             System.out.print("Amount: ");
             int itemAmount = scanner.nextInt();
             items.add(new Pair(itemId, itemAmount));

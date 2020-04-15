@@ -36,17 +36,21 @@ public class Supplier {
     public boolean makeOrder(List<ItemInOrder> items) {
         int counter = 0;
         for (int i = 0; i < items.size(); i++) {
-            if (this.items.get(i).getKey().getId() == items.get(i).getItemId()) {
-                if (this.items.get(i).getValue() >= items.get(i).getQuantity())
-                    counter++;
+            for (int j = 0; j < this.items.size(); j++) {
+                if (this.items.get(j).getKey().getId() == items.get(i).getItemId()) {
+                    if (this.items.get(j).getValue() >= items.get(i).getQuantity())
+                        counter++;
+                }
             }
         }
         if (counter != items.size()) return false;
         for (int i = 0; i < items.size(); i++) {
-            if (this.items.get(i).getKey().getId() == items.get(i).getItemId()) {
-                Pair<Item, Integer> p = new Pair(this.items.get(i).getKey(), (this.items.get(i).getValue() - items.get(i).getQuantity()));
-                this.items.remove(i);
-                this.items.add(p);
+            for (int j = 0; j < this.items.size(); j++) {
+                if (this.items.get(j).getKey().getId() == items.get(i).getItemId()) {
+                    Pair<Item, Integer> p = new Pair(this.items.get(j).getKey(), (this.items.get(j).getValue() - items.get(i).getQuantity()));
+                    this.items.set(j, p);
+                    //this.items.add(p);
+                }
             }
         }
         return true;
@@ -134,5 +138,9 @@ public class Supplier {
 
     public double getTotalMoneyOfItemInOrder(int itemId, int quantity) {
         return this.agreement.getTotalMoneyOfItemInOrder(itemId,quantity);
+    }
+
+    public int getItemAmountByIndex(int i) {
+        return items.get(i).getValue();
     }
 }

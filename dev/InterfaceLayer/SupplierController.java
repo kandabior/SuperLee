@@ -133,4 +133,8 @@ public class SupplierController {
     public boolean validateItemId(int suppId, int itemId) {
         return getSuppById(suppId).validateItemId(itemId);
     }
+
+    public int getItemAmountByIndex(int suppId, int i) {
+        return getSuppById(suppId).getItemAmountByIndex(i);
+    }
 }
