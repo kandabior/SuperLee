@@ -12,25 +12,25 @@ import java.util.List;
 
 public class Tests {
 
-    private Register register;
+
 
 
 
     @Test
     public void addProdTest1(){
-        register=new Register();
+        Register register=new Register();
         register.addGlobalManager("Erez", "1234");
         List<String> cat1 = new LinkedList<>();
         cat1.add("Shimurim");
         LocalDate date1 = LocalDate.of(20, 12,31);
         register.addProduct("Erez", "1234",1, 20, "Corn",5,
                 8, date1,cat1,"Osem", 10, "area1");
-        assert register.totalStockReport().contains("Corn");
+        assert register.getquantityById(1).getValue().getValue()==20;
     }
 
     @Test
     public void addProdTest2(){
-        register=new Register();
+        Register register=new Register();
 
         List<String> cat2 = new LinkedList<>();
         cat2.add("Halavi");
@@ -43,42 +43,120 @@ public class Tests {
 
     @Test
     public void ChangeAmount1(){
-        register=new Register();
+        Register register=new Register();
         register.addGlobalManager("Erez", "1234");
         List<String> cat1 = new LinkedList<>();
         cat1.add("Shimurim");
         LocalDate date1 = LocalDate.of(20, 12,31);
-        register.addProduct("Erez", "1234",1, 20, "Corn",5,
+        register.addProduct("Erez", "1234",3, 20, "Milki",5,
                 8, date1,cat1,"Osem", 10, "area1");
-        register.addAmountToProduct(1,30);
-        assert register.totalStockReport().contains("50");
+        register.addAmountToProduct(3,30);
+        assert register.getquantityById(3).getValue().getValue()==50;
     }
 
     @Test
     public void changeAmount2(){
-        register=new Register();
+        Register register=new Register();
         register.addGlobalManager("Erez", "1234");
         List<String> cat1 = new LinkedList<>();
         cat1.add("Shimurim");
         LocalDate date1 = LocalDate.of(20, 12,31);
-        register.addProduct("Erez", "1234",1, 20, "Corn",5,
+        register.addProduct("Erez", "1234",4, 20, "Corn",5,
                 8, date1,cat1,"Osem", 10, "area1");
 
-        register.removeAmountFromProduct(1,5);
-        assert register.totalStockReport().contains("15");
+        register.removeAmountFromProduct(4,5);
+        assert register.getquantityById(4).getValue().getValue()==15;
     }
 
     @Test
     public void transferAmountToStorage(){
 
-        register=new Register();
+        Register register=new Register();
         register.addGlobalManager("Erez", "1234");
         List<String> cat1 = new LinkedList<>();
         cat1.add("Shimurim");
         LocalDate date1 = LocalDate.of(20, 12,31);
-        register.addProduct("Erez", "1234",1, 20, "Corn",5,
+        register.addProduct("Erez", "1234",5, 20, "Corn",5,
                 8, date1,cat1,"Osem", 10, "area1");
-        register.shelfToStorage(1,10);
-        assert register.StorageReport().contains("10");
+        register.shelfToStorage(5,5);
+        assert register.getquantityById(5).getValue().getValue()==15 &&
+                register.getquantityById(5).getValue().getKey()==5;
     }
+
+    @Test
+    public void transferAmountToShelf(){
+
+        Register register=new Register();
+        register.addGlobalManager("Erez", "1234");
+        List<String> cat1 = new LinkedList<>();
+        cat1.add("Shimurim");
+        LocalDate date1 = LocalDate.of(20, 12,31);
+        register.addProduct("Erez", "1234",6, 20, "Corn",5,
+                8, date1,cat1,"Osem", 10, "area1");
+        register.shelfToStorage(6,5);
+        register.storageToShelf(6,2);
+        assert register.getquantityById(6).getValue().getValue()==17 &&
+                register.getquantityById(6).getValue().getKey()==3;
+    }
+
+    @Test
+    public void MinTest(){
+        Register register=new Register();
+        register.addGlobalManager("Erez", "1234");
+        List<String> cat1 = new LinkedList<>();
+        cat1.add("Shimurim");
+        LocalDate date1 = LocalDate.of(20, 12,31);
+        register.addProduct("Erez", "1234",7, 20, "Corn",5,
+                8, date1,cat1,"Osem", 10, "area1");
+        register.removeAmountFromProduct(7,15);
+        assert register.NeedToBuyReport().contains("Corn");
+    }
+
+    @Test
+    public void EXPTest(){
+        Register register=new Register();
+        register.addGlobalManager("Erez", "1234");
+        List<String> cat1 = new LinkedList<>();
+        cat1.add("Shimurim");
+        LocalDate date1 = LocalDate.of(20, 12,31);
+        register.addProduct("Erez", "1234",8, 20, "Corn",5,
+                8, date1,cat1,"Osem", 10, "area1");
+        register.setDefectiveProducts(8,5);
+        assert register.getquantityEXPById(8).getValue()==5;
+    }
+
+    @Test
+    public void changeSalePriceById(){
+        Register register=new Register();
+        register.addGlobalManager("Erez", "1234");
+        List<String> cat1 = new LinkedList<>();
+        cat1.add("Shimurim");
+        LocalDate date1 = LocalDate.of(20, 12,31);
+        register.addProduct("Erez", "1234",9, 20, "Corn",5,
+                8, date1,cat1,"Osem", 10, "area1");
+
+        register.setSalePriceById("Erez","1234",9,15);
+
+        assert register.getProductSalePrice(9)==15;
+    }
+
+    @Test
+    public void changeSalePriceByCategory(){
+        Register register=new Register();
+        register.addGlobalManager("Erez", "1234");
+        List<String> cat1 = new LinkedList<>();
+        cat1.add("Shimurim");
+        LocalDate date1 = LocalDate.of(20, 12,31);
+        register.addProduct("Erez", "1234",10, 20, "Corn",5,
+                8, date1,cat1,"Osem", 10, "area1");
+        register.addProduct("Erez", "1234",11, 20, "Corn",5,
+                13, date1,cat1,"Osem", 10, "area1");
+        register.setPriceByCategory("Erez","1234",cat1,15);
+
+        assert register.getProductSalePrice(10)==15 && register.getProductSalePrice(11)==15;
+    }
+
+
+
+
 }

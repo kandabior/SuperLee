@@ -145,4 +145,17 @@ public class Register {
         Pair<Integer,List<Integer>> prices= inventory.CostPricesById(id);
         return reportMaker.printCostProductPrices(prices);
     }
+
+    //Tests Methods
+    public Pair<Integer,Pair<Integer,Integer>> getquantityById(Integer Id){
+        return inventory.getQuantityById(Id);
+    }
+
+    public Pair<Integer,Integer> getquantityEXPById(Integer Id){
+        return inventory.getQuantityEXPById(Id);
+    }
+
+    public int getProductSalePrice(int id) {
+        return inventory.getProdSalePrice(id);
+    }
 }

@@ -229,4 +229,19 @@ public class Inventory {
             return "product id: " + prodId + "- amount of " + amount + " set us expired. (Less than the Minimum amount - Need to buy more from this product)";
         return "product id: " + prodId + " - amount of " + amount + " set us expired";
     }
+
+
+    //Tests Methods
+    public Pair<Integer,Pair<Integer,Integer>> getQuantityById(Integer id) {
+        return new Pair<>(id,quantities.get(id));
+    }
+
+
+    public Pair<Integer, Integer> getQuantityEXPById(Integer id) {
+        return new Pair<>(id,expired.get(id));
+    }
+
+    public int getProdSalePrice(int id) {
+        return inventory.get(id).getSalePrice();
+    }
 }

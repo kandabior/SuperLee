@@ -28,17 +28,17 @@ public class Main {
         int choose;
         do{
             Printer.Print("\n\nPlease choose an action:\n"+
-                            "1. IntefaceLayer.Register global manager\n" +
-                            "2. IntefaceLayer.Register inventory manager\n" +
+                            "1. Register global manager\n" +
+                            "2. Register inventory manager\n" +
                             "3. Add product   (Manager Only)\n" +
                             "4. Remove products   (Manager Only)\n" +
                             "5. Change product price by id   (Global Manager Only)\n" +
                             "6. Change product price by category   (Global Manager Only)\n" +
-                            "7. Add amount to LogicLayer.Product\n" +
-                            "8. Remove amount from LogicLayer.Product\n" +
-                            "9. Change categories to LogicLayer.Product\n" +
-                            "10. Transfer amount of LogicLayer.Product from the storage to the shelf\n" +
-                            "11. Transfer amount of LogicLayer.Product from the shelf to the storage\n" +
+                            "7. Add amount to Product\n" +
+                            "8. Remove amount from Product\n" +
+                            "9. Change categories to Product\n" +
+                            "10. Transfer amount of Product from the storage to the shelf\n" +
+                            "11. Transfer amount of Product from the shelf to the storage\n" +
                             "12. Set amount of defective products\n" +
                             "Reports:\n"+
                             "13. Print total stock report\n" +
@@ -119,40 +119,40 @@ public class Main {
     }
 
     private static void shelfToStorage(){
-        Printer.Print("\nPlease Enter LogicLayer.Product Id:\n");
+        Printer.Print("\nPlease Enter Product Id:\n");
         String prodId = scanner.next();
         Printer.Print("\nPlease Enter amount to take from the shelf to the storage:\n");
         String amount = scanner.next();
         Printer.Print(register.shelfToStorage(Integer.parseInt(prodId),Integer.parseInt(amount)));
     }
     private static void StorageToShelf(){
-        Printer.Print("\nPlease Enter LogicLayer.Product Id:\n");
+        Printer.Print("\nPlease Enter Product Id:\n");
         String prodId = scanner.next();
         Printer.Print("\nPlease Enter amount to take from the storage to the shelf:\n");
         String amount = scanner.next();
         Printer.Print(register.storageToShelf(Integer.parseInt(prodId),Integer.parseInt(amount)));
     }
     private static void addAmountToProduct(){
-        Printer.Print("\nPlease Enter LogicLayer.Product Id:\n");
+        Printer.Print("\nPlease Enter Product Id:\n");
         String prodId = scanner.next();
         Printer.Print("\nPlease Enter amount to add:\n");
         String amount = scanner.next();
         Printer.Print(register.addAmountToProduct(Integer.parseInt(prodId),Integer.parseInt(amount)));
     }
     private static void removeAmountFromProduct(){
-        Printer.Print("\nPlease Enter LogicLayer.Product Id:\n");
+        Printer.Print("\nPlease Enter Product Id:\n");
         String prodId = scanner.next();
         Printer.Print("\nPlease Enter amount to remove:\n");
         String amount = scanner.next();
         Printer.Print(register.removeAmountFromProduct(Integer.parseInt(prodId),Integer.parseInt(amount)));
     }
     private static void LastCostPrice(){
-        Printer.Print("\nPlease Enter LogicLayer.Product Id:\n");
+        Printer.Print("\nPlease Enter Product Id:\n");
         String id = scanner.next();
         Printer.Print(register.getLastCostPrice(Integer.parseInt(id)));
     }
     private static void LastSalePrice(){
-        Printer.Print("\nPlease Enter LogicLayer.Product Id:\n");
+        Printer.Print("\nPlease Enter Product Id:\n");
         String id = scanner.next();
         Printer.Print(register.getLastSalePrice(Integer.parseInt(id)));
     }
