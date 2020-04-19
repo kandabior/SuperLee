@@ -218,9 +218,9 @@ public class Main {
         String costPrice=scanner.next();
         Printer.Print("salePrice: ");
         String salePrice=scanner.next();
-        Printer.Print("EXP date: ");
+        Printer.Print("EXP date (format of DD/MM/YYYY): ");
         String expdate=scanner.next();
-        Printer.Print("categories: (with ',' between them)");
+        Printer.Print("categories (with ',' between them with no spaces):");
         String categories=scanner.next();
         Printer.Print("manufacturer: ");
         String manufacturer=scanner.next();
@@ -229,7 +229,8 @@ public class Main {
         Printer.Print("place: ");
         String place=scanner.next();
         List<String> categoriesList= Arrays.asList(categories.split(","));
-        LocalDate date = LocalDate.parse(expdate);
+        String []dateArr=expdate.split("/");
+        LocalDate date = LocalDate.of(Integer.parseInt(dateArr[2]),Integer.parseInt(dateArr[1]),Integer.parseInt(dateArr[0]));
         Printer.Print(register.addProduct(userName,password,Integer.parseInt(prodId),Integer.parseInt(amount),name,Integer.parseInt(costPrice),Integer.parseInt(salePrice), date,categoriesList,manufacturer,Integer.parseInt(minAmount),place));
     }
     private static void AddInventoryManager() {
