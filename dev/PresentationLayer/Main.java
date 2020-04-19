@@ -46,30 +46,77 @@ public class Main {
                             "19. Print sale price report\n"+
                             "20. Print cost price report\n"+
                             "21. Quit.\n");
-            choose=scanner.nextInt();
-            switch (choose){
-                case 1: AddGlobalManager(); break;
-                case 2: AddInventoryManager(); break;
-                case 3: AddProduct(); break;
-                case 4: RemoveProduct();break;
-                case 5: ChangePriceById(); break;
-                case 6: changeProductByCategory(); break;
-                case 7: addAmountToProduct(); break;
-                case 8: removeAmountFromProduct(); break;
-                case 9: changeCategory(); break;
-                case 10: StorageToShelf(); break;
-                case 11: shelfToStorage(); break;
-                case 12: setDefectiveProducts(); break;
-                //case 13: LastSalePrice(); break;
-                case 13: PrintTotalStock();break;
-                case 14: printStorageStock(); break;
-                case 15: printShelfStock(); break;
-                case 16: PrintProductByCategories(); break;
-                case 17: PrintMissingProduct(); break;
-                case 18: PrintEXPProducts(); break;
-                case 19: PrintSalePriceReport(); break;
-                case 20: PrintCostPriceReport(); break;
-                case 21: Quit();break;
+            choose = scanner.nextInt();
+            try {
+                switch (choose) {
+                    case 1:
+                        AddGlobalManager();
+                        break;
+                    case 2:
+                        AddInventoryManager();
+                        break;
+                    case 3:
+                        AddProduct();
+                        break;
+                    case 4:
+                        RemoveProduct();
+                        break;
+                    case 5:
+                        ChangePriceById();
+                        break;
+                    case 6:
+                        changeProductByCategory();
+                        break;
+                    case 7:
+                        addAmountToProduct();
+                        break;
+                    case 8:
+                        removeAmountFromProduct();
+                        break;
+                    case 9:
+                        changeCategory();
+                        break;
+                    case 10:
+                        StorageToShelf();
+                        break;
+                    case 11:
+                        shelfToStorage();
+                        break;
+                    case 12:
+                        setDefectiveProducts();
+                        break;
+                    //case 13: LastSalePrice(); break;
+                    case 13:
+                        PrintTotalStock();
+                        break;
+                    case 14:
+                        printStorageStock();
+                        break;
+                    case 15:
+                        printShelfStock();
+                        break;
+                    case 16:
+                        PrintProductByCategories();
+                        break;
+                    case 17:
+                        PrintMissingProduct();
+                        break;
+                    case 18:
+                        PrintEXPProducts();
+                        break;
+                    case 19:
+                        PrintSalePriceReport();
+                        break;
+                    case 20:
+                        PrintCostPriceReport();
+                        break;
+                    case 21:
+                        Quit();
+                        break;
+                }
+            }
+            catch (Exception e){
+                Printer.Print("can't execute the action");
             }
         }
         while(choose!=21);
