@@ -29,116 +29,224 @@ public class Register {
 
     //Managers
     public String addInventoryManager(String username, String password){
-        if(inventoryManagers.containsKey(username))
-            return "can't register - username already exist";
-        inventoryManagers.put(username,password);
-        return "Inventory Manager " + username  +" - registered successfully";
+        try {
+            if (inventoryManagers.containsKey(username))
+                return "can't register - username already exist";
+            inventoryManagers.put(username, password);
+            return "Inventory Manager " + username + " - registered successfully";
+        }
+        catch (Exception e){
+            return "can't execute the action";
+        }
     }
     public String removeInventoryManager(String username, String password , String usernameToRemove, String passwordToRemove){
-        if(!inventoryManagers.containsKey(username))
-            return "can't remove inventory manager - username doesnt exist";
-        if((GlobalManager.containsKey(username) && GlobalManager.get(username).equals(password))) {
-            inventoryManagers.remove(usernameToRemove, passwordToRemove);
-            return "Inventory Manager - " + username + " removed";
+        try {
+            if (!inventoryManagers.containsKey(username))
+                return "can't remove inventory manager - username doesnt exist";
+            if ((GlobalManager.containsKey(username) && GlobalManager.get(username).equals(password))) {
+                inventoryManagers.remove(usernameToRemove, passwordToRemove);
+                return "Inventory Manager - " + username + " removed";
+            } else
+                return "Only Global Manager can remove Inventory Manager";
         }
-        else
-            return "Only Global Manager can remove Inventory Manager";
+        catch (Exception e){
+            return "can't execute the action";
+        }
     }
     public String addGlobalManager(String username, String password){
-        if(GlobalManager.containsKey(username))
-            return "can't register - username already exist";
-        GlobalManager.put(username,password);
-        return "Global Manager " + username  +" - registered successfully";
+        try {
+            if (GlobalManager.containsKey(username))
+                return "can't register - username already exist";
+            GlobalManager.put(username, password);
+            return "Global Manager " + username + " - registered successfully";
+        }
+        catch (Exception e){
+            return "can't execute the action";
+        }
     }
-    public String removeGlobalManager(String username, Integer password){
-        if(!GlobalManager.containsKey(username))
-            return "can't remove Global Manager - username doesnt exist";
-        GlobalManager.remove(username,password);
-        return "Global Manager - " + username + " removed";
-    }
+    /*public String removeGlobalManager(String username, Integer password){
+        try {
+
+            if (!GlobalManager.containsKey(username))
+                return "can't remove Global Manager - username doesnt exist";
+            GlobalManager.remove(username, password);
+            return "Global Manager - " + username + " removed";
+        }
+        catch (Exception e){
+            return "can't execute the action";
+        }
+    }*/
 
 
     //Inventory
     public String addProduct(String username, String password, int prodid, int amount, String name, int costPrice, int salePrice, LocalDate expDate, List<String> category, String manufacturer, int minAmount, String place){
-        if((GlobalManager.containsKey(username) && GlobalManager.get(username).equals(password)) || (inventoryManagers.containsKey(username) && inventoryManagers.get(username).equals(password)))
-            return inventory.addProduct(prodid, amount,name,costPrice,salePrice,expDate,category, manufacturer, minAmount, place);
-        return "can't add product - you are need to be a Manager";
+        try {
+            if ((GlobalManager.containsKey(username) && GlobalManager.get(username).equals(password)) || (inventoryManagers.containsKey(username) && inventoryManagers.get(username).equals(password)))
+                return inventory.addProduct(prodid, amount, name, costPrice, salePrice, expDate, category, manufacturer, minAmount, place);
+            return "can't add product - you are need to be a Manager";
+        }catch (Exception e){
+            return "can't execute the action";
+        }
     }
     public String removeProduct(String username, String password, int prodid){
-        if((GlobalManager.containsKey(username) && GlobalManager.get(username).equals(password)) || (inventoryManagers.containsKey(username) && inventoryManagers.get(username).equals(password)))
-            return inventory.removeProduct(prodid);
-        return "can't remove product - you are need to be a Manager";
+        try {
+            if ((GlobalManager.containsKey(username) && GlobalManager.get(username).equals(password)) || (inventoryManagers.containsKey(username) && inventoryManagers.get(username).equals(password)))
+                return inventory.removeProduct(prodid);
+            return "can't remove product - you are need to be a Manager";
+        }
+        catch (Exception e){
+            return "can't execute the action";
+        }
     }
     public String addAmountToProduct(int id, int amount){
-        return inventory.addAmountToProduct(id, amount);
+        try {
+            return inventory.addAmountToProduct(id, amount);
+        }
+        catch (Exception e){
+            return "can't execute the action";
+        }
     }
     public String removeAmountFromProduct(int id, int amount){
-        return inventory.removeAmountFromProduct(id,amount);
+        try{
+            return inventory.removeAmountFromProduct(id,amount);
+        }
+        catch (Exception e){
+            return "can't execute the action";
+        }
     }
     public String setSalePriceById(String username, String password ,int prodid, int price){
-        if(GlobalManager.containsKey(username) && GlobalManager.get(username).equals(password))
-           return inventory.setSalePrice(prodid,price);
-        return "can't change price of product - you are need to be a Global Manager";
+        try{
+            if(GlobalManager.containsKey(username) && GlobalManager.get(username).equals(password))
+                return inventory.setSalePrice(prodid,price);
+            return "can't change price of product - you are need to be a Global Manager";
+        }
+        catch (Exception e){
+            return "can't execute the action";
+        }
     }
     public String setPriceByCategory(String username, String password , List<String> category,int price){
-        if(GlobalManager.containsKey(username) && GlobalManager.get(username).equals(password))
-            return inventory.setPriceByCategory(category, price);
-        return "can't change price of product - you are need to be a Global Manager";
+        try {
+            if (GlobalManager.containsKey(username) && GlobalManager.get(username).equals(password))
+                return inventory.setPriceByCategory(category, price);
+            return "can't change price of product - you are need to be a Global Manager";
+        }
+        catch (Exception e){
+            return "can't execute the action";
+        }
     }
     public String setCategory(String username, String password, int id, List<String> category){
-        if((GlobalManager.containsKey(username) && GlobalManager.get(username).equals(password)) || (inventoryManagers.containsKey(username) && inventoryManagers.get(username).equals(password)))
-            return inventory.setCategory(id,category);
-        return "can't remove product - you are need to be a Manager";
+        try{
+            if((GlobalManager.containsKey(username) && GlobalManager.get(username).equals(password)) || (inventoryManagers.containsKey(username) && inventoryManagers.get(username).equals(password)))
+                return inventory.setCategory(id,category);
+            return "can't remove product - you are need to be a Manager";
+        }
+        catch (Exception e){
+            return "can't execute the action";
+        }
     }
     public String setDefectiveProducts(Integer prodId, Integer amount) {
-        return inventory.setDefectiveProducts(prodId,amount);
+        try {
+            return inventory.setDefectiveProducts(prodId,amount);
+        }
+        catch (Exception e){
+            return "can't execute the action";
+        }
     }
 
     public String shelfToStorage(int id, int amount){
-        return inventory.shelfToStorage(id,amount);
+        try{
+            return inventory.shelfToStorage(id,amount);
+        }
+        catch (Exception e){
+            return "can't execute the action";
+        }
     }
 
     public String storageToShelf(int id, int amount){
-        return inventory.storageToShelf(id,amount);
+        try{
+            return inventory.storageToShelf(id,amount);
+        }
+        catch (Exception e){
+            return "can't execute the action";
+        }
     }
     //Reports
     public String NeedToBuyReport(){
-        List<Pair<Integer,Integer>> toBuy = inventory.NeedToBuyProducts();
-        return reportMaker.printMissingProducts(toBuy);
+        try {
+            List<Pair<Integer, Integer>> toBuy = inventory.NeedToBuyProducts();
+            return reportMaker.printMissingProducts(toBuy);
+        }
+        catch (Exception e){
+            return "can't execute the action";
+        }
     }
     public String totalStockReport(){
-        List<Pair<Integer,Integer>> totalStock = inventory.getQuantity();
-        return reportMaker.printStock(totalStock);
+        try {
+            List<Pair<Integer, Integer>> totalStock = inventory.getQuantity();
+            return reportMaker.printStock(totalStock);
+        }
+        catch (Exception e){
+            return "can't execute the action";
+        }
     }
     public String ShelfReport() {
-        List<Pair<Integer,Integer>> shelfStock=inventory.getShelfQuantity();
-        return reportMaker.printShelfReport(shelfStock);
+        try {
+            List<Pair<Integer, Integer>> shelfStock = inventory.getShelfQuantity();
+            return reportMaker.printShelfReport(shelfStock);
+        }catch (Exception e){
+            return "can't execute the action";
+        }
     }
 
     public String StorageReport() {
-        List<Pair<Integer,Integer>> storageStock=inventory.getStorageQuantity();
-        return reportMaker.printStorageReport(storageStock);
+        try {
+            List<Pair<Integer, Integer>> storageStock = inventory.getStorageQuantity();
+            return reportMaker.printStorageReport(storageStock);
+        }
+        catch (Exception e){
+            return "can't execute the action";
+        }
 
     }
 
     public String CategoryReport(List<String> category){
-        List<Pair<Integer,Integer>> prodByCategories = inventory.getProductsByCategories(category);
-        return reportMaker.printByCategories(prodByCategories);
+        try {
+            List<Pair<Integer, Integer>> prodByCategories = inventory.getProductsByCategories(category);
+            return reportMaker.printByCategories(prodByCategories);
+        }
+        catch (Exception e){
+            return "can't execute the action";
+        }
     }
 
     public String ExpiredReport(){
-        List<Pair<Integer,Integer>> expiredProducts = inventory.ExpiredProducts();
-        return reportMaker.MakeDefectiveReport(expiredProducts);
+        try {
+            List<Pair<Integer, Integer>> expiredProducts = inventory.ExpiredProducts();
+            return reportMaker.MakeDefectiveReport(expiredProducts);
+        }
+        catch (Exception e){
+            return "can't execute the action";
+        }
     }
 
     public String SalePricesReport(Integer id){
-        Pair<Integer,List<Integer>> prices= inventory.SalePricesById(id);
-        return reportMaker.printSaleProductPrices(prices);
+        try{
+            Pair<Integer,List<Integer>> prices= inventory.SalePricesById(id);
+            return reportMaker.printSaleProductPrices(prices);
+        }
+        catch (Exception e){
+            return "can't execute the action";
+        }
     }
 
     public String CostPriceReport(Integer id){
-        Pair<Integer,List<Integer>> prices= inventory.CostPricesById(id);
-        return reportMaker.printCostProductPrices(prices);
+        try {
+            Pair<Integer, List<Integer>> prices = inventory.CostPricesById(id);
+            return reportMaker.printCostProductPrices(prices);
+        }
+        catch (Exception e){
+            return "can't execute the action";
+        }
     }
 
     //Tests Methods
