@@ -20,53 +20,59 @@ public class Main {
     }
 
     private static boolean displayMainMenu(){
-        boolean exit = false;
-        int suppId;
-        String choice;
-        do {
-            System.out.println("\nPlease choose a function:");
-            System.out.println("1. Add supplier");
-            System.out.println("2. Delete supplier");
-            System.out.println("3. Manage supplier");
-            System.out.println("4. Make order");
-            System.out.println("5. View previous orders");
-            System.out.println("6. Update order status");
-            System.out.println("7. Quit");
-            System.out.print("Option: ");
-            Scanner scanner = new Scanner(System.in);
-            choice = scanner.nextLine();
-            switch (choice) {
-                case "1":
-                    supplierIdCounter = addSupplier(supplierIdCounter);
-                    break;
-                case "2":
-                    System.out.print("Supplier's id: ");
-                    Scanner scanner2 = new Scanner(System.in);
-                    suppId = scanner2.nextInt();
-                    deleteSupplier(suppId);
-                    break;
-                case "3":
-                    System.out.print("Supplier's id: ");
-                    Scanner scanner3 = new Scanner(System.in);
-                    suppId = scanner3.nextInt();
-                    manageSupplier(suppId);
-                    break;
-                case "4":
-                    orderIdCounter = addOrder(orderIdCounter);
-                    break;
-                case "5":
-                    showPreviousOrders();
-                    break;
-                case "6":
-                    updateOrderStatus();
-                    break;
-                case "7":
-                    System.out.println("Thank you for using our system.\nFor your information, no data is being saved so far.\nGoodbye!");
-                    exit = true;
-                    break;
-            }
-        } while (!exit);
-        return true;
+        try {
+            boolean exit = false;
+            int suppId;
+            String choice;
+            do {
+                System.out.println("\nPlease choose a function:");
+                System.out.println("1. Add supplier");
+                System.out.println("2. Delete supplier");
+                System.out.println("3. Manage supplier");
+                System.out.println("4. Make order");
+                System.out.println("5. View previous orders");
+                System.out.println("6. Update order status");
+                System.out.println("7. Quit");
+                System.out.print("Option: ");
+                Scanner scanner = new Scanner(System.in);
+                choice = scanner.nextLine();
+                switch (choice) {
+                    case "1":
+                        supplierIdCounter = addSupplier(supplierIdCounter);
+                        break;
+                    case "2":
+                        System.out.print("Supplier's id: ");
+                        Scanner scanner2 = new Scanner(System.in);
+                        suppId = scanner2.nextInt();
+                        deleteSupplier(suppId);
+                        break;
+                    case "3":
+                        System.out.print("Supplier's id: ");
+                        Scanner scanner3 = new Scanner(System.in);
+                        suppId = scanner3.nextInt();
+                        manageSupplier(suppId);
+                        break;
+                    case "4":
+                        orderIdCounter = addOrder(orderIdCounter);
+                        break;
+                    case "5":
+                        showPreviousOrders();
+                        break;
+                    case "6":
+                        updateOrderStatus();
+                        break;
+                    case "7":
+                        System.out.println("Thank you for using our system.\nFor your information, no data is being saved so far.\nGoodbye!");
+                        exit = true;
+                        break;
+                }
+            } while (!exit);
+            return true;
+        }catch (Exception e)
+        {
+            System.out.println("Invalid input,try again");
+            return false;
+        }
     }
 
     private static void updateOrderStatus() {
