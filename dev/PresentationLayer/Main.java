@@ -171,7 +171,7 @@ public class Main {
 
         fc.addSupplier(supplierIdCounter, suppName, suppPhone, suppBankAccount, suppPayment,
                 suppSchedule, suppLocation);
-
+        System.out.println("Supplier added successfully. Id is: " + supplierIdCounter);
         System.out.print("Insert supplier's items? [Y/N] ");
         String addItems = scanner.nextLine();
         while (addItems.equals("Y") | addItems.equals("y")) {
@@ -187,7 +187,7 @@ public class Main {
                 fc.addItemToAgreement(supplierIdCounter, fc.getItemIdByIndex(supplierIdCounter, i), itemPrice);
             }
         }
-        System.out.println("Supplier added successfully. Id is: " + supplierIdCounter);
+
         supplierIdCounter++;
         return supplierIdCounter;
     }
