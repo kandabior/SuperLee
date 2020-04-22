@@ -7,7 +7,7 @@ import org.junit.runner.notification.Failure;
 public class mainTest {
 
     public static void main(String[] args) {
-        Result r = JUnitCore.runClasses(tests.PoolTest.class);
+        Result r = JUnitCore.runClasses(PoolTest.class);
         for (Failure f : r.getFailures()){
             System.out.println(f.toString());
         }
