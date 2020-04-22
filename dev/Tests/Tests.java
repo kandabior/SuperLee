@@ -1,22 +1,18 @@
 package Tests;
 
 import IntefaceLayer.Register;
-import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-
 import java.time.LocalDate;
 import java.util.LinkedList;
 import java.util.List;
+import static org.junit.Assert.*;
 
 
 public class Tests {
 
 
-
-
-
-    @Test
+    @org.junit.Test
     public void addProdTest1(){
         Register register=new Register();
         register.addGlobalManager("Erez", "1234");
@@ -28,7 +24,7 @@ public class Tests {
         assert register.getquantityById(1).getValue().getValue()==20;
     }
 
-    @Test
+    @org.junit.Test
     public void addProdTest2(){
         Register register=new Register();
 
@@ -41,7 +37,7 @@ public class Tests {
         assert !register.totalStockReport().contains("Milki");
     }
 
-    @Test
+    @org.junit.Test
     public void ChangeAmount1(){
         Register register=new Register();
         register.addGlobalManager("Erez", "1234");
@@ -54,7 +50,7 @@ public class Tests {
         assert register.getquantityById(3).getValue().getValue()==50;
     }
 
-    @Test
+    @org.junit.Test
     public void changeAmount2(){
         Register register=new Register();
         register.addGlobalManager("Erez", "1234");
@@ -68,7 +64,7 @@ public class Tests {
         assert register.getquantityById(4).getValue().getValue()==15;
     }
 
-    @Test
+    @org.junit.Test
     public void transferAmountToStorage(){
 
         Register register=new Register();
@@ -83,7 +79,7 @@ public class Tests {
                 register.getquantityById(5).getValue().getKey()==5;
     }
 
-    @Test
+    @org.junit.Test
     public void transferAmountToShelf(){
 
         Register register=new Register();
@@ -99,7 +95,7 @@ public class Tests {
                 register.getquantityById(6).getValue().getKey()==3;
     }
 
-    @Test
+    @org.junit.Test
     public void MinTest(){
         Register register=new Register();
         register.addGlobalManager("Erez", "1234");
@@ -112,7 +108,7 @@ public class Tests {
         assert register.NeedToBuyReport().contains("Corn");
     }
 
-    @Test
+    @org.junit.Test
     public void EXPTest(){
         Register register=new Register();
         register.addGlobalManager("Erez", "1234");
@@ -125,7 +121,7 @@ public class Tests {
         assert register.getquantityEXPById(8).getValue()==5;
     }
 
-    @Test
+    @org.junit.Test
     public void changeSalePriceById(){
         Register register=new Register();
         register.addGlobalManager("Erez", "1234");
@@ -140,7 +136,7 @@ public class Tests {
         assert register.getProductSalePrice(9)==15;
     }
 
-    @Test
+    @org.junit.Test
     public void changeSalePriceByCategory(){
         Register register=new Register();
         register.addGlobalManager("Erez", "1234");
