@@ -7,11 +7,11 @@ import org.junit.runner.notification.Failure;
 public class TestRunner {
     public static void main(String[] args) {
         Result result = JUnitCore.runClasses(Tests.class);
-
         for (Failure failure : result.getFailures()) {
             System.out.println(failure.toString());
         }
+        System.out.println("Tets Status:"+ result.wasSuccessful());
+        System.out.println("Number of Tests :"+ result.getRunCount());
 
-        System.out.println(result.wasSuccessful());
     }
 }

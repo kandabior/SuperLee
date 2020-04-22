@@ -2,9 +2,9 @@ package Tests;
 import InterfaceLayer.FacadeController;
 import javafx.util.Pair;
 
-import org.junit.jupiter.api.AfterEach;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
+import org.junit.After;
+import org.junit.Before;
+import org.junit.Test;
 
 
 import java.util.*;
@@ -14,7 +14,7 @@ import static org.junit.Assert.assertEquals;
 
 public class Tests {
 
-    @BeforeEach
+    @Before
     public void setUp() {
         int id = 0;//in the program the id will be static
         String name = "Elad";
@@ -55,7 +55,7 @@ public class Tests {
 
     }
 
-    @AfterEach
+    @After
     public void clean() {
         FacadeController.getFacadeController().deleteSupplier(0);
         FacadeController.getFacadeController().deleteSupplier(1);
