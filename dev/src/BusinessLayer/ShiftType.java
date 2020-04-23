@@ -1,4 +1,3 @@
 package BusinessLayer;
 
-public class ShiftType {
-}
+public enum ShiftType{Morning,Evening};

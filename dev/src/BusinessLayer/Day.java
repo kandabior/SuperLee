@@ -1,4 +1,3 @@
 package BusinessLayer;
 
-public class Day {
-}
+public enum Day{Sunday,Monday,Tuesday,Wednesday,Thursday,Friday,Saturday};
