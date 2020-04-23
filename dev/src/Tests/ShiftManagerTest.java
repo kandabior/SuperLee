@@ -1,4 +1,4 @@
-package tests;
+package Tests;
 
 import BusinessLayer.Day;
 import BusinessLayer.ShiftType;

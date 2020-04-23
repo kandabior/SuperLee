@@ -1,4 +1,4 @@
-package tests;
+package Tests;
 
 import BusinessLayer.Employee;
 import BusinessLayer.EmployeesManager;
