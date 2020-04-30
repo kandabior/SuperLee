@@ -1,7 +1,7 @@
 package InterfaceLayer;
 
-import LogicLayer.Inventory;
-import LogicLayer.ReportMaker;
+import LogicLayer.*;
+import PresentationLayer.SupplierMenu;
 import javafx.util.Pair;
 
 import java.time.LocalDate;
@@ -86,10 +86,17 @@ public class InventoryController {
 
 
     //Inventory
-    public String addProduct(String username, String password, int prodid, int amount, String name, int costPrice, int salePrice, LocalDate expDate, List<String> category, String manufacturer, int minAmount, String place){
+    public String addProduct(String username, String password, int prodid, int amount, Double costPrice, Double salePrice, LocalDate expDate, List<String> category, String manufacturer, int minAmount, String place){
+        String prodName;
         try {
-            if ((GlobalManager.containsKey(username) && GlobalManager.get(username).equals(password)) || (inventoryManagers.containsKey(username) && inventoryManagers.get(username).equals(password)))
-                return inventory.addProduct(prodid, amount, name, costPrice, salePrice, expDate, category, manufacturer, minAmount, place);
+            if ((GlobalManager.containsKey(username) && GlobalManager.get(username).equals(password)) || (inventoryManagers.containsKey(username) && inventoryManagers.get(username).equals(password))) {
+                prodName = Items.getName(prodid);
+                if(prodName!=null) {
+                    return inventory.addProduct(prodid, amount, prodName, costPrice, salePrice, expDate, category, manufacturer, minAmount, place);
+                }
+                return "can't execute the action";
+
+            }
             return "can't add product - you are need to be a Manager";
         }catch (Exception e){
             return "can't execute the action";
@@ -121,7 +128,7 @@ public class InventoryController {
             return "can't execute the action";
         }
     }
-    public String setSalePriceById(String username, String password ,int prodid, int price){
+    public String setSalePriceById(String username, String password ,int prodid, Double price){
         try{
             if(GlobalManager.containsKey(username) && GlobalManager.get(username).equals(password))
                 return inventory.setSalePrice(prodid,price);
@@ -131,7 +138,7 @@ public class InventoryController {
             return "can't execute the action";
         }
     }
-    public String setPriceByCategory(String username, String password , List<String> category,int price){
+    public String setPriceByCategory(String username, String password , List<String> category,Double price){
         try {
             if (GlobalManager.containsKey(username) && GlobalManager.get(username).equals(password))
                 return inventory.setPriceByCategory(category, price);
@@ -177,6 +184,20 @@ public class InventoryController {
             return "can't execute the action";
         }
     }
+
+    public String MakeMissingOrder() {
+        try {
+            List<Pair<Integer, Integer>> toBuy= inventory.NeedToBuyProducts();
+            Map<Integer,Pair<Integer,Integer>> orders= FacadeController.getFacadeController().makeOrder(toBuy);
+            return inventory.mannageOrders(orders);
+        }
+        catch (Exception e){
+            return "can't execute the action";
+        }
+    }
+
+
+
     //Reports
     public String NeedToBuyReport(){
         try {
@@ -196,6 +217,7 @@ public class InventoryController {
             return "can't execute the action";
         }
     }
+
     public String ShelfReport() {
         try {
             List<Pair<Integer, Integer>> shelfStock = inventory.getShelfQuantity();
@@ -238,7 +260,7 @@ public class InventoryController {
 
     public String SalePricesReport(Integer id){
         try{
-            Pair<Integer,List<Integer>> prices= inventory.SalePricesById(id);
+            Pair<Integer,List<Double>> prices= inventory.SalePricesById(id);
             return reportMaker.printSaleProductPrices(prices);
         }
         catch (Exception e){
@@ -248,15 +270,15 @@ public class InventoryController {
 
     public String CostPriceReport(Integer id){
         try {
-            Pair<Integer, List<Integer>> prices = inventory.CostPricesById(id);
+            Pair<Integer, List<Double>> prices = inventory.CostPricesById(id);
             return reportMaker.printCostProductPrices(prices);
         }
         catch (Exception e){
             return "can't execute the action";
         }
     }
-
     //Tests Methods
+
     public Pair<Integer,Pair<Integer,Integer>> getquantityById(Integer Id){
         return inventory.getQuantityById(Id);
     }
@@ -265,7 +287,7 @@ public class InventoryController {
         return inventory.getQuantityEXPById(Id);
     }
 
-    public int getProductSalePrice(int id) {
+    public Double getProductSalePrice(int id) {
         return inventory.getProdSalePrice(id);
     }
 }

@@ -1,10 +1,11 @@
 package LogicLayer;
 
+import java.util.HashMap;
 import java.util.Map;
 
 public class Items {
 
-    private static Map<Integer, String> items;
+    private static Map<Integer, String> items=new HashMap<>();
 
     public static boolean addItem(Integer id, String name ){
         if(items.containsKey(id)){

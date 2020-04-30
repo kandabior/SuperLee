@@ -51,12 +51,12 @@ public class ReportMaker {
     }
 
 
-    public String printSaleProductPrices(Pair<Integer, List<Integer>> prices) {
+    public String printSaleProductPrices(Pair<Integer, List<Double>> prices) {
         Report report= Report.makeSalePriceReport(prices);
         reports.add(report);
         return report.toString();
     }
-    public String printCostProductPrices(Pair<Integer, List<Integer>> prices) {
+    public String printCostProductPrices(Pair<Integer, List<Double>> prices) {
         Report report= Report.makeCostPriceReport(prices);
         reports.add(report);
         return report.toString();
