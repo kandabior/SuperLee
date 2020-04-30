@@ -21,7 +21,7 @@ public class OrderController {
         return order_sp;
     }
 
-    public boolean addOrder(int id, List<Pair<Integer, Integer>> items, int supplierId) {
+ /*   public boolean addOrder(int id, List<Pair<Integer, Integer>> items, int supplierId) {
         Order order = new Order(id, items, supplierId);
         boolean result = order.makeOrder();
         if (result) {
@@ -29,17 +29,17 @@ public class OrderController {
             return true;
         }
         return false;
-    }
+    }*/
 
     public int getOrdersSize() {
         return this.orders.size();
     }
 
-    public List<Pair<Integer, Integer>> getItemsInOrderById(int id) {
+   /* public List<Pair<Integer, Integer>> getItemsInOrderById(int id) {
         return this.orders.get(id).getItemsInOrderById();
-    }
+    }*/
 
-    public int getSupplierIdOfOrder(int i) {
+/*    public int getSupplierIdOfOrder(int i) {
         return this.orders.get(i).getSupplierIdOfOrder();
     }
 
@@ -51,7 +51,7 @@ public class OrderController {
         }
         return -1;
 
-    }
+    }*/
 
     public void setOrderCost(int orderId, double totalMoney) {
         for (int i = 0; i < orders.size(); i++) {

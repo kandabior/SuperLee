@@ -1,9 +1,11 @@
 package InterfaceLayer;
 
+import LogicLayer.Order;
+import com.sun.org.apache.xpath.internal.operations.Or;
 import javafx.util.Pair;
-import java.util.LinkedHashMap;
-import java.util.List;
-import java.util.Map;
+
+import javax.swing.event.ListDataEvent;
+import java.util.*;
 
 public class FacadeController {
 
@@ -45,9 +47,9 @@ public class FacadeController {
 
     public int getBillSize(int suppId) { return supplierController.getBillSize(suppId); }
 
-    public boolean addOrder(int id, List<Pair<Integer, Integer>> items, int supplierId) {
+  /*  public boolean addOrder(int id, List<Pair<Integer, Integer>> items, int supplierId) {
         return orderController.addOrder(id, items, supplierId);
-    }
+    }*/
 
     public LinkedHashMap<Integer, Double> showSuppItems(int suppId) {
         return supplierController.showSuppItems(suppId);
@@ -65,6 +67,23 @@ public class FacadeController {
         return supplierController.getItemNameByIndex(suppId, index);
     }
 
+    public Map<Integer,Pair<Integer,Integer>> makeOrder(List<Pair<Integer,Integer>> list)//return itemId , <Quantity , FinalCost>
+    {
+        Map<Integer,Pair<Integer,Integer>> map = new HashMap();
+        for( int i =0 ; i < list.size() ; i++)
+        {
+            int bestSuppForItem = supplierController.bestSuppForItem(list.get(i).getKey(),list.get(i).getValue());
+            if(bestSuppForItem>0)
+            {
+                Double costForItem = supplierController.getPriceOfAmountOfItem(bestSuppForItem ,list.get(i).getKey(),list.get(i).getValue() );
+                Pair<Integer,Integer> p = new Pair(list.get(i).getValue(),costForItem);
+                map.put(list.get(i).getKey() , p);
+            }
+        }
+        return map;
+    }
+
+
 
     public int getItemIdByIndex(int suppId, int index) { return supplierController.getItemIdByIndex(suppId, index); }
 
@@ -72,12 +91,12 @@ public class FacadeController {
 
     public int getOrdersSize() { return orderController.getOrdersSize(); }
 
-    public List<Pair<Integer, Integer>> getItemsInOrderById(int id) { return orderController.getItemsInOrderById(id); }
+/*    public List<Pair<Integer, Integer>> getItemsInOrderById(int id) { return orderController.getItemsInOrderById(id); }
 
-    public int getSupplierIdOfOrder(int i) { return orderController.getSupplierIdOfOrder(i); }
+    public int getSupplierIdOfOrder(int i) { return orderController.getSupplierIdOfOrder(i); }*/
 
-    public void addItemToSupplier(int suppId, int itemId, String itemName) {
-        supplierController.addItemToSupplier(suppId, itemId, itemName);
+    public void addItemToSupplier(int suppId, int itemId) {
+        supplierController.addItemToSupplier(suppId, itemId);
     }
 
     public int getItemsListSize(int suppId) { return supplierController.getItemsListSize(suppId); }
@@ -88,15 +107,15 @@ public class FacadeController {
 
     public Map<Integer, Pair<Integer, Double>> getBillOfQuantities(int suppId) { return supplierController.getBillOfQuantities(suppId); }
 
-    public String getItemNameById(int suppId, Integer itemId) { return supplierController.getItemName(suppId, itemId); }
+    public String getItemNameById(Integer itemId) { return supplierController.getItemName(itemId); }
 
     public void setItemPrice(int suppId, int itemId, double newPrice) { supplierController.setItemPrice(suppId, itemId, newPrice);}
 
     public boolean validateItemId(int suppId, int itemId) { return supplierController.validateItemId(suppId, itemId); }
 
-    public double getTotalOrderMoney(int orderId) {
+  /*  public double getTotalOrderMoney(int orderId) {
        return orderController.getTotalOrderMoney(orderId);
-    }
+    }*/
 
     public void setOrderCost(int orderIdCounter, double totalMoney) {
         this.orderController.setOrderCost(orderIdCounter,totalMoney);

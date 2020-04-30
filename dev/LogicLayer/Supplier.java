@@ -16,7 +16,7 @@ public class Supplier {
     private String payment;
     private String supplySchedule;
     private String supplyLocation;
-    private List<Item> items;
+    private List<Integer> items;
     private Agreement agreement;
 
     public Supplier(int id, String name, String phoneNum, int bankAccount, String payment, String supplySchedule, String supplyLocation) {
@@ -27,7 +27,6 @@ public class Supplier {
         this.payment = payment;
         this.supplySchedule = supplySchedule;
         this.supplyLocation = supplyLocation;
-        this.items = new LinkedList<>();
         this.agreement = new Agreement();
     }
 
@@ -35,7 +34,7 @@ public class Supplier {
 
     public Agreement getAgreement() { return this.agreement; }
 
-    public boolean makeOrder(List<ItemInOrder> items) {
+   /* public boolean makeOrder(List<ItemInOrder> items) {
         int counter = 0;
         for (int i = 0; i < items.size(); i++) {
             for (int j = 0; j < this.items.size(); j++) {
@@ -46,7 +45,7 @@ public class Supplier {
         }
         if (counter != items.size()) return false;
         return true;
-    }
+    }*/
 
     public void updateBillOfQuantities( Integer itemId, Pair<Integer, Double> quantity_disc) {
         this.agreement.updateBillOfQuantities(itemId,quantity_disc);
@@ -78,27 +77,14 @@ public class Supplier {
         return this.agreement.getBillOfQuantities();
     }
 
-    public String getItemName(Integer itemId) {
-        for(Item item:items)
-        {
-            if(item.getId()==itemId) return item.getName();
-            break;
-        }
-        return "";
-    }
-
-    public String getItemNameByIndex(int i) {
-        return this.items.get(i).getName();
-    }
 
 
     public int getItemIdByIndex(int i) {
-        return this.items.get(i).getId();
+        return this.items.get(i);
     }
 
-    public void addItemsToSupplier(int itemId, String itemName) {
-            Item item = new Item(itemId,itemName);
-            this.items.add(item);
+    public void addItemsToSupplier(int itemId) {
+            this.items.add(itemId);
     }
 
     public int getItemsListSize() {
@@ -108,17 +94,17 @@ public class Supplier {
     public void setItemPrice(int itemId, double newPrice) { getAgreement().setPrice(itemId, newPrice);}
 
     public boolean validateItemId(int itemId){
-        for(int i=0; i<items.size();i++) {
-            if(items.get(i).getId() == itemId)
-                return false;
-        }
-        return true;
+        if(this.items.contains(itemId)) return true;
+        else return true;
     }
 
     public int getBillSize() { return this.agreement.getBillSize(); }
 
-    public double getOrderCost(int itemId, int quantity) {
+   /* public double getOrderCost(int itemId, int quantity) {
         return this.agreement.getOrderCost(itemId,quantity);
-    }
+    }*/
 
+    public Double getPriceOfAmountOfItem(Integer itemId, Integer amount) {
+        return this.agreement.getPriceOfAmountOfItem(itemId,amount);
+    }
 }
