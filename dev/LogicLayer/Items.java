@@ -21,4 +21,12 @@ public class Items {
         return items.get(id);
     }
 
+    public static void PrintAllItems() {
+        for ( Integer id: items.keySet()) {
+            System.out.println("Product id: "+id+", name: "+items.get(id));
+        }
+    }
+
+
+
 }
