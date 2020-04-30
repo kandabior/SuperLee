@@ -16,10 +16,10 @@ public class InventoryMenu {
                     "1. Register global manager\n" +
                     "2. Register inventory manager\n" +
                     "3. Add product   (Manager Only)\n" +
-                    "4. Remove products   (Manager Only)\n" +
+                    "4. Remove product   (Manager Only)\n" +
                     "5. Change product price by id   (Global Manager Only)\n" +
                     "6. Change product price by category   (Global Manager Only)\n" +
-                    "7. Add amount to Product\n" +
+                    "7. Make missing products Order \n" +
                     "8. Remove amount from Product\n" +
                     "9. Change categories to Product\n" +
                     "10. Transfer amount of Product from the storage to the shelf\n" +
@@ -48,7 +48,7 @@ public class InventoryMenu {
                         changeProductByCategory();
                         break;
                     case 7:
-                        addAmountToProduct();
+                        makeMissingOrder();
                         break;
                     case 8:
                         removeAmountFromProduct();
@@ -125,6 +125,10 @@ public class InventoryMenu {
             }
         }
         while(choose!=9);
+    }
+
+    private static void makeMissingOrder() {
+        inventoryController.MakeMissingOrder();
     }
 
     public static void mainLoop() {
@@ -308,7 +312,7 @@ public class InventoryMenu {
         List<String> categoriesList= Arrays.asList(categories.split(","));
         String []dateArr=expdate.split("/");
         LocalDate date = LocalDate.of(Integer.parseInt(dateArr[2]),Integer.parseInt(dateArr[1]),Integer.parseInt(dateArr[0]));
-        Printer.Print(inventoryController.addProduct(userName,password,Integer.parseInt(prodId),Integer.parseInt(amount),name,Integer.parseInt(costPrice),Integer.parseInt(salePrice), date,categoriesList,manufacturer,Integer.parseInt(minAmount),place));
+        Printer.Print(inventoryController.addProduct(userName,password,Integer.parseInt(prodId),Integer.parseInt(amount),Integer.parseInt(costPrice),Integer.parseInt(salePrice), date,categoriesList,manufacturer,Integer.parseInt(minAmount),place));
     }
     private static void AddInventoryManager() {
         Printer.Print("Please enter new username:");
@@ -337,14 +341,14 @@ public class InventoryMenu {
         List<String> cat1 = new LinkedList<>();
         cat1.add("Shimurim");
         LocalDate date1 = LocalDate.of(20, 12,31);
-        inventoryController.addProduct("Erez", "1234",1, 20, "Corn",5,
+        inventoryController.addProduct("Erez", "1234",1, 20, 5,
                 8, date1,cat1,"Osem", 10, "area1");
 
         List<String> cat2 = new LinkedList<>();
         cat2.add("Halavi");
         cat2.add("Cartons");
         LocalDate date2 = LocalDate.of(20, 8,31);
-        inventoryController.addProduct("Or", "1234",2, 30, "Milk",3,
+        inventoryController.addProduct("Or", "1234",2, 30, 3,
                 6, date2,cat2,"Tnuva", 20, "area2");
     }
 }

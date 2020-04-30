@@ -88,7 +88,7 @@ public class Report {
     }
 
 
-    public static Report makeSalePriceReport(Pair<Integer, List<Integer>> prices) {
+    public static Report makeSalePriceReport(Pair<Integer, List<Double>> prices) {
         Report report= new Report("Sale Prices Report");
         ReportLine reportLine=new ReportLine(prices.getKey(),Inventory.getProdactName(prices.getKey()),Inventory.getAmount(prices.getKey()));
         reportLine.addToLine("Prices: "+prices.getValue().toString());
@@ -96,7 +96,7 @@ public class Report {
         report.addLine(reportLine);
         return report;
     }
-    public static Report makeCostPriceReport(Pair<Integer, List<Integer>> prices) {
+    public static Report makeCostPriceReport(Pair<Integer, List<Double>> prices) {
         Report report= new Report("Cost Prices Report");
         ReportLine reportLine=new ReportLine(prices.getKey(),Inventory.getProdactName(prices.getKey()),Inventory.getAmount(prices.getKey()));
         reportLine.addToLine("Prices: "+prices.getValue().toString());

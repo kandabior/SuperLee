@@ -7,17 +7,17 @@ import java.util.List;
 public class Product {
     private int id;
     private String name;
-    private int costPrice;
-    private int salePrice;
+    private double costPrice;
+    private double salePrice;
     private LocalDate expDate;
     private List<String> category;
     private String manufacturer;
     private int minAmount;
     private String place;
-    private List<Integer> lastCostPrice;
-    private List<Integer> lastSalePrice;
+    private List<Double> lastCostPrice;
+    private List<Double> lastSalePrice;
 
-    public Product(int id, String name, int costPrice,int salePrice, LocalDate expDate, List<String> category, String manufacturer, int minAmount, String place){
+    public Product(int id, String name, Double costPrice,Double salePrice, LocalDate expDate, List<String> category, String manufacturer, int minAmount, String place){
         this.id = id;
         this.name = name;
         this.costPrice = costPrice;
@@ -36,7 +36,7 @@ public class Product {
     public LocalDate getExpDate() {
         return expDate;
     }
-    public int getCostPrice() {
+    public Double getCostPrice() {
         return costPrice;
     }
     public int getId() {
@@ -45,7 +45,7 @@ public class Product {
     public int getMinAmount() {
         return minAmount;
     }
-    public int getSalePrice() {
+    public Double getSalePrice() {
         return salePrice;
     }
     public String getName() {
@@ -60,24 +60,24 @@ public class Product {
     public String getPlace() {
         return place;
     }
-    public boolean isExpirated(){
+    public boolean isExpired(){
         return this.expDate.isBefore(LocalDate.now());
     }
-    public void setSalePrice(int price){
+    public void setSalePrice(Double price){
         this.salePrice = price;
         this.lastSalePrice.add(price);
     }
-    public void setCostPrice(int price){
+    public void setCostPrice(Double price){
         this.costPrice = price;
         this.lastCostPrice.add(price);
     }
     public void setCategory(List<String> category) {
         this.category = category;
     }
-    public List<Integer> getLastCostPrice() {
+    public List<Double> getLastCostPrice() {
         return lastCostPrice;
     }
-    public List<Integer> getLastSalePrice() {
+    public List<Double> getLastSalePrice() {
         return lastSalePrice;
     }
 }

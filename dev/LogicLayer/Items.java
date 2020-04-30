@@ -1,10 +1,11 @@
 package LogicLayer;
 
+import java.util.HashMap;
 import java.util.Map;
 
 public class Items {
 
-    private static Map<Integer, String> items;
+    private static Map<Integer, String> items=new HashMap<>();
 
     public static boolean addItem(Integer id, String name ){
         if(items.containsKey(id)){
@@ -20,5 +21,13 @@ public class Items {
         }
         return items.get(id);
     }
+
+    public static void PrintAllItems() {
+        for ( Integer id: items.keySet()) {
+            System.out.println("Product id: "+id+", name: "+items.get(id));
+        }
+    }
+
+
 
 }

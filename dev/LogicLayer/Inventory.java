@@ -3,10 +3,7 @@ package LogicLayer;
 import javafx.util.Pair;
 
 import java.time.LocalDate;
-import java.util.HashMap;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 public class Inventory {
     private static Inventory instance;
@@ -41,6 +38,23 @@ public class Inventory {
         if(!instance.inventory.containsKey(key))
             return -1;
         return instance.quantities.get(key).getKey()+instance.quantities.get(key).getValue();
+    }
+
+    public  String mannageOrders(Map<Integer,Pair<Integer,Integer>> orders) {
+        for(Integer prodId: orders.keySet()){
+            addAmountToProduct(prodId,orders.get(prodId).getKey());
+            double newPrice= orders.get(prodId).getValue()/orders.get(prodId).getKey();
+            double price= inventory.get(prodId).getCostPrice();
+            if(price!=newPrice){
+                setCostPrice(prodId,newPrice);
+            }
+        }
+        return "Order Completed Successfully";
+    }
+
+    private void setCostPrice(Integer prodId, double newPrice) {
+        Product product= inventory.get(prodId);
+        product.setCostPrice(newPrice);
     }
 
     public List<Pair<Integer,Integer>> getQuantity(){ // Pair[0] = productId, Pair[1] = storage + shelf Quantity
@@ -96,13 +110,13 @@ public class Inventory {
         }
         return expiredProducts;
     }
-    public String setSalePrice(int id, int price) {
+    public String setSalePrice(int id, Double price) {
         if(!inventory.containsKey(id))
             return "product ID doesnt exist";
         inventory.get(id).setSalePrice(price);
         return "product " + id + "- price changed to: " + price;
     }
-    public String setPriceByCategory(List<String> category, int price){
+    public String setPriceByCategory(List<String> category, Double price){
         List<Pair<Integer,Integer>> cat = getProductsByCategories(category);
         for(Pair<Integer,Integer> pair : cat){
             inventory.get(pair.getKey()).setSalePrice(price);
@@ -116,7 +130,7 @@ public class Inventory {
         expired.put(productId, expired.get(productId)+amount);
         return "product " + productId + "- quantity of " + amount + " was changed to expired";
     }
-    public String addProduct(int id,int amount, String name, int costPrice, int salePrice, LocalDate expDate, List<String> category, String manufacturer, int minAmount, String place) {
+    public String addProduct(int id,int amount, String name, Double costPrice, Double salePrice, LocalDate expDate, List<String> category, String manufacturer, int minAmount, String place) {
         if(inventory.containsKey(id))
             return "product ID already exist";
         inventory.put(id, new Product(id, name, costPrice, salePrice, expDate, category, manufacturer, minAmount, place));
@@ -186,11 +200,11 @@ public class Inventory {
         return inventory.get(id).getLastSalePrice().toString();
     }
 
-    public Pair<Integer, List<Integer>> SalePricesById(Integer id) {
+    public Pair<Integer, List<Double>> SalePricesById(Integer id) {
         return new Pair<>(id,inventory.get(id).getLastSalePrice());
     }
 
-    public Pair<Integer, List<Integer>> CostPricesById(Integer id) {
+    public Pair<Integer, List<Double>> CostPricesById(Integer id) {
         return new Pair<>(id,inventory.get(id).getLastCostPrice());
     }
 
@@ -230,7 +244,7 @@ public class Inventory {
         return new Pair<>(id,expired.get(id));
     }
 
-    public int getProdSalePrice(int id) {
+    public Double getProdSalePrice(int id) {
         return inventory.get(id).getSalePrice();
     }
 }
