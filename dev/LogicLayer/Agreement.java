@@ -9,7 +9,7 @@ public class Agreement {
     private LinkedHashMap<Integer, Double> terms;
     private BillOfQuantities bill;
 
-    public Agreement() {
+    public Agreement() {//todoooo
         this.terms = new LinkedHashMap<>();
         this.bill = null;
     }
@@ -43,8 +43,7 @@ public class Agreement {
     }
 
     public Boolean checkBillOfQuantity() {
-        if(this.bill==null) return false;
-        return true;
+        return this.bill != null;
     }
 
     public void addItemToBillOfQuantities(int itemId, int itemQuantity, Double itemDiscount) {
