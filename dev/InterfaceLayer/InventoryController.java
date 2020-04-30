@@ -1,4 +1,4 @@
-package IntefaceLayer;
+package InterfaceLayer;
 
 import LogicLayer.Inventory;
 import LogicLayer.ReportMaker;
@@ -9,8 +9,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class Register {
-
+public class InventoryController {
+    private static InventoryController instance;
     //Global Manager : a manager that can change products include the prices of products
     private Map<String,String> GlobalManager; // userName and Passwords of the inventory managers.
 
@@ -20,11 +20,18 @@ public class Register {
     private ReportMaker reportMaker;
     private Inventory inventory;
 
-    public Register(){
+    private InventoryController(){
         inventory = Inventory.getInventory();
         reportMaker = ReportMaker.getPrinter();
         inventoryManagers = new HashMap<>();
         GlobalManager = new HashMap<>();
+    }
+
+    public static InventoryController getInventoryController() {
+        if(instance==null){
+            instance=new InventoryController();
+        }
+        return instance;
     }
 
     //Managers
