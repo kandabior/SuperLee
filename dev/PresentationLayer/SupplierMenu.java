@@ -1,6 +1,7 @@
 package PresentationLayer;
 
 import InterfaceLayer.FacadeController;
+import InterfaceLayer.SupplierController;
 import javafx.util.Pair;
 
 import java.util.*;
@@ -375,4 +376,17 @@ public class SupplierMenu {
         }
     }
 
+    public static void initiateSystem() {
+        FacadeController facadeController =FacadeController.getFacadeController();
+        facadeController.addSupplier(supplierIdCounter++,"Itay","000000",1111,
+                "mezuman","shlishi","Bash");
+        facadeController.addSupplier(supplierIdCounter++,"moshe","03300000",11121,
+                "mezuman","sunday","hevron");
+
+        SupplierController supplierController= SupplierController.getSupplierController();
+        supplierController.addItemToAgreement(1,1,5.0);
+        supplierController.addItemToAgreement(1,2,6.0);
+        supplierController.addItemToAgreement(2,1,7.0);
+
+    }
 }

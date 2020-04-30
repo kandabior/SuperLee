@@ -17,8 +17,9 @@ public class MainMenu {
         Printer.Print("Do you Want to initiate the System with 4 managers and 2 product (Corn and Milk)? Y/N");
         String ans = scanner.next();
         if (ans.equals("Y") || ans.equals("y")) {
-            InventoryMenu.initiateSystem();
             initiateSystem();
+            InventoryMenu.initiateSystem();
+            SupplierMenu.initiateSystem();
         }
         else {
             Printer.Print("system was not initiate");

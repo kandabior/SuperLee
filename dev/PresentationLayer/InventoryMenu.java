@@ -20,12 +20,13 @@ public class InventoryMenu {
                     "5. Change product price by id   (Global Manager Only)\n" +
                     "6. Change product price by category   (Global Manager Only)\n" +
                     "7. Make missing products Order \n" +
-                    "8. Remove amount from Product\n" +
-                    "9. Change categories to Product\n" +
-                    "10. Transfer amount of Product from the storage to the shelf\n" +
-                    "11. Transfer amount of Product from the shelf to the storage\n" +
-                    "12. Set amount of defective products\n" +
-                    "13. Back to main menu\n");
+                    "8. Make customized order" +
+                    "9. Remove amount from Product\n" +
+                    "10. Change categories to Product\n" +
+                    "11. Transfer amount of Product from the storage to the shelf\n" +
+                    "12. Transfer amount of Product from the shelf to the storage\n" +
+                    "13. Set amount of defective products\n" +
+                    "14. Back to main menu\n");
             choose = scanner.nextInt();
             try {
                 switch (choose) {
@@ -51,21 +52,24 @@ public class InventoryMenu {
                         makeMissingOrder();
                         break;
                     case 8:
-                        removeAmountFromProduct();
+                        makeCustomiezedOrder();
                         break;
                     case 9:
-                        changeCategory();
+                        removeAmountFromProduct();
                         break;
                     case 10:
-                        StorageToShelf();
+                        changeCategory();
                         break;
                     case 11:
-                        shelfToStorage();
+                        StorageToShelf();
                         break;
                     case 12:
-                        setDefectiveProducts();
+                        shelfToStorage();
                         break;
                     case 13:
+                        setDefectiveProducts();
+                        break;
+                    case 14:
                         break;
                 }
             }
@@ -74,6 +78,11 @@ public class InventoryMenu {
             }
         }
         while (choose != 13) ;
+    }
+
+    private static void makeCustomiezedOrder() {
+        System.out.println();
+
     }
 
     private static void reportsLoop(){
@@ -259,7 +268,7 @@ public class InventoryMenu {
         Printer.Print("price: ");
         String price=scanner.next();
         List<String> categoriesList= Arrays.asList(categories.split(","));
-        Printer.Print(inventoryController.setPriceByCategory(userName,password,categoriesList ,Integer.parseInt(price)));
+        Printer.Print(inventoryController.setPriceByCategory(userName,password,categoriesList ,Double.parseDouble(price)));
     }
     private static void ChangePriceById() {
         Printer.Print("\nPlease Enter the following by given order:\n");
@@ -271,7 +280,7 @@ public class InventoryMenu {
         String prodId=scanner.next();
         Printer.Print("price: ");
         String price=scanner.next();
-        Printer.Print(inventoryController.setSalePriceById(userName,password,Integer.parseInt(prodId),Integer.parseInt(price)));
+        Printer.Print(inventoryController.setSalePriceById(userName,password,Integer.parseInt(prodId),Double.parseDouble(price)));
     }
     private static void RemoveProduct() {
         Printer.Print("\nPlease Enter the following by given order:\n");
@@ -312,7 +321,7 @@ public class InventoryMenu {
         List<String> categoriesList= Arrays.asList(categories.split(","));
         String []dateArr=expdate.split("/");
         LocalDate date = LocalDate.of(Integer.parseInt(dateArr[2]),Integer.parseInt(dateArr[1]),Integer.parseInt(dateArr[0]));
-        Printer.Print(inventoryController.addProduct(userName,password,Integer.parseInt(prodId),Integer.parseInt(amount),Integer.parseInt(costPrice),Integer.parseInt(salePrice), date,categoriesList,manufacturer,Integer.parseInt(minAmount),place));
+        Printer.Print(inventoryController.addProduct(userName,password,Integer.parseInt(prodId),Integer.parseInt(amount),Double.parseDouble(costPrice),Double.parseDouble(salePrice), date,categoriesList,manufacturer,Integer.parseInt(minAmount),place));
     }
     private static void AddInventoryManager() {
         Printer.Print("Please enter new username:");
@@ -341,14 +350,14 @@ public class InventoryMenu {
         List<String> cat1 = new LinkedList<>();
         cat1.add("Shimurim");
         LocalDate date1 = LocalDate.of(20, 12,31);
-        inventoryController.addProduct("Erez", "1234",1, 20, 5,
-                8, date1,cat1,"Osem", 10, "area1");
+        inventoryController.addProduct("Erez", "1234",1, 20, 5.0,
+                8.0, date1,cat1,"Osem", 10, "area1");
 
         List<String> cat2 = new LinkedList<>();
         cat2.add("Halavi");
         cat2.add("Cartons");
         LocalDate date2 = LocalDate.of(20, 8,31);
-        inventoryController.addProduct("Or", "1234",2, 30, 3,
-                6, date2,cat2,"Tnuva", 20, "area2");
+        inventoryController.addProduct("Or", "1234",2, 30, 3.0,
+                6.0, date2,cat2,"Tnuva", 20, "area2");
     }
 }
