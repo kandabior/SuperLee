@@ -1,5 +1,6 @@
 package InterfaceLayer;
 
+import LogicLayer.Items;
 import LogicLayer.Supplier;
 import javafx.util.Pair;
 
@@ -102,12 +103,12 @@ public class SupplierController {
         return getSuppById(suppId).getBillOfQuantities();
     }
 
-    public String getItemName(int suppId, Integer item) {
-        return getSuppById(suppId).getItemName(item);
+    public String getItemName( Integer itemId) {
+        return Items.getName(itemId);
     }
 
     public String getItemNameByIndex(int suppId, int i) {
-        return getSuppById(suppId).getItemNameByIndex(i);
+        return Items.getName(getSuppById(suppId).getItemIdByIndex(i));
     }
 
 
@@ -115,8 +116,8 @@ public class SupplierController {
         return getSuppById(suppId).getItemIdByIndex(i);
     }
 
-    public void addItemToSupplier(int suppId, int itemId, String itemName) {
-        this.getSuppById(suppId).addItemsToSupplier(itemId,itemName);
+    public void addItemToSupplier(int suppId, int itemId) {
+        this.getSuppById(suppId).addItemsToSupplier(itemId);
     }
 
     public int getItemsListSize(int suppId) {
@@ -131,4 +132,21 @@ public class SupplierController {
         return getSuppById(suppId).validateItemId(itemId);
     }
 
+    public int bestSuppForItem(Integer itemId, Integer quantity) {
+        Double max=0.0;
+        int bestSuppId=-1;
+        for(int i=0 ; i<suppliers.size();i++)
+        {
+             Double temp =suppliers.get(i).getPriceOfAmountOfItem(itemId,quantity);
+             if(temp>max) {
+                 max = temp;
+                 bestSuppId=i;
+             }
+        }
+        return bestSuppId;
+    }
+
+    public Double getPriceOfAmountOfItem(int bestSuppForItem,Integer itemId, Integer amount) {
+        return this.suppliers.get(bestSuppForItem).getPriceOfAmountOfItem(itemId,amount);
+    }
 }

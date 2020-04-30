@@ -1,6 +1,7 @@
 package PresentationLayer;
 
 import InterfaceLayer.FacadeController;
+import LogicLayer.Items;
 import javafx.util.Pair;
 
 import java.util.*;
@@ -33,22 +34,22 @@ public class SupplierMenu {
                         supplierIdCounter = addSupplier(supplierIdCounter);
                         break;
                     case "2":
-                        System.out.print("LogicLayer.Supplier's id: ");
+                        System.out.print("Supplier's id: ");
                         Scanner scanner2 = new Scanner(System.in);
                         suppId = scanner2.nextInt();
                         deleteSupplier(suppId);
                         break;
                     case "3":
-                        System.out.print("LogicLayer.Supplier's id: ");
+                        System.out.print("Supplier's id: ");
                         Scanner scanner3 = new Scanner(System.in);
                         suppId = scanner3.nextInt();
                         manageSupplier(suppId);
                         break;
                     case "4":
-                        orderIdCounter = addOrder(orderIdCounter);
+                       // orderIdCounter = addOrder(orderIdCounter);
                         break;
                     case "5":
-                        showPreviousOrders();
+                        //showPreviousOrders();
                         break;
                     case "6":
                         updateOrderStatus();
@@ -80,12 +81,12 @@ public class SupplierMenu {
 
     private static void deleteSupplier(int suppId) {
         if(fc.deleteSupplier(suppId))
-            System.out.println("LogicLayer.Supplier was deleted.");
+            System.out.println("Supplier was deleted.");
         else
-            System.out.println("LogicLayer.Supplier id does not exist in the system.");
+            System.out.println("Supplier id does not exist in the system.");
     }
 
-    private static void showPreviousOrders() {
+   /* private static void showPreviousOrders() {
         int sizeOfOrders = fc.getOrdersSize();
         if (sizeOfOrders == 0)
             System.out.println("No orders were found.");
@@ -103,7 +104,7 @@ public class SupplierMenu {
                 System.out.println();
             }
         }
-    }
+    }*/
 
     private static int addItems(int suppId) {
         int newItems = 0;
@@ -111,14 +112,13 @@ public class SupplierMenu {
         System.out.print("Item's identifier: ");
         int itemId = scanner.nextInt();
         while (!fc.validateItemId(suppId, itemId)) {
-            System.out.print("This id is taken.\nEnter another one\n");
+            System.out.print("This supplier already have this item.\nEnter another one\n");
             System.out.print("Item's identifier: ");
             itemId = scanner.nextInt();
         }
-            System.out.print("Name: ");
-            scanner = new Scanner(System.in);
-            String itemName = scanner.nextLine();
-            fc.addItemToSupplier(suppId, itemId, itemName);
+            String name = fc.getItemNameById(itemId);
+            System.out.print("Name: " + name);
+            fc.addItemToSupplier(suppId, itemId);
             newItems++;
             System.out.print("Insert more items? [Y/N] ");
         return newItems;
@@ -126,7 +126,7 @@ public class SupplierMenu {
 
     private static int addSupplier(int supplierIdCounter) {
         Scanner scanner = new Scanner(System.in);
-        System.out.print("LogicLayer.Supplier's name: ");
+        System.out.print("Supplier's name: ");
         String suppName = scanner.nextLine();
         System.out.print("Phone number: ");
         String suppPhone = scanner.nextLine();
@@ -158,7 +158,6 @@ public class SupplierMenu {
                 fc.addItemToAgreement(supplierIdCounter, fc.getItemIdByIndex(supplierIdCounter, i), itemPrice);
             }
         }
-
         supplierIdCounter++;
         return supplierIdCounter;
     }
@@ -166,7 +165,7 @@ public class SupplierMenu {
     private static void manageSupplier(int suppId){
         boolean backToManageSupplierMenu;
         if(!fc.findSupplier(suppId)) {
-            System.out.println("LogicLayer.Supplier with this id does not exist in the system.");
+            System.out.println("Supplier with this id does not exist in the system.");
             return;
         }
         do{
@@ -175,7 +174,7 @@ public class SupplierMenu {
     }
 
     private static boolean displayManageSupplierMenu(int suppId){
-        String temp, choice;
+        String choice;
         boolean backToManageSupplierMenu = false;
         Scanner scanner = new Scanner(System.in);
         if(fc.findSupplier(suppId)) {
@@ -184,7 +183,7 @@ public class SupplierMenu {
             System.out.println("2. Edit agreement");
             System.out.println("3. Add bill of quantities");
             System.out.println("4. Edit bill of quantities");
-            System.out.println("5. PresentaionLyaer.Main menu");
+            System.out.println("5. Main menu");
             System.out.print("Option: ");
             choice = scanner.nextLine();
             switch (choice) {
@@ -233,7 +232,7 @@ public class SupplierMenu {
             do {
                 Map<Integer, Pair<Integer, Double>> map = fc.getBillOfQuantities(suppId);
                 for (Integer itemId : map.keySet()) {
-                    String itemName = fc.getItemNameById(suppId, itemId);
+                    String itemName = fc.getItemNameById(itemId);
                     Integer itemQuantity = map.get(itemId).getKey();
                     Double itemDiscount = map.get(itemId).getValue();
                     System.out.println(itemName + ", id: " + itemId + ", quantity: " + itemQuantity + ", discount: " + itemDiscount);
@@ -321,7 +320,7 @@ public class SupplierMenu {
         LinkedHashMap<Integer, Double> terms = fc.showSuppItems(suppId);
         displayItems(suppId);
 
-        System.out.print("LogicLayer.Item's id: ");
+        System.out.print("Item's id: ");
         int itemId = scanner.nextInt();
         for(int i=0; i<fc.showSuppItems(suppId).size(); i++){
             if(fc.getItemIdByIndex(suppId,i) == itemId){
@@ -339,19 +338,19 @@ public class SupplierMenu {
         return  scanner2.nextLine();
     }
 
-    private static int addOrder(int orderIdCounter) {
+   /* private static int addOrder(int orderIdCounter) {
         System.out.print("\nEnter the id of the supplier from which you want to order: ");
         Scanner scanner = new Scanner(System.in);
         int suppId = scanner.nextInt();
         if(!fc.findSupplier(suppId)){
-            System.out.println("LogicLayer.Supplier id does not exist in the system.");
+            System.out.println("Supplier id does not exist in the system.");
             return orderIdCounter;
         }
         displayItems(suppId);
         List<Pair<Integer, Integer>> items = new LinkedList<>();
         String choice;
         do {
-            System.out.print("LogicLayer.Item's id: ");
+            System.out.print("Item's id: ");
             int itemId = scanner.nextInt() ;
             System.out.print("Amount: ");
             int itemAmount = scanner.nextInt();
@@ -365,14 +364,14 @@ public class SupplierMenu {
         if (result) {
             double totalMoney = fc.getTotalOrderMoney(orderIdCounter);
             fc.setOrderCost(orderIdCounter, totalMoney);
-            System.out.println("\nLogicLayer.Order was added successfully.\n");
+            System.out.println("\nOrder was added successfully.\n");
             System.out.println("\nTotal order's cost: " + totalMoney + "\n");
             orderIdCounter++;
             return orderIdCounter;
         } else {
-            System.out.println("\nLogicLayer.Order failed, please try again.\n");
+            System.out.println("\nOrder failed, please try again.\n");
             return orderIdCounter;
         }
-    }
+    }*/
 
 }

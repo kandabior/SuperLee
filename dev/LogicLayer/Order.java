@@ -2,22 +2,32 @@ package LogicLayer;
 
 import InterfaceLayer.*;
 import javafx.util.Pair;
+
+import java.util.Date;
 import java.util.LinkedList;
 import java.util.List;
 
 enum Status{Pending,Complete}
 
 public class Order {
-    int id;
-    List<ItemInOrder> items;
-    Supplier supplier;
+    private int id;
+    private String suppName;
+    private int suppId;
+    private String address ;
+    private Date orderDate;
+    private String phoneNumber;
+    List<OrderLine> items;
     double totalCost;
     Status status;
 
-    public Order(int id, List<Pair<Integer, Integer>> items, int supplierId) {
+    public Order(int id, List<Pair<Integer, Integer>> items, int supplierId , String suppName, String address ,Date date , String phoneNumber) {
         this.id = id;
-        this.items = makeItemsInOrder(items);
-        this.supplier = getSuppById(supplierId);
+       // this.items = makeOrderLines(items);
+        this.suppName=suppName;
+        this.suppId=supplierId;
+        this.address= address;
+        this.orderDate=date;
+        this.phoneNumber = phoneNumber;
         totalCost=0;
         status=Status.Pending;
     }
@@ -44,16 +54,16 @@ public class Order {
         return SupplierController.getSupplierController().getSuppById(id);
     }
 
-    public List<ItemInOrder> makeItemsInOrder(List<Pair<Integer, Integer>> items) {
-        List<ItemInOrder> list = new LinkedList<>();
+/*    public List<OrderLine> makeOrderLines(List<Pair<Integer, Integer>> items) {
+        List<OrderLine> list = new LinkedList<>();
         for (int i = 0; i < items.size(); i++) {
-            ItemInOrder a = new ItemInOrder(items.get(i).getKey(), items.get(i).getValue());
+            OrderLine a = new OrderLine(items.get(i).getKey(), items.get(i).getValue());
             list.add(a);
         }
         return list;
-    }
+    }*/
 
-    public boolean makeOrder() {
+/*    public boolean makeOrder() {
         return supplier.makeOrder(items);
     }
 
@@ -77,5 +87,5 @@ public class Order {
             totalAmount+= supplier.getOrderCost(items.get(i).getItemId(),items.get(i).getQuantity());
         }
         return totalAmount;
-    }
+    }*/
 }

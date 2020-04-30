@@ -56,7 +56,7 @@ public class Agreement {
 
     public int getBillSize() { return this.bill.getBillSize(); }
 
-    public double getOrderCost(int itemId, int quantity) {
+    public double getPriceOfAmountOfItem(int itemId, int quantity) {
         if (bill != null && bill.checkItemInBill(itemId, quantity) == true) {
             double discount = bill.getMoneyAmountofItemInBill(itemId, quantity);
             double cost = terms.get(itemId);
@@ -67,4 +67,12 @@ public class Agreement {
             return (cost * quantity);
         }
     }
+
+    public boolean checkIfItemExist(int itemId) {
+
+       if(this.terms.get(itemId)!=null) return true;
+       return false;
+
+    }
+
 }
