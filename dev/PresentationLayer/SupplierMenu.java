@@ -22,10 +22,9 @@ public class SupplierMenu {
                 System.out.println("1. Add supplier");
                 System.out.println("2. Delete supplier");
                 System.out.println("3. Manage supplier");
-                System.out.println("4. Make order");
-                System.out.println("5. View previous orders");
-                System.out.println("6. Update order status");
-                System.out.println("7. Quit");
+                System.out.println("4. View previous orders");
+               // System.out.println("6. Update order status");
+                System.out.println("5. Quit");
                 System.out.print("Option: ");
                 Scanner scanner = new Scanner(System.in);
                 choice = scanner.nextLine();
@@ -45,7 +44,7 @@ public class SupplierMenu {
                         suppId = scanner3.nextInt();
                         manageSupplier(suppId);
                         break;
-                    case "4":
+/*                    case "4":
                        // orderIdCounter = addOrder(orderIdCounter);
                         break;
                     case "5":
@@ -53,8 +52,8 @@ public class SupplierMenu {
                         break;
                     case "6":
                         updateOrderStatus();
-                        break;
-                    case "7":
+                        break;*/
+                    case "5":
                         exit = true;
                         break;
                 }
@@ -116,11 +115,19 @@ public class SupplierMenu {
             System.out.print("Item's identifier: ");
             itemId = scanner.nextInt();
         }
+        if(fc.checkIfItemExist(itemId))
+        {
             String name = fc.getItemNameById(itemId);
             System.out.print("Name: " + name);
             fc.addItemToSupplier(suppId, itemId);
             newItems++;
+            System.out.print("\nInsert more items? [Y/N] ");
+        }
+        else
+        {
+            System.out.print("Item is not found  ");
             System.out.print("Insert more items? [Y/N] ");
+        }
         return newItems;
     }
 
@@ -316,7 +323,7 @@ public class SupplierMenu {
 
     private static String editAgreement(int suppId){
         Scanner scanner = new Scanner(System.in);
-        System.out.println("\nChoose the id of the item it's price you wish to change.");
+        System.out.println("\nChoose the id of the item it's price you wish to change.\n");
         LinkedHashMap<Integer, Double> terms = fc.showSuppItems(suppId);
         displayItems(suppId);
 

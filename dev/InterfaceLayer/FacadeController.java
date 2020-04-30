@@ -69,7 +69,11 @@ public class FacadeController {
 
     public Map<Integer,Pair<Integer,Integer>> makeOrder(List<Pair<Integer,Integer>> list)//return itemId , <Quantity , FinalCost>
     {
+
+        //list.get(i).getKey() - id
+        //list.get(i).getValue() = quantity
         Map<Integer,Pair<Integer,Integer>> map = new HashMap();
+        Map<Integer , List<Object>> orderMap= new HashMap<>();
         for( int i =0 ; i < list.size() ; i++)
         {
             int bestSuppForItem = supplierController.bestSuppForItem(list.get(i).getKey(),list.get(i).getValue());
@@ -78,6 +82,24 @@ public class FacadeController {
                 Double costForItem = supplierController.getPriceOfAmountOfItem(bestSuppForItem ,list.get(i).getKey(),list.get(i).getValue() );
                 Pair<Integer,Integer> p = new Pair(list.get(i).getValue(),costForItem);
                 map.put(list.get(i).getKey() , p);
+                //add orders
+                if(orderMap.containsKey(bestSuppForItem))
+                {
+                   // orderMap.put(bestSuppForItem,orderList);
+                }
+                else
+                {
+                    List<Object> orderList = new LinkedList<>();
+                    orderList.add(list.get(i).getKey());// Item Id
+                    orderList.add(supplierController.getItemName(list.get(i).getKey()));//Item Name
+                    orderList.add(list.get(i).getValue());// Item quantity
+                    orderList.add(list.get(i).getKey());// Item cost
+                    orderList.add(list.get(i).getKey());// Item discount
+                    orderList.add(list.get(i).getKey());// Item finalCost
+
+                }
+
+
             }
         }
         return map;
@@ -136,5 +158,9 @@ public class FacadeController {
 
     public String getOrderStatus(int orderId) {
         return orderController.getOrderStatus(orderId);
+    }
+
+    public boolean checkIfItemExist(int itemId) {
+       return this.supplierController.checkIfItemExist(itemId);
     }
 }

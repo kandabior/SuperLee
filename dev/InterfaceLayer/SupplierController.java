@@ -149,4 +149,8 @@ public class SupplierController {
     public Double getPriceOfAmountOfItem(int bestSuppForItem,Integer itemId, Integer amount) {
         return this.suppliers.get(bestSuppForItem).getPriceOfAmountOfItem(itemId,amount);
     }
+
+    public boolean checkIfItemExist(int itemId) {
+        return (Items.getName(itemId)!=null);
+    }
 }

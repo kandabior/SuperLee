@@ -27,6 +27,7 @@ public class Supplier {
         this.payment = payment;
         this.supplySchedule = supplySchedule;
         this.supplyLocation = supplyLocation;
+        this.items = new LinkedList<>();
         this.agreement = new Agreement();
     }
 
