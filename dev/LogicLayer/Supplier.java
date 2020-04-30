@@ -5,7 +5,7 @@ import java.util.List;
 import java.util.Map;
 
 import LogicLayer.Agreement;
-import LogicLayer.ItemInOrder;
+import LogicLayer.OrderLine;
 import javafx.util.Pair;
 
 public class Supplier {
@@ -16,7 +16,7 @@ public class Supplier {
     private String payment;
     private String supplySchedule;
     private String supplyLocation;
-    private List<Pair<Item, Integer>> items;
+    private List<Item> items;
     private Agreement agreement;
 
     public Supplier(int id, String name, String phoneNum, int bankAccount, String payment, String supplySchedule, String supplyLocation) {
@@ -39,21 +39,12 @@ public class Supplier {
         int counter = 0;
         for (int i = 0; i < items.size(); i++) {
             for (int j = 0; j < this.items.size(); j++) {
-                if (this.items.get(j).getKey().getId() == items.get(i).getItemId()) {
-                    if (this.items.get(j).getValue() >= items.get(i).getQuantity())
+                if (this.items.get(j).getId() == items.get(i).getItemId()) {
                         counter++;
                 }
             }
         }
         if (counter != items.size()) return false;
-        for (int i = 0; i < items.size(); i++) {
-            for (int j = 0; j < this.items.size(); j++) {
-                if (this.items.get(j).getKey().getId() == items.get(i).getItemId()) {
-                    Pair<Item, Integer> p = new Pair(this.items.get(j).getKey(), (this.items.get(j).getValue() - items.get(i).getQuantity()));
-                    this.items.set(j, p);
-                }
-            }
-        }
         return true;
     }
 
@@ -88,29 +79,26 @@ public class Supplier {
     }
 
     public String getItemName(Integer itemId) {
-        for(Pair<Item,Integer> item:items)
+        for(Item item:items)
         {
-            if(item.getKey().getId()==itemId) return item.getKey().getName();
+            if(item.getId()==itemId) return item.getName();
             break;
         }
         return "";
     }
 
     public String getItemNameByIndex(int i) {
-        return this.items.get(i).getKey().getName();
+        return this.items.get(i).getName();
     }
 
-    public String getItemDescByIndex(int i) {
-        return this.items.get(i).getKey().getDescription();
-    }
 
     public int getItemIdByIndex(int i) {
-        return this.items.get(i).getKey().getId();
+        return this.items.get(i).getId();
     }
 
-    public void addItemsToSupplier(int itemId, String itemName, String itemDescription, int itemQuantity) {
-            Item item = new Item(itemId,itemName,itemDescription);
-            this.items.add(new Pair(item,itemQuantity));
+    public void addItemsToSupplier(int itemId, String itemName) {
+            Item item = new Item(itemId,itemName);
+            this.items.add(item);
     }
 
     public int getItemsListSize() {
@@ -121,7 +109,7 @@ public class Supplier {
 
     public boolean validateItemId(int itemId){
         for(int i=0; i<items.size();i++) {
-            if(items.get(i).getKey().getId() == itemId)
+            if(items.get(i).getId() == itemId)
                 return false;
         }
         return true;
@@ -133,15 +121,4 @@ public class Supplier {
         return this.agreement.getOrderCost(itemId,quantity);
     }
 
-    public int getItemAmountByIndex(int i) {
-        return items.get(i).getValue();
-    }
-
-    public void updateItemQuantity(int itemId, int quantity){
-        for (int i = 0; i < this.items.size(); i++) {
-            if(this.items.get(i).getKey().getId() == itemId){
-                this.items.set(i, new Pair<>(this.items.get(i).getKey(), quantity));
-            }
-        }
-    }
 }

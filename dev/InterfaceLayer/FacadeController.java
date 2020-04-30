@@ -65,9 +65,6 @@ public class FacadeController {
         return supplierController.getItemNameByIndex(suppId, index);
     }
 
-    public String getItemDescByIndex(int suppId, int index) {
-        return supplierController.getItemDescByIndex(suppId, index);
-    }
 
     public int getItemIdByIndex(int suppId, int index) { return supplierController.getItemIdByIndex(suppId, index); }
 
@@ -79,8 +76,8 @@ public class FacadeController {
 
     public int getSupplierIdOfOrder(int i) { return orderController.getSupplierIdOfOrder(i); }
 
-    public void addItemToSupplier(int suppId, int itemId, String itemName, String itemDescription, int itemQuantity) {
-        supplierController.addItemToSupplier(suppId, itemId, itemName, itemDescription, itemQuantity);
+    public void addItemToSupplier(int suppId, int itemId, String itemName) {
+        supplierController.addItemToSupplier(suppId, itemId, itemName);
     }
 
     public int getItemsListSize(int suppId) { return supplierController.getItemsListSize(suppId); }
@@ -109,13 +106,6 @@ public class FacadeController {
        return orderController.getOrderIdByIndex(i);
     }
 
-    public int getItemAmountByIndex(int suppId, int i) {
-        return supplierController.getItemAmountByIndex(suppId,i);
-    }
-
-    public void updateItemQuantity(int suppId, int itemId, int itemQuantity) {
-        supplierController.updateItemQuantity(suppId, itemId, itemQuantity);
-    }
 
     public boolean checkIfOrderExists(int orderId) {
        return orderController.checkIfOrderExists(orderId);
