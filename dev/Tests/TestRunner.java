@@ -10,8 +10,7 @@ public class TestRunner {
         for (Failure failure : result.getFailures()) {
             System.out.println(failure.toString());
         }
-        System.out.println("Tets Status:"+ result.wasSuccessful());
-        System.out.println("Number of Tests :"+ result.getRunCount());
-
+        System.out.println("Tests status:"+ result.wasSuccessful());
+        System.out.println("Number of tests :"+ result.getRunCount());
     }
 }
