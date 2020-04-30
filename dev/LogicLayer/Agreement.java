@@ -9,7 +9,7 @@ public class Agreement {
     private LinkedHashMap<Integer, Double> terms;
     private BillOfQuantities bill;
 
-    public Agreement() {//todoooo
+    public Agreement() {
         this.terms = new LinkedHashMap<>();
         this.bill = null;
     }
