@@ -338,6 +338,11 @@ public class SupplierMenu {
         return  scanner2.nextLine();
     }
 
+    public static void initiateSystem() {
+
+
+    }
+
    /* private static int addOrder(int orderIdCounter) {
         System.out.print("\nEnter the id of the supplier from which you want to order: ");
         Scanner scanner = new Scanner(System.in);
