@@ -6,25 +6,18 @@ import javafx.util.Pair;
 import java.util.*;
 import java.util.List;
 
-public class Main {
+public class SupplierMenu {
     static FacadeController fc = FacadeController.getFacadeController();
     static int supplierIdCounter = 1;
     static int orderIdCounter = 1;
-    public static void main(String[] args) {
-        boolean exit;
-        System.out.println("Hello!");
-        do {
-            exit = displayMainMenu();
-        } while (!exit);
-    }
 
-    private static boolean displayMainMenu(){
+    public static boolean displayMainMenu(){
         try {
             boolean exit = false;
             int suppId;
             String choice;
             do {
-                System.out.println("\nPlease choose a function:");
+                System.out.println("\n\nPlease choose an action:\n");
                 System.out.println("1. Add supplier");
                 System.out.println("2. Delete supplier");
                 System.out.println("3. Manage supplier");
@@ -61,7 +54,6 @@ public class Main {
                         updateOrderStatus();
                         break;
                     case "7":
-                        System.out.println("Thank you for using our system.\nFor your information, no data is being saved so far.\nGoodbye!");
                         exit = true;
                         break;
                 }
