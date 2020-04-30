@@ -1,6 +1,5 @@
-package PresentaionLyaer;
+package PresentationLayer;
 
-import InterfaceLayer.*;
 import javafx.util.Pair;
 
 import java.util.*;
