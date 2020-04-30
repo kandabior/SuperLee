@@ -108,39 +108,19 @@ public class SupplierMenu {
     private static int addItems(int suppId) {
         int newItems = 0;
         Scanner scanner = new Scanner(System.in);
-        boolean update = false;
-        System.out.print("LogicLayer.Item's identifier: ");
+        System.out.print("Item's identifier: ");
         int itemId = scanner.nextInt();
         while (!fc.validateItemId(suppId, itemId)) {
-            System.out.print("This id is taken.\nEnter another one [a] or update this one's quantity [u]? ");
-            scanner = new Scanner(System.in);
-            String answer = scanner.nextLine();
-            if (answer.equals("u") | answer.equals("U")) {
-                update = true;
-                break;
-            }
-            System.out.print("LogicLayer.Item's identifier: ");
+            System.out.print("This id is taken.\nEnter another one\n");
+            System.out.print("Item's identifier: ");
             itemId = scanner.nextInt();
         }
-        if (!update) {
             System.out.print("Name: ");
             scanner = new Scanner(System.in);
             String itemName = scanner.nextLine();
-            System.out.print("Description (optional): ");
-            String itemDescription = scanner.nextLine();
-            System.out.print("Quantity of this item: ");
-            int itemQuantity = scanner.nextInt();
-            fc.addItemToSupplier(suppId, itemId, itemName, itemDescription, itemQuantity);
+            fc.addItemToSupplier(suppId, itemId, itemName);
             newItems++;
             System.out.print("Insert more items? [Y/N] ");
-        }
-        else{
-            System.out.print("New quantity: ");
-            scanner = new Scanner(System.in);
-            int itemQuantity = scanner.nextInt();
-            fc.updateItemQuantity(suppId, itemId, itemQuantity);
-            System.out.print("Insert more items? [Y/N] ");
-        }
         return newItems;
     }
 
@@ -162,7 +142,7 @@ public class SupplierMenu {
 
         fc.addSupplier(supplierIdCounter, suppName, suppPhone, suppBankAccount, suppPayment,
                 suppSchedule, suppLocation);
-        System.out.println("LogicLayer.Supplier added successfully. Id is: " + supplierIdCounter);
+        System.out.println("Supplier added successfully. Id is: " + supplierIdCounter);
         System.out.print("Insert supplier's items? [Y/N] ");
         String addItems = scanner.nextLine();
         while (addItems.equals("Y") | addItems.equals("y")) {
@@ -328,15 +308,10 @@ public class SupplierMenu {
         LinkedHashMap<Integer, Double> terms = fc.showSuppItems(suppId);
         for(int i=0; i<terms.size(); i++) {
             String itemName = fc.getItemNameByIndex(suppId,i);
-            String itemDesc = fc.getItemDescByIndex(suppId,i);
             int itemId= fc.getItemIdByIndex(suppId,i);
             double itemPrice = fc.getPriceOfItem(suppId,itemId);
             System.out.print(itemId + ". " + itemName + ", ");
-            if(itemDesc.length() > 0)
-                System.out.print(itemDesc + ", ");
             System.out.print(itemPrice + " NIS");
-            int itemAmount = fc.getItemAmountByIndex(suppId,i);
-            System.out.print( ", amount: "+itemAmount+"\n");
         }
     }
 
@@ -351,11 +326,8 @@ public class SupplierMenu {
         for(int i=0; i<fc.showSuppItems(suppId).size(); i++){
             if(fc.getItemIdByIndex(suppId,i) == itemId){
                 String itemName = fc.getItemNameByIndex(suppId,i);
-                String itemDesc = fc.getItemDescByIndex(suppId,i);
                 double itemPrice = terms.get(itemId);
                 System.out.print(itemName + ", ");
-                if(itemDesc.length() > 0)
-                    System.out.print(itemDesc + ", ");
                 System.out.print(itemPrice + "NIS\n");
                 System.out.print("New price: ");
                 double newPrice = scanner.nextDouble();

@@ -110,16 +110,13 @@ public class SupplierController {
         return getSuppById(suppId).getItemNameByIndex(i);
     }
 
-    public String getItemDescByIndex(int suppId, int i) {
-        return getSuppById(suppId).getItemDescByIndex(i);
-    }
 
     public int getItemIdByIndex(int suppId, int i) {
         return getSuppById(suppId).getItemIdByIndex(i);
     }
 
-    public void addItemToSupplier(int suppId, int itemId, String itemName, String itemDescription, int itemQuantity) {
-        this.getSuppById(suppId).addItemsToSupplier(itemId,itemName,itemDescription,itemQuantity);
+    public void addItemToSupplier(int suppId, int itemId, String itemName) {
+        this.getSuppById(suppId).addItemsToSupplier(itemId,itemName);
     }
 
     public int getItemsListSize(int suppId) {
@@ -134,11 +131,4 @@ public class SupplierController {
         return getSuppById(suppId).validateItemId(itemId);
     }
 
-    public int getItemAmountByIndex(int suppId, int i) {
-        return getSuppById(suppId).getItemAmountByIndex(i);
-    }
-
-    public void updateItemQuantity(int suppId, int itemId, int itemQuantity) {
-        getSuppById(suppId).updateItemQuantity(itemId, itemQuantity);
-    }
 }
