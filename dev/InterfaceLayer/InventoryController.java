@@ -1,7 +1,6 @@
 package InterfaceLayer;
 
 import LogicLayer.*;
-import PresentationLayer.SupplierMenu;
 import javafx.util.Pair;
 
 import java.time.LocalDate;

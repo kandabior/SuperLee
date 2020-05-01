@@ -1,11 +1,9 @@
 package PresentationLayer;
 
 import InterfaceLayer.FacadeController;
-import LogicLayer.Items;
 import javafx.util.Pair;
 
 import java.util.*;
-import java.util.List;
 
 public class SupplierMenu {
     static FacadeController fc = FacadeController.getFacadeController();
