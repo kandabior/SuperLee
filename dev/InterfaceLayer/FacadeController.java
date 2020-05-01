@@ -63,7 +63,7 @@ public class FacadeController {
         return supplierController.getItemNameByIndex(suppId, index);
     }
 
-    public Map<Integer,Pair<Integer,Integer>> makeOrder(List<Pair<Integer,Integer>> list)//return itemId , <Quantity , FinalCost>
+    public Map<Integer,Pair<Integer,Integer>> makeOrder(int branchId, List<Pair<Integer,Integer>> list)//return itemId , <Quantity , FinalCost>
     {
 
         //list.get(i).getKey() - id
