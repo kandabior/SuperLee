@@ -29,27 +29,28 @@ public class Report {
     public List<ReportLine> getLines() {
         return lines;
     }
-    public static Report totalStockReport(List<Pair<Integer, Integer>> quantity) {
+
+    public static Report totalStockReport(int branchId,List<Pair<Integer, Integer>> quantity) {
         Report report=new Report("Total Stock Report");
         for(Pair<Integer,Integer> line: quantity){
-            ReportLine reportLine= new ReportLine(line.getKey(),Inventory.getProdactName(line.getKey()),line.getValue());
+            ReportLine reportLine= new ReportLine(line.getKey(),Inventory.getProdactName(branchId,line.getKey()),line.getValue());
             report.addLine(reportLine);
         }
         return report;
     }
-    public static Report makeShelfReport(List<Pair<Integer, Integer>> shelfStock) {
+    public static Report makeShelfReport(int branchId,List<Pair<Integer, Integer>> shelfStock) {
         Report report=new Report("Shelf Report");
         for(Pair<Integer,Integer> line: shelfStock){
-            ReportLine reportLine= new ReportLine(line.getKey(),Inventory.getProdactName(line.getKey()),line.getValue());
+            ReportLine reportLine= new ReportLine(line.getKey(),Inventory.getProdactName(branchId,line.getKey()),line.getValue());
             report.addLine(reportLine);
         }
         return report;
     }
 
-    public static Report makeStorageReport(List<Pair<Integer, Integer>> storageStock) {
+    public static Report makeStorageReport(int branchId,List<Pair<Integer, Integer>> storageStock) {
         Report report=new Report("Storage Report");
         for(Pair<Integer,Integer> line: storageStock){
-            ReportLine reportLine= new ReportLine(line.getKey(),Inventory.getProdactName(line.getKey()),line.getValue());
+            ReportLine reportLine= new ReportLine(line.getKey(),Inventory.getProdactName(branchId,line.getKey()),line.getValue());
             report.addLine(reportLine);
         }
         return report;
@@ -59,46 +60,46 @@ public class Report {
         lines.add(reportLine);
     }
 
-    public static Report makeMissingReport(List<Pair<Integer, Integer>> quantity){
+    public static Report makeMissingReport(int branchId,List<Pair<Integer, Integer>> quantity){
         Report report= new Report("Missing Product Report");
         for(Pair<Integer,Integer> line: quantity){
-            ReportLine reportLine= new ReportLine(line.getKey(),Inventory.getProdactName(line.getKey()),line.getValue());
-            reportLine.addToLine("minimum amount: "+ Inventory.getProductMin(line.getKey()));
+            ReportLine reportLine= new ReportLine(line.getKey(),Inventory.getProdactName(branchId,line.getKey()),line.getValue());
+            reportLine.addToLine("minimum amount: "+ Inventory.getProductMin(branchId,line.getKey()));
             report.addLine(reportLine);
         }
         return report;
     }
 
-    public static Report makeDefectiveReport(List<Pair<Integer, Integer>> quantity){
+    public static Report makeDefectiveReport(int branchId,List<Pair<Integer, Integer>> quantity){
         Report report= new Report("Defective Product Report");
         for(Pair<Integer,Integer> line: quantity){
-            ReportLine reportLine= new ReportLine(line.getKey(),Inventory.getProdactName(line.getKey()),line.getValue());
+            ReportLine reportLine= new ReportLine(line.getKey(),Inventory.getProdactName(branchId,line.getKey()),line.getValue());
             report.addLine(reportLine);
         }
         return report;
     }
 
-    public static Report makeCategoryReport(List<Pair<Integer,Integer>> quantity){
+    public static Report makeCategoryReport(int branchId,List<Pair<Integer,Integer>> quantity){
         Report report= new Report("Category Report");
         for(Pair<Integer,Integer> line: quantity){
-            ReportLine reportLine= new ReportLine(line.getKey(),Inventory.getProdactName(line.getKey()),line.getValue());
+            ReportLine reportLine= new ReportLine(line.getKey(),Inventory.getProdactName(branchId,line.getKey()),line.getValue());
             report.addLine(reportLine);
         }
         return report;
     }
 
 
-    public static Report makeSalePriceReport(Pair<Integer, List<Double>> prices) {
+    public static Report makeSalePriceReport(int branch,Pair<Integer, List<Double>> prices) {
         Report report= new Report("Sale Prices Report");
-        ReportLine reportLine=new ReportLine(prices.getKey(),Inventory.getProdactName(prices.getKey()),Inventory.getAmount(prices.getKey()));
+        ReportLine reportLine=new ReportLine(prices.getKey(),Inventory.getProdactName(branch,prices.getKey()),Inventory.getAmount(branch,prices.getKey()));
         reportLine.addToLine("Prices: "+prices.getValue().toString());
 
         report.addLine(reportLine);
         return report;
     }
-    public static Report makeCostPriceReport(Pair<Integer, List<Double>> prices) {
+    public static Report makeCostPriceReport(int branch,Pair<Integer, List<Double>> prices) {
         Report report= new Report("Cost Prices Report");
-        ReportLine reportLine=new ReportLine(prices.getKey(),Inventory.getProdactName(prices.getKey()),Inventory.getAmount(prices.getKey()));
+        ReportLine reportLine=new ReportLine(prices.getKey(),Inventory.getProdactName(branch,prices.getKey()),Inventory.getAmount(branch,prices.getKey()));
         reportLine.addToLine("Prices: "+prices.getValue().toString());
 
         report.addLine(reportLine);
