@@ -6,38 +6,62 @@ import java.time.LocalDate;
 import java.util.*;
 
 public class Inventory {
-    private static Inventory instance;
+    private static Map<Integer,Inventory> instances=new HashMap<>();
 
+    private Integer branchId;
     private Map<Integer, Product> inventory;
     private Map<Integer, Pair<Integer,Integer>> quantities; //Pair[0] = storage , Pair[1] = shelf
     private Map<Integer, Integer> expired; //Id, amount
 
-    private Inventory() {
+    private Inventory(Integer id) {
+        branchId=id;
         inventory = new HashMap<>();
         quantities = new HashMap<>();
         expired = new HashMap<>();
+
     }
     
-    public static Inventory getInventory() {
-        if (instance == null)
-            instance = new Inventory();
-        return instance;
+    public static Inventory getInventory(Integer id) {
+        if(!instances.containsKey(id)){
+            return null;
+        }
+        return instances.get(id);
     }
-    public static String getProdactName(int prodId) {
-        if(!instance.inventory.containsKey(prodId))
+    public static String getProdactName(int branchId,int prodId) {
+        if(!instances.containsKey(branchId)){
+            return "branch id does not exist";
+        }
+        Inventory inventory=instances.get(branchId);
+        if(!inventory.inventory.containsKey(prodId))
             return "product ID doesnt exist";
-        return instance.inventory.get(prodId).getName();
+        return inventory.inventory.get(prodId).getName();
     }
-    public static int getProductMin(int prodId) {
-        if(!instance.inventory.containsKey(prodId))
+    public static int getProductMin(int branchId,int prodId) {
+        if(!instances.containsKey(branchId)){
             return -1;
-        return instance.inventory.get(prodId).getMinAmount();
+        }
+        Inventory inventory=instances.get(branchId);
+        if(!inventory.inventory.containsKey(prodId))
+            return -1;
+        return inventory.inventory.get(prodId).getMinAmount();
     }
 
-    public static int getAmount(Integer key) {
-        if(!instance.inventory.containsKey(key))
+    public static int getAmount(int branchId,Integer key) {
+        if(!instances.containsKey(branchId)){
             return -1;
-        return instance.quantities.get(key).getKey()+instance.quantities.get(key).getValue();
+        }
+        Inventory inventory=instances.get(branchId);
+        if(!inventory.inventory.containsKey(key))
+            return -1;
+        return inventory.quantities.get(key).getKey()+inventory.quantities.get(key).getValue();
+    }
+
+    public static String CreateNewInventory(Integer branchId) {
+        if(instances.containsKey(branchId)){
+            return "branch id is already exist";
+        }
+        instances.put(branchId,new Inventory(branchId));
+        return "Branch number: "+branchId+" has successfully initiated.";
     }
 
     public  String mannageOrders(Map<Integer,Pair<Integer,Integer>> orders) {

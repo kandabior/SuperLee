@@ -1,6 +1,7 @@
 package PresentationLayer;
 
 import InterfaceLayer.InventoryController;
+import LogicLayer.Inventory;
 import javafx.util.Pair;
 
 import java.time.LocalDate;
@@ -14,63 +15,66 @@ public class InventoryMenu {
         int choose;
         do {
             Printer.Print("\n\nPlease choose an action:\n" +
-                    "1. Register global manager\n" +
-                    "2. Register inventory manager\n" +
-                    "3. Add product   (Manager Only)\n" +
-                    "4. Remove product   (Manager Only)\n" +
-                    "5. Change product price by id   (Global Manager Only)\n" +
-                    "6. Change product price by category   (Global Manager Only)\n" +
-                    "7. Make missing products Order \n" +
-                    "8. Make customized order" +
-                    "9. Remove amount from Product\n" +
-                    "10. Change categories to Product\n" +
-                    "11. Transfer amount of Product from the storage to the shelf\n" +
-                    "12. Transfer amount of Product from the shelf to the storage\n" +
-                    "13. Set amount of defective products\n" +
-                    "14. Back to main menu\n");
+                    "1. Add new branch\n" +
+                    "2. Register global manager\n" +
+                    "3. Register inventory manager\n" +
+                    "4. Add product   (Manager Only)\n" +
+                    "5. Remove product   (Manager Only)\n" +
+                    "6. Change product price by id   (Global Manager Only)\n" +
+                    "7. Change product price by category   (Global Manager Only)\n" +
+                    "8. Make missing products Order \n" +
+                    "9. Make customized order" +
+                    "10. Remove amount from Product\n" +
+                    "11. Change categories to Product\n" +
+                    "12. Transfer amount of Product from the storage to the shelf\n" +
+                    "13. Transfer amount of Product from the shelf to the storage\n" +
+                    "14. Set amount of defective products\n" +
+                    "15. Back to main menu\n");
             choose = scanner.nextInt();
             try {
                 switch (choose) {
                     case 1:
+                        AddNewBranch();
+                    case 2:
                         AddGlobalManager();
                         break;
-                    case 2:
+                    case 3:
                         AddInventoryManager();
                         break;
-                    case 3:
+                    case 4:
                         AddProduct();
                         break;
-                    case 4:
+                    case 5:
                         RemoveProduct();
                         break;
-                    case 5:
+                    case 6:
                         ChangePriceById();
                         break;
-                    case 6:
+                    case 7:
                         changeProductByCategory();
                         break;
-                    case 7:
+                    case 8:
                         makeMissingOrder();
                         break;
-                    case 8:
+                    case 9:
                         makeCustomiezedOrder();
                         break;
-                    case 9:
+                    case 10:
                         removeAmountFromProduct();
                         break;
-                    case 10:
+                    case 11:
                         changeCategory();
                         break;
-                    case 11:
+                    case 12:
                         StorageToShelf();
                         break;
-                    case 12:
+                    case 13:
                         shelfToStorage();
                         break;
-                    case 13:
+                    case 14:
                         setDefectiveProducts();
                         break;
-                    case 14:
+                    case 15:
                         break;
                 }
             }
@@ -133,12 +137,16 @@ public class InventoryMenu {
     }
 
     private static void makeMissingOrder() {
-        System.out.println("Make missing product order..");
-        inventoryController.MakeMissingOrder();
+        System.out.println("Enter branch id");
+        String branchId= scanner.next();
+        System.out.println("Making missing product order..");
+        inventoryController.MakeMissingOrder(Integer.parseInt(branchId));
     }
 
     private static void makeCustomiezedOrder() {
         boolean stop=false;
+        System.out.println("Enter branch id");
+        String branchId= scanner.next();
         System.out.println("please enter product id and amount with a single gap between.\n" +
                 "To stop insert products, insert '0 0'.\n");
         List<Pair<Integer,Integer>> id_amount=new LinkedList<>();
@@ -151,7 +159,7 @@ public class InventoryMenu {
             }
             id_amount.add(new Pair<>(Integer.parseInt(input.get(0)),Integer.parseInt(input.get(1))));
         }
-        inventoryController.MakeCistomiezedOrder(id_amount);
+        inventoryController.MakeCistomiezedOrder(Integer.parseInt(branchId),id_amount);
 
 
     }
@@ -184,30 +192,44 @@ public class InventoryMenu {
         while(choose!=3);
     }
 
+    private static void AddNewBranch() {
+        System.out.println("Please insert branch: ");
+        String branchId=scanner.next();
+        Printer.Print(Inventory.CreateNewInventory(Integer.parseInt(branchId)));
+    }
+
     private static void setDefectiveProducts() {
         Printer.Print("\nPlease Enter the following by given order:\n");
+        System.out.println("Enter branch id");
+        String branchId= scanner.next();
         Printer.Print("product Id: ");
         String prodId=scanner.next();
         Printer.Print("amount: ");
         String amount=scanner.next();
-        Printer.Print(inventoryController.setDefectiveProducts(Integer.parseInt(prodId),Integer.parseInt(amount)));
+        Printer.Print(inventoryController.setDefectiveProducts(Integer.parseInt(branchId),Integer.parseInt(prodId),Integer.parseInt(amount)));
     }
 
 
     private static void PrintCostPriceReport() {
-        Printer.Print(("\nPlease enter a produce id to print:"));
+        System.out.println("\nEnter branch id: ");
+        String branchId= scanner.next();
+        Printer.Print(("Enter a produce id: "));
         String prodId=scanner.next();
-        Printer.Print(inventoryController.CostPriceReport(Integer.parseInt(prodId)));
+        Printer.Print(inventoryController.CostPriceReport(Integer.parseInt(branchId),Integer.parseInt(prodId)));
     }
 
     private static void PrintSalePriceReport() {
-        Printer.Print(("\nPlease enter a produce id to print:"));
+        System.out.println("\nEnter branch id: ");
+        String branchId= scanner.next();
+        Printer.Print(("Enter a produce id:"));
         String prodId=scanner.next();
-        Printer.Print(inventoryController.SalePricesReport(Integer.parseInt(prodId)));
+        Printer.Print(inventoryController.SalePricesReport(Integer.parseInt(branchId),Integer.parseInt(prodId)));
     }
 
     private static void changeCategory(){
         Printer.Print("\nPlease Enter the following by given order:\n");
+        System.out.println("Enter branch id: ");
+        String branchId= scanner.next();
         Printer.Print("username: ");
         String userName=scanner.next();
         Printer.Print("password: ");
@@ -217,64 +239,86 @@ public class InventoryMenu {
         Printer.Print("categories: (with ',' between them)");
         String cat=scanner.next();
         List<String> categoriesList= Arrays.asList(cat.split(","));
-        Printer.Print(inventoryController.setCategory(userName,password,Integer.parseInt(prodId),categoriesList));
+        Printer.Print(inventoryController.setCategory(Integer.parseInt(branchId),userName,password,Integer.parseInt(prodId),categoriesList));
     }
 
     private static void shelfToStorage(){
+        System.out.println("\nEnter branch id: ");
+        String branchId= scanner.next();
         Printer.Print("\nPlease Enter Product Id:\n");
         String prodId = scanner.next();
         Printer.Print("\nPlease Enter amount to take from the shelf to the storage:\n");
         String amount = scanner.next();
-        Printer.Print(inventoryController.shelfToStorage(Integer.parseInt(prodId),Integer.parseInt(amount)));
+        Printer.Print(inventoryController.shelfToStorage(Integer.parseInt(branchId),Integer.parseInt(prodId),Integer.parseInt(amount)));
     }
     private static void StorageToShelf(){
-        Printer.Print("\nPlease Enter Product Id:\n");
+        System.out.println("\nEnter branch id: ");
+        String branchId= scanner.next();
+        Printer.Print("\nEnter Product Id:\n");
         String prodId = scanner.next();
-        Printer.Print("\nPlease Enter amount to take from the storage to the shelf:\n");
+        Printer.Print("\nEnter amount to take from the storage to the shelf:\n");
         String amount = scanner.next();
-        Printer.Print(inventoryController.storageToShelf(Integer.parseInt(prodId),Integer.parseInt(amount)));
+        Printer.Print(inventoryController.storageToShelf(Integer.parseInt(branchId),Integer.parseInt(prodId),Integer.parseInt(amount)));
     }
     private static void addAmountToProduct(){
+        System.out.println("\nEnter branch id: ");
+        String branchId= scanner.next();
         Printer.Print("\nPlease Enter Product Id:\n");
         String prodId = scanner.next();
         Printer.Print("\nPlease Enter amount to add:\n");
         String amount = scanner.next();
-        Printer.Print(inventoryController.addAmountToProduct(Integer.parseInt(prodId),Integer.parseInt(amount)));
+        Printer.Print(inventoryController.addAmountToProduct(Integer.parseInt(branchId),Integer.parseInt(prodId),Integer.parseInt(amount)));
     }
     private static void removeAmountFromProduct(){
+        System.out.println("\nEnter branch id: ");
+        String branchId= scanner.next();
         Printer.Print("\nPlease Enter Product Id:\n");
         String prodId = scanner.next();
         Printer.Print("\nPlease Enter amount to remove:\n");
         String amount = scanner.next();
-        Printer.Print(inventoryController.removeAmountFromProduct(Integer.parseInt(prodId),Integer.parseInt(amount)));
+        Printer.Print(inventoryController.removeAmountFromProduct(Integer.parseInt(branchId),Integer.parseInt(prodId),Integer.parseInt(amount)));
     }
 
     private static void PrintEXPProducts() {
-        Printer.Print(inventoryController.ExpiredReport());
+        System.out.println("\nEnter branch id: ");
+        String branchId= scanner.next();
+        Printer.Print(inventoryController.ExpiredReport(Integer.parseInt(branchId)));
     }
     private static void PrintMissingProduct() {
-        Printer.Print(inventoryController.NeedToBuyReport());
+        System.out.println("\nEnter branch id: ");
+        String branchId= scanner.next();
+        Printer.Print(inventoryController.NeedToBuyReport(Integer.parseInt(branchId)));
     }
     private static void PrintProductByCategories() {
+        System.out.println("\nEnter branch id: ");
+        String branchId= scanner.next();
         Printer.Print("\nPlease Enter category/ies to print with ',' between them: ");
         Printer.Print("\ncategories: ");
         String categories=scanner.next();
         List<String> categoriesList= Arrays.asList(categories.split(","));
-        Printer.Print(inventoryController.CategoryReport(categoriesList));
+        Printer.Print(inventoryController.CategoryReport(Integer.parseInt(branchId),categoriesList));
     }
     private static void printShelfStock() {
-        Printer.Print(inventoryController.ShelfReport());
+        System.out.println("\nEnter branch id: ");
+        String branchId= scanner.next();
+        Printer.Print(inventoryController.ShelfReport(Integer.parseInt(branchId)));
     }
 
     private static void printStorageStock() {
-        Printer.Print(inventoryController.StorageReport());
+        System.out.println("\nEnter branch id: ");
+        String branchId= scanner.next();
+        Printer.Print(inventoryController.StorageReport(Integer.parseInt(branchId)));
 
     }
     private static void PrintTotalStock() {
-        Printer.Print(inventoryController.totalStockReport());
+        System.out.println("\nEnter branch id: ");
+        String branchId= scanner.next();
+        Printer.Print(inventoryController.totalStockReport(Integer.parseInt(branchId)));
     }
     private static void changeProductByCategory() {
         Printer.Print("\nPlease Enter the following by given order:\n");
+        System.out.println("Enter branch id: ");
+        String branchId= scanner.next();
         Printer.Print("username: ");
         String userName=scanner.next();
         Printer.Print("password: ");
@@ -284,10 +328,12 @@ public class InventoryMenu {
         Printer.Print("price: ");
         String price=scanner.next();
         List<String> categoriesList= Arrays.asList(categories.split(","));
-        Printer.Print(inventoryController.setPriceByCategory(userName,password,categoriesList ,Double.parseDouble(price)));
+        Printer.Print(inventoryController.setPriceByCategory(Integer.parseInt(branchId),userName,password,categoriesList ,Double.parseDouble(price)));
     }
     private static void ChangePriceById() {
         Printer.Print("\nPlease Enter the following by given order:\n");
+        System.out.println("Enter branch id: ");
+        String branchId= scanner.next();
         Printer.Print("username: ");
         String userName=scanner.next();
         Printer.Print("password: ");
@@ -296,20 +342,24 @@ public class InventoryMenu {
         String prodId=scanner.next();
         Printer.Print("price: ");
         String price=scanner.next();
-        Printer.Print(inventoryController.setSalePriceById(userName,password,Integer.parseInt(prodId),Double.parseDouble(price)));
+        Printer.Print(inventoryController.setSalePriceById(Integer.parseInt(branchId),userName,password,Integer.parseInt(prodId),Double.parseDouble(price)));
     }
     private static void RemoveProduct() {
         Printer.Print("\nPlease Enter the following by given order:\n");
+        System.out.println("Enter branch id: ");
+        String branchId= scanner.next();
         Printer.Print("username: ");
         String userName=scanner.next();
         Printer.Print("password: ");
         String password=scanner.next();
         Printer.Print("product Id: ");
         String prodId=scanner.next();
-        Printer.Print(inventoryController.removeProduct(userName,password,Integer.parseInt( prodId)));
+        Printer.Print(inventoryController.removeProduct(Integer.parseInt(branchId),userName,password,Integer.parseInt( prodId)));
     }
     private static void AddProduct() {
         Printer.Print("\nPlease Enter the following by given order:\n");
+        System.out.println("Enter branch id: ");
+        String branchId= scanner.next();
         Printer.Print("username: ");
         String userName=scanner.next();
         Printer.Print("password: ");
@@ -337,7 +387,7 @@ public class InventoryMenu {
         List<String> categoriesList= Arrays.asList(categories.split(","));
         String []dateArr=expdate.split("/");
         LocalDate date = LocalDate.of(Integer.parseInt(dateArr[2]),Integer.parseInt(dateArr[1]),Integer.parseInt(dateArr[0]));
-        Printer.Print(inventoryController.addProduct(userName,password,Integer.parseInt(prodId),Integer.parseInt(amount),Double.parseDouble(costPrice),Double.parseDouble(salePrice), date,categoriesList,manufacturer,Integer.parseInt(minAmount),place));
+        Printer.Print(inventoryController.addProduct(Integer.parseInt(branchId),userName,password,Integer.parseInt(prodId),Integer.parseInt(amount),Double.parseDouble(costPrice),Double.parseDouble(salePrice), date,categoriesList,manufacturer,Integer.parseInt(minAmount),place));
     }
     private static void AddInventoryManager() {
         Printer.Print("Please enter new username:");
@@ -366,14 +416,14 @@ public class InventoryMenu {
         List<String> cat1 = new LinkedList<>();
         cat1.add("Shimurim");
         LocalDate date1 = LocalDate.of(20, 12,31);
-        inventoryController.addProduct("Erez", "1234",1, 20, 5.0,
+        inventoryController.addProduct(1,"Erez", "1234",1, 20, 5.0,
                 8.0, date1,cat1,"Osem", 10, "area1");
 
         List<String> cat2 = new LinkedList<>();
         cat2.add("Halavi");
         cat2.add("Cartons");
         LocalDate date2 = LocalDate.of(20, 8,31);
-        inventoryController.addProduct("Or", "1234",2, 30, 3.0,
+        inventoryController.addProduct(1,"Or", "1234",2, 30, 3.0,
                 6.0, date2,cat2,"Tnuva", 20, "area2");
     }
 }
