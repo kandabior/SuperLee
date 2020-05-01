@@ -108,4 +108,12 @@ public class Supplier {
     public Double getPriceOfAmountOfItem(Integer itemId, Integer amount) {
         return this.agreement.getPriceOfAmountOfItem(itemId,amount);
     }
+
+    public Double getPriceOfAmountOfItemBeforeDiscount(int itemId , int amount) {
+        return this.agreement.getPriceOfAmountOfItemBeforeDiscount(itemId,amount);
+    }
+
+    public Double getDiscountOfItem(int itemId , int amount) {
+        return this.agreement.getDiscountOfItem(itemId , amount);
+    }
 }

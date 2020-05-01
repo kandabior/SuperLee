@@ -75,4 +75,18 @@ public class Agreement {
 
     }
 
+    public Double getPriceOfAmountOfItemBeforeDiscount(int itemId, int amount) {
+        double cost = terms.get(itemId);
+        return (cost * amount);
+    }
+
+    public Double getDiscountOfItem(int itemId , int amount) {
+        if (bill != null && bill.checkItemInBill(itemId, amount) == true) {
+            return bill.getDiscount(itemId);
+        }
+        else
+        {
+            return 0.0;
+        }
+    }
 }

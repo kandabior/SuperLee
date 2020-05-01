@@ -153,4 +153,13 @@ public class SupplierController {
     public boolean checkIfItemExist(int itemId) {
         return (Items.getName(itemId)!=null);
     }
+
+    public Double getPriceOfAmountOfItemBeforeDiscount(int suppId , int itemId , int amount) {
+        return this.suppliers.get(suppId).getPriceOfAmountOfItemBeforeDiscount(itemId, amount);
+    }
+
+    public Double getDiscountOfItem(int bestSuppForItem, int itemId , int amount) {
+        return this.suppliers.get(bestSuppForItem).getDiscountOfItem(itemId, amount);
+    }
+
 }

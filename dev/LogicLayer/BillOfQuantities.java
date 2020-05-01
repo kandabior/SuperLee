@@ -45,4 +45,7 @@ public class BillOfQuantities {
        return bill.get(itemId).getValue();
     }
 
+    public Double getDiscount(int itemId) {
+        return this.bill.get(itemId).getValue();
+    }
 }

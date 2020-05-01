@@ -1,9 +1,12 @@
 package InterfaceLayer;
 
 import LogicLayer.Order;
+import LogicLayer.OrderLine;
+import com.sun.org.apache.xpath.internal.operations.Or;
 
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Map;
 
 public class OrderController {
 
@@ -91,5 +94,27 @@ public class OrderController {
             }
         }
         return "";
+    }
+
+    public void makeOrders(int branchId, Map<Integer, List<List<Object>>> orderMap) {
+
+        for (Integer key : orderMap.keySet())//go over suppliers
+        {
+            Order o = new Order();
+            for (int j = 0  ; j<orderMap.get(key).size() ; j++)//go over the orders line
+            {
+                int itemId= (int) orderMap.get(key).get(j).get(0);
+                String itemName= (String) orderMap.get(key).get(j).get(1);
+                int itemQuantity= (int) orderMap.get(key).get(j).get(2);
+                Double itemCost= (Double) orderMap.get(key).get(j).get(3);
+                Double itemDiscount= (Double) orderMap.get(key).get(j).get(4);
+                Double itemFinalCost= (Double) orderMap.get(key).get(j).get(5);
+                OrderLine orderLine= new OrderLine(itemId,itemName,itemQuantity,itemCost,itemDiscount,itemFinalCost);
+
+            }
+
+        }
+
+
     }
 }

@@ -66,38 +66,55 @@ public class FacadeController {
     public Map<Integer,Pair<Integer,Integer>> makeOrder(int branchId, List<Pair<Integer,Integer>> list)//return itemId , <Quantity , FinalCost>
     {
 
-        //list.get(i).getKey() - id
-        //list.get(i).getValue() = quantity
         Map<Integer,Pair<Integer,Integer>> map = new HashMap();
-        Map<Integer , List<Object>> orderMap= new HashMap<>();
+        Map<Integer , List<List<Object>>> orderMap= new HashMap<>();
         for( int i =0 ; i < list.size() ; i++)
         {
-            int bestSuppForItem = supplierController.bestSuppForItem(list.get(i).getKey(),list.get(i).getValue());
+            int itemId = list.get(i).getKey();
+            int quantity = list.get(i).getValue();
+            int bestSuppForItem = supplierController.bestSuppForItem(itemId,quantity);
             if(bestSuppForItem>0)
             {
-                Double costForItem = supplierController.getPriceOfAmountOfItem(bestSuppForItem ,list.get(i).getKey(),list.get(i).getValue() );
-                Pair<Integer,Integer> p = new Pair(list.get(i).getValue(),costForItem);
-                map.put(list.get(i).getKey() , p);
+                Double costForItem = supplierController.getPriceOfAmountOfItem(bestSuppForItem ,itemId,quantity );
+                Pair<Integer,Integer> p = new Pair(quantity,costForItem);
+                map.put(itemId , p);
                 //add orders
                 if(orderMap.containsKey(bestSuppForItem))
                 {
-                   // orderMap.put(bestSuppForItem,orderList);
+                    List<Object> orderList = new LinkedList<>();
+                    orderList.add(itemId);// Item Id
+                    orderList.add(supplierController.getItemName(itemId));//Item Name
+                    orderList.add(quantity);// Item quantity
+                    Double firstCost = supplierController.getPriceOfAmountOfItemBeforeDiscount(bestSuppForItem, itemId , quantity);
+                    orderList.add(firstCost);// Item cost
+                    Double discount = supplierController.getDiscountOfItem(bestSuppForItem,itemId,quantity);
+                    orderList.add(discount);// Item discount
+                    orderList.add(costForItem);// Item finalCost
+                    orderMap.get(bestSuppForItem).add(orderList);
+
                 }
                 else
                 {
+                    List<List<Object>> bigList = new LinkedList<>();
                     List<Object> orderList = new LinkedList<>();
-                    orderList.add(list.get(i).getKey());// Item Id
-                    orderList.add(supplierController.getItemName(list.get(i).getKey()));//Item Name
-                    orderList.add(list.get(i).getValue());// Item quantity
-                    orderList.add(list.get(i).getKey());// Item cost
-                    orderList.add(list.get(i).getKey());// Item discount
-                    orderList.add(list.get(i).getKey());// Item finalCost
+                    orderList.add(itemId);// Item Id
+                    orderList.add(supplierController.getItemName(itemId));//Item Name
+                    orderList.add(quantity);// Item quantity
+                    Double firstCost = supplierController.getPriceOfAmountOfItemBeforeDiscount(bestSuppForItem, itemId , quantity);
+                    orderList.add(firstCost);// Item cost
+                    Double discount = supplierController.getDiscountOfItem(bestSuppForItem,itemId,quantity);
+                    orderList.add(discount);// Item discount
+                    orderList.add(costForItem);// Item finalCost
+                    bigList.add(orderList);
+                    orderMap.put(bestSuppForItem,bigList);
 
                 }
 
 
             }
         }
+        orderController.makeOrders(branchId, orderMap);
+
         return map;
     }
 
