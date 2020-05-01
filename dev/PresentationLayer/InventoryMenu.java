@@ -403,25 +403,31 @@ public class InventoryMenu {
 
     }
     public static void initiateSystem(){
-        Printer.Print("System initiate successfully (:");
+        try {
 
-        inventoryController.addGlobalManager("Erez", "1234");
-        inventoryController.addGlobalManager("Or", "1234");
-        inventoryController.addInventoryManager("dana", "1234");
-        inventoryController.addInventoryManager("david", "1234");
+            inventoryController.addGlobalManager("Erez", "1234");
+            inventoryController.addGlobalManager("Or", "1234");
+            inventoryController.addInventoryManager("dana", "1234");
+            inventoryController.addInventoryManager("david", "1234");
 
 
-        List<String> cat1 = new LinkedList<>();
-        cat1.add("Shimurim");
-        LocalDate date1 = LocalDate.of(20, 12,31);
-        inventoryController.addProduct(1,"Erez", "1234",1, 20, 5.0,
-                8.0, date1,cat1,"Osem", 10, "area1");
+            List<String> cat1 = new LinkedList<>();
+            cat1.add("Shimurim");
+            LocalDate date1 = LocalDate.of(20, 12, 31);
+            inventoryController.addProduct(1, "Erez", "1234", 1, 20, 5.0,
+                    8.0, date1, cat1, "Osem", 10, "area1");
 
-        List<String> cat2 = new LinkedList<>();
-        cat2.add("Halavi");
-        cat2.add("Cartons");
-        LocalDate date2 = LocalDate.of(20, 8,31);
-        inventoryController.addProduct(1,"Or", "1234",2, 30, 3.0,
-                6.0, date2,cat2,"Tnuva", 20, "area2");
+            List<String> cat2 = new LinkedList<>();
+            cat2.add("Halavi");
+            cat2.add("Cartons");
+            LocalDate date2 = LocalDate.of(20, 8, 31);
+            inventoryController.addProduct(1, "Or", "1234", 2, 30, 3.0,
+                    6.0, date2, cat2, "Tnuva", 20, "area2");
+
+            Printer.Print("System initiate successfully (:");
+        }
+        catch (Exception e){
+            Printer.Print("could not initiate the system..");
+        }
     }
 }
