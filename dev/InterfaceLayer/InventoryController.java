@@ -196,6 +196,15 @@ public class InventoryController {
         }
     }
 
+    public String MakeCistomiezedOrder(List<Pair<Integer, Integer>> id_amount) {
+        try{
+            Map<Integer,Pair<Integer,Integer>> orders=FacadeController.getFacadeController().makeOrder(id_amount);
+            return inventory.mannageOrders(orders);
+        }
+        catch (Exception e){
+            return "can't execute the action";
+        }
+    }
 
 
     //Reports
@@ -208,6 +217,7 @@ public class InventoryController {
             return "can't execute the action";
         }
     }
+
     public String totalStockReport(){
         try {
             List<Pair<Integer, Integer>> totalStock = inventory.getQuantity();
@@ -267,7 +277,6 @@ public class InventoryController {
             return "can't execute the action";
         }
     }
-
     public String CostPriceReport(Integer id){
         try {
             Pair<Integer, List<Double>> prices = inventory.CostPricesById(id);
@@ -277,6 +286,7 @@ public class InventoryController {
             return "can't execute the action";
         }
     }
+
     //Tests Methods
 
     public Pair<Integer,Pair<Integer,Integer>> getquantityById(Integer Id){
