@@ -210,7 +210,7 @@ public class InventoryController {
     public String NeedToBuyReport(int branchId){
         try {
             List<Pair<Integer, Integer>> toBuy = Inventory.getInventory(branchId).NeedToBuyProducts();
-            return reportMaker.printMissingProducts(toBuy);
+            return reportMaker.printMissingProducts(branchId,toBuy);
         }
         catch (Exception e){
             return "can't execute the action";
@@ -220,7 +220,7 @@ public class InventoryController {
     public String totalStockReport(int branchId){
         try {
             List<Pair<Integer, Integer>> totalStock = Inventory.getInventory(branchId).getQuantity();
-            return reportMaker.printStock(totalStock);
+            return reportMaker.printStock(branchId,totalStock);
         }
         catch (Exception e){
             return "can't execute the action";
@@ -230,7 +230,7 @@ public class InventoryController {
     public String ShelfReport(int branchId) {
         try {
             List<Pair<Integer, Integer>> shelfStock = Inventory.getInventory(branchId).getShelfQuantity();
-            return reportMaker.printShelfReport(shelfStock);
+            return reportMaker.printShelfReport(branchId,shelfStock);
         }catch (Exception e){
             return "can't execute the action";
         }
@@ -239,7 +239,7 @@ public class InventoryController {
     public String StorageReport(int branchId) {
         try {
             List<Pair<Integer, Integer>> storageStock = Inventory.getInventory(branchId).getStorageQuantity();
-            return reportMaker.printStorageReport(storageStock);
+            return reportMaker.printStorageReport(branchId,storageStock);
         }
         catch (Exception e){
             return "can't execute the action";
@@ -250,7 +250,7 @@ public class InventoryController {
     public String CategoryReport(int branchId,List<String> category){
         try {
             List<Pair<Integer, Integer>> prodByCategories = Inventory.getInventory(branchId).getProductsByCategories(category);
-            return reportMaker.printByCategories(prodByCategories);
+            return reportMaker.printByCategories(branchId,prodByCategories);
         }
         catch (Exception e){
             return "can't execute the action";
@@ -260,7 +260,7 @@ public class InventoryController {
     public String ExpiredReport(int branchId){
         try {
             List<Pair<Integer, Integer>> expiredProducts = Inventory.getInventory(branchId).ExpiredProducts();
-            return reportMaker.MakeDefectiveReport(expiredProducts);
+            return reportMaker.MakeDefectiveReport(branchId,expiredProducts);
         }
         catch (Exception e){
             return "can't execute the action";
@@ -270,7 +270,7 @@ public class InventoryController {
     public String SalePricesReport(int branchId,Integer id){
         try{
             Pair<Integer,List<Double>> prices= Inventory.getInventory(branchId).SalePricesById(id);
-            return reportMaker.printSaleProductPrices(prices);
+            return reportMaker.printSaleProductPrices(branchId,prices);
         }
         catch (Exception e){
             return "can't execute the action";
@@ -279,7 +279,7 @@ public class InventoryController {
     public String CostPriceReport(int branchId,Integer id){
         try {
             Pair<Integer, List<Double>> prices = Inventory.getInventory(branchId).CostPricesById(id);
-            return reportMaker.printCostProductPrices(prices);
+            return reportMaker.printCostProductPrices(branchId,prices);
         }
         catch (Exception e){
             return "can't execute the action";
