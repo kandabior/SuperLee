@@ -1,6 +1,7 @@
 package PresentationLayer;
 
 import InterfaceLayer.InventoryController;
+import javafx.util.Pair;
 
 import java.time.LocalDate;
 import java.util.*;
@@ -80,11 +81,6 @@ public class InventoryMenu {
         while (choose != 13) ;
     }
 
-    private static void makeCustomiezedOrder() {
-        System.out.println();
-
-    }
-
     private static void reportsLoop(){
         int choose;
         do {
@@ -137,7 +133,27 @@ public class InventoryMenu {
     }
 
     private static void makeMissingOrder() {
+        System.out.println("Make missing product order..");
         inventoryController.MakeMissingOrder();
+    }
+
+    private static void makeCustomiezedOrder() {
+        boolean stop=false;
+        System.out.println("please enter product id and amount with a single gap between.\n" +
+                "To stop insert products, insert '0 0'.\n");
+        List<Pair<Integer,Integer>> id_amount=new LinkedList<>();
+        while(!stop) {
+            Printer.Print("product Id and amount: ");
+            String prodId = scanner.next();
+            List<String> input = Arrays.asList(prodId.split(" "));
+            if((input.get(0)=="0") && (input.get(1)=="0")){
+                stop=true;
+            }
+            id_amount.add(new Pair<>(Integer.parseInt(input.get(0)),Integer.parseInt(input.get(1))));
+        }
+        inventoryController.MakeCistomiezedOrder(id_amount);
+
+
     }
 
     public static void mainLoop() {
