@@ -12,12 +12,15 @@ public class Inventory {
     private Map<Integer, Product> inventory;
     private Map<Integer, Pair<Integer,Integer>> quantities; //Pair[0] = storage , Pair[1] = shelf
     private Map<Integer, Integer> expired; //Id, amount
+    private Integer dayForWeeklyOrder=1;
+    private Map<Integer,Integer> WeeklyOrder;
 
     private Inventory(Integer id) {
         branchId=id;
         inventory = new HashMap<>();
         quantities = new HashMap<>();
         expired = new HashMap<>();
+        WeeklyOrder= new HashMap<>();
 
     }
     
@@ -27,6 +30,8 @@ public class Inventory {
         }
         return instances.get(id);
     }
+
+
     public static String getProdactName(int branchId,int prodId) {
         if(!instances.containsKey(branchId)){
             return "branch id does not exist";
@@ -64,6 +69,16 @@ public class Inventory {
         return "Branch number: "+branchId+" has successfully initiated.";
     }
 
+    public static List<Integer> getIdsToWeeklyOrders(Integer dayOfTheWeek) {
+        List<Integer> output=new LinkedList<>();
+        for(Inventory inventory: instances.values()){
+            if(inventory.dayForWeeklyOrder==dayOfTheWeek){
+                output.add(inventory.branchId);
+            }
+        }
+        return output;
+    }
+
 
     public  String mannageOrders(Map<Integer,Pair<Integer,Integer>> orders) {
         for(Integer prodId: orders.keySet()){
@@ -74,7 +89,7 @@ public class Inventory {
                 setCostPrice(prodId,newPrice);
             }
         }
-        return "Order Completed Successfully";
+        return "Order Completed Successfully for branch: "+branchId;
     }
 
     private void setCostPrice(Integer prodId, double newPrice) {
@@ -259,7 +274,29 @@ public class Inventory {
     }
 
 
+    public void addToWeeklyOrder(List<Pair<Integer, Integer>> id_amount) {
+        for(Pair<Integer,Integer> p: id_amount){
+            WeeklyOrder.put(p.getKey(),p.getValue());
+        }
+    }
+    public void removeFromWeeklyOrder(List<Integer> ids){
+        for(Integer id: ids){
+            if(WeeklyOrder.containsKey(id)){
+                WeeklyOrder.remove(id);
+            }
+        }
+    }
+
+    public List<Pair<Integer, Integer>> getWeeklyOrder() {
+        List<Pair<Integer, Integer>> output=new LinkedList<>();
+        for(Integer id: WeeklyOrder.keySet()){
+            output.add(new Pair<>(id,WeeklyOrder.get(id)));
+        }
+        return output;
+    }
+
     //Tests Methods
+
     public Pair<Integer,Pair<Integer,Integer>> getQuantityById(Integer id) {
         return new Pair<>(id,quantities.get(id));
     }

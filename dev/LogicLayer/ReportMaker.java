@@ -74,4 +74,10 @@ public class ReportMaker {
         reports.add(report);
         return report.toString();
     }
+
+    public String PrintWeeklyOrder(Integer branchId,List<Pair<Integer, Integer>> weeklyOrder) {
+        Report report= Report.makeWeeklyOrder(branchId,weeklyOrder);
+        reports.add(report);
+        return report.toString();
+    }
 }

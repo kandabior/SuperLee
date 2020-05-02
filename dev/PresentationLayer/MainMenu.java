@@ -1,13 +1,12 @@
 package PresentationLayer;
 
-import LogicLayer.Inventory;
 import LogicLayer.Items;
 
 import java.util.Scanner;
 
 public class MainMenu {
     public static Scanner scanner=new Scanner(System.in);
-
+    public static Integer DayOfTheWeek=0;
 
     public static void main(String[]args) {
         mainLoop();
@@ -25,13 +24,16 @@ public class MainMenu {
             Printer.Print("system was not initiate");
         }
         int choose;
+        Printer.Print("Welcome To EOED Digtal Storage And Suppliers Manager");
         do {
+            Printer.Print("Day: "+(DayOfTheWeek+1));
             Printer.Print("\n\nPlease choose an action:\n" +
                     "1. Enter Inventory & Reports Menu\n" +
                     "2. Enter Suppliers Menu\n" +
                     "3. Show Global Products\n" +
                     "4. Add Global Product\n" +
-                    "5. Quit\n");
+                    "5. Promote Day\n"+
+                    "6. Quit\n");
             choose = scanner.nextInt();
             try {
                 switch (choose) {
@@ -48,13 +50,16 @@ public class MainMenu {
                         AddGlobalProduct();
                         break;
                     case 5:
+                        DayOfTheWeek=(DayOfTheWeek+1)%7;
+                        InventoryMenu.PromoteDay(DayOfTheWeek+1);
+                    case 6:
                         break;
                 }
             } catch (Exception e) {
                 Printer.Print("can't execute the action");
             }
         }
-        while (choose != 5);
+        while (choose != 6);
         System.out.println("Shutting down the system..");
     }
 
