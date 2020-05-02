@@ -23,7 +23,7 @@ public class InventoryMenu {
                     "6. Change product price by id   (Global Manager Only)\n" +
                     "7. Change product price by category   (Global Manager Only)\n" +
                     "8. Make missing products Order \n" +
-                    "9. Make customized order" +
+                    "9. Make customized order\n" +
                     "10. Remove amount from Product\n" +
                     "11. Change categories to Product\n" +
                     "12. Transfer amount of Product from the storage to the shelf\n" +
@@ -147,6 +147,7 @@ public class InventoryMenu {
         boolean stop=false;
         System.out.println("Enter branch id");
         String branchId= scanner.next();
+        //TODO CHECK BRANCH EXIXST
         System.out.println("please enter product id and amount with a single gap between.\n" +
                 "To stop insert products, insert '0 0'.\n");
         List<Pair<Integer,Integer>> id_amount=new LinkedList<>();

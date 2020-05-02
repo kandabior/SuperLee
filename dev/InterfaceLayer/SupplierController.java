@@ -46,8 +46,8 @@ public class SupplierController {
         return false;
     }
 
-    public void addSupplier(int id, String name, String phoneNum, int bankAccount, String payment, String supplySchedule, String supplyLocation) {
-        Supplier sup = new Supplier(id, name, phoneNum, bankAccount, payment, supplySchedule, supplyLocation);
+    public void addSupplier(int id, String name, String phoneNum, int bankAccount, String payment, String supplySchedule, String supplyLocation , String address) {
+        Supplier sup = new Supplier(id, name, phoneNum, bankAccount, payment, supplySchedule, supplyLocation , address);
         this.suppliers.add(sup);
     }
 
@@ -147,7 +147,7 @@ public class SupplierController {
     }
 
     public Double getPriceOfAmountOfItem(int bestSuppForItem,Integer itemId, Integer amount) {
-        return this.suppliers.get(bestSuppForItem).getPriceOfAmountOfItem(itemId,amount);
+        return getSuppById(bestSuppForItem).getPriceOfAmountOfItem(itemId,amount);
     }
 
     public boolean checkIfItemExist(int itemId) {
@@ -155,11 +155,14 @@ public class SupplierController {
     }
 
     public Double getPriceOfAmountOfItemBeforeDiscount(int suppId , int itemId , int amount) {
-        return this.suppliers.get(suppId).getPriceOfAmountOfItemBeforeDiscount(itemId, amount);
+        return getSuppById(suppId).getPriceOfAmountOfItemBeforeDiscount(itemId, amount);
     }
 
     public Double getDiscountOfItem(int bestSuppForItem, int itemId , int amount) {
-        return this.suppliers.get(bestSuppForItem).getDiscountOfItem(itemId, amount);
+        return getSuppById(bestSuppForItem).getDiscountOfItem(itemId, amount);
     }
 
+    public List<Object> getSuppDetails(int bestSuppForItem) {
+        return getSuppById(bestSuppForItem).getSuppDetails();
+    }
 }

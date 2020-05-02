@@ -1,8 +1,7 @@
 package LogicLayer;
 
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Map;
+import java.time.LocalDateTime;
+import java.util.*;
 
 import LogicLayer.Agreement;
 import LogicLayer.OrderLine;
@@ -12,6 +11,7 @@ public class Supplier {
     private  int id;
     private String name;
     private String phoneNum;
+    private String address ;
     private int bankAccount;
     private String payment;
     private String supplySchedule;
@@ -19,7 +19,7 @@ public class Supplier {
     private List<Integer> items;
     private Agreement agreement;
 
-    public Supplier(int id, String name, String phoneNum, int bankAccount, String payment, String supplySchedule, String supplyLocation) {
+    public Supplier(int id, String name, String phoneNum, int bankAccount, String payment, String supplySchedule, String supplyLocation, String address) {
         this.id = id;
         this.name = name;
         this.phoneNum = phoneNum;
@@ -29,6 +29,7 @@ public class Supplier {
         this.supplyLocation = supplyLocation;
         this.items = new LinkedList<>();
         this.agreement = new Agreement();
+        this.address= address;
     }
 
     public int getId() { return this.id; }
@@ -96,7 +97,7 @@ public class Supplier {
 
     public boolean validateItemId(int itemId){
         if(this.items.contains(itemId)) return true;
-        else return true;
+        else return false;
     }
 
     public int getBillSize() { return this.agreement.getBillSize(); }
@@ -115,5 +116,14 @@ public class Supplier {
 
     public Double getDiscountOfItem(int itemId , int amount) {
         return this.agreement.getDiscountOfItem(itemId , amount);
+    }
+
+    public List<Object> getSuppDetails() {
+        List<Object> list= new LinkedList<>();
+        list.add(id);
+        list.add(name);
+        list.add(phoneNum);
+        list.add(address );
+        return  list;
     }
 }

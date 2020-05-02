@@ -1,6 +1,8 @@
 package InterfaceLayer;
 
 import javafx.util.Pair;
+
+import java.time.LocalDate;
 import java.util.*;
 
 public class FacadeController {
@@ -19,8 +21,8 @@ public class FacadeController {
         return fc_instance;
     }
 
-    public void addSupplier(int id, String name, String phoneNum, int bankAccount, String payment, String supplySchedule, String supplyLocation) {
-        supplierController.addSupplier(id, name, phoneNum, bankAccount, payment, supplySchedule, supplyLocation);
+    public void addSupplier(int id, String name, String phoneNum, int bankAccount, String payment, String supplySchedule, String supplyLocation , String address) {
+        supplierController.addSupplier(id, name, phoneNum, bankAccount, payment, supplySchedule, supplyLocation , address);
     }
 
     public boolean deleteSupplier(int suppId) { return supplierController.deleteSupplier(suppId); }
@@ -59,6 +61,7 @@ public class FacadeController {
         supplierController.addItemToBillOfQuantities(suppId, itemId, itemQuantity, itemDiscount);
     }
 
+
     public String getItemNameByIndex(int suppId, int index) {
         return supplierController.getItemNameByIndex(suppId, index);
     }
@@ -68,6 +71,8 @@ public class FacadeController {
 
         Map<Integer,Pair<Integer,Integer>> map = new HashMap();
         Map<Integer , List<List<Object>>> orderMap= new HashMap<>();
+        Map<Integer , List<Object>> suppliersMap= new HashMap<>();
+        List<Object> suppliersList = new LinkedList<>();
         for( int i =0 ; i < list.size() ; i++)
         {
             int itemId = list.get(i).getKey();
@@ -108,12 +113,15 @@ public class FacadeController {
                     bigList.add(orderList);
                     orderMap.put(bestSuppForItem,bigList);
 
-                }
+                    //add supplier Details
+                    List<Object> suppList = supplierController.getSuppDetails(bestSuppForItem);
+                    suppliersMap.get(bestSuppForItem).add(suppList);
 
+                }
 
             }
         }
-        orderController.makeOrders(branchId, orderMap);
+        orderController.makeOrders(branchId, orderMap , suppliersMap);
 
         return map;
     }
@@ -148,9 +156,9 @@ public class FacadeController {
 
     public boolean validateItemId(int suppId, int itemId) { return supplierController.validateItemId(suppId, itemId); }
 
-  /*  public double getTotalOrderMoney(int orderId) {
+     public double getTotalOrderMoney(int orderId) {
        return orderController.getTotalOrderMoney(orderId);
-    }*/
+    }
 
     public void setOrderCost(int orderIdCounter, double totalMoney) {
         this.orderController.setOrderCost(orderIdCounter,totalMoney);
@@ -175,5 +183,34 @@ public class FacadeController {
 
     public boolean checkIfItemExist(int itemId) {
        return this.supplierController.checkIfItemExist(itemId);
+    }
+
+    public List<List<Object>> getOrdersLineByOrderIndex(int id) {
+
+         return orderController.getOrdersLineByOrderIndex(id);
+    }
+
+    public int getSupplierIdOfOrderByIndex(int index) {
+        return orderController.getSupplierIdOfOrderByIndex(index);
+    }
+
+    public String getSupplierNameOfOrderByIndex(int index) {
+        return orderController.getSupplierNameOfOrderByIndex(index);
+    }
+
+    public String getSupplierAddOfOrderByIndex(int index) {
+        return orderController.getSupplierAddOfOrderByIndex(index);
+    }
+
+    public int getOrderIdbyIndex(int i) {
+        return orderController.getOrderIdByIndex(i);
+    }
+
+    public LocalDate getOrderDatebyIndex(int i) {
+        return orderController.getOrderDatebyIndex(i);
+    }
+
+    public String getSupplierPhoneOfOrderByIndex(int i) {
+        return orderController.getSupplierPhoneOfOrderByIndex(i);
     }
 }

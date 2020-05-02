@@ -3,12 +3,16 @@ package InterfaceLayer;
 import LogicLayer.Order;
 import LogicLayer.OrderLine;
 import com.sun.org.apache.xpath.internal.operations.Or;
+import javafx.util.Pair;
 
+import java.time.LocalDate;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
 public class OrderController {
+
+    static int orderIdCounter = 1;
 
     List<Order> orders;
     private static OrderController order_sp = null;
@@ -44,7 +48,7 @@ public class OrderController {
 /*    public int getSupplierIdOfOrder(int i) {
         return this.orders.get(i).getSupplierIdOfOrder();
     }
-
+*/
     public double getTotalOrderMoney(int orderId) {
         for (int i = 0; i < orders.size(); i++) {
             if (orders.get(i).getId() == orderId) {
@@ -53,7 +57,7 @@ public class OrderController {
         }
         return -1;
 
-    }*/
+    }
 
     public void setOrderCost(int orderId, double totalMoney) {
         for (int i = 0; i < orders.size(); i++) {
@@ -96,11 +100,13 @@ public class OrderController {
         return "";
     }
 
-    public void makeOrders(int branchId, Map<Integer, List<List<Object>>> orderMap) {
+    public void makeOrders(int branchId, Map<Integer, List<List<Object>>> orderMap , Map<Integer , List<Object>> suppliersList) {
 
         for (Integer key : orderMap.keySet())//go over suppliers
         {
-            Order o = new Order();
+            Order o = new Order(branchId, orderIdCounter, (Integer) suppliersList.get(key).get(0), (String)suppliersList.get(key).get(1), (String)suppliersList.get(key).get(2),(String)suppliersList.get(key).get(3), LocalDate.now());
+            orderIdCounter ++;
+            List<OrderLine> lines = new LinkedList<>();
             for (int j = 0  ; j<orderMap.get(key).size() ; j++)//go over the orders line
             {
                 int itemId= (int) orderMap.get(key).get(j).get(0);
@@ -110,11 +116,37 @@ public class OrderController {
                 Double itemDiscount= (Double) orderMap.get(key).get(j).get(4);
                 Double itemFinalCost= (Double) orderMap.get(key).get(j).get(5);
                 OrderLine orderLine= new OrderLine(itemId,itemName,itemQuantity,itemCost,itemDiscount,itemFinalCost);
-
+                lines.add(orderLine);
             }
-
+            o.setItems(lines);
+            orders.add(o);
         }
+    }
 
+    public List<List<Object>> getOrdersLineByOrderIndex(int id) {
+
+        return this.orders.get(id).getOrdersLineByOrderId();
 
     }
+
+    public int getSupplierIdOfOrderByIndex(int index) {
+         return orders.get(index).getSupplierId();
+    }
+
+    public String getSupplierNameOfOrderByIndex(int index) {
+        return orders.get(index).getSupplierName();
+    }
+
+    public String getSupplierAddOfOrderByIndex(int index) {
+        return orders.get(index).getSupplierAdd();
+    }
+
+    public LocalDate getOrderDatebyIndex(int index) {
+        return orders.get(index).getOrderDate();
+    }
+
+    public String getSupplierPhoneOfOrderByIndex(int index) {
+        return orders.get(index).getSupplierPhone();
+    }
+
 }

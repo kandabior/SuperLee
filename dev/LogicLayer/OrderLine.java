@@ -22,4 +22,8 @@ public class OrderLine {
     public int getItemId() {
         return itemId;
     }
+
+    public Double getFinalCost() {
+        return finalCost;
+    }
 }

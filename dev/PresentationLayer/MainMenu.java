@@ -14,7 +14,7 @@ public class MainMenu {
     }
 
     private static void mainLoop() {
-        Printer.Print("Do you Want to initiate the System with 4 managers and 2 product (Corn and Milk)? Y/N");
+        Printer.Print("Do you Want to initiate the System ? Y/N");
         String ans = scanner.next();
         if (ans.equals("Y") || ans.equals("y")) {
             initiateSystem();
@@ -75,6 +75,10 @@ public class MainMenu {
     public static void initiateSystem(){
         Items.addItem(1,"Milk");
         Items.addItem(2,"Corn");
+        Items.addItem(3,"Banana");
+        Items.addItem(4,"Tomato");
+        Items.addItem(5,"Carrot");
+        Items.addItem(6,"Chips");
     }
 
 }

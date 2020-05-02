@@ -3,12 +3,12 @@ package PresentationLayer;
 import InterfaceLayer.FacadeController;
 import javafx.util.Pair;
 
+import java.time.LocalDate;
 import java.util.*;
 
 public class SupplierMenu {
     static FacadeController fc = FacadeController.getFacadeController();
     static int supplierIdCounter = 1;
-    static int orderIdCounter = 1;
 
     public static boolean displayMainMenu(){
         try {
@@ -42,15 +42,12 @@ public class SupplierMenu {
                         suppId = scanner3.nextInt();
                         manageSupplier(suppId);
                         break;
-/*                    case "4":
-                       // orderIdCounter = addOrder(orderIdCounter);
+                     case "4":
+                         showPreviousOrders();
                         break;
-                    case "5":
-                        //showPreviousOrders();
-                        break;
-                    case "6":
-                        updateOrderStatus();
-                        break;*/
+     /*               case "6":
+                        updateOrderStatus();*/
+                       // break;
                     case "5":
                         exit = true;
                         break;
@@ -83,32 +80,43 @@ public class SupplierMenu {
             System.out.println("Supplier id does not exist in the system.");
     }
 
-   /* private static void showPreviousOrders() {
+    private static void showPreviousOrders() {
         int sizeOfOrders = fc.getOrdersSize();
         if (sizeOfOrders == 0)
             System.out.println("No orders were found.");
         else {
             for (int i = 0; i < sizeOfOrders; i++) {
-                List<Pair<Integer, Integer>> list = fc.getItemsInOrderById(i);
-                int supplierId = fc.getSupplierIdOfOrder(i);
-                System.out.println("LogicLayer.Supplier's id: " + supplierId +  ", order number: " + i);
+
+                List<List<Object>> list = fc.getOrdersLineByOrderIndex(i);
+                int supplierId = fc.getSupplierIdOfOrderByIndex(i);
+                String supplierName = fc.getSupplierNameOfOrderByIndex(i);
+                String supplierAddress = fc.getSupplierAddOfOrderByIndex(i);
+                int orderId = fc.getOrderIdbyIndex(i);
+                LocalDate orderDate = fc.getOrderDatebyIndex(i);
+                String suppPhone = fc.getSupplierPhoneOfOrderByIndex(i);
+
+                System.out.println("------------------------------------------------------------------------------\n");
+                System.out.println("Supplier's name: " + supplierName+"\t" +"Supplier's address: " + supplierAddress + "\t"+"OrderId: " +orderId+"\n");
+                System.out.println("Supplier's id: " + supplierId+"\t" +"Date " + orderDate + "\t"+"Supplier Phone: " +suppPhone+"\n");
+                System.out.println("------------------------------------------------------------------------------\n");
+                System.out.println("Item Id  "+"\t" +"Item Name "+ "\t"+"Quantity " + "\t"+"Price "+ "\t"+"Discount " + "\t"+"Final Cost \n");
                 for (int j = 0; j < list.size(); j++) {
-                    System.out.println("LogicLayer.Item's name: " + fc.getItemNameByIndex(supplierId,j) + ", id: " + list.get(j).getKey() + ", quantity: " + list.get(j).getValue());
+                    System.out.println(list.get(i).get(0) +"\t"+list.get(i).get(1)+"\t"+list.get(i).get(2)+"\t"+list.get(i).get(3)+"\t"+list.get(i).get(4)+"\t"+list.get(i).get(5)+"\n");
                 }
-                int orderId=fc.getOrderIdByIndex(i);
+                System.out.println("------------------------------------------------------------------------------\n");
                 System.out.println("Total amount: " + fc.getTotalOrderMoney(orderId));
-                System.out.println("LogicLayer.Status: " + fc.getOrderStatus(orderId));
+                System.out.println("Status: " + fc.getOrderStatus(orderId));
                 System.out.println();
             }
         }
-    }*/
+    }
 
     private static int addItems(int suppId) {
         int newItems = 0;
         Scanner scanner = new Scanner(System.in);
         System.out.print("Item's identifier: ");
         int itemId = scanner.nextInt();
-        while (!fc.validateItemId(suppId, itemId)) {
+        while (fc.validateItemId(suppId, itemId)) {
             System.out.print("This supplier already have this item.\nEnter another one\n");
             System.out.print("Item's identifier: ");
             itemId = scanner.nextInt();
@@ -135,6 +143,8 @@ public class SupplierMenu {
         String suppName = scanner.nextLine();
         System.out.print("Phone number: ");
         String suppPhone = scanner.nextLine();
+        System.out.print("address : ");
+        String suppAddress = scanner.nextLine();
         System.out.print("Bank account number: ");
         int suppBankAccount = scanner.nextInt();
         System.out.print("Payment method (Cash, Credit etc.): ");
@@ -146,7 +156,7 @@ public class SupplierMenu {
         String suppLocation = scanner.nextLine();
 
         fc.addSupplier(supplierIdCounter, suppName, suppPhone, suppBankAccount, suppPayment,
-                suppSchedule, suppLocation);
+                suppSchedule, suppLocation, suppAddress);
         System.out.println("Supplier added successfully. Id is: " + supplierIdCounter);
         System.out.print("Insert supplier's items? [Y/N] ");
         String addItems = scanner.nextLine();
@@ -245,6 +255,11 @@ public class SupplierMenu {
                 System.out.print("Choose the id of the item you wish to change: ");
                 Scanner scanner2 = new Scanner(System.in);
                 int itemId = scanner2.nextInt();
+                while (!fc.validateItemId(suppId, itemId)) {
+                    System.out.print("This supplier Does not have this item.\nEnter another one\n");
+                    System.out.print("Item's identifier: ");
+                    itemId = scanner2.nextInt();
+                }
                 System.out.print("Change [c] or delete [d]? ");
                 scanner2 = new Scanner(System.in);
                 String choice = scanner2.nextLine();
@@ -290,6 +305,11 @@ public class SupplierMenu {
             Scanner scanner = new Scanner(System.in);
             System.out.print("Choose the id of the item you want to add to this bill: ");
             int itemId = scanner.nextInt();
+            while (!fc.validateItemId(suppId, itemId)) {
+                System.out.print("This supplier Does not have this item.\nEnter another one\n");
+                System.out.print("Item's identifier: ");
+                itemId = scanner.nextInt();
+            }
             System.out.print("Enter item's amount: ");
             int itemQuantity = scanner.nextInt();
             System.out.print("Enter item's discount: (i.e. 0.5) ");
@@ -315,7 +335,7 @@ public class SupplierMenu {
             int itemId= fc.getItemIdByIndex(suppId,i);
             double itemPrice = fc.getPriceOfItem(suppId,itemId);
             System.out.print(itemId + ". " + itemName + ", ");
-            System.out.print(itemPrice + " NIS");
+            System.out.print(itemPrice + " NIS \n");
         }
     }
 
@@ -327,6 +347,11 @@ public class SupplierMenu {
 
         System.out.print("Item's id: ");
         int itemId = scanner.nextInt();
+        while (!fc.validateItemId(suppId, itemId)) {
+            System.out.print("This supplier Does not have this item.\nEnter another one\n");
+            System.out.print("Item's identifier: ");
+            itemId = scanner.nextInt();
+        }
         for(int i=0; i<fc.showSuppItems(suppId).size(); i++){
             if(fc.getItemIdByIndex(suppId,i) == itemId){
                 String itemName = fc.getItemNameByIndex(suppId,i);
@@ -344,7 +369,6 @@ public class SupplierMenu {
     }
 
     public static void initiateSystem() {
-        
 
     }
 

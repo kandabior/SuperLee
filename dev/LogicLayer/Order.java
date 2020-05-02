@@ -3,23 +3,27 @@ package LogicLayer;
 import InterfaceLayer.SupplierController;
 import javafx.util.Pair;
 
+import java.time.LocalDate;
 import java.util.Date;
+import java.util.LinkedList;
 import java.util.List;
 
 enum Status{Pending,Complete}
 
 public class Order {
     private int id;
+    private int branchId;
     private String suppName;
     private int suppId;
     private String address ;
-    private Date orderDate;
+    private LocalDate orderDate;
     private String phoneNumber;
-    List<OrderLine> items;
+    List<OrderLine> orderLines;
     double totalCost;
     Status status;
 
-    public Order(int id, List<Pair<Integer, Integer>> items, int supplierId , String suppName, String address ,Date date , String phoneNumber) {
+    public Order(int branchId , int id, int supplierId , String suppName, String phoneNumber , String address , LocalDate date ) {
+        this.branchId  = branchId;
         this.id = id;
        // this.items = makeOrderLines(items);
         this.suppName=suppName;
@@ -37,6 +41,10 @@ public class Order {
         return "PENDING";
     }
 
+    public void setItems(List<OrderLine> orderLines) {
+        this.orderLines = orderLines;
+    }
+
     public void setStatus() {
         this.status = Status.Complete;
     }
@@ -51,6 +59,42 @@ public class Order {
 
     public Supplier getSuppById(int id) {
         return SupplierController.getSupplierController().getSuppById(id);
+    }
+
+    public List<List<Object>> getOrdersLineByOrderId() {
+        List<List<Object>> list =new LinkedList<>();
+        for(int i =0 ; i<orderLines.size();i++)
+        {
+            List<Object> l = new LinkedList<>();
+            l.add(orderLines.get(0));
+            l.add(orderLines.get(1));
+            l.add(orderLines.get(2));
+            l.add(orderLines.get(3));
+            l.add(orderLines.get(4));
+            l.add(orderLines.get(5));
+            list.add(l);
+        }
+        return list;
+    }
+
+    public int getSupplierId() {
+        return this.suppId;
+    }
+
+    public String getSupplierName() {
+        return this.suppName;
+    }
+
+    public String getSupplierAdd() {
+        return this.address;
+    }
+
+    public LocalDate getOrderDate() {
+        return this.orderDate;
+    }
+
+    public String getSupplierPhone() {
+        return this.phoneNumber;
     }
 
 /*    public List<OrderLine> makeOrderLines(List<Pair<Integer, Integer>> items) {
@@ -78,13 +122,13 @@ public class Order {
     public int getSupplierIdOfOrder() {
         return this.supplier.getId();
     }
-
+*/
     public double getTotalOrderMoney() {
         double totalAmount=0;
-        for (int i =0;i<items.size();i++)
+        for (int i =0;i<orderLines.size();i++)
         {
-            totalAmount+= supplier.getOrderCost(items.get(i).getItemId(),items.get(i).getQuantity());
+            totalAmount+= orderLines.get(i).getFinalCost();
         }
         return totalAmount;
-    }*/
+    }
 }
