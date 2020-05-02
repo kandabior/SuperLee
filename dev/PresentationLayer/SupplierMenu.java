@@ -101,7 +101,7 @@ public class SupplierMenu {
                 System.out.println("------------------------------------------------------------------------------\n");
                 System.out.println("Item Id  "+"\t" +"Item Name "+ "\t"+"Quantity " + "\t"+"    Price "+ "\t"+"    Discount " + "\t"+"   Final Cost \n");
                 for (int j = 0; j < list.size(); j++) {
-                    System.out.println(list.get(j).get(0) +"\t\t\t"+list.get(j).get(1)+"\t\t\t"+list.get(j).get(2)+"\t\t\t"+list.get(j).get(3)+"\t\t\t"+list.get(j).get(4)+"\t\t\t"+list.get(j).get(5)+"\n");
+                    System.out.println(list.get(j).get(0) +"\t\t\t"+list.get(j).get(1)+"\t\t\t"+list.get(j).get(2)+"\t\t\t"+((Double)list.get(j).get(3)*(int)list.get(j).get(2))+"\t\t\t"+list.get(j).get(4)+"\t\t\t"+((Double)list.get(j).get(5)*(int)list.get(j).get(2))+"\n");
                 }
                 System.out.println("------------------------------------------------------------------------------\n");
                 System.out.println("Total amount: " + fc.getTotalOrderMoney(orderId));
@@ -373,10 +373,19 @@ public class SupplierMenu {
                 23423,"mezuman","sanday","bash","tveria");
         FacadeController.getFacadeController().addSupplier(supplierIdCounter++,"moshe","2342352425",
                 23333423,"mezuman","saturday","tel aviv","tveria");
+        FacadeController.getFacadeController().addItemToAgreement(1,1,2.0);
+        FacadeController.getFacadeController().addItemToSupplier(1,1);
         FacadeController.getFacadeController().addItemToAgreement(1,2,5.0);
+        FacadeController.getFacadeController().addItemToSupplier(1,2);
         FacadeController.getFacadeController().addItemToAgreement(1,3,10.0);
+        FacadeController.getFacadeController().addItemToSupplier(1,3);
         FacadeController.getFacadeController().addItemToAgreement(2,1,6.0);
+        FacadeController.getFacadeController().addItemToSupplier(2,1);
         FacadeController.getFacadeController().addItemToAgreement(2,2,7.0);
+        FacadeController.getFacadeController().addItemToSupplier(2,2);
+        FacadeController.getFacadeController().addItemToAgreement(2,3,5.0);
+        FacadeController.getFacadeController().addItemToSupplier(2,3);
+
 
     }
 

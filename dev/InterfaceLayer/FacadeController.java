@@ -72,6 +72,7 @@ public class FacadeController {
         Map<Integer,Pair<Integer,Integer>> map = new HashMap();
         Map<Integer , List<List<Object>>> orderMap= new HashMap<>();
         Map<Integer , List<Object>> suppliersMap= new HashMap<>();
+        //List<Integer> ItemsMissing = new LinkedList<>();
        // List<Object> suppliersList = new LinkedList<>();
         for( int i =0 ; i < list.size() ; i++)
         {
@@ -120,6 +121,9 @@ public class FacadeController {
                 }
 
             }
+
+
+
         }
         orderController.makeOrders(branchId, orderMap , suppliersMap);
 

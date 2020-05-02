@@ -127,7 +127,7 @@ public class Order {
         double totalAmount=0;
         for (int i =0;i<orderLines.size();i++)
         {
-            totalAmount+= orderLines.get(i).getFinalCost();
+            totalAmount+= (orderLines.get(i).getFinalCost() * orderLines.get(i).getItemQuantity());
         }
         return totalAmount;
     }
