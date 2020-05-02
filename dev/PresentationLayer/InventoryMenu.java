@@ -1,6 +1,7 @@
 package PresentationLayer;
 
 import InterfaceLayer.InventoryController;
+import LogicLayer.Inventory;
 import javafx.util.Pair;
 
 import java.time.LocalDate;
@@ -12,7 +13,6 @@ import java.util.Scanner;
 public class InventoryMenu {
     public static Scanner scanner=new Scanner(System.in);
     private static InventoryController inventoryController=InventoryController.getInventoryController();
-
     private static void inventoryLoop() {
         int choose;
         do {
@@ -26,12 +26,14 @@ public class InventoryMenu {
                     "7. Change product price by category   (Global Manager Only)\n" +
                     "8. Make missing products Order \n" +
                     "9. Make customized order\n" +
-                    "10. Remove amount from Product\n" +
-                    "11. Change categories to Product\n" +
-                    "12. Transfer amount of Product from the storage to the shelf\n" +
-                    "13. Transfer amount of Product from the shelf to the storage\n" +
-                    "14. Set amount of defective products\n" +
-                    "15. Back to main menu\n");
+                    "10. Add to weekly order\n" +
+                    "11. Remove from weekly order\n"+
+                    "12. Remove amount from Product\n" +
+                    "13. Change categories to Product\n" +
+                    "14. Transfer amount of Product from the storage to the shelf\n" +
+                    "15. Transfer amount of Product from the shelf to the storage\n" +
+                    "16. Set amount of defective products\n" +
+                    "17. Back to main menu\n");
             choose = scanner.nextInt();
             try {
                 switch (choose) {
@@ -62,21 +64,27 @@ public class InventoryMenu {
                         makeCustomiezedOrder();
                         break;
                     case 10:
-                        removeAmountFromProduct();
+                        addToWeeklyOrder();
                         break;
                     case 11:
-                        changeCategory();
+                        RemoveFromWeeklyOrder();
                         break;
                     case 12:
-                        StorageToShelf();
+                        removeAmountFromProduct();
                         break;
                     case 13:
-                        shelfToStorage();
+                        changeCategory();
                         break;
                     case 14:
-                        setDefectiveProducts();
+                        StorageToShelf();
                         break;
                     case 15:
+                        shelfToStorage();
+                        break;
+                    case 16:
+                        setDefectiveProducts();
+                        break;
+                    case 17:
                         break;
                 }
             }
@@ -136,6 +144,48 @@ public class InventoryMenu {
             }
         }
         while(choose!=9);
+    }
+
+    private static void RemoveFromWeeklyOrder() {
+        boolean stop=false;
+        System.out.println("Enter branch id");
+        String branchId= scanner.next();
+        System.out.println("please enter product id.\n" +
+                "To stop insert products, insert '0'.\n");
+        List<Integer> ids=new LinkedList<>();
+        while(!stop) {
+            Printer.Print("product Id: ");
+            String prodId = scanner.next();
+            if(prodId.equals("0")){
+                stop=true;
+            }
+            else{
+                ids.add(Integer.parseInt(prodId));
+            }
+        }
+        inventoryController.RemoveFromWeeklyOrder(Integer.parseInt(branchId),ids);
+
+    }
+
+    private static void addToWeeklyOrder() {
+        boolean stop=false;
+        System.out.println("Enter branch id");
+        String branchId= scanner.next();
+        System.out.println("please enter product id and amount with a single ':' between.\n" +
+                "To stop insert products, insert '0:0'.\n");
+        List<Pair<Integer,Integer>> id_amount=new LinkedList<>();
+        while(!stop) {
+            Printer.Print("product Id and amount: ");
+            String prodId = scanner.next();
+            String[] str= (prodId.split(":"));
+            if((str[0].equals("0")) && (str[1].equals("0"))){
+                stop=true;
+            }
+            else{
+                id_amount.add(new Pair<>(Integer.parseInt(str[0]),Integer.parseInt(str[1])));
+            }
+        }
+        inventoryController.AddToWeeklyOrder(Integer.parseInt(branchId),id_amount);
     }
 
     private static void makeMissingOrder() {
@@ -433,5 +483,9 @@ public class InventoryMenu {
         catch (Exception e){
             Printer.Print("could not initiate the system..");
         }
+    }
+
+    public static void PromoteDay(Integer dayOfTheWeek) {
+        inventoryController.PromoteDay(dayOfTheWeek);
     }
 }

@@ -214,8 +214,30 @@ public class InventoryController {
         }
     }
 
+    public void AddToWeeklyOrder(int branchId, List<Pair<Integer, Integer>> id_amount) {
+        Inventory inventory=Inventory.getInventory(branchId);
+        inventory.addToWeeklyOrder(id_amount);
+    }
+    public void RemoveFromWeeklyOrder(int branchId, List<Integer> ids) {
+        Inventory inventory=Inventory.getInventory(branchId);
+        inventory.removeFromWeeklyOrder(ids);
+    }
+
+    public String PromoteDay(Integer dayOfTheWeek) {
+        String output="";
+        List<Integer> Ids= Inventory.getIdsToWeeklyOrders(dayOfTheWeek);
+        for(Integer id : Ids){
+            List<Pair<Integer,Integer>> toOrder= Inventory.getInventory(id).getWeeklyOrder();
+            if(!toOrder.isEmpty()) {
+                Map<Integer, Pair<Integer, Integer>> orders = FacadeController.getFacadeController().makeOrder(id, toOrder);
+                output = output + Inventory.getInventory(id).mannageOrders(orders) + "\n";
+            }
+        }
+        return output;
+    }
 
     //Reports
+
     public String NeedToBuyReport(int branchId){
         try {
             List<Pair<Integer, Integer>> toBuy = Inventory.getInventory(branchId).NeedToBuyProducts();
@@ -265,7 +287,6 @@ public class InventoryController {
             return "can't execute the action";
         }
     }
-
     public String ExpiredReport(int branchId){
         try {
             List<Pair<Integer, Integer>> expiredProducts = Inventory.getInventory(branchId).ExpiredProducts();
@@ -285,6 +306,7 @@ public class InventoryController {
             return "can't execute the action";
         }
     }
+
     public String CostPriceReport(int branchId,Integer id){
         try {
             Pair<Integer, List<Double>> prices = Inventory.getInventory(branchId).CostPricesById(id);
