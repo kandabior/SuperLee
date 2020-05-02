@@ -1,14 +1,12 @@
 package PresentationLayer;
 
-import InterfaceLayer.InventoryController;
-import LogicLayer.Inventory;
 import LogicLayer.Items;
 
 import java.util.Scanner;
 
 public class MainMenu {
     public static Scanner scanner=new Scanner(System.in);
-    public static Integer DayOfTheWeek=1;
+    public static Integer DayOfTheWeek=0;
 
     public static void main(String[]args) {
         mainLoop();
@@ -53,7 +51,7 @@ public class MainMenu {
                         break;
                     case 5:
                         DayOfTheWeek=(DayOfTheWeek+1)%7;
-                        InventoryMenu.PromoteDay(DayOfTheWeek);
+                        InventoryMenu.PromoteDay(DayOfTheWeek+1);
                     case 6:
                         break;
                 }
@@ -61,7 +59,7 @@ public class MainMenu {
                 Printer.Print("can't execute the action");
             }
         }
-        while (choose != 5);
+        while (choose != 6);
         System.out.println("Shutting down the system..");
     }
 

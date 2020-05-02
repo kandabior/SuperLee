@@ -12,7 +12,7 @@ public class Inventory {
     private Map<Integer, Product> inventory;
     private Map<Integer, Pair<Integer,Integer>> quantities; //Pair[0] = storage , Pair[1] = shelf
     private Map<Integer, Integer> expired; //Id, amount
-    private Integer dayForWeeklyOrder;
+    private Integer dayForWeeklyOrder=1;
     private Map<Integer,Integer> WeeklyOrder;
 
     private Inventory(Integer id) {
@@ -20,6 +20,7 @@ public class Inventory {
         inventory = new HashMap<>();
         quantities = new HashMap<>();
         expired = new HashMap<>();
+        WeeklyOrder= new HashMap<>();
 
     }
     

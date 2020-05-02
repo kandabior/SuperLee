@@ -236,6 +236,16 @@ public class InventoryController {
         return output;
     }
 
+    public String PrintWeeklyOrder(int branchId) {
+        try{
+            List<Pair<Integer,Integer>> weeklyOrder=Inventory.getInventory(branchId).getWeeklyOrder();
+            return reportMaker.PrintWeeklyOrder(branchId,weeklyOrder);
+        }
+        catch (Exception e){
+            return "can't execute the action";
+        }
+    }
+
     //Reports
 
     public String NeedToBuyReport(int branchId){
@@ -277,7 +287,6 @@ public class InventoryController {
         }
 
     }
-
     public String CategoryReport(int branchId,List<String> category){
         try {
             List<Pair<Integer, Integer>> prodByCategories = Inventory.getInventory(branchId).getProductsByCategories(category);
@@ -287,6 +296,7 @@ public class InventoryController {
             return "can't execute the action";
         }
     }
+
     public String ExpiredReport(int branchId){
         try {
             List<Pair<Integer, Integer>> expiredProducts = Inventory.getInventory(branchId).ExpiredProducts();

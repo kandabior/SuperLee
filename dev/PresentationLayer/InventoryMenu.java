@@ -1,7 +1,6 @@
 package PresentationLayer;
 
 import InterfaceLayer.InventoryController;
-import LogicLayer.Inventory;
 import javafx.util.Pair;
 
 import java.time.LocalDate;
@@ -15,6 +14,7 @@ public class InventoryMenu {
     private static InventoryController inventoryController=InventoryController.getInventoryController();
     private static void inventoryLoop() {
         int choose;
+        Printer.Print("Inventory:");
         do {
             Printer.Print("\n\nPlease choose an action:\n" +
                     "1. Add new branch\n" +
@@ -24,16 +24,12 @@ public class InventoryMenu {
                     "5. Remove product   (Manager Only)\n" +
                     "6. Change product price by id   (Global Manager Only)\n" +
                     "7. Change product price by category   (Global Manager Only)\n" +
-                    "8. Make missing products Order \n" +
-                    "9. Make customized order\n" +
-                    "10. Add to weekly order\n" +
-                    "11. Remove from weekly order\n"+
-                    "12. Remove amount from Product\n" +
-                    "13. Change categories to Product\n" +
-                    "14. Transfer amount of Product from the storage to the shelf\n" +
-                    "15. Transfer amount of Product from the shelf to the storage\n" +
-                    "16. Set amount of defective products\n" +
-                    "17. Back to main menu\n");
+                    "8. Remove amount from Product\n" +
+                    "9. Change categories to Product\n" +
+                    "10. Transfer amount of Product from the storage to the shelf\n" +
+                    "11. Transfer amount of Product from the shelf to the storage\n" +
+                    "12. Set amount of defective products\n" +
+                    "13. Back to main menu\n");
             choose = scanner.nextInt();
             try {
                 switch (choose) {
@@ -58,33 +54,21 @@ public class InventoryMenu {
                         changeProductByCategory();
                         break;
                     case 8:
-                        makeMissingOrder();
-                        break;
-                    case 9:
-                        makeCustomiezedOrder();
-                        break;
-                    case 10:
-                        addToWeeklyOrder();
-                        break;
-                    case 11:
-                        RemoveFromWeeklyOrder();
-                        break;
-                    case 12:
                         removeAmountFromProduct();
                         break;
-                    case 13:
+                    case 9:
                         changeCategory();
                         break;
-                    case 14:
+                    case 10:
                         StorageToShelf();
                         break;
-                    case 15:
+                    case 11:
                         shelfToStorage();
                         break;
-                    case 16:
+                    case 12:
                         setDefectiveProducts();
                         break;
-                    case 17:
+                    case 13:
                         break;
                 }
             }
@@ -92,7 +76,7 @@ public class InventoryMenu {
                 Printer.Print("can't execute the action");
             }
         }
-        while (choose != 15) ;
+        while (choose != 13) ;
     }
 
     private static void reportsLoop(){
@@ -224,8 +208,9 @@ public class InventoryMenu {
         do{
             Printer.Print("\n\nPlease choose an action:\n"+
                     "1. Enter Inventory Menu\n" +
-                    "2. Enter Reports Menu\n" +
-                    "3. Back to main menu\n");
+                    "2. Order Menu\n" +
+                    "3. Enter Reports Menu\n" +
+                    "4. Back to main menu\n");
             choose = scanner.nextInt();
             try {
                 switch (choose) {
@@ -233,9 +218,11 @@ public class InventoryMenu {
                         inventoryLoop();
                         break;
                     case 2:
+                        OrdersLoop();
+                    case 3:
                         reportsLoop();
                         break;
-                    case 3:
+                    case 4:
                         break;
                 }
             }
@@ -243,7 +230,56 @@ public class InventoryMenu {
                 Printer.Print("can't execute the action");
             }
         }
-        while(choose!=3);
+        while(choose!=4);
+    }
+
+    private static void OrdersLoop() {
+        int choose;
+        Printer.Print("Orders Menu:");
+        do {
+            Printer.Print("\n\nPlease choose an action:\n" +
+                    "1. Make missing products Order \n" +
+                    "2. Make customized order\n" +
+                    "3. Add to weekly order\n" +
+                    "4. Remove from weekly order\n"+
+                    "5. Print Weekly Order\n" +
+                    "6. Back to main menu\n");
+            choose = scanner.nextInt();
+            try {
+                switch (choose) {
+                    case 1:
+                        makeMissingOrder();
+                        break;
+                    case 2:
+                        makeCustomiezedOrder();
+                        break;
+                    case 3:
+                        addToWeeklyOrder();
+                        break;
+                    case 4:
+                        RemoveFromWeeklyOrder();
+                        break;
+                    case 5:
+                        PrintWeeklyOrder();
+                        break;
+                    case 6:
+                        break;
+                }
+            }
+            catch (Exception e) {
+                Printer.Print("can't execute the action");
+            }
+        }
+        while (choose != 6) ;
+
+    }
+
+    private static void PrintWeeklyOrder() {
+        System.out.println("\nEnter branch id: ");
+        String branchId= scanner.next();
+        Printer.Print(inventoryController.PrintWeeklyOrder(Integer.parseInt(branchId)));
+
+
     }
 
     private static void AddNewBranch() {

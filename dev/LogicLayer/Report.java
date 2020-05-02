@@ -30,6 +30,15 @@ public class Report {
         return lines;
     }
 
+    public static Report makeWeeklyOrder(Integer branchId, List<Pair<Integer, Integer>> weeklyOrder) {
+        Report report= new Report("Weekly Order");
+        for(Pair<Integer,Integer> line: weeklyOrder){
+            ReportLine reportLine= new ReportLine(line.getKey(),Inventory.getProdactName(branchId,line.getKey()),line.getValue());
+            report.addLine(reportLine);
+        }
+        return report;
+    }
+
     public static Report totalStockReport(int branchId,List<Pair<Integer, Integer>> quantity) {
         Report report=new Report("Total Stock Report");
         for(Pair<Integer,Integer> line: quantity){
