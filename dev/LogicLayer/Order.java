@@ -61,17 +61,17 @@ public class Order {
         return SupplierController.getSupplierController().getSuppById(id);
     }
 
-    public List<List<Object>> getOrdersLineByOrderId() {
+    public List<List<Object>> getOrdersLineByOrderIndex() {
         List<List<Object>> list =new LinkedList<>();
         for(int i =0 ; i<orderLines.size();i++)
         {
             List<Object> l = new LinkedList<>();
-            l.add(orderLines.get(0));
-            l.add(orderLines.get(1));
-            l.add(orderLines.get(2));
-            l.add(orderLines.get(3));
-            l.add(orderLines.get(4));
-            l.add(orderLines.get(5));
+            l.add(orderLines.get(i).getItemId());
+            l.add(orderLines.get(i).geItemName());
+            l.add(orderLines.get(i).getItemQuantity());
+            l.add(orderLines.get(i).getItemCost());
+            l.add(orderLines.get(i).getItemDiscount());
+            l.add(orderLines.get(i).getFinalCost());
             list.add(l);
         }
         return list;

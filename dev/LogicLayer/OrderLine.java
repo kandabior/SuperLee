@@ -26,4 +26,20 @@ public class OrderLine {
     public Double getFinalCost() {
         return finalCost;
     }
+
+    public Object geItemName() {
+        return this.itemName;
+    }
+
+    public Object getItemQuantity() {
+        return this.itemQuantity;
+    }
+
+    public Object getItemCost() {
+        return this.itemCost;
+    }
+
+    public Object getItemDiscount() {
+        return this.itemDiscount;
+    }
 }

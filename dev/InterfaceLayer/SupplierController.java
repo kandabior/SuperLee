@@ -133,17 +133,18 @@ public class SupplierController {
     }
 
     public int bestSuppForItem(Integer itemId, Integer quantity) {
-        Double max=0.0;
+        Double min=100000000.0;
         int bestSuppId=-1;
         for(int i=0 ; i<suppliers.size();i++)
         {
              Double temp =suppliers.get(i).getPriceOfAmountOfItem(itemId,quantity);
-             if(temp>max) {
-                 max = temp;
+             if(temp<min) {
+                 min = temp;
                  bestSuppId=i;
              }
         }
-        return bestSuppId;
+
+        return bestSuppId+1;
     }
 
     public Double getPriceOfAmountOfItem(int bestSuppForItem,Integer itemId, Integer amount) {

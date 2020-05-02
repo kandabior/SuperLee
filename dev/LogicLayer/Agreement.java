@@ -77,7 +77,8 @@ public class Agreement {
 
     public Double getPriceOfAmountOfItemBeforeDiscount(int itemId, int amount) {
         double cost = terms.get(itemId);
-        return (cost * amount);
+        double ans = (cost * amount);
+        return  ans;
     }
 
     public Double getDiscountOfItem(int itemId , int amount) {

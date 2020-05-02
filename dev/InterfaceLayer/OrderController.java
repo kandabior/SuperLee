@@ -123,9 +123,9 @@ public class OrderController {
         }
     }
 
-    public List<List<Object>> getOrdersLineByOrderIndex(int id) {
+    public List<List<Object>> getOrdersLineByOrderIndex(int index) {
 
-        return this.orders.get(id).getOrdersLineByOrderId();
+        return this.orders.get(index).getOrdersLineByOrderIndex();
 
     }
 

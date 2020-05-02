@@ -72,7 +72,7 @@ public class FacadeController {
         Map<Integer,Pair<Integer,Integer>> map = new HashMap();
         Map<Integer , List<List<Object>>> orderMap= new HashMap<>();
         Map<Integer , List<Object>> suppliersMap= new HashMap<>();
-        List<Object> suppliersList = new LinkedList<>();
+       // List<Object> suppliersList = new LinkedList<>();
         for( int i =0 ; i < list.size() ; i++)
         {
             int itemId = list.get(i).getKey();
@@ -115,7 +115,7 @@ public class FacadeController {
 
                     //add supplier Details
                     List<Object> suppList = supplierController.getSuppDetails(bestSuppForItem);
-                    suppliersMap.get(bestSuppForItem).add(suppList);
+                    suppliersMap.put(bestSuppForItem,suppList);
 
                 }
 

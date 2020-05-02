@@ -107,7 +107,9 @@ public class Supplier {
     }*/
 
     public Double getPriceOfAmountOfItem(Integer itemId, Integer amount) {
-        return this.agreement.getPriceOfAmountOfItem(itemId,amount);
+        if(agreement.checkIfItemExist(itemId))
+            return this.agreement.getPriceOfAmountOfItem(itemId,amount);
+        else return 100000001.0;
     }
 
     public Double getPriceOfAmountOfItemBeforeDiscount(int itemId , int amount) {
