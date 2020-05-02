@@ -369,6 +369,14 @@ public class SupplierMenu {
     }
 
     public static void initiateSystem() {
+        FacadeController.getFacadeController().addSupplier(supplierIdCounter++,"itay","05550004",
+                23423,"mezuman","sanday","bash","tveria");
+        FacadeController.getFacadeController().addSupplier(supplierIdCounter++,"moshe","2342352425",
+                23333423,"mezuman","saturday","tel aviv","tveria");
+        FacadeController.getFacadeController().addItemToAgreement(1,2,5.0);
+        FacadeController.getFacadeController().addItemToAgreement(1,3,10.0);
+        FacadeController.getFacadeController().addItemToAgreement(2,1,6.0);
+        FacadeController.getFacadeController().addItemToAgreement(2,2,7.0);
 
     }
 

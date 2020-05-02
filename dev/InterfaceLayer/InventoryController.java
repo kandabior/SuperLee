@@ -34,6 +34,7 @@ public class InventoryController {
     }
 
     //Managers
+
     public String addInventoryManager(String username, String password){
         try {
             if (inventoryManagers.containsKey(username))
@@ -83,8 +84,16 @@ public class InventoryController {
         }
     }*/
 
-
     //Inventory
+
+    public String CreateNewInventory(int newBranchId) {
+        try{
+            return Inventory.CreateNewInventory(newBranchId);
+        }
+        catch (Exception e){
+            return "can't execute the action";
+        }
+    }
     public String addProduct(int branchId,String username, String password, int prodid, int amount, Double costPrice, Double salePrice, LocalDate expDate, List<String> category, String manufacturer, int minAmount, String place){
         String prodName;
         try {

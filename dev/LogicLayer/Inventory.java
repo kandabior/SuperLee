@@ -64,6 +64,7 @@ public class Inventory {
         return "Branch number: "+branchId+" has successfully initiated.";
     }
 
+
     public  String mannageOrders(Map<Integer,Pair<Integer,Integer>> orders) {
         for(Integer prodId: orders.keySet()){
             addAmountToProduct(prodId,orders.get(prodId).getKey());

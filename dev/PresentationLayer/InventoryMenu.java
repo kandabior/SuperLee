@@ -1,11 +1,13 @@
 package PresentationLayer;
 
 import InterfaceLayer.InventoryController;
-import LogicLayer.Inventory;
 import javafx.util.Pair;
 
 import java.time.LocalDate;
-import java.util.*;
+import java.util.Arrays;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Scanner;
 
 public class InventoryMenu {
     public static Scanner scanner=new Scanner(System.in);
@@ -82,7 +84,7 @@ public class InventoryMenu {
                 Printer.Print("can't execute the action");
             }
         }
-        while (choose != 13) ;
+        while (choose != 15) ;
     }
 
     private static void reportsLoop(){
@@ -147,18 +149,19 @@ public class InventoryMenu {
         boolean stop=false;
         System.out.println("Enter branch id");
         String branchId= scanner.next();
-        //TODO CHECK BRANCH EXIXST
-        System.out.println("please enter product id and amount with a single gap between.\n" +
-                "To stop insert products, insert '0 0'.\n");
+        System.out.println("please enter product id and amount with a single ':' between.\n" +
+                "To stop insert products, insert '0:0'.\n");
         List<Pair<Integer,Integer>> id_amount=new LinkedList<>();
         while(!stop) {
             Printer.Print("product Id and amount: ");
             String prodId = scanner.next();
-            List<String> input = Arrays.asList(prodId.split(" "));
-            if((input.get(0)=="0") && (input.get(1)=="0")){
+            String[] str= (prodId.split(":"));
+            if((str[0].equals("0")) && (str[1].equals("0"))){
                 stop=true;
             }
-            id_amount.add(new Pair<>(Integer.parseInt(input.get(0)),Integer.parseInt(input.get(1))));
+            else{
+                id_amount.add(new Pair<>(Integer.parseInt(str[0]),Integer.parseInt(str[1])));
+            }
         }
         inventoryController.MakeCistomiezedOrder(Integer.parseInt(branchId),id_amount);
 
@@ -196,7 +199,7 @@ public class InventoryMenu {
     private static void AddNewBranch() {
         System.out.println("Please insert branch: ");
         String branchId=scanner.next();
-        Printer.Print(Inventory.CreateNewInventory(Integer.parseInt(branchId)));
+        Printer.Print(inventoryController.CreateNewInventory(Integer.parseInt(branchId)));
     }
 
     private static void setDefectiveProducts() {
@@ -406,11 +409,12 @@ public class InventoryMenu {
     public static void initiateSystem(){
         try {
 
+            inventoryController.CreateNewInventory(1);
+
             inventoryController.addGlobalManager("Erez", "1234");
             inventoryController.addGlobalManager("Or", "1234");
             inventoryController.addInventoryManager("dana", "1234");
             inventoryController.addInventoryManager("david", "1234");
-
 
             List<String> cat1 = new LinkedList<>();
             cat1.add("Shimurim");
@@ -424,7 +428,6 @@ public class InventoryMenu {
             LocalDate date2 = LocalDate.of(20, 8, 31);
             inventoryController.addProduct(1, "Or", "1234", 2, 30, 3.0,
                     6.0, date2, cat2, "Tnuva", 20, "area2");
-
             Printer.Print("System initiate successfully (:");
         }
         catch (Exception e){
