@@ -5,6 +5,7 @@ import java.util.LinkedList;
 import java.util.List;
 
 public class Product {
+    //TODO need to add a field branchId(inventory)
     private int id;
     private String name;
     private double costPrice;

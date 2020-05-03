@@ -8,7 +8,7 @@ public class ReportLine {
     private int prodId;
     private String prodName;
     private int amount;
-    private List<String> optional;
+    private List<String> optional; //("AdditionalCommentsReport" table in the DB)
 
     public ReportLine(int prodId, String name, int amount){
         this.prodId= prodId;
