@@ -98,15 +98,17 @@ public class SupplierMenu {
                 System.out.println("------------------------------------------------------------------------------\n");
                 System.out.println("Supplier's name: " + supplierName+"\t" +"Supplier's address: " + supplierAddress + "\t"+"OrderId: " +orderId+"\n");
                 System.out.println("Supplier's id: " + supplierId+"\t" +"Date " + orderDate + "\t"+"Supplier Phone: " +suppPhone+"\n");
-                System.out.println("------------------------------------------------------------------------------\n");
+                //System.out.println("------------------------------------------------------------------------------\n");
+                System.out.println();
                 System.out.println("Item Id  "+"\t" +"Item Name "+ "\t"+"Quantity " + "\t"+"    Price "+ "\t"+"    Discount " + "\t"+"   Final Cost \n");
                 for (int j = 0; j < list.size(); j++) {
                     System.out.println(list.get(j).get(0) +"\t\t\t"+list.get(j).get(1)+"\t\t\t"+list.get(j).get(2)+"\t\t\t"+list.get(j).get(3)+"\t\t\t"+list.get(j).get(4)+"\t\t\t"+list.get(j).get(5)+"\n");
                 }
-                System.out.println("------------------------------------------------------------------------------\n");
+
                 System.out.println("Total amount: " + fc.getTotalOrderMoney(orderId));
                 System.out.println("Status: " + fc.getOrderStatus(orderId));
                 System.out.println();
+                System.out.println("------------------------------------------------------------------------------\n");
             }
         }
     }
