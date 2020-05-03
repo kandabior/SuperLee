@@ -277,11 +277,22 @@ public class Inventory {
 
 
     public String addToWeeklyOrder(int day,List<Pair<Integer, Integer>> id_amount) {
+        List<Integer> noOrder=new LinkedList<>();
+        String output="";
         dayForWeeklyOrder=day;
         for(Pair<Integer,Integer> p: id_amount){
-            WeeklyOrder.put(p.getKey(),p.getValue());
+            if(inventory.containsKey(p.getKey())) {
+                WeeklyOrder.put(p.getKey(), p.getValue());
+            }
+            else{
+                noOrder.add(p.getKey());
+            }
         }
-        return "Weekly order was update for branch: "+branchId+"\n";
+        if(!noOrder.isEmpty()){
+            output="cant add the Products: "+noOrder+"\n";
+        }
+        output=output+ "Weekly order was update for branch: "+branchId+"\n";
+        return output;
     }
     public String removeFromWeeklyOrder(List<Integer> ids){
         for(Integer id: ids){
@@ -298,6 +309,10 @@ public class Inventory {
             output.add(new Pair<>(id,WeeklyOrder.get(id)));
         }
         return output;
+    }
+
+    public boolean conteinsProduct(Integer key) {
+        return inventory.containsKey(key);
     }
 
     //Tests Methods

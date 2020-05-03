@@ -5,6 +5,7 @@ import javafx.util.Pair;
 
 import java.time.LocalDate;
 import java.util.HashMap;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
@@ -206,8 +207,24 @@ public class InventoryController {
 
     public String MakeCistomiezedOrder(int branchId,List<Pair<Integer, Integer>> id_amount) {
         try{
-            Map<Integer,Pair<Integer,Double>> orders=FacadeController.getFacadeController().makeOrder(branchId,id_amount);
-            return Inventory.getInventory(branchId).mannageOrders(orders);
+            List<Pair<Integer,Integer>> toOrder=new LinkedList<>();
+            List<Integer> noOrder=new LinkedList<>();
+            Inventory myinventory=Inventory.getInventory(branchId);
+            for(Pair<Integer,Integer> prod : id_amount){
+                if(myinventory.conteinsProduct(prod.getKey())){
+                    toOrder.add(prod);
+                }
+                else{
+                    noOrder.add(prod.getKey());
+                }
+            }
+            String output="";
+            if (!noOrder.isEmpty()){
+                output="cant Order the Products: "+noOrder+"\n";
+            }
+            Map<Integer,Pair<Integer,Double>> orders=FacadeController.getFacadeController().makeOrder(branchId,toOrder);
+            output=output+myinventory.mannageOrders(orders);
+            return output;
         }
         catch (Exception e){
             System.out.println(e.getMessage());
