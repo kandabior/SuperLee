@@ -196,7 +196,7 @@ public class InventoryController {
     public String MakeMissingOrder(int branchId) {
         try {
             List<Pair<Integer, Integer>> toBuy= Inventory.getInventory(branchId).NeedToBuyProducts();
-            Map<Integer,Pair<Integer,Integer>> orders= FacadeController.getFacadeController().makeOrder(branchId,toBuy);
+            Map<Integer,Pair<Integer,Double>> orders= FacadeController.getFacadeController().makeOrder(branchId,toBuy);
             return Inventory.getInventory(branchId).mannageOrders(orders);
         }
         catch (Exception e){
@@ -206,21 +206,22 @@ public class InventoryController {
 
     public String MakeCistomiezedOrder(int branchId,List<Pair<Integer, Integer>> id_amount) {
         try{
-            Map<Integer,Pair<Integer,Integer>> orders=FacadeController.getFacadeController().makeOrder(branchId,id_amount);
+            Map<Integer,Pair<Integer,Double>> orders=FacadeController.getFacadeController().makeOrder(branchId,id_amount);
             return Inventory.getInventory(branchId).mannageOrders(orders);
         }
         catch (Exception e){
+            System.out.println(e.getMessage());
             return "can't execute the action";
         }
     }
 
-    public void AddToWeeklyOrder(int branchId, List<Pair<Integer, Integer>> id_amount) {
+    public String AddToWeeklyOrder(int branchId,int day, List<Pair<Integer, Integer>> id_amount) {
         Inventory inventory=Inventory.getInventory(branchId);
-        inventory.addToWeeklyOrder(id_amount);
+        return inventory.addToWeeklyOrder(day,id_amount);
     }
-    public void RemoveFromWeeklyOrder(int branchId, List<Integer> ids) {
+    public String RemoveFromWeeklyOrder(int branchId, List<Integer> ids) {
         Inventory inventory=Inventory.getInventory(branchId);
-        inventory.removeFromWeeklyOrder(ids);
+        return inventory.removeFromWeeklyOrder(ids);
     }
 
     public String PromoteDay(Integer dayOfTheWeek) {
@@ -229,7 +230,7 @@ public class InventoryController {
         for(Integer id : Ids){
             List<Pair<Integer,Integer>> toOrder= Inventory.getInventory(id).getWeeklyOrder();
             if(!toOrder.isEmpty()) {
-                Map<Integer, Pair<Integer, Integer>> orders = FacadeController.getFacadeController().makeOrder(id, toOrder);
+                Map<Integer, Pair<Integer, Double>> orders = FacadeController.getFacadeController().makeOrder(id, toOrder);
                 output = output + Inventory.getInventory(id).mannageOrders(orders) + "\n";
             }
         }

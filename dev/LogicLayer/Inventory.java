@@ -80,10 +80,12 @@ public class Inventory {
     }
 
 
-    public  String mannageOrders(Map<Integer,Pair<Integer,Integer>> orders) {
+    public  String mannageOrders(Map<Integer,Pair<Integer,Double>> orders) {
         for(Integer prodId: orders.keySet()){
             addAmountToProduct(prodId,orders.get(prodId).getKey());
-            double newPrice= orders.get(prodId).getValue()/orders.get(prodId).getKey();
+            int amount=orders.get(prodId).getKey();
+            double totalPrice= orders.get(prodId).getValue();
+            double newPrice= totalPrice/amount;
             double price= inventory.get(prodId).getCostPrice();
             if(price!=newPrice){
                 setCostPrice(prodId,newPrice);
@@ -274,17 +276,20 @@ public class Inventory {
     }
 
 
-    public void addToWeeklyOrder(List<Pair<Integer, Integer>> id_amount) {
+    public String addToWeeklyOrder(int day,List<Pair<Integer, Integer>> id_amount) {
+        dayForWeeklyOrder=day;
         for(Pair<Integer,Integer> p: id_amount){
             WeeklyOrder.put(p.getKey(),p.getValue());
         }
+        return "Weekly order was update for branch: "+branchId+"\n";
     }
-    public void removeFromWeeklyOrder(List<Integer> ids){
+    public String removeFromWeeklyOrder(List<Integer> ids){
         for(Integer id: ids){
             if(WeeklyOrder.containsKey(id)){
                 WeeklyOrder.remove(id);
             }
         }
+        return "Weekly order was update for branch: "+branchId+"\n";
     }
 
     public List<Pair<Integer, Integer>> getWeeklyOrder() {

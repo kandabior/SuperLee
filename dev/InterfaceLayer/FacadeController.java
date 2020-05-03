@@ -66,10 +66,10 @@ public class FacadeController {
         return supplierController.getItemNameByIndex(suppId, index);
     }
 
-    public Map<Integer,Pair<Integer,Integer>> makeOrder(int branchId, List<Pair<Integer,Integer>> list)//return itemId , <Quantity , FinalCost>
+    public Map<Integer,Pair<Integer,Double>> makeOrder(int branchId, List<Pair<Integer,Integer>> list)//return itemId , <Quantity , FinalCost>
     {
 
-        Map<Integer,Pair<Integer,Integer>> map = new HashMap();
+        Map<Integer,Pair<Integer,Double>> map = new HashMap();
         Map<Integer , List<List<Object>>> orderMap= new HashMap<>();
         Map<Integer , List<Object>> suppliersMap= new HashMap<>();
         //List<Integer> ItemsMissing = new LinkedList<>();
@@ -82,7 +82,7 @@ public class FacadeController {
             if(bestSuppForItem>0)
             {
                 Double costForItem = supplierController.getPriceOfAmountOfItem(bestSuppForItem ,itemId,quantity );
-                Pair<Integer,Integer> p = new Pair(quantity,costForItem);
+                Pair<Integer,Double> p = new Pair(quantity,costForItem);
                 map.put(itemId , p);
                 //add orders
                 if(orderMap.containsKey(bestSuppForItem))

@@ -29,12 +29,13 @@ public class InventoryMenu {
                     "10. Transfer amount of Product from the storage to the shelf\n" +
                     "11. Transfer amount of Product from the shelf to the storage\n" +
                     "12. Set amount of defective products\n" +
-                    "13. Back to main menu\n");
+                    "13. Back to Inventory&reports menu\n");
             choose = scanner.nextInt();
             try {
                 switch (choose) {
                     case 1:
                         AddNewBranch();
+                        break;
                     case 2:
                         AddGlobalManager();
                         break;
@@ -91,7 +92,7 @@ public class InventoryMenu {
                 "6. print expired and defective products report\n" +
                 "7. Print sale price report\n"+
                 "8. Print cost price report\n"+
-                "9. Back to main menu\n");
+                "9. Back to inventory&reports menu\n");
             choose = scanner.nextInt();
             try {
                 switch (choose) {
@@ -147,7 +148,7 @@ public class InventoryMenu {
                 ids.add(Integer.parseInt(prodId));
             }
         }
-        inventoryController.RemoveFromWeeklyOrder(Integer.parseInt(branchId),ids);
+        Printer.Print(inventoryController.RemoveFromWeeklyOrder(Integer.parseInt(branchId),ids));
 
     }
 
@@ -155,6 +156,8 @@ public class InventoryMenu {
         boolean stop=false;
         System.out.println("Enter branch id");
         String branchId= scanner.next();
+        System.out.println("Enter a day for weekly order:");
+        String day= scanner.next();
         System.out.println("please enter product id and amount with a single ':' between.\n" +
                 "To stop insert products, insert '0:0'.\n");
         List<Pair<Integer,Integer>> id_amount=new LinkedList<>();
@@ -169,14 +172,14 @@ public class InventoryMenu {
                 id_amount.add(new Pair<>(Integer.parseInt(str[0]),Integer.parseInt(str[1])));
             }
         }
-        inventoryController.AddToWeeklyOrder(Integer.parseInt(branchId),id_amount);
+        Printer.Print(inventoryController.AddToWeeklyOrder(Integer.parseInt(branchId),Integer.parseInt(day),id_amount));
     }
 
     private static void makeMissingOrder() {
         System.out.println("Enter branch id");
         String branchId= scanner.next();
         System.out.println("Making missing product order..");
-        inventoryController.MakeMissingOrder(Integer.parseInt(branchId));
+        Printer.Print(inventoryController.MakeMissingOrder(Integer.parseInt(branchId)));
     }
 
     private static void makeCustomiezedOrder() {
@@ -197,7 +200,7 @@ public class InventoryMenu {
                 id_amount.add(new Pair<>(Integer.parseInt(str[0]),Integer.parseInt(str[1])));
             }
         }
-        inventoryController.MakeCistomiezedOrder(Integer.parseInt(branchId),id_amount);
+        Printer.Print(inventoryController.MakeCistomiezedOrder(Integer.parseInt(branchId),id_amount));
 
 
     }
@@ -219,6 +222,7 @@ public class InventoryMenu {
                         break;
                     case 2:
                         OrdersLoop();
+                        break;
                     case 3:
                         reportsLoop();
                         break;
@@ -243,7 +247,7 @@ public class InventoryMenu {
                     "3. Add to weekly order\n" +
                     "4. Remove from weekly order\n"+
                     "5. Print Weekly Order\n" +
-                    "6. Back to main menu\n");
+                    "6. Back to inventory&reports menu\n");
             choose = scanner.nextInt();
             try {
                 switch (choose) {
@@ -522,6 +526,6 @@ public class InventoryMenu {
     }
 
     public static void PromoteDay(Integer dayOfTheWeek) {
-        inventoryController.PromoteDay(dayOfTheWeek);
+        Printer.Print(inventoryController.PromoteDay(dayOfTheWeek));
     }
 }
