@@ -22,7 +22,7 @@ public class SupplierMenu {
                 System.out.println("3. Manage supplier");
                 System.out.println("4. View previous orders");
                // System.out.println("6. Update order status");
-                System.out.println("5. Quit");
+                System.out.println("5. Back To Main Menu");
                 System.out.print("Option: ");
                 Scanner scanner = new Scanner(System.in);
                 choice = scanner.nextLine();
@@ -101,7 +101,7 @@ public class SupplierMenu {
                 System.out.println("------------------------------------------------------------------------------\n");
                 System.out.println("Item Id  "+"\t" +"Item Name "+ "\t"+"Quantity " + "\t"+"    Price "+ "\t"+"    Discount " + "\t"+"   Final Cost \n");
                 for (int j = 0; j < list.size(); j++) {
-                    System.out.println(list.get(j).get(0) +"\t\t\t"+list.get(j).get(1)+"\t\t\t"+list.get(j).get(2)+"\t\t\t"+((Double)list.get(j).get(3)*(int)list.get(j).get(2))+"\t\t\t"+list.get(j).get(4)+"\t\t\t"+((Double)list.get(j).get(5)*(int)list.get(j).get(2))+"\n");
+                    System.out.println(list.get(j).get(0) +"\t\t\t"+list.get(j).get(1)+"\t\t\t"+list.get(j).get(2)+"\t\t\t"+list.get(j).get(3)+"\t\t\t"+list.get(j).get(4)+"\t\t\t"+list.get(j).get(5)+"\n");
                 }
                 System.out.println("------------------------------------------------------------------------------\n");
                 System.out.println("Total amount: " + fc.getTotalOrderMoney(orderId));
@@ -198,7 +198,7 @@ public class SupplierMenu {
             System.out.println("2. Edit agreement");
             System.out.println("3. Add bill of quantities");
             System.out.println("4. Edit bill of quantities");
-            System.out.println("5. Main menu");
+            System.out.println("5. Back");
             System.out.print("Option: ");
             choice = scanner.nextLine();
             switch (choice) {
@@ -379,6 +379,10 @@ public class SupplierMenu {
         FacadeController.getFacadeController().addItemToSupplier(1,2);
         FacadeController.getFacadeController().addItemToAgreement(1,3,10.0);
         FacadeController.getFacadeController().addItemToSupplier(1,3);
+        Map<Integer, Pair<Integer,Double>> map = new HashMap<>();
+        Pair<Integer,Double> p = new Pair<>(10, 0.7);
+        map.put(2,p);
+        FacadeController.getFacadeController().addBillOfQuantities(1,map);
         FacadeController.getFacadeController().addItemToAgreement(2,1,6.0);
         FacadeController.getFacadeController().addItemToSupplier(2,1);
         FacadeController.getFacadeController().addItemToAgreement(2,2,7.0);

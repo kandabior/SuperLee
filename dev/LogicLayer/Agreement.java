@@ -1,6 +1,8 @@
 package LogicLayer;
 
 import javafx.util.Pair;
+
+import java.text.DecimalFormat;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
@@ -61,7 +63,11 @@ public class Agreement {
             double discount = bill.getMoneyAmountofItemInBill(itemId, quantity);
             double cost = terms.get(itemId);
             double costMulQuantity = (cost * quantity);
-            return costMulQuantity * (1 - discount);
+             double x = costMulQuantity * (1 - discount);
+            DecimalFormat df = new DecimalFormat("#.##");
+            String dx=df.format(x);
+            x=Double.valueOf(dx);
+            return x ;
         } else {
             double cost = terms.get(itemId);
             return (cost * quantity);
