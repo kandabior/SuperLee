@@ -11,7 +11,7 @@ public class Agreement {
     private LinkedHashMap<Integer, Double> terms;
     private BillOfQuantities bill;
 
-    public Agreement() { //i love you dorin
+    public Agreement() {
         this.terms = new LinkedHashMap<>();
         this.bill = null;
     }
