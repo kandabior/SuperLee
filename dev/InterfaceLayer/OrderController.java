@@ -49,6 +49,7 @@ public class OrderController {
         return this.orders.get(i).getSupplierIdOfOrder();
     }
 */
+
     public double getTotalOrderMoney(int orderId) {
         for (int i = 0; i < orders.size(); i++) {
             if (orders.get(i).getId() == orderId) {
@@ -56,7 +57,6 @@ public class OrderController {
             }
         }
         return -1;
-
     }
 
     public void setOrderCost(int orderId, double totalMoney) {
@@ -64,9 +64,9 @@ public class OrderController {
             if (orders.get(i).getId() == orderId) {
                 orders.get(i).setTotalCost(totalMoney);
             }
-
         }
     }
+
     public int getOrderIdByIndex(int i) {
         return this.orders.get(i).getId();
     }
@@ -141,7 +141,7 @@ public class OrderController {
         return orders.get(index).getSupplierAdd();
     }
 
-    public LocalDate getOrderDatebyIndex(int index) {
+    public LocalDate getOrderDateByIndex(int index) {
         return orders.get(index).getOrderDate();
     }
 

@@ -22,7 +22,7 @@ public class SupplierMenu {
                 System.out.println("3. Manage supplier");
                 System.out.println("4. View previous orders");
                // System.out.println("6. Update order status");
-                System.out.println("5. Back To Main Menu");
+                System.out.println("5. Main menu");
                 System.out.print("Option: ");
                 Scanner scanner = new Scanner(System.in);
                 choice = scanner.nextLine();
@@ -56,7 +56,7 @@ public class SupplierMenu {
             return true;
         }catch (Exception e)
         {
-            System.out.println("Invalid input,try again");
+            System.out.println("Invalid input, please try again.");
             return false;
         }
     }
@@ -67,9 +67,9 @@ public class SupplierMenu {
         int choice = scanner.nextInt();
         if (fc.checkIfOrderExists(choice)) {
             fc.updateOrderStatus(choice);
-            System.out.println("LogicLayer.Status order is update to complete");
+            System.out.println("Status order is updated to COMPLETE.");
         } else {
-            System.out.println("LogicLayer.Order id was not found.");
+            System.out.println("Order id was not found.");
         }
     }
 
@@ -92,19 +92,18 @@ public class SupplierMenu {
                 String supplierName = fc.getSupplierNameOfOrderByIndex(i);
                 String supplierAddress = fc.getSupplierAddOfOrderByIndex(i);
                 int orderId = fc.getOrderIdbyIndex(i);
-                LocalDate orderDate = fc.getOrderDatebyIndex(i);
+                LocalDate orderDate = fc.getOrderDateByIndex(i);
                 String suppPhone = fc.getSupplierPhoneOfOrderByIndex(i);
 
                 System.out.println("------------------------------------------------------------------------------\n");
-                System.out.println("Supplier's name: " + supplierName+"\t" +"Supplier's address: " + supplierAddress + "\t"+"OrderId: " +orderId+"\n");
-                System.out.println("Supplier's id: " + supplierId+"\t" +"Date " + orderDate + "\t"+"Supplier Phone: " +suppPhone+"\n");
+                System.out.println("Supplier's name: " + supplierName + "\t" + "Supplier's address: " + supplierAddress + "\t" + "OrderId: " + orderId + "\n");
+                System.out.println("Supplier's id: " + supplierId + "\t" + "Date: " + orderDate + "\t" + "Supplier's phone: " + suppPhone + "\n");
                 //System.out.println("------------------------------------------------------------------------------\n");
                 System.out.println();
-                System.out.println("Item Id  "+"\t" +"Item Name "+ "\t"+"Quantity " + "\t"+"    Price "+ "\t"+"    Discount " + "\t"+"   Final Cost \n");
+                System.out.println("Item Id  " + "\t" + "Item Name " + "\t" + "Quantity " + "\t" + "    Price " + "\t" + "    Discount " + "\t" + "   Final Cost \n");
                 for (int j = 0; j < list.size(); j++) {
-                    System.out.println(list.get(j).get(0) +"\t\t\t"+list.get(j).get(1)+"\t\t\t"+list.get(j).get(2)+"\t\t\t"+list.get(j).get(3)+"\t\t\t"+list.get(j).get(4)+"\t\t\t"+list.get(j).get(5)+"\n");
+                    System.out.println(list.get(j).get(0) + "\t\t\t" + list.get(j).get(1) + "\t\t\t" + list.get(j).get(2) + "\t\t\t" + list.get(j).get(3) + "\t\t\t" + list.get(j).get(4) + "\t\t\t" + list.get(j).get(5) + "\n");
                 }
-
                 System.out.println("Total amount: " + fc.getTotalOrderMoney(orderId));
                 System.out.println("Status: " + fc.getOrderStatus(orderId));
                 System.out.println();
@@ -119,7 +118,7 @@ public class SupplierMenu {
         System.out.print("Item's identifier: ");
         int itemId = scanner.nextInt();
         while (fc.validateItemId(suppId, itemId)) {
-            System.out.print("This supplier already have this item.\nEnter another one\n");
+            System.out.print("This supplier already has this item, Please enter another one.\n");
             System.out.print("Item's identifier: ");
             itemId = scanner.nextInt();
         }
@@ -133,7 +132,7 @@ public class SupplierMenu {
         }
         else
         {
-            System.out.print("Item is not found  ");
+            System.out.print("Item was not found.");
             System.out.print("Insert more items? [Y/N] ");
         }
         return newItems;
@@ -145,7 +144,7 @@ public class SupplierMenu {
         String suppName = scanner.nextLine();
         System.out.print("Phone number: ");
         String suppPhone = scanner.nextLine();
-        System.out.print("address : ");
+        System.out.print("Address : ");
         String suppAddress = scanner.nextLine();
         System.out.print("Bank account number: ");
         int suppBankAccount = scanner.nextInt();
@@ -372,9 +371,9 @@ public class SupplierMenu {
 
     public static void initiateSystem() {
         FacadeController.getFacadeController().addSupplier(supplierIdCounter++,"itay","05550004",
-                23423,"mezuman","sanday","bash","tveria");
+                23423,"cash","Sunday","Beer-Sheva","Tveria");
         FacadeController.getFacadeController().addSupplier(supplierIdCounter++,"moshe","2342352425",
-                23333423,"mezuman","saturday","tel aviv","tveria");
+                23333423,"cash","Saturday","Tel Aviv","Tveria");
         FacadeController.getFacadeController().addItemToAgreement(1,1,2.0);
         FacadeController.getFacadeController().addItemToSupplier(1,1);
         FacadeController.getFacadeController().addItemToAgreement(1,2,5.0);

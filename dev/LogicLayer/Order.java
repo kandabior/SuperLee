@@ -23,20 +23,20 @@ public class Order {
     Status status;
 
     public Order(int branchId , int id, int supplierId , String suppName, String phoneNumber , String address , LocalDate date ) {
-        this.branchId  = branchId;
+        this.branchId = branchId;
         this.id = id;
-       // this.items = makeOrderLines(items);
-        this.suppName=suppName;
-        this.suppId=supplierId;
-        this.address= address;
-        this.orderDate=date;
+        // this.items = makeOrderLines(items);
+        this.suppName = suppName;
+        this.suppId = supplierId;
+        this.address = address;
+        this.orderDate = date;
         this.phoneNumber = phoneNumber;
-        totalCost=0;
-        status=Status.Pending;
+        totalCost = 0;
+        status = Status.Pending;
     }
 
     public String getStatus() {
-        if(this.status==Status.Complete)
+        if (this.status == Status.Complete)
             return "COMPLETE";
         return "PENDING";
     }
@@ -124,10 +124,9 @@ public class Order {
     }
 */
     public double getTotalOrderMoney() {
-        double totalAmount=0;
-        for (int i =0;i<orderLines.size();i++)
-        {
-            totalAmount+= (orderLines.get(i).getFinalCost());
+        double totalAmount = 0;
+        for (int i = 0; i < orderLines.size(); i++) {
+            totalAmount += (orderLines.get(i).getFinalCost());
         }
         return totalAmount;
     }
