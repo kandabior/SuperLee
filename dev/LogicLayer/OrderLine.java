@@ -2,6 +2,9 @@ package LogicLayer;
 
 public class OrderLine {
 
+    static int orderLineCounter = 1;
+
+    private int orderLineId;
     private int itemId;
     private String itemName;
     private int itemQuantity;
@@ -17,6 +20,8 @@ public class OrderLine {
         this.itemCost = itemCost;
         this.itemDiscount = itemDiscount;
         this.finalCost=finalCost;
+        orderLineId=orderLineCounter;
+        orderLineCounter++;
     }
 
     public int getItemId() {
