@@ -101,21 +101,20 @@ public class OrderController {
     }
 
     public void makeOrders(int branchId, Map<Integer, List<List<Object>>> orderMap , Map<Integer , List<Object>> suppliersList) {
-
         for (Integer key : orderMap.keySet())//go over suppliers
         {
-            Order o = new Order(branchId, orderIdCounter, (Integer) suppliersList.get(key).get(0), (String)suppliersList.get(key).get(1), (String)suppliersList.get(key).get(2),(String)suppliersList.get(key).get(3), LocalDate.now());
-            orderIdCounter ++;
+            Order o = new Order(branchId, orderIdCounter, (Integer) suppliersList.get(key).get(0), (String) suppliersList.get(key).get(1), (String) suppliersList.get(key).get(2), (String) suppliersList.get(key).get(3), LocalDate.now());
+            orderIdCounter++;
             List<OrderLine> lines = new LinkedList<>();
-            for (int j = 0  ; j<orderMap.get(key).size() ; j++)//go over the orders line
+            for (int j = 0; j < orderMap.get(key).size(); j++)//go over the orders line
             {
-                int itemId= (int) orderMap.get(key).get(j).get(0);
-                String itemName= (String) orderMap.get(key).get(j).get(1);
-                int itemQuantity= (int) orderMap.get(key).get(j).get(2);
-                Double itemCost= (Double) orderMap.get(key).get(j).get(3);
-                Double itemDiscount= (Double) orderMap.get(key).get(j).get(4);
-                Double itemFinalCost= (Double) orderMap.get(key).get(j).get(5);
-                OrderLine orderLine= new OrderLine(itemId,itemName,itemQuantity,itemCost,itemDiscount,itemFinalCost);
+                int itemId = (int) orderMap.get(key).get(j).get(0);
+                String itemName = (String) orderMap.get(key).get(j).get(1);
+                int itemQuantity = (int) orderMap.get(key).get(j).get(2);
+                Double itemCost = (Double) orderMap.get(key).get(j).get(3);
+                Double itemDiscount = (Double) orderMap.get(key).get(j).get(4);
+                Double itemFinalCost = (Double) orderMap.get(key).get(j).get(5);
+                OrderLine orderLine = new OrderLine(itemId, itemName, itemQuantity, itemCost, itemDiscount, itemFinalCost);
                 lines.add(orderLine);
             }
             o.setItems(lines);
