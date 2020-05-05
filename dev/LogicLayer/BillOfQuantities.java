@@ -6,7 +6,7 @@ import java.util.Map;
 
 public class BillOfQuantities {
 
-    private Map<Integer, Pair<Integer, Double>> bill;
+    private Map<Integer, Pair<Integer, Double>> bill; //itemId, <quantity, discount>
 
     public BillOfQuantities(Map<Integer, Pair<Integer, Double>> bill) {
         this.bill = bill;

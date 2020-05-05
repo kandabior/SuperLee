@@ -114,7 +114,7 @@ public class OrderController {
                 Double itemCost = (Double) orderMap.get(key).get(j).get(3);
                 Double itemDiscount = (Double) orderMap.get(key).get(j).get(4);
                 Double itemFinalCost = (Double) orderMap.get(key).get(j).get(5);
-                OrderLine orderLine = new OrderLine(itemId, itemName, itemQuantity, itemCost, itemDiscount, itemFinalCost);
+                OrderLine orderLine = new OrderLine(o.getId(), itemId, itemName, itemQuantity, itemCost, itemDiscount, itemFinalCost);
                 lines.add(orderLine);
             }
             o.setItems(lines);
