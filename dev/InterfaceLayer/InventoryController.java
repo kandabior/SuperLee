@@ -20,8 +20,10 @@ public class InventoryController {
     private ReportMaker reportMaker;
     //private Inventory inventory;
 
+    private Inventory inventory;
+
     private InventoryController(){
-        //inventory = Inventory.getInventory();
+        inventory = Inventory.getInventory();
         reportMaker = ReportMaker.getPrinter();
         inventoryManagers = new HashMap<>();
         GlobalManager = new HashMap<>();
@@ -34,9 +36,10 @@ public class InventoryController {
         return instance;
     }
 
+
     //Managers
 
-    public String addInventoryManager(String username, String password){
+    /*public String addInventoryManager(String username, String password){
         try {
             if (inventoryManagers.containsKey(username))
                 return "can't register - username already exist";
@@ -46,7 +49,25 @@ public class InventoryController {
         catch (Exception e){
             return "can't execute the action";
         }
+    }*/
+    public String addInventoryManager(String username, String password){
+        return Inventory.addInventoryManager(username,password);
     }
+    /*public String addGlobalManager(String username, String password){
+        try {
+            if (GlobalManager.containsKey(username))
+                return "can't register - username already exist";
+            GlobalManager.put(username, password);
+            return "Global Manager " + username + " - registered successfully";
+        }
+        catch (Exception e){
+            return "can't execute the action";
+        }
+    }*/
+    public String addGlobalManager(String username, String password){
+        return Inventory.addGlobalManager(username,password);
+    }
+
     public String removeInventoryManager(String username, String password , String usernameToRemove, String passwordToRemove){
         try {
             if (!inventoryManagers.containsKey(username))
@@ -61,18 +82,7 @@ public class InventoryController {
             return "can't execute the action";
         }
     }
-    public String addGlobalManager(String username, String password){
-        try {
-            if (GlobalManager.containsKey(username))
-                return "can't register - username already exist";
-            GlobalManager.put(username, password);
-            return "Global Manager " + username + " - registered successfully";
-        }
-        catch (Exception e){
-            return "can't execute the action";
-        }
-    }
-    /*public String removeGlobalManager(String username, Integer password){
+    public String removeGlobalManager(String username, Integer password){
         try {
 
             if (!GlobalManager.containsKey(username))
@@ -83,7 +93,7 @@ public class InventoryController {
         catch (Exception e){
             return "can't execute the action";
         }
-    }*/
+    }
 
     //Inventory
 
@@ -101,7 +111,7 @@ public class InventoryController {
             if ((GlobalManager.containsKey(username) && GlobalManager.get(username).equals(password)) || (inventoryManagers.containsKey(username) && inventoryManagers.get(username).equals(password))) {
                 prodName = Items.getName(prodid);
                 if(prodName!=null) {
-                    return Inventory.getInventory(branchId).addProduct(prodid, amount, prodName, costPrice, salePrice, expDate, category, manufacturer, minAmount, place);
+                    return inventory.addProduct(branchId,prodid, amount, prodName, costPrice, salePrice, expDate, category, manufacturer, minAmount, place);
                 }
                 return "can't execute the action";
 
@@ -114,7 +124,7 @@ public class InventoryController {
     public String removeProduct(int branchId,String username, String password, int prodid){
         try {
             if ((GlobalManager.containsKey(username) && GlobalManager.get(username).equals(password)) || (inventoryManagers.containsKey(username) && inventoryManagers.get(username).equals(password)))
-                return Inventory.getInventory(branchId).removeProduct(prodid);
+                return inventory.removeProduct(branchId,prodid);
             return "can't remove product - you are need to be a Manager";
         }
         catch (Exception e){
@@ -123,7 +133,7 @@ public class InventoryController {
     }
     public String addAmountToProduct(int branchId,int id, int amount){
         try {
-            return Inventory.getInventory(branchId).addAmountToProduct(id, amount);
+            return inventory.addAmountToProduct(branchId,id, amount);
         }
         catch (Exception e){
             return "can't execute the action";
@@ -131,7 +141,7 @@ public class InventoryController {
     }
     public String removeAmountFromProduct(int branchId,int id, int amount){
         try{
-            return Inventory.getInventory(branchId).removeAmountFromProduct(id,amount);
+            return inventory.removeAmountFromProduct(branchId,id,amount);
         }
         catch (Exception e){
             return "can't execute the action";
@@ -140,7 +150,7 @@ public class InventoryController {
     public String setSalePriceById(int branchId,String username, String password ,int prodid, Double price){
         try{
             if(GlobalManager.containsKey(username) && GlobalManager.get(username).equals(password))
-                return Inventory.getInventory(branchId).setSalePrice(prodid,price);
+                return inventory.setSalePrice(branchId,prodid,price);
             return "can't change price of product - you are need to be a Global Manager";
         }
         catch (Exception e){
@@ -150,7 +160,7 @@ public class InventoryController {
     public String setPriceByCategory(int branchId,String username, String password , List<String> category,Double price){
         try {
             if (GlobalManager.containsKey(username) && GlobalManager.get(username).equals(password))
-                return Inventory.getInventory(branchId).setPriceByCategory(category, price);
+                return inventory.setPriceByCategory(branchId,category, price);
             return "can't change price of product - you are need to be a Global Manager";
         }
         catch (Exception e){
@@ -160,7 +170,7 @@ public class InventoryController {
     public String setCategory(int branchId,String username, String password, int id, List<String> category){
         try{
             if((GlobalManager.containsKey(username) && GlobalManager.get(username).equals(password)) || (inventoryManagers.containsKey(username) && inventoryManagers.get(username).equals(password)))
-                return Inventory.getInventory(branchId).setCategory(id,category);
+                return inventory.setCategory(branchId, id,category);
             return "can't remove product - you are need to be a Manager";
         }
         catch (Exception e){
@@ -169,49 +179,44 @@ public class InventoryController {
     }
     public String setDefectiveProducts(int branchId,Integer prodId, Integer amount) {
         try {
-            return Inventory.getInventory(branchId).setDefectiveProducts(prodId,amount);
+            return inventory.setDefectiveProducts(branchId,prodId,amount);
         }
         catch (Exception e){
             return "can't execute the action";
         }
     }
-
     public String shelfToStorage(int branchId,int id, int amount){
         try{
-            return Inventory.getInventory(branchId).shelfToStorage(id,amount);
+            return inventory.shelfToStorage(branchId,id,amount);
         }
         catch (Exception e){
             return "can't execute the action";
         }
     }
-
     public String storageToShelf(int branchId,int id, int amount){
         try{
-            return Inventory.getInventory(branchId).storageToShelf(id,amount);
+            return inventory.storageToShelf(branchId,id,amount);
         }
         catch (Exception e){
             return "can't execute the action";
         }
     }
-
     public String MakeMissingOrder(int branchId) {
         try {
-            List<Pair<Integer, Integer>> toBuy= Inventory.getInventory(branchId).NeedToBuyProducts();
+            List<Pair<Integer, Integer>> toBuy= inventory.NeedToBuyProducts(branchId);
             Map<Integer,Pair<Integer,Double>> orders= FacadeController.getFacadeController().makeOrder(branchId,toBuy);
-            return Inventory.getInventory(branchId).mannageOrders(orders);
+            return inventory.mannageOrders(branchId,orders);
         }
         catch (Exception e){
             return "can't execute the action";
         }
     }
-
     public String MakeCistomiezedOrder(int branchId,List<Pair<Integer, Integer>> id_amount) {
         try{
             List<Pair<Integer,Integer>> toOrder=new LinkedList<>();
             List<Integer> noOrder=new LinkedList<>();
-            Inventory myinventory=Inventory.getInventory(branchId);
             for(Pair<Integer,Integer> prod : id_amount){
-                if(myinventory.conteinsProduct(prod.getKey())){
+                if(inventory.conteinsProduct(prod.getKey())){
                     toOrder.add(prod);
                 }
                 else{
@@ -223,7 +228,7 @@ public class InventoryController {
                 output="cant Order the Products: "+noOrder+"\n";
             }
             Map<Integer,Pair<Integer,Double>> orders=FacadeController.getFacadeController().makeOrder(branchId,toOrder);
-            output=output+myinventory.mannageOrders(orders);
+            output=output+inventory.mannageOrders(branchId,orders);
             return output;
         }
         catch (Exception e){
@@ -231,32 +236,27 @@ public class InventoryController {
             return "can't execute the action";
         }
     }
-
     public String AddToWeeklyOrder(int branchId,int day, List<Pair<Integer, Integer>> id_amount) {
-        Inventory inventory=Inventory.getInventory(branchId);
-        return inventory.addToWeeklyOrder(day,id_amount);
+        return inventory.addToWeeklyOrder(branchId,day,id_amount);
     }
     public String RemoveFromWeeklyOrder(int branchId, List<Integer> ids) {
-        Inventory inventory=Inventory.getInventory(branchId);
-        return inventory.removeFromWeeklyOrder(ids);
+        return inventory.removeFromWeeklyOrder(branchId,ids);
     }
-
     public String PromoteDay(Integer dayOfTheWeek) {
         String output="";
-        List<Integer> Ids= Inventory.getIdsToWeeklyOrders(dayOfTheWeek);
-        for(Integer id : Ids){
-            List<Pair<Integer,Integer>> toOrder= Inventory.getInventory(id).getWeeklyOrder();
+        List<Integer> branchIds= Inventory.getIdsToWeeklyOrders(dayOfTheWeek);
+        for(Integer branchId : branchIds){
+            List<Pair<Integer,Integer>> toOrder= inventory.getWeeklyOrder(branchId);
             if(!toOrder.isEmpty()) {
-                Map<Integer, Pair<Integer, Double>> orders = FacadeController.getFacadeController().makeOrder(id, toOrder);
-                output = output + Inventory.getInventory(id).mannageOrders(orders) + "\n";
+                Map<Integer, Pair<Integer, Double>> orders = FacadeController.getFacadeController().makeOrder(branchId,toOrder);
+                output = output + inventory.mannageOrders(branchId,orders) + "\n";
             }
         }
         return output;
     }
-
     public String PrintWeeklyOrder(int branchId) {
         try{
-            List<Pair<Integer,Integer>> weeklyOrder=Inventory.getInventory(branchId).getWeeklyOrder();
+            List<Pair<Integer,Integer>> weeklyOrder=inventory.getWeeklyOrder(branchId);
             return reportMaker.PrintWeeklyOrder(branchId,weeklyOrder);
         }
         catch (Exception e){
@@ -268,36 +268,33 @@ public class InventoryController {
 
     public String NeedToBuyReport(int branchId){
         try {
-            List<Pair<Integer, Integer>> toBuy = Inventory.getInventory(branchId).NeedToBuyProducts();
+            List<Pair<Integer, Integer>> toBuy = inventory.NeedToBuyProducts(branchId);
             return reportMaker.printMissingProducts(branchId,toBuy);
         }
         catch (Exception e){
             return "can't execute the action";
         }
     }
-
     public String totalStockReport(int branchId){
         try {
-            List<Pair<Integer, Integer>> totalStock = Inventory.getInventory(branchId).getQuantity();
+            List<Pair<Integer, Integer>> totalStock = inventory.getQuantity(branchId);
             return reportMaker.printStock(branchId,totalStock);
         }
         catch (Exception e){
             return "can't execute the action";
         }
     }
-
     public String ShelfReport(int branchId) {
         try {
-            List<Pair<Integer, Integer>> shelfStock = Inventory.getInventory(branchId).getShelfQuantity();
+            List<Pair<Integer, Integer>> shelfStock = inventory.getShelfQuantity(branchId);
             return reportMaker.printShelfReport(branchId,shelfStock);
         }catch (Exception e){
             return "can't execute the action";
         }
     }
-
     public String StorageReport(int branchId) {
         try {
-            List<Pair<Integer, Integer>> storageStock = Inventory.getInventory(branchId).getStorageQuantity();
+            List<Pair<Integer, Integer>> storageStock = inventory.getStorageQuantity(branchId);
             return reportMaker.printStorageReport(branchId,storageStock);
         }
         catch (Exception e){
@@ -307,37 +304,34 @@ public class InventoryController {
     }
     public String CategoryReport(int branchId,List<String> category){
         try {
-            List<Pair<Integer, Integer>> prodByCategories = Inventory.getInventory(branchId).getProductsByCategories(category);
+            List<Pair<Integer, Integer>> prodByCategories = inventory.getProductsByCategories(branchId,category);
             return reportMaker.printByCategories(branchId,prodByCategories);
         }
         catch (Exception e){
             return "can't execute the action";
         }
     }
-
     public String ExpiredReport(int branchId){
         try {
-            List<Pair<Integer, Integer>> expiredProducts = Inventory.getInventory(branchId).ExpiredProducts();
+            List<Pair<Integer, Integer>> expiredProducts = inventory.ExpiredProducts(branchId);
             return reportMaker.MakeDefectiveReport(branchId,expiredProducts);
         }
         catch (Exception e){
             return "can't execute the action";
         }
     }
-
     public String SalePricesReport(int branchId,Integer id){
         try{
-            Pair<Integer,List<Double>> prices= Inventory.getInventory(branchId).SalePricesById(id);
+            Pair<Integer,List<Double>> prices= inventory.SalePricesById(branchId, id);
             return reportMaker.printSaleProductPrices(branchId,prices);
         }
         catch (Exception e){
             return "can't execute the action";
         }
     }
-
     public String CostPriceReport(int branchId,Integer id){
         try {
-            Pair<Integer, List<Double>> prices = Inventory.getInventory(branchId).CostPricesById(id);
+            Pair<Integer, List<Double>> prices = inventory.CostPricesById(branchId,id);
             return reportMaker.printCostProductPrices(branchId,prices);
         }
         catch (Exception e){
@@ -347,15 +341,13 @@ public class InventoryController {
 
     //Tests Methods
 
-    public Pair<Integer,Pair<Integer,Integer>> getquantityById(int branchId,Integer Id){
+   /* public Pair<Integer,Pair<Integer,Integer>> getquantityById(int branchId,Integer Id){
         return Inventory.getInventory(branchId).getQuantityById(Id);
     }
-
     public Pair<Integer,Integer> getquantityEXPById(int branchId,Integer Id){
         return Inventory.getInventory(branchId).getQuantityEXPById(Id);
     }
-
     public Double getProductSalePrice(int branchId,int id) {
-        return Inventory.getInventory(branchId).getProdSalePrice(id);
-    }
+        return inventory.getProdSalePrice(branchId,id);
+    }*/
 }

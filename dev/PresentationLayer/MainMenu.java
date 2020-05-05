@@ -1,10 +1,9 @@
 package PresentationLayer;
-
 import LogicLayer.Items;
-
 import java.util.Scanner;
 
-public class MainMenu {
+
+public class MainMenu{
     public static Scanner scanner=new Scanner(System.in);
     public static Integer DayOfTheWeek=0;
 
@@ -24,7 +23,7 @@ public class MainMenu {
             Printer.Print("system was not initiate");
         }
         int choose;
-        Printer.Print("Welcome To EOED Digtal Storage And Suppliers Manager");
+        Printer.Print("Welcome To EOED Digital Storage And Suppliers Manager");
         do {
             Printer.Print("Day: "+(DayOfTheWeek+1));
             Printer.Print("\n\nPlease choose an action:\n" +

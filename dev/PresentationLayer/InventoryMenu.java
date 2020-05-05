@@ -79,7 +79,6 @@ public class InventoryMenu {
         }
         while (choose != 13) ;
     }
-
     private static void reportsLoop(){
         int choose;
         do {
@@ -130,7 +129,6 @@ public class InventoryMenu {
         }
         while(choose!=9);
     }
-
     private static void RemoveFromWeeklyOrder() {
         boolean stop=false;
         System.out.println("Enter branch id");
@@ -151,7 +149,6 @@ public class InventoryMenu {
         Printer.Print(inventoryController.RemoveFromWeeklyOrder(Integer.parseInt(branchId),ids));
 
     }
-
     private static void addToWeeklyOrder() {
         boolean stop=false;
         System.out.println("Enter branch id");
@@ -174,14 +171,12 @@ public class InventoryMenu {
         }
         Printer.Print(inventoryController.AddToWeeklyOrder(Integer.parseInt(branchId),Integer.parseInt(day),id_amount));
     }
-
     private static void makeMissingOrder() {
         System.out.println("Enter branch id");
         String branchId= scanner.next();
         System.out.println("Making missing product order..");
         Printer.Print(inventoryController.MakeMissingOrder(Integer.parseInt(branchId)));
     }
-
     private static void makeCustomiezedOrder() {
         boolean stop=false;
         System.out.println("Enter branch id");
@@ -204,7 +199,6 @@ public class InventoryMenu {
 
 
     }
-
     public static void mainLoop() {
         System.out.println("Inventory and Reports Menu");
         int choose;
@@ -236,7 +230,6 @@ public class InventoryMenu {
         }
         while(choose!=4);
     }
-
     private static void OrdersLoop() {
         int choose;
         Printer.Print("Orders Menu:");
@@ -277,7 +270,6 @@ public class InventoryMenu {
         while (choose != 6) ;
 
     }
-
     private static void PrintWeeklyOrder() {
         System.out.println("\nEnter branch id: ");
         String branchId= scanner.next();
@@ -285,13 +277,11 @@ public class InventoryMenu {
 
 
     }
-
     private static void AddNewBranch() {
         System.out.println("Please insert branch: ");
         String branchId=scanner.next();
         Printer.Print(inventoryController.CreateNewInventory(Integer.parseInt(branchId)));
     }
-
     private static void setDefectiveProducts() {
         Printer.Print("\nPlease Enter the following by given order:\n");
         System.out.println("Enter branch id");
@@ -302,8 +292,6 @@ public class InventoryMenu {
         String amount=scanner.next();
         Printer.Print(inventoryController.setDefectiveProducts(Integer.parseInt(branchId),Integer.parseInt(prodId),Integer.parseInt(amount)));
     }
-
-
     private static void PrintCostPriceReport() {
         System.out.println("\nEnter branch id: ");
         String branchId= scanner.next();
@@ -311,7 +299,6 @@ public class InventoryMenu {
         String prodId=scanner.next();
         Printer.Print(inventoryController.CostPriceReport(Integer.parseInt(branchId),Integer.parseInt(prodId)));
     }
-
     private static void PrintSalePriceReport() {
         System.out.println("\nEnter branch id: ");
         String branchId= scanner.next();
@@ -319,7 +306,6 @@ public class InventoryMenu {
         String prodId=scanner.next();
         Printer.Print(inventoryController.SalePricesReport(Integer.parseInt(branchId),Integer.parseInt(prodId)));
     }
-
     private static void changeCategory(){
         Printer.Print("\nPlease Enter the following by given order:\n");
         System.out.println("Enter branch id: ");
@@ -335,7 +321,6 @@ public class InventoryMenu {
         List<String> categoriesList= Arrays.asList(cat.split(","));
         Printer.Print(inventoryController.setCategory(Integer.parseInt(branchId),userName,password,Integer.parseInt(prodId),categoriesList));
     }
-
     private static void shelfToStorage(){
         System.out.println("\nEnter branch id: ");
         String branchId= scanner.next();
@@ -372,7 +357,6 @@ public class InventoryMenu {
         String amount = scanner.next();
         Printer.Print(inventoryController.removeAmountFromProduct(Integer.parseInt(branchId),Integer.parseInt(prodId),Integer.parseInt(amount)));
     }
-
     private static void PrintEXPProducts() {
         System.out.println("\nEnter branch id: ");
         String branchId= scanner.next();
@@ -397,7 +381,6 @@ public class InventoryMenu {
         String branchId= scanner.next();
         Printer.Print(inventoryController.ShelfReport(Integer.parseInt(branchId)));
     }
-
     private static void printStorageStock() {
         System.out.println("\nEnter branch id: ");
         String branchId= scanner.next();
@@ -481,26 +464,10 @@ public class InventoryMenu {
         LocalDate date = LocalDate.of(Integer.parseInt(dateArr[2]),Integer.parseInt(dateArr[1]),Integer.parseInt(dateArr[0]));
         Printer.Print(inventoryController.addProduct(Integer.parseInt(branchId),userName,password,Integer.parseInt(prodId),0,Double.parseDouble(costPrice),Double.parseDouble(salePrice), date,categoriesList,manufacturer,Integer.parseInt(minAmount),place));
     }
-    private static void AddInventoryManager() {
-        Printer.Print("Please enter new username:");
-        String userName=scanner.next();
-        Printer.Print("Please enter new password:");
-        String password=scanner.next();
-        Printer.Print(inventoryController.addInventoryManager(userName, password));
-    }
-    private static void AddGlobalManager() {
-        Printer.Print("Please enter new username:");
-        String userName=scanner.next();
-        Printer.Print("Please enter new password:");
-        String password=scanner.next();
-        Printer.Print(inventoryController.addGlobalManager(userName, password));
-
-    }
     public static void initiateSystem(){
         try {
 
             inventoryController.CreateNewInventory(1);
-
             inventoryController.addGlobalManager("Erez", "1234");
             inventoryController.addGlobalManager("Or", "1234");
             inventoryController.addInventoryManager("dana", "1234");
@@ -524,8 +491,24 @@ public class InventoryMenu {
             Printer.Print("could not initiate the system..");
         }
     }
-
     public static void PromoteDay(Integer dayOfTheWeek) {
         Printer.Print(inventoryController.PromoteDay(dayOfTheWeek));
+    }
+
+    //Managers
+    private static void AddInventoryManager() {
+        Printer.Print("Please enter new username:");
+        String userName=scanner.next();
+        Printer.Print("Please enter new password:");
+        String password=scanner.next();
+        Printer.Print(inventoryController.addInventoryManager(userName, password));
+    }
+    private static void AddGlobalManager() {
+        Printer.Print("Please enter new username:");
+        String userName=scanner.next();
+        Printer.Print("Please enter new password:");
+        String password=scanner.next();
+        Printer.Print(inventoryController.addGlobalManager(userName, password));
+
     }
 }

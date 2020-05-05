@@ -1,12 +1,13 @@
 package LogicLayer;
 
+import DataAccessLayer.InventoryMapper;
 import javafx.util.Pair;
-
 import java.time.LocalDate;
 import java.util.*;
 
 public class Inventory {
-    private static Map<Integer,Inventory> instances=new HashMap<>();
+
+    private static Inventory instance;
 
     private Integer branchId;
     private Map<Integer, Product> inventory;
@@ -15,24 +16,21 @@ public class Inventory {
     private Integer dayForWeeklyOrder=1;
     private Map<Integer,Integer> WeeklyOrder;
 
-    private Inventory(Integer id) {
-        branchId=id;
+    private Inventory() {
         inventory = new HashMap<>();
         quantities = new HashMap<>();
         expired = new HashMap<>();
         WeeklyOrder= new HashMap<>();
-
+        InventoryMapper.InitialInventoryMapper();
     }
     
-    public static Inventory getInventory(Integer id) {
-        if(!instances.containsKey(id)){
-            return null;
+    public static Inventory getInventory() {
+        if(instance == null){
+            return new Inventory();
         }
-        return instances.get(id);
+        return instance;
     }
-
-
-    public static String getProdactName(int branchId,int prodId) {
+    /*public static String getProdactName(int branchId,int prodId) {
         if(!instances.containsKey(branchId)){
             return "branch id does not exist";
         }
@@ -40,49 +38,56 @@ public class Inventory {
         if(!inventory.inventory.containsKey(prodId))
             return "product ID doesnt exist";
         return inventory.inventory.get(prodId).getName();
+    }*/
+    public static String getProdactName(int branchId,int prodId){
+        return InventoryMapper.getProductName(branchId,prodId);
     }
     public static int getProductMin(int branchId,int prodId) {
-        if(!instances.containsKey(branchId)){
+       /* if(!instances.containsKey(branchId)){
             return -1;
         }
         Inventory inventory=instances.get(branchId);
         if(!inventory.inventory.containsKey(prodId))
-            return -1;
-        return inventory.inventory.get(prodId).getMinAmount();
+            return -1;*/
+        return InventoryMapper.getProductMin(branchId, prodId);
+        //return inventory.inventory.get(prodId).getMinAmount();
     }
-
-    public static int getAmount(int branchId,Integer key) {
-        if(!instances.containsKey(branchId)){
+    public static int getAmount(int branchId,Integer prodId) {
+        /*if(!instances.containsKey(branchId)){
             return -1;
         }
         Inventory inventory=instances.get(branchId);
-        if(!inventory.inventory.containsKey(key))
-            return -1;
-        return inventory.quantities.get(key).getKey()+inventory.quantities.get(key).getValue();
+        if(!inventory.inventory.containsKey(prodId))
+            return -1;*/
+        return InventoryMapper.getAmount(branchId, prodId);
+        //return inventory.quantities.get(prodId).getKey()+inventory.quantities.get(prodId).getValue();
     }
 
-    public static String CreateNewInventory(Integer branchId) {
+  /*  public static String CreateNewInventory(Integer branchId) {
         if(instances.containsKey(branchId)){
             return "branch id is already exist";
         }
         instances.put(branchId,new Inventory(branchId));
         return "Branch number: "+branchId+" has successfully initiated.";
-    }
+    }*/
+    public static String CreateNewInventory(Integer branchId) {
+        return InventoryMapper.CreateNewInventory(branchId);
+  }
 
-    public static List<Integer> getIdsToWeeklyOrders(Integer dayOfTheWeek) {
-        List<Integer> output=new LinkedList<>();
-        for(Inventory inventory: instances.values()){
+
+    public static List<Integer> getIdsToWeeklyOrders(int dayOfTheWeek) {
+        List<Integer> output = new LinkedList<>();
+        output = InventoryMapper.getIdsToWeeklyOrders(dayOfTheWeek);
+        /*for(Inventory inventory: instances.values()){
             if(inventory.dayForWeeklyOrder==dayOfTheWeek){
                 output.add(inventory.branchId);
             }
-        }
+        }*/
         return output;
     }
-
-
-    public  String mannageOrders(Map<Integer,Pair<Integer,Double>> orders) {
+    public  String mannageOrders(int branchId, Map<Integer,Pair<Integer,Double>> orders) {
         for(Integer prodId: orders.keySet()){
-            addAmountToProduct(prodId,orders.get(prodId).getKey());
+            addAmountToProduct(branchId, prodId,orders.get(prodId).getKey());
             int amount=orders.get(prodId).getKey();
             double totalPrice= orders.get(prodId).getValue();
             double newPrice= totalPrice/amount;
@@ -93,73 +98,71 @@ public class Inventory {
         }
         return "Order Completed Successfully for branch: "+branchId;
     }
-
     private void setCostPrice(Integer prodId, double newPrice) {
         Product product= inventory.get(prodId);
         product.setCostPrice(newPrice);
     }
-
-    public List<Pair<Integer,Integer>> getQuantity(){ // Pair[0] = productId, Pair[1] = storage + shelf Quantity
+    public List<Pair<Integer,Integer>> getQuantity(int branchId){ // Pair[0] = productId, Pair[1] = storage + shelf Quantity
         List<Pair<Integer,Integer>> qnty = new LinkedList<>();
         for(Integer id : quantities.keySet()){
-            Pair<Integer,Integer> p = new Pair<>(id,quantities.get(id).getKey() + quantities.get(id).getValue());
+            Pair<Integer,Integer> p = new Pair<>(id,InventoryMapper.getProductQuantity(branchId,id));
             qnty.add(p);
         }
         return qnty;
     }
-    public List<Pair<Integer,Integer>> getStorageQuantity(){ // Pair[0] = productId, Pair[1] = StorageQuantity
+    public List<Pair<Integer,Integer>> getStorageQuantity(int branchId){ // Pair[0] = productId, Pair[1] = StorageQuantity
         List<Pair<Integer,Integer>> qnty = new LinkedList<>();
         for(Integer id : quantities.keySet()){
-            Pair<Integer,Integer> p = new Pair<>(id,quantities.get(id).getKey());
+            Pair<Integer,Integer> p = new Pair<>(id,InventoryMapper.getStorageQunatity(branchId,id));
             qnty.add(p);
         }
         return qnty;
     }
-    public List<Pair<Integer,Integer>> getShelfQuantity(){ // Pair[0] = productId, Pair[1] = ShelfQuantity
+    public List<Pair<Integer,Integer>> getShelfQuantity(int branchId){ // Pair[0] = productId, Pair[1] = ShelfQuantity
         List<Pair<Integer,Integer>> qnty = new LinkedList<>();
         for(Integer id : quantities.keySet()){
-            Pair<Integer,Integer> p = new Pair<>(id,quantities.get(id).getValue());
+            Pair<Integer,Integer> p = new Pair<>(id,InventoryMapper.getShelfQunatity(branchId,id));
             qnty.add(p);
         }
         return qnty;
     }
-
-    public List<Pair<Integer,Integer>> NeedToBuyProducts() {   //Pair[0] = productId, Pair[1] = shelf+storage Quantity.  get the products id that their quantity is equal or less than their minimum quantity.
+    public List<Pair<Integer,Integer>> NeedToBuyProducts(int branchId) {   //Pair[0] = productId, Pair[1] = shelf+storage Quantity.  get the products id that their quantity is equal or less than their minimum quantity.
         List<Pair<Integer,Integer>> needToBuy = new LinkedList<>();
         for (Integer id : inventory.keySet()) {
-            if (inventory.get(id).getMinAmount() > quantities.get(id).getKey() + quantities.get(id).getValue())
-                needToBuy.add(new Pair<>(id,quantities.get(id).getKey() + quantities.get(id).getValue()));
+            if (InventoryMapper.getProductMin(branchId,id) > InventoryMapper.getProductQuantity(branchId,id))
+                needToBuy.add(new Pair<>(id,InventoryMapper.needToBuyProducts(branchId)));
         }
 
         return needToBuy;
     }
-    public List<Pair<Integer,Integer>> getProductsByCategories(List<String> category){  //Integer = productId
+    public List<Pair<Integer,Integer>> getProductsByCategories(int branchId, List<String> category){  //Integer = productId
         List<Pair<Integer,Integer>> categoryList = new LinkedList<>();
         for(Integer id : inventory.keySet()){
             boolean found = false;
             for (int i = 0; i<category.size() & !found; i++)
                 if(inventory.get(id).getCategory().contains(category.get(i))) {
-                    categoryList.add(new Pair<>(id,quantities.get(id).getKey()+quantities.get(id).getValue()));
+                    categoryList.add(new Pair<>(id,InventoryMapper.getProductQuantity(branchId,id)));
                     found = true;
                 }
         }
         return categoryList;
     }
-    public List<Pair<Integer,Integer>> ExpiredProducts(){  //Integer = productId
+    public List<Pair<Integer,Integer>> ExpiredProducts(int branchId){  //Integer = productId
         List<Pair<Integer,Integer>> expiredProducts = new LinkedList<>();
         for(Integer id : expired.keySet()){
-                expiredProducts.add(new Pair<>(id,expired.get(id)));
+                expiredProducts.add(new Pair<>(id,InventoryMapper.getExpiredQuantity(branchId,id)));
         }
         return expiredProducts;
     }
-    public String setSalePrice(int id, Double price) {
+    public String setSalePrice(int branchId, int id, Double price) {
         if(!inventory.containsKey(id))
             return "product ID doesnt exist";
-        inventory.get(id).setSalePrice(price);
-        return "product " + id + "- price changed to: " + price;
+        return InventoryMapper.setSalePrice(branchId,id,price);
+        //inventory.get(id).setSalePrice(price);
+        //return "product " + id + "- price changed to: " + price;
     }
-    public String setPriceByCategory(List<String> category, Double price){
-        List<Pair<Integer,Integer>> cat = getProductsByCategories(category);
+    public String setPriceByCategory(int branchId, List<String> category, Double price){
+        List<Pair<Integer,Integer>> cat = getProductsByCategories(branchId,category);
         for(Pair<Integer,Integer> pair : cat){
             inventory.get(pair.getKey()).setSalePrice(price);
         }
@@ -172,64 +175,72 @@ public class Inventory {
         expired.put(productId, expired.get(productId)+amount);
         return "product " + productId + "- quantity of " + amount + " was changed to expired";
     }
-    public String addProduct(int id,int amount, String name, Double costPrice, Double salePrice, LocalDate expDate, List<String> category, String manufacturer, int minAmount, String place) {
-        if(inventory.containsKey(id))
+    public String addProduct(int branchId, int id,int amount, String name, Double costPrice, Double salePrice, LocalDate expDate, List<String> category, String manufacturer, int minAmount, String place) {
+      return InventoryMapper.addProduct(branchId,id,amount, name, costPrice, salePrice, expDate,  category,  manufacturer, minAmount, place);
+      /*if(inventory.containsKey(id))
             return "product ID already exist";
         inventory.put(id, new Product(id, name, costPrice, salePrice, expDate, category, manufacturer, minAmount, place));
         quantities.put(id, new Pair<>(0,amount));
-        return " product id: " + id + " - added to the inventory";
+        return " product id: " + id + " - added to the inventory";*/
     }
-    public String removeProduct(int id) {
-        if(!inventory.containsKey(id))
+    public String removeProduct(int branchId, int id) {
+      return InventoryMapper.removeProduct(branchId,id);
+        /*if(!inventory.containsKey(id))
             return "product ID doesnt exist";
         inventory.remove(id);
         quantities.remove(id);
         expired.remove(id);
-        return "product id: " + id + " was removed from the inventory";
+        return "product id: " + id + " was removed from the inventory";*/
     }
-    public String addAmountToProduct(int id, int amount){
+    public String addAmountToProduct(int branchId, int id, int amount){
         if(!inventory.containsKey(id))
             return "product ID doesnt exist";
+        InventoryMapper.addAmountToProduct(branchId,id,amount);
         quantities.put(id, new Pair<>(quantities.get(id).getKey(), quantities.get(id).getValue() + amount));
         return "product id: " + id + " - amount of " + amount + " added to the inventory";
     }
-    public String removeAmountFromProduct(int id, int amount){
+    public String removeAmountFromProduct(int branchId, int id, int amount){
         if(!inventory.containsKey(id))
             return "product ID doesnt exist";
         Pair<Integer,Integer> amounts= quantities.get(id);
         if(amounts.getKey() + amounts.getValue() < amount)
             return "cant remove - there is less than " + amount + " items from this product in the inventory";
         if(amounts.getValue()>=amount){
-            quantities.put(id,new Pair<>(amounts.getKey(),amounts.getValue()-amount));
+            return InventoryMapper.removeAmountFromProductShelf(branchId,id,amount);
+            //quantities.put(id,new Pair<>(amounts.getKey(),amounts.getValue()-amount));
         }
         else {
-            quantities.put(id,new Pair<>(amounts.getKey()-(amount-amounts.getValue()),0));
+            return InventoryMapper.removeAmountFromProductStorage(branchId,id,amount);
+            //quantities.put(id,new Pair<>(amounts.getKey()-(amount-amounts.getValue()),0));
         }
-        if(quantities.get(id).getKey() + quantities.get(id).getValue() < inventory.get(id).getMinAmount()) //less than the minimum amount
-            return "product id: " + id + "- amount of " + amount + " was removed from the inventory. (Less than the Minimum amount - Need to buy more from this product)";
-        return "product id: " + id + " - amount of " + amount + " was removed from the inventory";
+        //if(quantities.get(id).getKey() + quantities.get(id).getValue() < inventory.get(id).getMinAmount()) //less than the minimum amount
+            //return "product id: " + id + "- amount of " + amount + " was removed from the inventory. (Less than the Minimum amount - Need to buy more from this product)";
+        //return "product id: " + id + " - amount of " + amount + " was removed from the inventory";
     }
-    public String setCategory(int id, List<String> category) {
-        if(!inventory.containsKey(id))
-            return "product ID doesnt exist";
-        inventory.get(id).setCategory(category);
-        return "product id: " + id + "- category changed to : " + category.toString();
+    public String setCategory(int branchId,int id, List<String> category) {
+       /* if(!inventory.containsKey(id))
+            return "product ID doesnt exist";*/
+        return InventoryMapper.setCategory(branchId,id,category);
+        /*inventory.get(id).setCategory(category);
+        return "product id: " + id + "- category changed to : " + category.toString();*/
     }
-    public String shelfToStorage(int id, int amount){
-        if(!inventory.containsKey(id))
+    public String shelfToStorage(int branchId, int id, int amount){
+       /* if(!inventory.containsKey(id))
             return "product ID doesnt exist";
         if(quantities.get(id).getValue() < amount)
-            return "Cant transform -There is Less than " + amount + " items from product number " + id + " in the shelf";
-        quantities.put(id, new Pair<>(quantities.get(id).getKey() + amount, quantities.get(id).getValue() - amount));
-        return "product id: " + id + " - amount of " + amount + " removed from the shelf to the Storage";
+            return "Cant transform -There is Less than " + amount + " items from product number " + id + " in the shelf";*/
+        return InventoryMapper.shelfToStorage(branchId,id,amount);
+        /*quantities.put(id, new Pair<>(quantities.get(id).getKey() + amount, quantities.get(id).getValue() - amount));
+        return "product id: " + id + " - amount of " + amount + " removed from the shelf to the Storage";*/
     }
-    public String storageToShelf(int id, int amount){
-        if(!inventory.containsKey(id))
+    public String storageToShelf(int branchId,int id, int amount){
+       /* if(!inventory.containsKey(id))
             return "product ID doesnt exist";
         if(quantities.get(id).getKey() < amount)
-            return "Cant transform - There is Less than " + amount + " items from product number " + id + " in the storage";
-        quantities.put(id, new Pair<>(quantities.get(id).getKey() - amount, quantities.get(id).getValue() + amount));
-        return "product id: " + id + " - amount of " + amount + " removed from the storage to the shelf";
+            return "Cant transform - There is Less than " + amount + " items from product number " + id + " in the storage";*/
+        return InventoryMapper.storageToShelf(branchId,id,amount);
+        /*quantities.put(id, new Pair<>(quantities.get(id).getKey() - amount, quantities.get(id).getValue() + amount));
+        return "product id: " + id + " - amount of " + amount + " removed from the storage to the shelf";*/
     }
     public String getLastCostPrice(int id){
         if(!inventory.containsKey(id))
@@ -241,16 +252,13 @@ public class Inventory {
             return "product ID doesnt exist";
         return inventory.get(id).getLastSalePrice().toString();
     }
-
-    public Pair<Integer, List<Double>> SalePricesById(Integer id) {
-        return new Pair<>(id,inventory.get(id).getLastSalePrice());
+    public Pair<Integer, List<Double>> SalePricesById(int branchId,int id) {
+        return new Pair<>(id,InventoryMapper.getLastPrices(branchId,id));
     }
-
-    public Pair<Integer, List<Double>> CostPricesById(Integer id) {
-        return new Pair<>(id,inventory.get(id).getLastCostPrice());
+    public Pair<Integer, List<Double>> CostPricesById(int branchId,int id) {
+        return new Pair<>(id,InventoryMapper.getCostPrices(branchId,id));
     }
-
-    public String setDefectiveProducts(Integer prodId, Integer amount) {
+    public String setDefectiveProducts(Integer branchId, Integer prodId, Integer amount) {
         if(!inventory.containsKey(prodId)){
             return "product doesnt exist";
         }
@@ -259,24 +267,26 @@ public class Inventory {
             return "Cant transform - There is Less than " + amount + " items from product number " + prodId + " in the inventory";
         }
         if(amounts.getValue()>=amount){
-            quantities.put(prodId,new Pair<>(amounts.getKey(),amounts.getValue()-amount));
+            InventoryMapper.removeAmountFromProductShelf(branchId,prodId,amount);
+            //quantities.put(prodId,new Pair<>(amounts.getKey(),amounts.getValue()-amount));
         }
         else {
-            quantities.put(prodId,new Pair<>(amounts.getKey()-(amount-amounts.getValue()),0));
+            InventoryMapper.removeAmountFromProductStorage(branchId,prodId,amount);
+            //quantities.put(prodId,new Pair<>(amounts.getKey()-(amount-amounts.getValue()),0));
         }
         if(expired.containsKey(prodId)){
-            expired.put(prodId,expired.get(prodId)+amount);
+            InventoryMapper.updateExpired(branchId,prodId,amount);
+            //expired.put(prodId,expired.get(prodId)+amount);
         }
         else{
-            expired.put(prodId,amount);
+            InventoryMapper.addExpired(branchId,prodId,amount);
+            //expired.put(prodId,amount);
         }
         if(quantities.get(prodId).getKey() + quantities.get(prodId).getValue() < inventory.get(prodId).getMinAmount()) //less than the minimum amount
             return "product id: " + prodId + "- amount of " + amount + " set us expired. (Less than the Minimum amount - Need to buy more from this product)";
         return "product id: " + prodId + " - amount of " + amount + " set us expired";
     }
-
-
-    public String addToWeeklyOrder(int day,List<Pair<Integer, Integer>> id_amount) {
+    public String addToWeeklyOrder(int branchId ,int day,List<Pair<Integer, Integer>> id_amount) {
         List<Integer> noOrder=new LinkedList<>();
         String output="";
         dayForWeeklyOrder=day;
@@ -294,7 +304,7 @@ public class Inventory {
         output=output+ "Weekly order was update for branch: "+branchId+"\n";
         return output;
     }
-    public String removeFromWeeklyOrder(List<Integer> ids){
+    public String removeFromWeeklyOrder(int branchId, List<Integer> ids){
         for(Integer id: ids){
             if(WeeklyOrder.containsKey(id)){
                 WeeklyOrder.remove(id);
@@ -302,30 +312,34 @@ public class Inventory {
         }
         return "Weekly order was update for branch: "+branchId+"\n";
     }
-
-    public List<Pair<Integer, Integer>> getWeeklyOrder() {
+    public List<Pair<Integer, Integer>> getWeeklyOrder(int branchId) {
         List<Pair<Integer, Integer>> output=new LinkedList<>();
         for(Integer id: WeeklyOrder.keySet()){
             output.add(new Pair<>(id,WeeklyOrder.get(id)));
         }
         return output;
     }
-
     public boolean conteinsProduct(Integer key) {
         return inventory.containsKey(key);
     }
 
-    //Tests Methods
+    //Managers
+    public static String addInventoryManager(String username, String password){ //TODO remove the static, Inventory controller will hold instance of Singletone Inventory.
+        return InventoryMapper.addInventoryManager(username,password);
+    }
+    public static String addGlobalManager(String username, String password){  //TODO remove the static, Inventory controller will hold instance of Singletone Inventory.
+        return InventoryMapper.addGlobalManager(username,password);
+    }
 
+
+
+    //Tests Methods
     public Pair<Integer,Pair<Integer,Integer>> getQuantityById(Integer id) {
         return new Pair<>(id,quantities.get(id));
     }
-
-
     public Pair<Integer, Integer> getQuantityEXPById(Integer id) {
         return new Pair<>(id,expired.get(id));
     }
-
     public Double getProdSalePrice(int id) {
         return inventory.get(id).getSalePrice();
     }
