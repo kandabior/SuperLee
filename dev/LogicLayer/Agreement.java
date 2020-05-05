@@ -8,7 +8,7 @@ import java.util.Map;
 
 public class Agreement {
 
-    private LinkedHashMap<Integer, Double> terms;
+    private LinkedHashMap<Integer, Double> terms; //item id, price
     private BillOfQuantities bill;
 
     public Agreement() {
