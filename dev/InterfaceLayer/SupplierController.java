@@ -46,11 +46,10 @@ public class SupplierController {
         return false;
     }
 
-    public void addSupplier(int id, String name, String phoneNum, int bankAccount, String payment, String supplySchedule, String supplyLocation , String address) {
-
-
-        /*Supplier sup = new Supplier(id, name, phoneNum, bankAccount, payment, supplySchedule, supplyLocation , address);
-        this.suppliers.add(sup);*/
+    public boolean addSupplier(int id, String name, String phoneNum, int bankAccount, String payment, String supplySchedule, String supplyLocation , String address) {
+        Supplier sup = new Supplier(id, name, phoneNum, bankAccount, payment, supplySchedule, supplyLocation, address);
+        return sup.saveMe();
+        /*this.suppliers.add(sup);*/
     }
 
     public void addBillOfQuantities(int supplierId,Map<Integer, Pair<Integer, Double>> bill) {

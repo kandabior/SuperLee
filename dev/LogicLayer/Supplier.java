@@ -8,7 +8,6 @@ public class Supplier {
     private  int id;
     private String name;
     private String phoneNum;
-    private String address ;
     private int bankAccount;
     private String payment;
     private String supplySchedule;
@@ -26,7 +25,6 @@ public class Supplier {
         this.supplyLocation = supplyLocation;
         this.items = new LinkedList<>();
         this.agreement = new Agreement();
-        this.address = address;
     }
 
     public int getId() { return this.id; }
@@ -118,11 +116,15 @@ public class Supplier {
     }
 
     public List<Object> getSuppDetails() {
-        List<Object> list= new LinkedList<>();
+        List<Object> list = new LinkedList<>();
         list.add(id);
         list.add(name);
         list.add(phoneNum);
-        list.add(address );
-        return  list;
+        list.add(supplyLocation);
+        return list;
+    }
+
+    public boolean saveMe() {
+        return SupplierMapper.addSupplier(id, name, phoneNum, bankAccount, payment, supplySchedule, supplyLocation);
     }
 }

@@ -21,8 +21,8 @@ public class FacadeController {
         return fc_instance;
     }
 
-    public void addSupplier(int id, String name, String phoneNum, int bankAccount, String payment, String supplySchedule, String supplyLocation , String address) {
-        supplierController.addSupplier(id, name, phoneNum, bankAccount, payment, supplySchedule, supplyLocation , address);
+    public boolean addSupplier(int id, String name, String phoneNum, int bankAccount, String payment, String supplySchedule, String supplyLocation , String address) {
+        return supplierController.addSupplier(id, name, phoneNum, bankAccount, payment, supplySchedule, supplyLocation , address);
     }
 
     public boolean deleteSupplier(int suppId) { return supplierController.deleteSupplier(suppId); }
@@ -157,7 +157,6 @@ public class FacadeController {
        return orderController.getOrderIdByIndex(i);
     }
 
-
     public boolean checkIfOrderExists(int orderId) {
        return orderController.checkIfOrderExists(orderId);
     }
@@ -189,10 +188,6 @@ public class FacadeController {
 
     public String getSupplierAddOfOrderByIndex(int index) {
         return orderController.getSupplierAddOfOrderByIndex(index);
-    }
-
-    public int getOrderIdbyIndex(int i) {
-        return orderController.getOrderIdByIndex(i);
     }
 
     public LocalDate getOrderDateByIndex(int i) {

@@ -91,7 +91,7 @@ public class SupplierMenu {
                 int supplierId = fc.getSupplierIdOfOrderByIndex(i);
                 String supplierName = fc.getSupplierNameOfOrderByIndex(i);
                 String supplierAddress = fc.getSupplierAddOfOrderByIndex(i);
-                int orderId = fc.getOrderIdbyIndex(i);
+                int orderId = fc.getOrderIdByIndex(i);
                 LocalDate orderDate = fc.getOrderDateByIndex(i);
                 String suppPhone = fc.getSupplierPhoneOfOrderByIndex(i);
 
@@ -156,25 +156,28 @@ public class SupplierMenu {
         System.out.print("Supply location: ");
         String suppLocation = scanner.nextLine();
 
-        fc.addSupplier(supplierIdCounter, suppName, suppPhone, suppBankAccount, suppPayment,
-                suppSchedule, suppLocation, suppAddress);
-        System.out.println("Supplier added successfully. Id is: " + supplierIdCounter);
-        System.out.print("Insert supplier's items? [Y/N] ");
-        String addItems = scanner.nextLine();
-        while (addItems.equals("Y") | addItems.equals("y")) {
-            addItems(supplierIdCounter);
-            addItems = scanner.nextLine();
-        }
-        int size = fc.getItemsListSize(supplierIdCounter);
-        if (size > 0) {
-            System.out.println("Please insert supplier's agreement (for each item insert it's cost).");
-            for (int i = 0; i < size; i++) {
-                System.out.print(fc.getItemNameByIndex(supplierIdCounter, i) + ": ");
-                double itemPrice = scanner.nextInt();
-                fc.addItemToAgreement(supplierIdCounter, fc.getItemIdByIndex(supplierIdCounter, i), itemPrice);
+        if(fc.addSupplier(supplierIdCounter, suppName, suppPhone, suppBankAccount, suppPayment,
+                suppSchedule, suppLocation, suppAddress)) {
+            System.out.println("Supplier added successfully. Id is: " + supplierIdCounter);
+            System.out.print("Insert supplier's items? [Y/N] ");
+            String addItems = scanner.nextLine();
+            while (addItems.equals("Y") | addItems.equals("y")) {
+                addItems(supplierIdCounter);
+                addItems = scanner.nextLine();
             }
+            int size = fc.getItemsListSize(supplierIdCounter);
+            if (size > 0) {
+                System.out.println("Please insert supplier's agreement (for each item insert it's cost).");
+                for (int i = 0; i < size; i++) {
+                    System.out.print(fc.getItemNameByIndex(supplierIdCounter, i) + ": ");
+                    double itemPrice = scanner.nextInt();
+                    fc.addItemToAgreement(supplierIdCounter, fc.getItemIdByIndex(supplierIdCounter, i), itemPrice);
+                }
+            }
+            supplierIdCounter++;
         }
-        supplierIdCounter++;
+        else
+            System.out.println("Supplier cannot be added to the system."); //TODO what now??
         return supplierIdCounter;
     }
 
