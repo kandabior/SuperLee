@@ -1,10 +1,7 @@
 package LogicLayer;
 
-import java.time.LocalDateTime;
+import DataAccessLayer.SupplierMapper;
 import java.util.*;
-
-import LogicLayer.Agreement;
-import LogicLayer.OrderLine;
 import javafx.util.Pair;
 
 public class Supplier {
@@ -29,7 +26,7 @@ public class Supplier {
         this.supplyLocation = supplyLocation;
         this.items = new LinkedList<>();
         this.agreement = new Agreement();
-        this.address= address;
+        this.address = address;
     }
 
     public int getId() { return this.id; }

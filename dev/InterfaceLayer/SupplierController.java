@@ -47,8 +47,10 @@ public class SupplierController {
     }
 
     public void addSupplier(int id, String name, String phoneNum, int bankAccount, String payment, String supplySchedule, String supplyLocation , String address) {
-        Supplier sup = new Supplier(id, name, phoneNum, bankAccount, payment, supplySchedule, supplyLocation , address);
-        this.suppliers.add(sup);
+
+
+        /*Supplier sup = new Supplier(id, name, phoneNum, bankAccount, payment, supplySchedule, supplyLocation , address);
+        this.suppliers.add(sup);*/
     }
 
     public void addBillOfQuantities(int supplierId,Map<Integer, Pair<Integer, Double>> bill) {
