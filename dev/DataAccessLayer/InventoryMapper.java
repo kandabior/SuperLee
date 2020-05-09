@@ -5,9 +5,9 @@ import java.time.LocalDate;
 import java.util.List;
 
 public class InventoryMapper {
-    private static Connection c;
+    //private static Connection c;
 
-    public static void InitialInventoryMapper(){
+/*    public static void InitialInventoryMapper(){
         try {
             Class.forName("org.sqlite.JDBC");
             c = DriverManager.getConnection("jdbc:sqlite:EOEDdatabase.db");
@@ -15,43 +15,44 @@ public class InventoryMapper {
             System.out.println("database Connection Problem!!!!");
         }
         System.out.println("database opened successfully");
-    }
+    }*/
 
     //Managers
 
     public static String addInventoryManager(String username, String password){
+        PreparedStatement stmt=null;
+        Connection c = null;
         try{
             Class.forName("org.sqlite.JDBC");
-            c = DriverManager.getConnection("jdbc:sqlite:EOEDdatabase.db");
+            c = DriverManager.getConnection("jdbc:sqlite:C:\\Users\\erez1\\IdeaProjects\\ADSS_Group_D_ass2\\dev\\EOEDdatabase.db");
             c.setAutoCommit(false);
-            PreparedStatement stmt = c.prepareStatement("INSERT INTO InventoryManagers VALUES (?,?);");
+            stmt = c.prepareStatement("INSERT INTO InventoryManagers VALUES (?,?);");
             stmt.setString(1, username);
             stmt.setString(2, password);
-            int numRowInserted = stmt.executeUpdate();
+            stmt.executeUpdate();
             stmt.close();
             c.commit();
-            c.close();
-            if(numRowInserted != 0) {
-                c.commit();
-                c.close();
-                return "Global Manager " + username + " - registered successfully";
-            }
-            else {
-                c.rollback();
-                c.close();
-            }
+            return "Global Manager " + username + " - registered successfully";
         } catch ( Exception e ) {
+                    if (c != null) {
+                        try {
+                            System.err.print("Transaction is being rolled back");
+                            c.rollback();
+                        } catch (SQLException excep) {
+                        }
+                    }
             System.err.println( e.getClass().getName() + ": " + e.getMessage() );
             return "cant register -" + username + " already exist";
         }
-        return "";
     }
     public static String addGlobalManager(String username, String password){
+        PreparedStatement stmt=null;
+        Connection c = null;
         try{
             Class.forName("org.sqlite.JDBC");
-            c = DriverManager.getConnection("jdbc:sqlite:EOEDdatabase.db");
+            c = DriverManager.getConnection("jdbc:sqlite:C:\\Users\\erez1\\IdeaProjects\\ADSS_Group_D_ass2\\dev\\EOEDdatabase.db");
             c.setAutoCommit(false);
-            PreparedStatement stmt = c.prepareStatement("INSERT INTO GlobalManagers VALUES (?,?);");
+            stmt = c.prepareStatement("INSERT INTO GlobalManagers VALUES (?,?);");
             stmt.setString(1, username);
             stmt.setString(2, password);
             int numRowInserted = stmt.executeUpdate();
@@ -75,15 +76,41 @@ public class InventoryMapper {
 
     //Inventory
     public static String CreateNewInventory(Integer branchId) {
-        return "TODO//IMPlEMENT";
+        PreparedStatement stmt=null;
+        Connection c = null;
+        try{
+            Class.forName("org.sqlite.JDBC");
+            c = DriverManager.getConnection("jdbc:sqlite:C:\\Users\\erez1\\IdeaProjects\\ADSS_Group_D_ass2\\dev\\EOEDdatabase.db");
+            c.setAutoCommit(false);
+            stmt = c.prepareStatement("INSERT INTO Inventory VALUES (?,1);");
+            stmt.setString(1, String.valueOf(branchId));
+            int numRowInserted = stmt.executeUpdate();
+            stmt.close();
+            if(numRowInserted != 0) {
+                c.commit();
+                c.close();
+                return "branch number : " + branchId + "created successfully";
+            }
+            else {
+                c.rollback();
+                c.close();
+            }
+        } catch ( Exception e ) {
+            return  (e.getClass().getName() + ": " + e.getMessage() );
+        }
+        return "";
     }
     public static String addProduct(int branchId, int id, int amount, String name, Double costPrice, Double salePrice, LocalDate expDate, List<String> category, String manufacturer, int minAmount, String place) {
         return "TODO//IMPlEMENT";
     }
     public static String getProductName(int branchId, int prodId) {
+        PreparedStatement stmt=null;
+        Connection c = null;
         try{
+            Class.forName("org.sqlite.JDBC");
+            c = DriverManager.getConnection("jdbc:sqlite:C:\\Users\\erez1\\IdeaProjects\\ADSS_Group_D_ass2\\dev\\EOEDdatabase.db");
             c.setAutoCommit(false);
-        PreparedStatement stmt = c.prepareStatement("SELECT name FROM Products WHERE branchId=? AND productId=?;");
+        stmt = c.prepareStatement("SELECT name FROM Products WHERE branchId=? AND productId=?;");
         stmt.setString(1, String.valueOf(branchId));
         stmt.setString(2, String.valueOf(branchId));
         ResultSet rs = stmt.executeQuery();

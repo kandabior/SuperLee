@@ -21,7 +21,7 @@ public class Inventory {
         quantities = new HashMap<>();
         expired = new HashMap<>();
         WeeklyOrder= new HashMap<>();
-        InventoryMapper.InitialInventoryMapper();
+        //InventoryMapper.InitialInventoryMapper();
     }
     
     public static Inventory getInventory() {

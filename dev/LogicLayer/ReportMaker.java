@@ -12,7 +12,6 @@ public class ReportMaker {
     private List<Report> reports;
 
     private ReportMaker(){
-
         this.reports=new LinkedList<>();
     }
 
