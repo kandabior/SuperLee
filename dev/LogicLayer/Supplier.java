@@ -28,6 +28,10 @@ public class Supplier {
         this.agreement = new Agreement();
     }
 
+    public static boolean deleteSuppplier(int id) {
+        return SupplierMapper.deleteSuppplier(id);
+    }
+
     public int getId() { return this.id; }
 
     public Agreement getAgreement() { return this.agreement; }

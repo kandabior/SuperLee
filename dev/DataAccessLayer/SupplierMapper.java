@@ -24,7 +24,7 @@ public class SupplierMapper {
     public static boolean addSupplier(SupplierDTO supp) {
         try {
             Class.forName("org.sqlite.JDBC");
-            conn = DriverManager.getConnection("jdbc:sqlite:EOEDdatabase.db");
+            conn = DriverManager.getConnection("jdbc:sqlite:C:\\Users\\אלעד\\Desktop\\ass2\\dev\\EOEDdatabase.db");
             conn.setAutoCommit(false);
             PreparedStatement st = conn.prepareStatement("INSERT INTO Suppliers VALUES (?,?,?,?,?,?,?);");
             st.setInt(1, supp.getId());
@@ -51,8 +51,14 @@ public class SupplierMapper {
         return false;
     }
 
+    public static boolean deleteSuppplier(int id) {
 
- public boolean addBillOfQuantities(int supplierId, Map<Integer, Pair<Integer, Double>> bill) {
+        //TODO OOOOOO
+        return true;
+    }
+
+
+    public boolean addBillOfQuantities(int supplierId, Map<Integer, Pair<Integer, Double>> bill) {
      try {
          Class.forName("org.sqlite.JDBC");
          conn = DriverManager.getConnection("jdbc:sqlite:EOEDdatabase.db");
