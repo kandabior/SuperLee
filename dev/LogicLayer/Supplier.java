@@ -1,8 +1,11 @@
 package LogicLayer;
 
 import DataAccessLayer.SupplierMapper;
-import java.util.*;
 import javafx.util.Pair;
+
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Map;
 
 public class Supplier {
     private  int id;
@@ -55,6 +58,7 @@ public class Supplier {
     public void deleteBillOfQuantities() { this.agreement.deleteBillOfQuantities(); }
 
     public void addItemToAgreement(Integer item_id, Double cost) {
+
         this.agreement.insertItem(item_id,cost);
     }
 

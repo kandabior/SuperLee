@@ -19,12 +19,15 @@ public class InventoryMapper {
 
     //Managers
 
+
+    
+
     public static String addInventoryManager(String username, String password){
         PreparedStatement stmt=null;
         Connection c = null;
         try{
             Class.forName("org.sqlite.JDBC");
-            c = DriverManager.getConnection("jdbc:sqlite:C:\\Users\\erez1\\IdeaProjects\\ADSS_Group_D_ass2\\dev\\EOEDdatabase.db");
+            c = DriverManager.getConnection("jdbc:sqlite:./EOEDdatabase.db");
             c.setAutoCommit(false);
             stmt = c.prepareStatement("INSERT INTO InventoryManagers VALUES (?,?);");
             stmt.setString(1, username);
@@ -50,7 +53,7 @@ public class InventoryMapper {
         Connection c = null;
         try{
             Class.forName("org.sqlite.JDBC");
-            c = DriverManager.getConnection("jdbc:sqlite:C:\\Users\\erez1\\IdeaProjects\\ADSS_Group_D_ass2\\dev\\EOEDdatabase.db");
+            c = DriverManager.getConnection("jdbc:sqlite:./EOEDdatabase.db");
             c.setAutoCommit(false);
             stmt = c.prepareStatement("INSERT INTO GlobalManagers VALUES (?,?);");
             stmt.setString(1, username);

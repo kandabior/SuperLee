@@ -40,7 +40,7 @@ public class MainMenu{
                         InventoryMenu.mainLoop();
                         break;
                     case 2:
-                        SupplierMenu.displayMainMenu();
+                        SupplierMenu.displaySupplierMenu();
                         break;
                     case 3:
                         ShowGlobalProduct();
