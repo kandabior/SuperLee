@@ -1,5 +1,6 @@
 package LogicLayer;
 
+import DTO.SupplierDTO;
 import DataAccessLayer.SupplierMapper;
 import java.util.*;
 import javafx.util.Pair;
@@ -125,6 +126,6 @@ public class Supplier {
     }
 
     public boolean saveMe() {
-        return SupplierMapper.addSupplier(id, name, phoneNum, bankAccount, payment, supplySchedule, supplyLocation);
+        return SupplierMapper.addSupplier(new SupplierDTO(id, name, phoneNum, bankAccount, payment, supplySchedule, supplyLocation));
     }
 }

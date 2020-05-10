@@ -1,6 +1,8 @@
 package DataAccessLayer;
 
 import java.sql.*;
+
+import DTO.SupplierDTO;
 import javafx.util.Pair;
 import java.util.*;
 
@@ -19,19 +21,19 @@ public class SupplierMapper {
         System.out.println("DB opened successfully.");
     }*/
 
-    public static boolean addSupplier(int id, String name, String phoneNum, int bankAccount, String payment, String suppSchedule, String suppLocation) {
+    public static boolean addSupplier(SupplierDTO supp) {
         try {
             Class.forName("org.sqlite.JDBC");
             conn = DriverManager.getConnection("jdbc:sqlite:EOEDdatabase.db");
             conn.setAutoCommit(false);
             PreparedStatement st = conn.prepareStatement("INSERT INTO Suppliers VALUES (?,?,?,?,?,?,?);");
-            st.setInt(1, id);
-            st.setString(2, name);
-            st.setString(3, phoneNum);
-            st.setInt(4, bankAccount);
-            st.setString(5, payment);
-            st.setString(6, suppSchedule);
-            st.setString(7, suppLocation);
+            st.setInt(1, supp.getId());
+            st.setString(2, supp.getName());
+            st.setString(3, supp.getPhoneNumber());
+            st.setInt(4, supp.getBankAccount());
+            st.setString(5, supp.getPayment());
+            st.setString(6, supp.getSupplySchedule());
+            st.setString(7, supp.getSupplyLocation());
             int rowNum = st.executeUpdate();
             st.close();
             if (rowNum != 0) {
