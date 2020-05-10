@@ -63,8 +63,9 @@ public class SupplierController {
         }
     }
 
-    public void addItemToAgreement(Integer supp_id ,Integer item_id,Double cost){
-        getSuppById(supp_id).addItemToAgreement(item_id,cost);
+    public boolean addItemToAgreement(Integer supp_id ,Integer item_id,Double cost){
+        return Supplier.addItemToAgreement(supp_id,item_id,cost);
+        //getSuppById(supp_id).addItemToAgreement(item_id,cost);
     }
 
     public void updateBillOfQuantities(int supplierId, Integer itemId, Pair<Integer, Double> quantity_disc) {

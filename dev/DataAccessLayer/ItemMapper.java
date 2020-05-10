@@ -13,11 +13,13 @@ public class ItemMapper {
             PreparedStatement st = conn.prepareStatement("SELECT * FROM Items WHERE itemId = ?;");
             st.setInt(1, itemId);
             ResultSet res = st.executeQuery();
-            st.close();
+
             if (res.next()) {
                 conn.close();
+                st.close();
                 return true;
             }
+            st.close();
             conn.close();
             return false;
         } catch (Exception e) {
@@ -57,11 +59,11 @@ public class ItemMapper {
             PreparedStatement st = conn.prepareStatement("SELECT itemName FROM Items WHERE itemId = ?;");
             st.setInt(1, id);
             ResultSet res = st.executeQuery();
-            st.close();
-
             if (res.next()) {
+                String ans =res.getString("itemName");
+                st.close();
                 conn.close();
-               return res.getString("itemName");
+               return ans;
             }
             conn.close();
             return null;

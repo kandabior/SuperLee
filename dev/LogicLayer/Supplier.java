@@ -48,6 +48,18 @@ public class Supplier {
         return SupplierMapper.getItemsListSize(suppId);
     }
 
+    public static List<String> getSupplierItems(int supplierIdCounter) {
+        return SupplierMapper.getSupplierItems(supplierIdCounter);
+    }
+
+    public static List<Integer> getSupplierItemsId(int supplierIdCounter) {
+        return SupplierMapper.getSupplierItemsId(supplierIdCounter);
+    }
+
+    public static boolean addItemToAgreement(Integer supp_id, Integer item_id, Double cost) {
+        return SupplierMapper.addItemToAgreement(supp_id,item_id,cost);
+    }
+
     public int getId() { return this.id; }
 
     public Agreement getAgreement() { return this.agreement; }

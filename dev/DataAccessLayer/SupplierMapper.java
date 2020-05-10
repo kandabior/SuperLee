@@ -112,27 +112,77 @@ public class SupplierMapper {
 
     public static int getItemsListSize(int suppId) {
         try {
-            Class.forName("org.sqlite.JDBC");
-            conn = DriverManager.getConnection("jdbc:sqlite:dev\\EOEDdatabase.db");
-            conn.setAutoCommit(false);
-            PreparedStatement st = conn.prepareStatement("SELECT * FROM ItemsInAgreement WHERE agreementId = ? AND itemId = ?;");
-            st.setInt(1, suppId);
-            st.setInt(2, itemId);
-            ResultSet res = st.executeQuery();
-            st.close();
-            if (res.next()) {
+            if (tryOpen()) {
+                Class.forName("org.sqlite.JDBC");
+                conn.setAutoCommit(false);
+                PreparedStatement st = conn.prepareStatement("SELECT count(?) as num FROM SupplierItems;");
+                st.setInt(1, suppId);
+                ResultSet res = st.executeQuery();
+
+                if (res.next()) {
+                    int ans = res.getInt("num");
+                    conn.close();
+                    st.close();
+                    return ans;
+                }
                 conn.close();
-                return true;
+                return 0;
             }
-            conn.close();
-            return false;
-        } catch (Exception e) {
-            System.err.println(e.getClass().getName() + ": " + e.getMessage());
-            return false;
+            else return 0;
+            } catch(Exception e){
+                System.err.println(e.getClass().getName() + ": " + e.getMessage());
+                return 0;
+            }
         }
 
+    public static List<String> getSupplierItems(int suppId) {
+        List<String> supplierItemsId = new LinkedList<>();
+        try {
+            if (tryOpen()) {
+                Class.forName("org.sqlite.JDBC");
+                conn.setAutoCommit(false);
+                PreparedStatement st = conn.prepareStatement("SELECT itemName  FROM SupplierItems JOIN Items ON SupplierItems.itemId =Items.itemId WHERE SupplierItems.ItemId= ?  ;");
+                st.setInt(1, suppId);
+                ResultSet res = st.executeQuery();
 
+                while (res.next()) {
+                    conn.close();
+                    supplierItemsId.add(res.getString("itemName"));
+                }
+                st.close();
+                conn.close();
+                return supplierItemsId;
+            }
+            else return null;
+        } catch(Exception e){
+            System.err.println(e.getClass().getName() + ": " + e.getMessage());
+            return null;
+        }
+    }
 
+    public static List<Integer> getSupplierItemsId(int suppId) {
+        List<Integer> supplierItemsId = new LinkedList<>();
+        try {
+            if (tryOpen()) {
+                Class.forName("org.sqlite.JDBC");
+                conn.setAutoCommit(false);
+                PreparedStatement st = conn.prepareStatement("SELECT ItemId  FROM SupplierItems WHERE SupplierItems.ItemId= ?  ;");
+                st.setInt(1, suppId);
+                ResultSet res = st.executeQuery();
+
+                while (res.next()) {
+                    conn.close();
+                    supplierItemsId.add(res.getInt("itemId"));
+                }
+                st.close();
+                conn.close();
+                return supplierItemsId;
+            }
+            else return null;
+        } catch(Exception e){
+            System.err.println(e.getClass().getName() + ": " + e.getMessage());
+            return null;
+        }
     }
 
 
@@ -176,26 +226,29 @@ public class SupplierMapper {
      }
  }
 
-    public boolean addItemToAgreement(Integer suppId, Integer itemId, Double cost){
+    public static boolean addItemToAgreement(Integer suppId, Integer itemId, Double cost){
         try {
-            Class.forName("org.sqlite.JDBC");
-            conn = DriverManager.getConnection("jdbc:sqlite:EOEDdatabase.db");
-            conn.setAutoCommit(false);
-            PreparedStatement st = conn.prepareStatement("INSERT INTO ItemsInAgreements VALUES (?,?,?);");
-            st.setInt(1, suppId);
-            st.setInt(2, itemId);
-            st.setDouble(3, cost);
-            int rowNum = st.executeUpdate();
-            st.close();
-            if (rowNum != 0) {
-                conn.commit();
-                conn.close();
-            } else {
-                conn.rollback();
-                conn.close();
-                return false;
+            if (tryOpen()) {
+                Class.forName("org.sqlite.JDBC");
+                conn = DriverManager.getConnection("jdbc:sqlite:EOEDdatabase.db");
+                conn.setAutoCommit(false);
+                PreparedStatement st = conn.prepareStatement("INSERT INTO ItemsInAgreements VALUES (?,?,?);");
+                st.setInt(1, suppId);
+                st.setInt(2, itemId);
+                st.setDouble(3, cost);
+                int rowNum = st.executeUpdate();
+                st.close();
+                if (rowNum != 0) {
+                    conn.commit();
+                    conn.close();
+                } else {
+                    conn.rollback();
+                    conn.close();
+                    return false;
+                }
+                return true;
             }
-            return true;
+            else return false;
         } catch (Exception e) {
             System.err.println(e.getClass().getName() + ": " + e.getMessage());
             return false;
