@@ -24,13 +24,18 @@ public class SupplierController {
     }
 
     public boolean deleteSupplier(int id) {
-        for (int i = 0; i < suppliers.size(); i++) {
-            if (suppliers.get(i).getId() == id) {
-                suppliers.remove(i);
-                return true;
-            }
-        }
-        return false;
+        return Supplier.deleteSuppplier(id);
+
+//
+//
+//
+//        for (int i = 0; i < suppliers.size(); i++) {
+//            if (suppliers.get(i).getId() == id) {
+//                suppliers.remove(i);
+//                return true;
+//            }
+//        }
+//        return false;
     }
 
     public Supplier getSuppById(int id) {
