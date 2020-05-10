@@ -123,11 +123,13 @@ public class SupplierController {
     }
 
     public void addItemToSupplier(int suppId, int itemId) {
-        this.getSuppById(suppId).addItemsToSupplier(itemId);
+        Supplier.addItemToSupplier(suppId,itemId);
+        //this.getSuppById(suppId).addItemsToSupplier(itemId);
     }
 
     public int getItemsListSize(int suppId) {
-        return this.getSuppById(suppId).getItemsListSize();
+        return Supplier.getItemsListSize(suppId);
+        //return this.getSuppById(suppId).getItemsListSize();
     }
 
     public void setItemPrice(int suppId, int itemId, double newPrice) {
@@ -135,7 +137,8 @@ public class SupplierController {
     }
 
     public boolean validateItemId(int suppId, int itemId) {
-        return getSuppById(suppId).validateItemId(itemId);
+        return Supplier.validateItemId(suppId,itemId);
+        //return getSuppById(suppId).validateItemId(itemId);
     }
 
     public int bestSuppForItem(Integer itemId, Integer quantity) {
@@ -158,7 +161,9 @@ public class SupplierController {
     }
 
     public boolean checkIfItemExist(int itemId) {
-        return (Items.getName(itemId)!=null);
+        return Items.checkIfItemExist(itemId);
+
+        //return (Items.getName(itemId)!=null);
     }
 
     public Double getPriceOfAmountOfItemBeforeDiscount(int suppId , int itemId , int amount) {

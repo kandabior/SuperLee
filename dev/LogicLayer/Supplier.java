@@ -2,6 +2,8 @@ package LogicLayer;
 
 import DTO.SupplierDTO;
 import DataAccessLayer.SupplierMapper;
+
+import java.sql.SQLException;
 import java.util.*;
 import javafx.util.Pair;
 
@@ -30,6 +32,20 @@ public class Supplier {
 
     public static boolean deleteSuppplier(int id) {
         return SupplierMapper.deleteSuppplier(id);
+    }
+
+    public static boolean validateItemId(int suppId, int itemId) {
+       return SupplierMapper.validateItemId(suppId,itemId);
+    }
+
+    public static void addItemToSupplier(int suppId, int itemId) {
+        SupplierMapper.addItemToSupplier(suppId,itemId);
+
+    }
+
+    public static int getItemsListSize(int suppId) {
+
+        return SupplierMapper.getItemsListSize(suppId);
     }
 
     public int getId() { return this.id; }
