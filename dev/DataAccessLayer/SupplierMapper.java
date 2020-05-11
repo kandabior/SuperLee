@@ -137,6 +137,7 @@ public class SupplierMapper {
 
     public static List<String> getSupplierItems(int suppId) {
         List<String> supplierItemsId = new LinkedList<>();
+        
         try {
             if (tryOpen()) {
                 Class.forName("org.sqlite.JDBC");
