@@ -8,7 +8,7 @@ import javafx.util.Pair;
 import java.util.*;
 
 public class SupplierMapper {
-
+//dorin ha malka
     private static Connection conn;
 
     /*
@@ -137,7 +137,7 @@ public class SupplierMapper {
 
     public static List<String> getSupplierItems(int suppId) {
         List<String> supplierItemsId = new LinkedList<>();
-        
+
         try {
             if (tryOpen()) {
                 Class.forName("org.sqlite.JDBC");
