@@ -1,5 +1,7 @@
 package LogicLayer;
 
+import DataAccessLayer.ItemMapper;
+
 import java.util.HashMap;
 import java.util.Map;
 
@@ -15,11 +17,15 @@ public class Items {
         return true;
     }
 
-    public static String getName(Integer id){
-        if(!items.containsKey(id)){
+    public static String getName(Integer id) {
+        if (!ItemMapper.checkIfItemExist(id))
             return null;
-        }
-        return items.get(id);
+        return ItemMapper.getName(id);
+
+//        if(!items.containsKey(id)){
+//            return null;
+//        }
+//        return items.get(id);
     }
 
     public static void PrintAllItems() {
@@ -29,5 +35,7 @@ public class Items {
     }
 
 
-
+    public static boolean checkIfItemExist(int itemId) {
+        return ItemMapper.checkIfItemExist(itemId);
+    }
 }

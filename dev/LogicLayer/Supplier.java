@@ -1,6 +1,9 @@
 package LogicLayer;
 
+import DTO.SupplierDTO;
 import DataAccessLayer.SupplierMapper;
+
+import java.sql.SQLException;
 import java.util.*;
 import javafx.util.Pair;
 
@@ -25,6 +28,36 @@ public class Supplier {
         this.supplyLocation = supplyLocation;
         this.items = new LinkedList<>();
         this.agreement = new Agreement();
+    }
+
+    public static boolean deleteSuppplier(int id) {
+        return SupplierMapper.deleteSuppplier(id);
+    }
+
+    public static boolean validateItemId(int suppId, int itemId) {
+       return SupplierMapper.validateItemId(suppId,itemId);
+    }
+
+    public static void addItemToSupplier(int suppId, int itemId) {
+        SupplierMapper.addItemToSupplier(suppId,itemId);
+
+    }
+
+    public static int getItemsListSize(int suppId) {
+
+        return SupplierMapper.getItemsListSize(suppId);
+    }
+
+    public static List<String> getSupplierItems(int supplierIdCounter) {
+        return SupplierMapper.getSupplierItems(supplierIdCounter);
+    }
+
+    public static List<Integer> getSupplierItemsId(int supplierIdCounter) {
+        return SupplierMapper.getSupplierItemsId(supplierIdCounter);
+    }
+
+    public static boolean addItemToAgreement(Integer supp_id, Integer item_id, Double cost) {
+        return SupplierMapper.addItemToAgreement(supp_id,item_id,cost);
     }
 
     public int getId() { return this.id; }
@@ -125,6 +158,6 @@ public class Supplier {
     }
 
     public boolean saveMe() {
-        return SupplierMapper.addSupplier(id, name, phoneNum, bankAccount, payment, supplySchedule, supplyLocation);
+        return SupplierMapper.addSupplier(new SupplierDTO(id, name, phoneNum, bankAccount, payment, supplySchedule, supplyLocation));
     }
 }
