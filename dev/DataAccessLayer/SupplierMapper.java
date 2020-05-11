@@ -8,17 +8,6 @@ public class SupplierMapper {
 
     private static Connection conn;
 
-    /*
-    public static void initializeSupplierMapper() {
-        try {
-            Class.forName("org.sqlite.JDBC");
-            conn = DriverManager.getConnection("jdbc:sqlite:EOEDdatabase.db");
-        } catch (Exception e) {
-            System.out.println("DB connection problem.");
-        }
-        System.out.println("DB opened successfully.");
-    }*/
-
     public static boolean addSupplier(int id, String name, String phoneNum, int bankAccount, String payment, String suppSchedule, String suppLocation) {
         try {
             Class.forName("org.sqlite.JDBC");

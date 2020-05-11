@@ -7,17 +7,6 @@ import java.time.LocalDate;
 import java.util.List;
 
 public class InventoryMapper {
-    //private static Connection c;
-
-/*    public static void InitialInventoryMapper(){
-        try {
-            Class.forName("org.sqlite.JDBC");
-            c = DriverManager.getConnection("jdbc:sqlite:EOEDdatabase.db");
-        } catch ( Exception e ){
-            System.out.println("database Connection Problem!!!!");
-        }
-        System.out.println("database opened successfully");
-    }*/
 
     //Managers
 
