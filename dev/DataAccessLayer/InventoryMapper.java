@@ -156,23 +156,214 @@ public class InventoryMapper {
     }
 
     public static String setCategory(int branchId, int id, List<String> category) {
-        return "TODO//IMPlEMENT";
+        PreparedStatement stmt=null;
+        Connection c = null;
+        try{
+            Class.forName("org.sqlite.JDBC");
+            c = DriverManager.getConnection("jdbc:sqlite:dev\\EOEDdatabase.db");
+            c.setAutoCommit(false);
+            //remove previous categories
+            for(String cat: category) {
+                String sql= "DELETE FROM Categories WHERE branchId= ? AND productID= ? AND category=?";
+                stmt= c.prepareStatement(sql);
+                stmt.setInt(1,branchId);
+                stmt.setInt(2,id);
+                stmt.setString(3,cat);
+                stmt.executeUpdate();
+                stmt.close();
+            }
+            //set new categories
+            for(String cat : category) {
+                stmt = c.prepareStatement("INSERT INTO Categiries VALUES (?,?,?);");
+                stmt.setInt(1,branchId);
+                stmt.setInt(2,id);
+                stmt.setString(3,cat);
+                stmt.executeUpdate();
+            }
+
+            stmt.close();
+
+            c.commit();
+            c.close();
+            return "Categories updated successfully for product: "+id+" in branch: "+branchId;
+
+        } catch ( Exception e ) {
+            System.err.println( e.getClass().getName() + ": " + e.getMessage() );
+            tryClose(c);
+            return "Failed to update categories for product: "+id+" in branch: "+branchId;
+        }
     }
 
-    public static void updateExpired(Integer branchId, Integer prodId, Integer amount) {
-        //"TODO//IMPlEMENT";
+    public static boolean updateExpired(Integer branchId, Integer prodId, Integer amount) {
+        PreparedStatement stmt=null;
+        Connection c = null;
+        try{
+            Class.forName("org.sqlite.JDBC");
+            c = DriverManager.getConnection("jdbc:sqlite:dev\\EOEDdatabase.db");
+            c.setAutoCommit(false);
+            stmt = c.prepareStatement("SELECT amount FROM Expireds WHERE branchId=? AND productId=?;");
+            stmt.setString(1, String.valueOf(branchId));
+            stmt.setString(2, String.valueOf(prodId));
+            ResultSet rs = stmt.executeQuery();
+            if(rs.next()){
+                int currentAmount= Integer.parseInt(rs.getString("amount"));
+                stmt.close();
+                stmt=c.prepareStatement("UPDATE Expireds SET amount=? WHERE branchId=? AND productId=?;");
+                stmt.setInt(1,currentAmount);
+                stmt.setInt(2,branchId);
+                stmt.setInt(3,prodId);
+                int numOfUpdates=stmt.executeUpdate();
+                boolean output=false;
+                if(numOfUpdates!=0){
+                    output=true;
+                }
+                stmt.close();
+                rs.close();
+                c.close();
+                return output;
+            }
+            else {
+                rs.close();
+                stmt.close();
+                c.close();
+                return false;
+            }
+        } catch ( Exception e ) {
+            tryClose(c);
+            System.err.println( e.getClass().getName() + ": " + e.getMessage() );
+            return false;
+        }
+        //"TODO//check";
     }
 
-    public static void addExpired(Integer branchId, Integer prodId, Integer amount) {
-        //"TODO//IMPlEMENT";
+    public static boolean addExpired(Integer branchId, Integer prodId, Integer amount) {
+        PreparedStatement stmt=null;
+        Connection c = null;
+        try{
+            Class.forName("org.sqlite.JDBC");
+            c = DriverManager.getConnection("jdbc:sqlite:dev\\EOEDdatabase.db");
+            c.setAutoCommit(false);
+            stmt=c.prepareStatement("INSERT INTO Expireds values (?,?,?)");
+            stmt.setInt(1,branchId);
+            stmt.setInt(2,prodId);
+            stmt.setInt(3,amount);
+            int numOfUpdates=stmt.executeUpdate();
+            boolean output=false;
+            if(numOfUpdates!=0){
+                output=true;
+            }
+            stmt.close();
+            c.close();
+            return output;
+
+        } catch ( Exception e ) {
+            tryClose(c);
+            System.err.println( e.getClass().getName() + ": " + e.getMessage() );
+            return false;
+        }
+        //TODO//IMPlEMENT";
     }
 
-    public static String shelfToStorage(int branchId, int id, int amount) {
-        return "TODO//IMPlEMENT";
+    public static boolean shelfToStorage(int branchId, int id, int amount) {
+        PreparedStatement stmt=null;
+        Connection c = null;
+        try{
+            Class.forName("org.sqlite.JDBC");
+            c = DriverManager.getConnection("jdbc:sqlite:dev\\EOEDdatabase.db");
+            c.setAutoCommit(false);
+            stmt = c.prepareStatement("SELECT shelfQuantity, storageQuantity FROM Quantities WHERE branchId=? AND productId=?;");
+            stmt.setString(1, String.valueOf(branchId));
+            stmt.setString(2, String.valueOf(id));
+            ResultSet rs = stmt.executeQuery();
+            if(rs.next()) {
+                int shelfQuantity = Integer.parseInt(rs.getString("shelfQuantity"));
+                int storageQuantity = Integer.parseInt(rs.getString("storageQuantity"));
+                stmt.close();
+                if (shelfQuantity >= amount) {
+                    stmt = c.prepareStatement("UPDATE Quantities SET shelfQuantity=?, storageQuantity=? WHERE branchId=? AND productId=?;");
+                    stmt.setInt(1, shelfQuantity-amount);
+                    stmt.setInt(2, storageQuantity+amount);
+                    stmt.setInt(3, branchId);
+                    stmt.setInt(4, id);
+                    int numOfUpdates = stmt.executeUpdate();
+                    boolean output = false;
+                    if (numOfUpdates != 0) {
+                        output = true;
+                    }
+                    stmt.close();
+                    rs.close();
+                    c.close();
+                    return output;
+                } else {
+                    rs.close();
+                    stmt.close();
+                    c.close();
+                    return false;
+                }
+            }
+            else {
+                rs.close();
+                stmt.close();
+                c.close();
+                return false;
+            }
+        } catch ( Exception e ) {
+            tryClose(c);
+            System.err.println( e.getClass().getName() + ": " + e.getMessage() );
+            return false;
+        }
+        //TODO: check
     }
 
-    public static String storageToShelf(int branchId, int id, int amount) {
-        return "TODO//IMPlEMENT";
+    public static boolean storageToShelf(int branchId, int id, int amount) {
+        PreparedStatement stmt=null;
+        Connection c = null;
+        try{
+            Class.forName("org.sqlite.JDBC");
+            c = DriverManager.getConnection("jdbc:sqlite:dev\\EOEDdatabase.db");
+            c.setAutoCommit(false);
+            stmt = c.prepareStatement("SELECT shelfQuantity, storageQuantity FROM Quantities WHERE branchId=? AND productId=?;");
+            stmt.setString(1, String.valueOf(branchId));
+            stmt.setString(2, String.valueOf(id));
+            ResultSet rs = stmt.executeQuery();
+            if(rs.next()) {
+                int shelfQuantity = Integer.parseInt(rs.getString("shelfQuantity"));
+                int storageQuantity = Integer.parseInt(rs.getString("storageQuantity"));
+                stmt.close();
+                if (storageQuantity >= amount) {
+                    stmt = c.prepareStatement("UPDATE Quantities SET shelfQuantity=?, storageQuantity=? WHERE branchId=? AND productId=?;");
+                    stmt.setInt(1, shelfQuantity+amount);
+                    stmt.setInt(2, storageQuantity-amount);
+                    stmt.setInt(3, branchId);
+                    stmt.setInt(4, id);
+                    int numOfUpdates = stmt.executeUpdate();
+                    boolean output = false;
+                    if (numOfUpdates != 0) {
+                        output = true;
+                    }
+                    stmt.close();
+                    rs.close();
+                    c.close();
+                    return output;
+                } else {
+                    rs.close();
+                    stmt.close();
+                    c.close();
+                    return false;
+                }
+            }
+            else {
+                rs.close();
+                stmt.close();
+                c.close();
+                return false;
+            }
+        } catch ( Exception e ) {
+            tryClose(c);
+            System.err.println( e.getClass().getName() + ": " + e.getMessage() );
+            return false;
+        }
+        //TODO: check
     }
 
     public static int needToBuyProducts(int branchId) {
@@ -215,5 +406,13 @@ public class InventoryMapper {
         return null;
     }
 
+    private static void tryClose(Connection c) {
+        try {
+            c.close();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+    }
 
 }
