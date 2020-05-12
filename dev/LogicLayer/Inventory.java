@@ -10,11 +10,11 @@ public class Inventory {
     private static Inventory instance;
 
     //private Integer branchId;
-    private Map<Integer, Product> inventory;
-    private Map<Integer, Pair<Integer,Integer>> quantities; //Pair[0] = storage , Pair[1] = shelf
-    private Map<Integer, Integer> expired; //Id, amount
-    private Integer dayForWeeklyOrder=1;
-    private Map<Integer,Integer> WeeklyOrder;
+    //private Map<Integer, Product> inventory;
+    //private Map<Integer, Pair<Integer,Integer>> quantities; //Pair[0] = storage , Pair[1] = shelf
+    //private Map<Integer, Integer> expired; //Id, amount
+    //private Integer dayForWeeklyOrder=1;
+    //private Map<Integer,Integer> WeeklyOrder;
 
     private Inventory() {
         inventory = new HashMap<>();
@@ -76,9 +76,9 @@ public class Inventory {
   }
 
 
-    public static List<Integer> getIdsToWeeklyOrders(int dayOfTheWeek) {
+    public static List<Integer> getBranchIdsToWeeklyOrders(int dayOfTheWeek) {
         List<Integer> output = new LinkedList<>();
-        output = InventoryMapper.getIdsToWeeklyOrders(dayOfTheWeek);
+        output = InventoryMapper.getBranchIdsToWeeklyOrders(dayOfTheWeek);
         /*for(Inventory inventory: instances.values()){
             if(inventory.dayForWeeklyOrder==dayOfTheWeek){
                 output.add(inventory.branchId);
@@ -127,11 +127,11 @@ public class Inventory {
         }
         return qnty;
     }
-    public List<Pair<Integer,Integer>> NeedToBuyProducts(int branchId) {   //Pair[0] = productId, Pair[1] = shelf+storage Quantity.  get the products id that their quantity is equal or less than their minimum quantity.
+    public List<Pair<Integer,Integer>> NeedToBuyProducts(int branchId) {   //Pair[0] = productId, Pair[1] = shelf+storage Quantity.  get the products id that their quantity is less than their minimum quantity.
         List<Pair<Integer,Integer>> needToBuy = new LinkedList<>();
         for (Integer id : inventory.keySet()) {
             if (InventoryMapper.getProductMin(branchId,id) > InventoryMapper.getProductQuantity(branchId,id))
-                needToBuy.add(new Pair<>(id,InventoryMapper.needToBuyProducts(branchId)));
+                needToBuy.add(new Pair<>(id,InventoryMapper.getProductQuantity(branchId,id)-InventoryMapper.getProductMin(branchId,id)));
         }
 
         return needToBuy;
@@ -256,7 +256,7 @@ public class Inventory {
         return inventory.get(id).getLastSalePrice().toString();
     }
     public Pair<Integer, List<Double>> SalePricesById(int branchId,int id) {
-        return new Pair<>(id,InventoryMapper.getLastPrices(branchId,id));
+        return new Pair<>(id,InventoryMapper.getSalePrices(branchId,id));
     }
     public Pair<Integer, List<Double>> CostPricesById(int branchId,int id) {
         return new Pair<>(id,InventoryMapper.getCostPrices(branchId,id));

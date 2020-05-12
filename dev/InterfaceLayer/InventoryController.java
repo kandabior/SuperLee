@@ -244,7 +244,7 @@ public class InventoryController {
     }
     public String PromoteDay(Integer dayOfTheWeek) {
         String output="";
-        List<Integer> branchIds= Inventory.getIdsToWeeklyOrders(dayOfTheWeek);
+        List<Integer> branchIds= Inventory.getBranchIdsToWeeklyOrders(dayOfTheWeek);
         for(Integer branchId : branchIds){
             List<Pair<Integer,Integer>> toOrder= inventory.getWeeklyOrder(branchId);
             if(!toOrder.isEmpty()) {
