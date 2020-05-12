@@ -2,11 +2,10 @@ package LogicLayer;
 
 import DTO.SupplierDTO;
 import DataAccessLayer.SupplierMapper;
-import javafx.util.Pair;
 
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Map;
+import java.sql.SQLException;
+import java.util.*;
+import javafx.util.Pair;
 
 public class Supplier {
     private  int id;
@@ -33,6 +32,32 @@ public class Supplier {
 
     public static boolean deleteSuppplier(int id) {
         return SupplierMapper.deleteSuppplier(id);
+    }
+
+    public static boolean validateItemId(int suppId, int itemId) {
+       return SupplierMapper.validateItemId(suppId,itemId);
+    }
+
+    public static void addItemToSupplier(int suppId, int itemId) {
+        SupplierMapper.addItemToSupplier(suppId,itemId);
+
+    }
+
+    public static int getItemsListSize(int suppId) {
+
+        return SupplierMapper.getItemsListSize(suppId);
+    }
+
+    public static List<String> getSupplierItems(int supplierIdCounter) {
+        return SupplierMapper.getSupplierItems(supplierIdCounter);
+    }
+
+    public static List<Integer> getSupplierItemsId(int supplierIdCounter) {
+        return SupplierMapper.getSupplierItemsId(supplierIdCounter);
+    }
+
+    public static boolean addItemToAgreement(Integer supp_id, Integer item_id, Double cost) {
+        return SupplierMapper.addItemToAgreement(supp_id,item_id,cost);
     }
 
     public int getId() { return this.id; }
@@ -63,7 +88,6 @@ public class Supplier {
     public void deleteBillOfQuantities() { this.agreement.deleteBillOfQuantities(); }
 
     public void addItemToAgreement(Integer item_id, Double cost) {
-
         this.agreement.insertItem(item_id,cost);
     }
 

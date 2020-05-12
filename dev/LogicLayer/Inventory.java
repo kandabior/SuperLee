@@ -21,7 +21,6 @@ public class Inventory {
         quantities = new HashMap<>();
         expired = new HashMap<>();
         WeeklyOrder= new HashMap<>();
-        //InventoryMapper.InitialInventoryMapper();
     }
     
     public static Inventory getInventory() {
@@ -59,7 +58,7 @@ public class Inventory {
         Inventory inventory=instances.get(branchId);
         if(!inventory.inventory.containsKey(prodId))
             return -1;*/
-        return InventoryMapper.getAmount(branchId, prodId);
+        return InventoryMapper.getProductQuantity(branchId, prodId);
         //return inventory.quantities.get(prodId).getKey()+inventory.quantities.get(prodId).getValue();
     }
 
@@ -71,7 +70,9 @@ public class Inventory {
         return "Branch number: "+branchId+" has successfully initiated.";
     }*/
     public static String CreateNewInventory(Integer branchId) {
-        return InventoryMapper.CreateNewInventory(branchId);
+         if(InventoryMapper.CreateNewInventory(branchId))
+             return "Inventory number: " + branchId + " created successfully";
+         return "Can't create this inventory";
   }
 
 
@@ -155,8 +156,6 @@ public class Inventory {
         return expiredProducts;
     }
     public String setSalePrice(int branchId, int id, Double price) {
-        if(!inventory.containsKey(id))
-            return "product ID doesnt exist";
         return InventoryMapper.setSalePrice(branchId,id,price);
         //inventory.get(id).setSalePrice(price);
         //return "product " + id + "- price changed to: " + price;
@@ -176,7 +175,11 @@ public class Inventory {
         return "product " + productId + "- quantity of " + amount + " was changed to expired";
     }
     public String addProduct(int branchId, int id,int amount, String name, Double costPrice, Double salePrice, LocalDate expDate, List<String> category, String manufacturer, int minAmount, String place) {
-      return InventoryMapper.addProduct(branchId,id,amount, name, costPrice, salePrice, expDate,  category,  manufacturer, minAmount, place);
+        if(InventoryMapper.addProduct(branchId,id, name, costPrice, salePrice, expDate,  category,  manufacturer, minAmount, place)) {
+            InventoryMapper.addNewAmountProductToQuantities(branchId, id, amount);
+            return " product id: " + id + " - added to the inventory";
+        }
+        return "Error - cant add the product";
       /*if(inventory.containsKey(id))
             return "product ID already exist";
         inventory.put(id, new Product(id, name, costPrice, salePrice, expDate, category, manufacturer, minAmount, place));
@@ -200,12 +203,11 @@ public class Inventory {
         return "product id: " + id + " - amount of " + amount + " added to the inventory";
     }
     public String removeAmountFromProduct(int branchId, int id, int amount){
-        if(!inventory.containsKey(id))
-            return "product ID doesnt exist";
-        Pair<Integer,Integer> amounts= quantities.get(id);
-        if(amounts.getKey() + amounts.getValue() < amount)
+        int shelfQnty = InventoryMapper.getShelfQunatity(branchId,id);   //storage , shelf
+        int storageQnty = InventoryMapper.getStorageQunatity(branchId,id);
+        if(shelfQnty + storageQnty < amount)
             return "cant remove - there is less than " + amount + " items from this product in the inventory";
-        if(amounts.getValue()>=amount){
+        if(shelfQnty>=amount){
             return InventoryMapper.removeAmountFromProductShelf(branchId,id,amount);
             //quantities.put(id,new Pair<>(amounts.getKey(),amounts.getValue()-amount));
         }

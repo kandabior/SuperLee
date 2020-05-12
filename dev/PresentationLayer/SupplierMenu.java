@@ -166,12 +166,16 @@ public class SupplierMenu {
                 addItems = scanner.nextLine();
             }
             int size = fc.getItemsListSize(supplierIdCounter);
-            if (size > 0) {
+            List<String> supplierItemsName = fc.getSupplierItems(supplierIdCounter);
+            List<Integer> supplierItemsId = fc.getSupplierItemsId(supplierIdCounter);//todo need to check if null
+
+            if (supplierItemsName!=null&&supplierItemsName.size()>0) {
                 System.out.println("Please insert supplier's agreement (for each item insert it's cost).");
                 for (int i = 0; i < size; i++) {
-                    System.out.print(fc.getItemNameByIndex(supplierIdCounter, i) + ": ");
+                    System.out.print(supplierItemsName.get(i) + ": ");
                     double itemPrice = scanner.nextInt();
-                    fc.addItemToAgreement(supplierIdCounter, fc.getItemIdByIndex(supplierIdCounter, i), itemPrice);
+                    if(!fc.addItemToAgreement(supplierIdCounter, supplierItemsId.get(i), itemPrice))
+                        System.out.println("error with item : \n"+supplierItemsName.get(i) + "item does not insert to the agreement" );
                 }
             }
             supplierIdCounter++;

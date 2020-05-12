@@ -2,7 +2,7 @@
 <project version="4">
   <component name="DBNavigator.Project.DataEditorManager">
     <record-view-column-sorting-type value="BY_INDEX" />
-    <value-preview-text-wrapping value="false" />
+    <value-preview-text-wrapping value="true" />
     <value-preview-pinned value="false" />
   </component>
   <component name="DBNavigator.Project.DataExportManager">
@@ -23,18 +23,25 @@
     <autoscroll-to-editor value="false" />
     <autoscroll-from-editor value="true" />
     <show-object-properties value="true" />
-    <loaded-nodes />
+    <loaded-nodes>
+      <connection connection-id="3cc13814-0383-45dc-8e4c-58b70cd71e68">
+        <schema name="main" object-types="view, table, index, constraint, column, dataset trigger" />
+      </connection>
+    </loaded-nodes>
   </component>
   <component name="DBNavigator.Project.DatabaseConsoleManager">
-    <connection id="a52afe71-a1aa-4f88-b824-729d0e6fd423">
-      <console name="Connection" type="STANDARD" schema="" session="Main" />
+    <connection id="3cc13814-0383-45dc-8e4c-58b70cd71e68">
+      <console name="Connection" type="STANDARD" schema="main" session="Main" />
     </connection>
   </component>
   <component name="DBNavigator.Project.DatabaseFileManager">
     <open-files />
   </component>
   <component name="DBNavigator.Project.DatabaseSessionManager">
-    <connection id="a52afe71-a1aa-4f88-b824-729d0e6fd423" />
+    <connection id="3cc13814-0383-45dc-8e4c-58b70cd71e68" />
+  </component>
+  <component name="DBNavigator.Project.DatasetFilterManager">
+    <filter-actions connection-id="3cc13814-0383-45dc-8e4c-58b70cd71e68" dataset="main.Categories" active-filter-id="" />
   </component>
   <component name="DBNavigator.Project.EditorStateManager">
     <last-used-providers />
@@ -59,23 +66,22 @@
   </component>
   <component name="DBNavigator.Project.Settings">
     <connections>
-      <connection id="a52afe71-a1aa-4f88-b824-729d0e6fd423" active="true">
+      <connection id="3cc13814-0383-45dc-8e4c-58b70cd71e68" active="true">
         <database>
           <name value="Connection" />
           <description value="" />
           <database-type value="SQLITE" />
           <config-type value="BASIC" />
-          <database-version value="9999.0" />
-          <driver-source value="EXTERNAL" />
-          <driver-library value="C:\Users\or\Documents\University\simesterD\nituz\Assignment2\sqlite-jdbc-3.30.1.jar" />
-          <driver value="org.sqlite.JDBC" />
+          <database-version value="3.21" />
+          <driver-source value="BUILTIN" />
+          <driver-library value="" />
+          <driver value="" />
           <url-type value="FILE" />
           <host value="localhost" />
           <port value="1234" />
           <database value="database" />
           <files>
-            <file path="sqlite.db" schema="main" />
-            <file path="C:\Users\or\Documents\University\simesterD\nituz\Assignment2\dev\EOEDdatabase.db" schema="" />
+            <file path="C:\Users\אלעד\Desktop\ass2\dev\EOEDdatabase.db" schema="main" />
           </files>
           <type value="NONE" />
           <user value="" />

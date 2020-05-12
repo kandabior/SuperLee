@@ -1,5 +1,7 @@
 package InterfaceLayer;
 
+import LogicLayer.Inventory;
+import LogicLayer.Supplier;
 import javafx.util.Pair;
 
 import java.time.LocalDate;
@@ -133,7 +135,7 @@ public class FacadeController {
 
     public int getItemsListSize(int suppId) { return supplierController.getItemsListSize(suppId); }
 
-    public void addItemToAgreement(Integer suppId ,Integer itemId,Double price){ supplierController.addItemToAgreement(suppId, itemId, price);}
+    public boolean addItemToAgreement(Integer suppId ,Integer itemId,Double price){ return supplierController.addItemToAgreement(suppId, itemId, price);}
 
     public boolean findSupplier(int id) { return supplierController.findSupplier(id); }
 
@@ -196,5 +198,13 @@ public class FacadeController {
 
     public String getSupplierPhoneOfOrderByIndex(int i) {
         return orderController.getSupplierPhoneOfOrderByIndex(i);
+    }
+
+    public List<String> getSupplierItems(int supplierIdCounter) {
+        return Supplier.getSupplierItems(supplierIdCounter);
+    }
+
+    public List<Integer> getSupplierItemsId(int supplierIdCounter) {
+        return Supplier.getSupplierItemsId(supplierIdCounter);
     }
 }
