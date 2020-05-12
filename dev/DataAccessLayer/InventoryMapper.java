@@ -1,5 +1,7 @@
 package DataAccessLayer;
 
+import javafx.util.Pair;
+
 import java.sql.*;
 import java.time.LocalDate;
 import java.util.LinkedList;
@@ -287,7 +289,7 @@ public class InventoryMapper {
         return "cant removed this amount of product";
     }
 
-    public static String setSalePrice(int branchId, int id, Double price) {
+    public static boolean setSalePrice(int branchId, int id, Double price) {
         PreparedStatement stmt=null;
         Connection c = null;
         try{
@@ -306,7 +308,8 @@ public class InventoryMapper {
             stmt.executeUpdate();
             stmt.close();
             c.commit();
-            return "product " + id + "- price changed to: " + price;
+            c.close();
+            return true;
         } catch ( Exception e ) {
             try {
                 c.rollback();
@@ -315,7 +318,7 @@ public class InventoryMapper {
             }
             System.out.println(e.getClass().getName() + ": " + e.getMessage());
         }
-        return "cant change this product sale price";
+        return false;
     }
 
     public static int getProductMin(int branchId, int prodId) {
@@ -425,9 +428,8 @@ public class InventoryMapper {
         PreparedStatement stmt=null;
         Connection c = null;
         try{
-            Class.forName("org.sqlite.JDBC");
-            c = DriverManager.getConnection("jdbc:sqlite:dev\\EOEDdatabase.db");
-            c.setAutoCommit(false);
+
+
             stmt=c.prepareStatement("INSERT INTO Expireds values (?,?,?)");
             stmt.setInt(1,branchId);
             stmt.setInt(2,prodId);
@@ -783,4 +785,365 @@ public class InventoryMapper {
 
     }
 
+    public static boolean isBranchExist(int branchId) {
+        PreparedStatement stmt=null;
+        Connection c = null;
+        try{
+            Class.forName("org.sqlite.JDBC");
+            c = DriverManager.getConnection("jdbc:sqlite:dev\\EOEDdatabase.db");
+            c.setAutoCommit(false);
+            stmt = c.prepareStatement("SELECT branchId FROM Inventory WHERE branchId=?;");
+            stmt.setInt(1, branchId);
+            ResultSet rs = stmt.executeQuery();
+            if(rs.next()) {
+                rs.close();
+                stmt.close();
+                c.close();
+                return true;
+            }
+            else {
+                rs.close();
+                stmt.close();
+                c.close();
+                return false;
+            }
+        } catch ( Exception e ) {
+            tryClose(c);
+            System.err.println( e.getClass().getName() + ": " + e.getMessage() );
+            return false;
+        }
+
+    }
+
+    public static boolean isInventoryConteinsProd(int branchId, int prodId) {
+        PreparedStatement stmt=null;
+        Connection c = null;
+        try{
+            Class.forName("org.sqlite.JDBC");
+            c = DriverManager.getConnection("jdbc:sqlite:dev\\EOEDdatabase.db");
+            c.setAutoCommit(false);
+            stmt = c.prepareStatement("SELECT * FROM Products WHERE branchId=? AND productId=?;");
+            stmt.setInt(1, branchId);
+            stmt.setInt(2, prodId);
+            ResultSet rs = stmt.executeQuery();
+            if(rs.next()) {
+                rs.close();
+                stmt.close();
+                c.close();
+                return true;
+            }
+            else {
+                rs.close();
+                stmt.close();
+                c.close();
+                return false;
+            }
+        } catch ( Exception e ) {
+            tryClose(c);
+            System.err.println( e.getClass().getName() + ": " + e.getMessage() );
+            return false;
+        }
+    }
+
+    public static double getCurrentCostPrices(int branchId, Integer prodId) {
+        PreparedStatement stmt=null;
+        Connection c = null;
+        try{
+            Class.forName("org.sqlite.JDBC");
+            c = DriverManager.getConnection("jdbc:sqlite:dev\\EOEDdatabase.db");
+            c.setAutoCommit(false);
+            stmt = c.prepareStatement("SELECT costPrice FROM Products WHERE branchId=? AND productId=?;");
+            stmt.setInt(1, branchId);
+            stmt.setInt(2, prodId);
+            ResultSet rs = stmt.executeQuery();
+            if(rs.next()) {
+                double cost=rs.getDouble("costPrice");
+                rs.close();
+                stmt.close();
+                c.close();
+                return cost;
+            }
+            else {
+                rs.close();
+                stmt.close();
+                c.close();
+                return 0;
+            }
+        } catch ( Exception e ) {
+            tryClose(c);
+            System.err.println( e.getClass().getName() + ": " + e.getMessage() );
+            return 0;
+        }
+
+    }
+
+    public static void setCostPrice(int branchId, Integer prodId, double newPrice) {
+        PreparedStatement stmt=null;
+        Connection c = null;
+        try{
+            Class.forName("org.sqlite.JDBC");
+            c = DriverManager.getConnection("jdbc:sqlite:dev\\EOEDdatabase.db");
+            c.setAutoCommit(false);
+            stmt = c.prepareStatement("UPDATE Products SET costPrice= ? WHERE branchId=? AND productId=?;");
+            stmt.setDouble(1, newPrice);
+            stmt.setInt(2, branchId);
+            stmt.setInt(3, prodId);
+            int numOfUpdates=stmt.executeUpdate();
+            boolean output1=false;
+            if(numOfUpdates!=0){
+                output1=true;
+            }
+            stmt.close();
+            if(output1){
+                stmt = c.prepareStatement("INSERT INTO LastCostPrices VALUES (?,?,?)");
+                stmt.setInt(1, branchId);
+                stmt.setInt(2, prodId);
+                stmt.setDouble(3, newPrice);
+                stmt.executeUpdate();
+                stmt.close();
+                c.commit();
+            }
+            else{
+                stmt.close();
+                c.close();
+            }
+        } catch ( Exception e ) {
+            tryClose(c);
+            System.err.println( e.getClass().getName() + ": " + e.getMessage() );
+        }
+    }
+
+    public static List<Integer> getProductsIds(int branchId) {
+        PreparedStatement stmt=null;
+        Connection c = null;
+        try{
+            List<Integer> output=new LinkedList<>();
+            Class.forName("org.sqlite.JDBC");
+            c = DriverManager.getConnection("jdbc:sqlite:dev\\EOEDdatabase.db");
+            c.setAutoCommit(false);
+            stmt = c.prepareStatement("SELECT productId FROM Products WHERE branchId=?;");
+            stmt.setInt(1, branchId);
+            ResultSet rs = stmt.executeQuery();
+            if(rs.next()) {
+                output.add(rs.getInt("productId"));
+            }
+            stmt.close();
+            c.close();
+            return output;
+        } catch ( Exception e ) {
+            tryClose(c);
+            System.err.println( e.getClass().getName() + ": " + e.getMessage() );
+            return new LinkedList<>();
+        }
+
+    }
+
+    public static List<String> getProductCategories(int branchId, Integer id) {
+        PreparedStatement stmt=null;
+        Connection c = null;
+        try{
+            List<String> output=new LinkedList<>();
+            Class.forName("org.sqlite.JDBC");
+            c = DriverManager.getConnection("jdbc:sqlite:dev\\EOEDdatabase.db");
+            c.setAutoCommit(false);
+            stmt = c.prepareStatement("SELECT category FROM Categories WHERE branchId=? AND productId=?;");
+            stmt.setInt(1, branchId);
+            stmt.setInt(2, id);
+            ResultSet rs = stmt.executeQuery();
+            if(rs.next()) {
+                output.add(rs.getString("category"));
+            }
+            stmt.close();
+            c.close();
+            return output;
+        } catch ( Exception e ) {
+            tryClose(c);
+            System.err.println( e.getClass().getName() + ": " + e.getMessage() );
+            return new LinkedList<>();
+        }
+    }
+
+    public static List<Integer> getExpiredIds(int branchId) {
+        PreparedStatement stmt=null;
+        Connection c = null;
+        try{
+            List<Integer> output=new LinkedList<>();
+            Class.forName("org.sqlite.JDBC");
+            c = DriverManager.getConnection("jdbc:sqlite:dev\\EOEDdatabase.db");
+            c.setAutoCommit(false);
+            stmt = c.prepareStatement("SELECT productId FROM Expired WHERE branchId=?;");
+            stmt.setInt(1, branchId);
+            ResultSet rs = stmt.executeQuery();
+            if(rs.next()) {
+                output.add(rs.getInt("category"));
+            }
+            stmt.close();
+            c.close();
+            return output;
+        } catch ( Exception e ) {
+            tryClose(c);
+            System.err.println( e.getClass().getName() + ": " + e.getMessage() );
+            return new LinkedList<>();
+        }
+
+    }
+
+    public static boolean isExpiredContainProduct(int branchId, int productId) {
+        PreparedStatement stmt=null;
+        Connection c = null;
+        try{
+            Class.forName("org.sqlite.JDBC");
+            c = DriverManager.getConnection("jdbc:sqlite:dev\\EOEDdatabase.db");
+            c.setAutoCommit(false);
+            stmt = c.prepareStatement("SELECT * FROM Expired WHERE branchId=? AND productId=?;");
+            stmt.setInt(1, branchId);
+            stmt.setInt(2, productId);
+            ResultSet rs = stmt.executeQuery();
+            if(rs.next()) {
+                rs.close();
+                stmt.close();
+                c.close();
+                return true;
+            }
+            else {
+                rs.close();
+                stmt.close();
+                c.close();
+                return false;
+            }
+        } catch ( Exception e ) {
+            tryClose(c);
+            System.err.println( e.getClass().getName() + ": " + e.getMessage() );
+            return false;
+        }
+
+    }
+
+    public static boolean setWeeklyOrder(int branchId, int day) {
+        PreparedStatement stmt=null;
+        Connection c = null;
+        try{
+            Class.forName("org.sqlite.JDBC");
+            c = DriverManager.getConnection("jdbc:sqlite:dev\\EOEDdatabase.db");
+            c.setAutoCommit(false);
+            stmt = c.prepareStatement("UPDATE Inventory SET dayForWeeklyOrder= ? WHERE branchId=?;");
+            stmt.setDouble(1, branchId);
+            int numOfUpdates=stmt.executeUpdate();
+            boolean output1=false;
+            if(numOfUpdates!=0){
+                output1=true;
+            }
+            stmt.close();
+            c.close();
+            return output1;
+        } catch ( Exception e ) {
+            tryClose(c);
+            System.err.println( e.getClass().getName() + ": " + e.getMessage() );
+            return false;
+        }
+    }
+
+    public static void AddToWeeklyOrder(int branchId, Integer key, Integer value) {
+        PreparedStatement stmt=null;
+        Connection c = null;
+        try{
+            stmt=c.prepareStatement("INSERT INTO WeeklyOrders values (?,?,?)");
+            stmt.setInt(1,branchId);
+            stmt.setInt(2,key);
+            stmt.setInt(3,value);
+            int numOfUpdates=stmt.executeUpdate();
+            boolean output=false;
+            if(numOfUpdates!=0){
+                output=true;
+            }
+            stmt.close();
+            c.close();
+
+
+        } catch ( Exception e ) {
+            tryClose(c);
+            System.err.println( e.getClass().getName() + ": " + e.getMessage() );
+
+        }
+    }
+
+    public static boolean isWeeklyContainProd(int branchId,Integer ids) {
+        PreparedStatement stmt=null;
+        Connection c = null;
+        try{
+            Class.forName("org.sqlite.JDBC");
+            c = DriverManager.getConnection("jdbc:sqlite:dev\\EOEDdatabase.db");
+            c.setAutoCommit(false);
+            stmt = c.prepareStatement("SELECT * FROM WeeklyOrders WHERE branchId=?;");
+            stmt.setInt(1, branchId);
+            ResultSet rs = stmt.executeQuery();
+            if(rs.next()) {
+                rs.close();
+                stmt.close();
+                c.close();
+                return true;
+            }
+            else {
+                rs.close();
+                stmt.close();
+                c.close();
+                return false;
+            }
+        } catch ( Exception e ) {
+            tryClose(c);
+            System.err.println( e.getClass().getName() + ": " + e.getMessage() );
+            return false;
+        }
+
+    }
+
+    public static void removeFromWeeklyOrder(int branchId, Integer id) {
+        PreparedStatement stmt=null;
+        Connection c = null;
+        try{
+            stmt=c.prepareStatement("DELETE FROM WeeklyOrders WHERE branchId=? AND productId=?");
+            stmt.setInt(1,branchId);
+            stmt.setInt(2,id);
+            int numOfUpdates=stmt.executeUpdate();
+            boolean output=false;
+            if(numOfUpdates!=0){
+                output=true;
+            }
+            stmt.close();
+            c.close();
+
+
+        } catch ( Exception e ) {
+            tryClose(c);
+            System.err.println( e.getClass().getName() + ": " + e.getMessage() );
+
+        }
+    }
+
+    public static List<Pair<Integer, Integer>> getWeeklyOrder(int branchId) {
+        PreparedStatement stmt=null;
+        Connection c = null;
+        try{
+            List<Pair<Integer,Integer>> output=new LinkedList<>();
+            Class.forName("org.sqlite.JDBC");
+            c = DriverManager.getConnection("jdbc:sqlite:dev\\EOEDdatabase.db");
+            c.setAutoCommit(false);
+            stmt = c.prepareStatement("SELECT productId, amount FROM WeeklyOrders WHERE branchId=?;");
+            stmt.setInt(1, branchId);
+            ResultSet rs = stmt.executeQuery();
+            while(rs.next()) {
+                output.add(new Pair<>(rs.getInt("productId"),rs.getInt("amount")));
+            }
+            rs.close();
+            stmt.close();
+            c.close();
+            return output;
+        } catch ( Exception e ) {
+            tryClose(c);
+            System.err.println( e.getClass().getName() + ": " + e.getMessage() );
+            return new LinkedList<>();
+        }
+
+
+    }
 }
