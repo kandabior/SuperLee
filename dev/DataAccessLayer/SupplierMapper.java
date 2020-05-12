@@ -1,10 +1,13 @@
 package DataAccessLayer;
 
-import java.sql.*;
-
 import DTO.SupplierDTO;
 import javafx.util.Pair;
-import java.util.*;
+
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.PreparedStatement;
+import java.util.Map;
+import java.util.Set;
 
 public class SupplierMapper {
 
@@ -24,7 +27,7 @@ public class SupplierMapper {
     public static boolean addSupplier(SupplierDTO supp) {
         try {
             Class.forName("org.sqlite.JDBC");
-            conn = DriverManager.getConnection("jdbc:sqlite:C:\\Users\\אלעד\\Desktop\\ass2\\dev\\EOEDdatabase.db");
+            conn = DriverManager.getConnection("jdbc:sqlite:dev\\EOEDdatabase.db");
             conn.setAutoCommit(false);
             PreparedStatement st = conn.prepareStatement("INSERT INTO Suppliers VALUES (?,?,?,?,?,?,?);");
             st.setInt(1, supp.getId());

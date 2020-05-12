@@ -224,6 +224,7 @@ public class Inventory {
         /*inventory.get(id).setCategory(category);
         return "product id: " + id + "- category changed to : " + category.toString();*/
     }
+
     public String shelfToStorage(int branchId, int id, int amount){
        /* if(!inventory.containsKey(id))
             return "product ID doesnt exist";
@@ -274,11 +275,9 @@ public class Inventory {
             InventoryMapper.removeAmountFromProductStorage(branchId,prodId,amount);
             //quantities.put(prodId,new Pair<>(amounts.getKey()-(amount-amounts.getValue()),0));
         }
-        if(expired.containsKey(prodId)){
-            InventoryMapper.updateExpired(branchId,prodId,amount);
+
+        if(!InventoryMapper.updateExpired(branchId,prodId,amount)) {
             //expired.put(prodId,expired.get(prodId)+amount);
-        }
-        else{
             InventoryMapper.addExpired(branchId,prodId,amount);
             //expired.put(prodId,amount);
         }
