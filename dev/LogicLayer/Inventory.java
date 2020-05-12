@@ -9,7 +9,7 @@ public class Inventory {
 
     private static Inventory instance;
 
-    private Integer branchId;
+    //private Integer branchId;
     private Map<Integer, Product> inventory;
     private Map<Integer, Pair<Integer,Integer>> quantities; //Pair[0] = storage , Pair[1] = shelf
     private Map<Integer, Integer> expired; //Id, amount
