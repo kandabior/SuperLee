@@ -207,4 +207,8 @@ public class FacadeController {
     public List<Integer> getSupplierItemsId(int supplierIdCounter) {
         return Supplier.getSupplierItemsId(supplierIdCounter);
     }
+
+    public List<Object> getSupplierDeatails(int id) {
+        return orderController.getSupplierDeatails(id);
+    }
 }

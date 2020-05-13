@@ -90,15 +90,17 @@ public class SupplierMenu {
             for (int i = 0; i < sizeOfOrders; i++) {
 
                 List<List<Object>> list = fc.getOrdersLineByOrderIndex(i);
-                int supplierId = fc.getSupplierIdOfOrderByIndex(i);
-                String supplierName = fc.getSupplierNameOfOrderByIndex(i);
-                String supplierAddress = fc.getSupplierAddOfOrderByIndex(i);
-                int orderId = fc.getOrderIdByIndex(i);
-                LocalDate orderDate = fc.getOrderDateByIndex(i);
-                String suppPhone = fc.getSupplierPhoneOfOrderByIndex(i);
+                List<Object> suppList = fc.getSupplierDeatails(i);
+                int supplierId = (int)suppList.get(0);
+                String supplierName = (String)suppList.get(1);
+                String supplierAddress = (String)suppList.get(2);
+                int orderId = (int)suppList.get(3);
+                String orderDate = (String) suppList.get(4);
+                String suppPhone =(String)suppList.get(5);
+                int branchId= (int)suppList.get(6);
 
                 System.out.println("------------------------------------------------------------------------------\n");
-                System.out.println("Supplier's name: " + supplierName + "\t" + "Supplier's address: " + supplierAddress + "\t" + "OrderId: " + orderId + "\n");
+                System.out.println("Supplier's name: " + supplierName + "\t" + "Supplier's address: " + supplierAddress + "\t" + "OrderId: " + orderId + "\t" + "Branch Id: " + branchId + "\n");
                 System.out.println("Supplier's id: " + supplierId + "\t" + "Date: " + orderDate + "\t" + "Supplier's phone: " + suppPhone + "\n");
                 //System.out.println("------------------------------------------------------------------------------\n");
                 System.out.println();
@@ -106,6 +108,7 @@ public class SupplierMenu {
                 for (int j = 0; j < list.size(); j++) {
                     System.out.println(list.get(j).get(0) + "\t\t\t" + list.get(j).get(1) + "\t\t\t" + list.get(j).get(2) + "\t\t\t" + list.get(j).get(3) + "\t\t\t" + list.get(j).get(4) + "\t\t\t" + list.get(j).get(5) + "\n");
                 }
+
                 System.out.println("Total amount: " + fc.getTotalOrderMoney(orderId));
                 System.out.println("Status: " + fc.getOrderStatus(orderId));
                 System.out.println();

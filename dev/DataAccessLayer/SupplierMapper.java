@@ -266,6 +266,7 @@ public class SupplierMapper {
             else return null;
         } catch(Exception e){
             System.err.println(e.getClass().getName() + ": " + e.getMessage());
+            tryClose();
             return null;
         }
     }
