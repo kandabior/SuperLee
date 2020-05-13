@@ -29,6 +29,10 @@ public class OrderController {
         return order_sp;
     }
 
+    public List<Object> getSupplierDeatails(int id) {
+       return this.order.getSupplierDeatails(id);
+    }
+
  /*   public boolean addOrder(int id, List<Pair<Integer, Integer>> items, int supplierId) {
         Order order = new Order(id, items, supplierId);
         boolean result = order.makeOrder();
@@ -54,12 +58,18 @@ public class OrderController {
 */
 
     public double getTotalOrderMoney(int orderId) {
+        return this.order.getTotalOrderMoney(orderId);
+
+
+/*
+
+
         for (int i = 0; i < orders.size(); i++) {
             if (orders.get(i).getId() == orderId) {
                 return orders.get(i).getTotalOrderMoney();
             }
         }
-        return -1;
+        return -1;*/
     }
 
     public void setOrderCost(int orderId, double totalMoney) {
@@ -69,6 +79,8 @@ public class OrderController {
             }
         }
     }
+
+
 
     public int getOrderIdByIndex(int i) {
         return this.orders.get(i).getId();
@@ -95,12 +107,14 @@ public class OrderController {
     }
 
     public String getOrderStatus(int orderId) {
-        for (int i = 0; i < orders.size(); i++) {
-            if (orders.get(i).getId() == orderId) {
-                return orders.get(i).getStatus();
-            }
-        }
-        return "";
+        return this.order.getStatus(orderId);
+
+//        for (int i = 0; i < orders.size(); i++) {
+//            if (orders.get(i).getId() == orderId) {
+//                return orders.get(i).getStatus();
+//            }
+//        }
+//        return "";
     }
 
     public void makeOrders(int branchId, Map<Integer, List<List<Object>>> orderMap , Map<Integer , List<Object>> suppliersList) {
@@ -125,9 +139,9 @@ public class OrderController {
         }
     }
 
-    public List<List<Object>> getOrdersLineByOrderIndex(int index) {
-
-        return this.orders.get(index).getOrdersLineByOrderIndex();
+    public List<List<Object>> getOrdersLineByOrderIndex(int id) {
+        return this.order.getOrdersLineByOrderID(id);
+        //return this.orders.get(index).getOrdersLineByOrderIndex();
 
     }
 

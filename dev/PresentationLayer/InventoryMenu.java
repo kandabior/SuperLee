@@ -468,10 +468,10 @@ public class InventoryMenu {
         try {
 
             inventoryController.CreateNewInventory(1);
-            inventoryController.addGlobalManager("Erez", "1234");
-            inventoryController.addGlobalManager("Or", "1234");
-            inventoryController.addInventoryManager("dana", "1234");
-            inventoryController.addInventoryManager("david", "1234");
+            inventoryController.addGlobalManager(1,"Erez", "1234");
+            inventoryController.addGlobalManager(1,"Or", "1234");
+            inventoryController.addInventoryManager(1,"dana", "1234");
+            inventoryController.addInventoryManager(1,"david", "1234");
 
             List<String> cat1 = new LinkedList<>();
             cat1.add("Shimurim");
@@ -497,18 +497,22 @@ public class InventoryMenu {
 
     //Managers
     private static void AddInventoryManager() {
+        Printer.Print("Please enter branch Id:");
+        String branchId=scanner.next();
         Printer.Print("Please enter new username:");
         String userName=scanner.next();
         Printer.Print("Please enter new password:");
         String password=scanner.next();
-        Printer.Print(inventoryController.addInventoryManager(userName, password));
+        Printer.Print(inventoryController.addInventoryManager(Integer.parseInt(branchId),userName, password));
     }
     private static void AddGlobalManager() {
+        Printer.Print("Please enter branch Id:");
+        String branchId=scanner.next();
         Printer.Print("Please enter new username:");
         String userName=scanner.next();
         Printer.Print("Please enter new password:");
         String password=scanner.next();
-        Printer.Print(inventoryController.addGlobalManager(userName, password));
+        Printer.Print(inventoryController.addGlobalManager(Integer.parseInt(branchId),userName, password));
 
     }
 }

@@ -44,10 +44,11 @@ public class Order {
         status = Status.Pending;
     }
 
-    public String getStatus() {
-        if (this.status == Status.Complete)
+    public String getStatus(int orderId) {
+        return this.orderMapper.getStatud(orderId);
+        /*if (this.status == Status.Complete)
             return "COMPLETE";
-        return "PENDING";
+        return "PENDING";*/
     }
 
     public void setItems(List<OrderLine> orderLines) {
@@ -132,17 +133,36 @@ public class Order {
         return this.supplier.getId();
     }
 */
-    public double getTotalOrderMoney() {
+    public double getTotalOrderMoney(int orderId) {
+        return this.orderMapper.getTotalOrderMoney(orderId);
+
+
+      /*
         double totalAmount = 0;
         for (int i = 0; i < orderLines.size(); i++) {
             totalAmount += (orderLines.get(i).getFinalCost());
         }
-        return totalAmount;
+        return totalAmount;*/
     }
 
     public int getSize() {
 
        return this.orderMapper.getSize();
+
+    }
+
+    public List<List<Object>> getOrdersLineByOrderID(int id) {
+
+        return this.orderMapper.getOrdersLineByOrderID( id);
+
+
+
+
+    }
+
+    public List<Object> getSupplierDeatails(int id) {
+        return this.orderMapper.getSupplierDeatails(id);
+
 
     }
 }
