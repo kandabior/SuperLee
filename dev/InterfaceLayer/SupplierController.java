@@ -24,6 +24,14 @@ public class SupplierController {
       this.suppliers = new LinkedList<>();
     }
 
+    public static List<String> getSupplierItemsNames(int suppId) {
+        return SupplierMapper.getSupplierItemsNames(suppId);
+    }
+
+    public static List<Integer> getSupplierItemsId(int suppId) {
+        return SupplierMapper.getSupplierItemsId(suppId);
+    }
+
     public boolean deleteSupplier(int id) {
         return Supplier.deleteSupplier(id);
 

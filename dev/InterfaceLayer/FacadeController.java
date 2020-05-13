@@ -200,11 +200,11 @@ public class FacadeController {
         return orderController.getSupplierPhoneOfOrderByIndex(i);
     }
 
-    public List<String> getSupplierItems(int supplierIdCounter) {
-        return Supplier.getSupplierItems(supplierIdCounter);
+    public List<String> getSupplierItemsNames(int suppId) {
+        return SupplierController.getSupplierItemsNames(suppId);
     }
 
-    public List<Integer> getSupplierItemsId(int supplierIdCounter) {
-        return Supplier.getSupplierItemsId(supplierIdCounter);
+    public List<Integer> getSupplierItemsId(int suppId) {
+        return SupplierController.getSupplierItemsId(suppId);
     }
 }

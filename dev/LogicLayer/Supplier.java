@@ -44,16 +44,15 @@ public class Supplier {
     }
 
     public static int getItemsListSize(int suppId) {
-
         return SupplierMapper.getItemsListSize(suppId);
     }
 
-    public static List<String> getSupplierItems(int supplierIdCounter) {
-        return SupplierMapper.getSupplierItems(supplierIdCounter);
+    public static List<String> getSupplierItemsNames(int suppId) {
+        return SupplierMapper.getSupplierItemsNames(suppId);
     }
 
-    public static List<Integer> getSupplierItemsId(int supplierIdCounter) {
-        return SupplierMapper.getSupplierItemsId(supplierIdCounter);
+    public static List<Integer> getSupplierItemsId(int suppId) {
+        return SupplierMapper.getSupplierItemsId(suppId);
     }
 
     public static boolean addItemToAgreement(Integer supp_id, Integer item_id, Double cost) {

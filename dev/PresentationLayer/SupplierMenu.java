@@ -120,7 +120,7 @@ public class SupplierMenu {
         System.out.print("Item's identifier: ");
         int itemId = scanner.nextInt();
         while (fc.validateItemId(suppId, itemId)) {
-            System.out.print("This supplier already has this item, Please enter another one.\n");
+            System.out.println("This supplier already has this item, Please enter another one.");
             System.out.print("Item's identifier: ");
             itemId = scanner.nextInt();
         }
@@ -140,7 +140,7 @@ public class SupplierMenu {
         return newItems;
     }
 
-    private static int addSupplier(int supplierIdCounter) { //elad ya homo
+    private static int addSupplier(int supplierIdCounter) {
         Scanner scanner = new Scanner(System.in);
         System.out.print("Supplier's name: ");
         String suppName = scanner.nextLine();
@@ -162,28 +162,27 @@ public class SupplierMenu {
                 suppSchedule, suppLocation, suppAddress)) {
             System.out.println("Supplier added successfully. Id is: " + supplierIdCounter);
             System.out.print("Insert supplier's items? [Y/N] ");
-            String addItems = scanner.nextLine();
-            while (addItems.equals("Y") | addItems.equals("y")) {
+            String toAdd = scanner.nextLine();
+            while (toAdd.equals("Y") | toAdd.equals("y")) {
                 addItems(supplierIdCounter);
-                addItems = scanner.nextLine();
+                toAdd = scanner.nextLine();
             }
             int size = fc.getItemsListSize(supplierIdCounter);
-            List<String> supplierItemsName = fc.getSupplierItems(supplierIdCounter);
-            List<Integer> supplierItemsId = fc.getSupplierItemsId(supplierIdCounter);//todo need to check if null
-
-            if (supplierItemsName!=null&&supplierItemsName.size()>0) {
+            if (size > 0) {
+                List<String> supplierItemsName = fc.getSupplierItemsNames(supplierIdCounter);
+                List<Integer> supplierItemsId = fc.getSupplierItemsId(supplierIdCounter);
                 System.out.println("Please insert supplier's agreement (for each item insert it's cost).");
                 for (int i = 0; i < size; i++) {
                     System.out.print(supplierItemsName.get(i) + ": ");
                     double itemPrice = scanner.nextInt();
-                    if(!fc.addItemToAgreement(supplierIdCounter, supplierItemsId.get(i), itemPrice))
-                        System.out.println("error with item : \n"+supplierItemsName.get(i) + "item does not insert to the agreement" );
+                    if (!fc.addItemToAgreement(supplierIdCounter, supplierItemsId.get(i), itemPrice))
+                        System.out.println("Error: Item '" + supplierItemsName.get(i) + "' does not belong to the agreement.");
                 }
             }
             supplierIdCounter++;
         }
         else
-            System.out.println("Supplier cannot be added to the system."); //TODO what now??
+            System.out.println("Supplier cannot be added to the system.");
         return supplierIdCounter;
     }
 
@@ -212,25 +211,28 @@ public class SupplierMenu {
             System.out.print("Option: ");
             choice = scanner.nextLine();
             switch (choice) {
-                case "1": //Add items
-                    String addItems = "Y";
+                case "1": //Add items (to supplier's list)
+                    String toAdd= "Y";
                     int counter = fc.getItemsListSize(suppId);
-                    int size = counter;
-                    while (addItems.equals("Y") | addItems.equals("y")) {
-                        size += addItems(suppId);
-                        addItems = scanner.nextLine();
+                    int newItems = counter;
+                    while (toAdd.equals("Y") | toAdd.equals("y")) {
+                        newItems += addItems(suppId);
+                        toAdd = scanner.nextLine();
                     }
-                    int listSize = fc.getItemsListSize(supplierIdCounter);
-                    List<String> supplierItemsName = fc.getSupplierItems(supplierIdCounter);
-                    List<Integer> supplierItemsId = fc.getSupplierItemsId(supplierIdCounter);//todo need to check if null
+                    if(fc.getItemsListSize(suppId) == 0) {
+                        System.out.println("Supplier has no items.");
+                        break;
+                    }
+                    List<String> supplierItemsName = fc.getSupplierItemsNames(suppId);
+                    List<Integer> supplierItemsId = fc.getSupplierItemsId(suppId);
 
-                    if (supplierItemsName!=null&&supplierItemsName.size()>0) {
+                    if (newItems > counter) { //add items to agreement
                         System.out.println("Please insert supplier's agreement (for each item insert it's cost).");
-                        for (int i = 0; i < listSize; i++) {
+                        for (int i = counter-1; i < newItems-1; i++) {
                             System.out.print(supplierItemsName.get(i) + ": ");
-                            double itemPrice = scanner.nextInt();
-                            if(!fc.addItemToAgreement(supplierIdCounter, supplierItemsId.get(i), itemPrice))
-                                System.out.println("error with item: "+supplierItemsName.get(i) + ". Item does not belong to the agreement.");
+                            double itemPrice = scanner.nextDouble();
+                            if (!fc.addItemToAgreement(suppId, supplierItemsId.get(i), itemPrice))
+                                System.out.println("Error: Item '" + supplierItemsName.get(i) + "' does not belong to the agreement.");
                         }
                     }
                     break;
