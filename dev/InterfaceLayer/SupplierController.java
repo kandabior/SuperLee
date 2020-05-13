@@ -14,6 +14,7 @@ public class SupplierController {
     private List<Supplier> suppliers;
     private static SupplierController sp_instance = null;
     private Supplier supplier;
+    private Items item;
 
     public static SupplierController getSupplierController() {
         if (sp_instance == null)
@@ -102,8 +103,9 @@ public class SupplierController {
     public int getBillSize(int suppId) { return getSuppById(suppId).getBillSize(); }
 
     public LinkedHashMap<Integer, Double> showSuppItems(int suppId){
-        Supplier supplier = getSuppById(suppId);
-        return supplier.getAgreement().getTerms();
+        return this.supplier.showSuppItems(suppId);
+        /*Supplier supplier = getSuppById(suppId);
+        return supplier.getAgreement().getTerms();*/
     }
 
     public double getPriceOfItem(int suppId, int index) {
@@ -123,11 +125,11 @@ public class SupplierController {
     }
 
     public String getItemName( Integer itemId) {
-        return Items.getName(itemId);
+        return this.item.getName(itemId);
     }
 
     public String getItemNameByIndex(int suppId, int i) {
-        return Items.getName(getSuppById(suppId).getItemIdByIndex(i));
+        return this.item.getName(getSuppById(suppId).getItemIdByIndex(i));
     }
 
 
@@ -136,7 +138,7 @@ public class SupplierController {
     }
 
     public void addItemToSupplier(int suppId, int itemId) {
-        Supplier.addItemToSupplier(suppId,itemId);
+        this.supplier.addItemToSupplier(suppId,itemId);
         //this.getSuppById(suppId).addItemsToSupplier(itemId);
     }
 
@@ -146,7 +148,8 @@ public class SupplierController {
     }
 
     public void setItemPrice(int suppId, int itemId, double newPrice) {
-        getSuppById(suppId).setItemPrice(itemId, newPrice);
+        this.supplier.setItemPrice(suppId, itemId, newPrice);
+        //getSuppById(suppId).setItemPrice(itemId, newPrice);
     }
 
     public boolean validateItemId(int suppId, int itemId) {

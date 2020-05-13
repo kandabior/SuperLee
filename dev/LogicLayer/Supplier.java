@@ -18,14 +18,11 @@ public class Supplier {
     private String supplyLocation;
     private List<Integer> items;
     private Agreement agreement;
-    private SupplierMapper supplierMapper;
+    private SupplierMapper supplierMapper = new SupplierMapper();
 
 
-    public Supplier()
-    {
-        this.supplierMapper= new SupplierMapper();
+    public Supplier() {
     }
-
 
 
     public Supplier(int id, String name, String phoneNum, int bankAccount, String payment, String supplySchedule, String supplyLocation, String address) {
@@ -48,9 +45,8 @@ public class Supplier {
        return SupplierMapper.validateItemId(suppId,itemId);
     }
 
-    public static void addItemToSupplier(int suppId, int itemId) {
-        SupplierMapper.addItemToSupplier(suppId,itemId);
-
+    public void addItemToSupplier(int suppId, int itemId) {
+        this.supplierMapper.addItemToSupplier(suppId,itemId);
     }
 
     public static int getItemsListSize(int suppId) {
@@ -61,8 +57,8 @@ public class Supplier {
         return SupplierMapper.getSupplierItemsNames(suppId);
     }
 
-    public List<Integer> getSupplierItemsId(int suppId) {
-        return this.supplierMapper.getSupplierItemsId(suppId);
+    public static List<Integer> getSupplierItemsId(int suppId) {
+        return SupplierMapper.getSupplierItemsId(suppId);
     }
 
     public boolean addItemToAgreement(Integer supp_id, Integer item_id, Double cost) {
@@ -130,7 +126,7 @@ public class Supplier {
         return this.items.size();
     }
 
-    public void setItemPrice(int itemId, double newPrice) { getAgreement().setPrice(itemId, newPrice);}
+    public void setItemPrice(int suppId, int itemId, double newPrice) { this.supplierMapper.setItemPrice(suppId, itemId, newPrice); }
 
     public boolean validateItemId(int itemId){
         if(this.items.contains(itemId)) return true;
@@ -142,22 +138,6 @@ public class Supplier {
    /* public double getOrderCost(int itemId, int quantity) {
         return this.agreement.getOrderCost(itemId,quantity);
     }*/
-      /* if(this.supplierMapper.getSupplierItemsId(supplierId).contains(itemId))
-        {
-            if (bill != null && bill.checkItemInBill(itemId, quantity) == true) {
-                double discount = bill.getMoneyAmountofItemInBill(itemId, quantity);
-                double cost = terms.get(itemId);
-                double costMulQuantity = (cost * quantity);
-                double x = costMulQuantity * (1 - discount);
-                DecimalFormat df = new DecimalFormat("#.##");
-                String dx = df.format(x);
-                x = Double.valueOf(dx);
-                return x;
-            } else {
-                double cost = terms.get(itemId);
-                return (cost * quantity);
-            }*/
-
 
 
 
@@ -210,11 +190,15 @@ public class Supplier {
     }
 
     public boolean saveMe() {
-        return SupplierMapper.addSupplier(new SupplierDTO(id, name, phoneNum, bankAccount, payment, supplySchedule, supplyLocation));
+        return this.supplierMapper.addSupplier(new SupplierDTO(id, name, phoneNum, bankAccount, payment, supplySchedule, supplyLocation));
     }
 
     public int getSupplierSize() {
         return this.supplierMapper.getSupplierSize();
+    }
+
+    public LinkedHashMap<Integer, Double> showSuppItems(int suppId) {
+        return this.supplierMapper.showSuppItems(id);
     }
 
     public List<Integer> getSupplierIds() {
