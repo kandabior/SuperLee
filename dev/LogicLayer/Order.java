@@ -22,6 +22,13 @@ public class Order {
     double totalCost;
     Status status;
 
+    public Order()
+    {
+
+    }
+
+
+
     public Order(int branchId , int id, int supplierId , String suppName, String phoneNumber , String address , LocalDate date ) {
         this.branchId = branchId;
         this.id = id;
