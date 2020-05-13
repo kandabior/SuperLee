@@ -231,7 +231,7 @@ public class SupplierMenu {
 
                     if (newItems > counter) { //add items to agreement
                         System.out.println("Please insert supplier's agreement (for each item insert it's cost).");
-                        for (int i = counter-1; i < newItems-1; i++) {
+                        for (int i = newItems-1; i > counter-1; i--) {
                             System.out.print(supplierItemsName.get(i) + ": ");
                             double itemPrice = scanner.nextDouble();
                             if (!fc.addItemToAgreement(suppId, supplierItemsId.get(i), itemPrice))

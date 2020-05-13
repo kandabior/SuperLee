@@ -47,9 +47,8 @@ public class Supplier {
        return SupplierMapper.validateItemId(suppId,itemId);
     }
 
-    public static void addItemToSupplier(int suppId, int itemId) {
-        SupplierMapper.addItemToSupplier(suppId,itemId);
-
+    public void addItemToSupplier(int suppId, int itemId) {
+        this.supplierMapper.addItemToSupplier(suppId,itemId);
     }
 
     public static int getItemsListSize(int suppId) {
@@ -166,7 +165,7 @@ public class Supplier {
     }
 
     public boolean saveMe() {
-        return SupplierMapper.addSupplier(new SupplierDTO(id, name, phoneNum, bankAccount, payment, supplySchedule, supplyLocation));
+        return this.supplierMapper.addSupplier(new SupplierDTO(id, name, phoneNum, bankAccount, payment, supplySchedule, supplyLocation));
     }
 
     public int getSupplierSize() {

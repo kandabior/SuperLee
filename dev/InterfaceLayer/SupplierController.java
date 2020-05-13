@@ -136,7 +136,7 @@ public class SupplierController {
     }
 
     public void addItemToSupplier(int suppId, int itemId) {
-        Supplier.addItemToSupplier(suppId,itemId);
+        this.supplier.addItemToSupplier(suppId,itemId);
         //this.getSuppById(suppId).addItemsToSupplier(itemId);
     }
 

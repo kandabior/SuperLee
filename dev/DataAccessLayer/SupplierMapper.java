@@ -22,7 +22,7 @@ public class SupplierMapper {
         System.out.println("DB opened successfully.");
     }*/
 
-    public static boolean addSupplier(SupplierDTO supp)  {
+    public boolean addSupplier(SupplierDTO supp)  {
         try {
             if (tryOpen()) {
                 Class.forName("org.sqlite.JDBC");
@@ -54,7 +54,6 @@ public class SupplierMapper {
         }
         return false;
     }
-
 
     public static boolean deleteSupplier(int suppId) {
         try {
@@ -166,9 +165,6 @@ public class SupplierMapper {
         return false;
     }
 
-
-
-
     public static boolean tryOpen()
     {
         try {
@@ -181,10 +177,6 @@ public class SupplierMapper {
 
     }
 
-
-
-
-
     public static void tryClose()
     {
             try {
@@ -195,8 +187,7 @@ public class SupplierMapper {
 
     }
 
-    public static void addItemToSupplier(int suppId, int itemId) {
-
+    public void addItemToSupplier(int suppId, int itemId) {
         try {
             if (tryOpen()) {
                 Class.forName("org.sqlite.JDBC");
@@ -293,7 +284,6 @@ public class SupplierMapper {
             return null;
         }
     }
-
 
     public boolean addBillOfQuantities(int supplierId, Map<Integer, Pair<Integer, Double>> bill) {
      try {
