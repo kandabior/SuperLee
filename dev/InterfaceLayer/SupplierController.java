@@ -1,5 +1,6 @@
 package InterfaceLayer;
 
+import DataAccessLayer.SupplierMapper;
 import LogicLayer.Items;
 import LogicLayer.Supplier;
 import javafx.util.Pair;
@@ -47,8 +48,9 @@ public class SupplierController {
     }
 
     public boolean findSupplier(int id) {
-        if(getSuppById(id) != null) return true;
-        return false;
+        return SupplierMapper.findSupplier(id);
+        //if(getSuppById(id) != null) return true;
+        //return false;
     }
 
     public boolean addSupplier(int id, String name, String phoneNum, int bankAccount, String payment, String supplySchedule, String supplyLocation , String address) {

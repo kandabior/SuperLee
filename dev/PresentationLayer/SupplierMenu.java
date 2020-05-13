@@ -81,6 +81,7 @@ public class SupplierMenu {
     }
 
     private static void showPreviousOrders() {
+
         int sizeOfOrders = fc.getOrdersSize();
         //good
         if (sizeOfOrders == 0)

@@ -1,5 +1,6 @@
 package LogicLayer;
 
+import DataAccessLayer.OrderMapper;
 import InterfaceLayer.SupplierController;
 import javafx.util.Pair;
 
@@ -21,10 +22,11 @@ public class Order {
     List<OrderLine> orderLines;
     double totalCost;
     Status status;
+    private OrderMapper orderMapper;
 
     public Order()
     {
-
+        this.orderMapper=new OrderMapper();
     }
 
 
@@ -136,5 +138,11 @@ public class Order {
             totalAmount += (orderLines.get(i).getFinalCost());
         }
         return totalAmount;
+    }
+
+    public int getSize() {
+
+       return this.orderMapper.getSize();
+
     }
 }

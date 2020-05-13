@@ -40,7 +40,8 @@ public class OrderController {
     }*/
 
     public int getOrdersSize() {
-        return this.orders.size();
+        return this.order.getSize();
+        //return this.orders.size();
     }
 
    /* public List<Pair<Integer, Integer>> getItemsInOrderById(int id) {
