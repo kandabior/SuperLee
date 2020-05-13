@@ -8,7 +8,8 @@ import java.util.*;
 
 public class SupplierMenu {
     static FacadeController fc = FacadeController.getFacadeController();
-    static int supplierIdCounter = 1;
+    //static int supplierIdCounter = 1;
+    static int supplierIdCounter = fc.getSuppliersCounter() + 1;
 
     public static boolean displaySupplierMenu(){
         try {
@@ -353,34 +354,34 @@ public class SupplierMenu {
 
     private static void displayItems(int suppId) {
         LinkedHashMap<Integer, Double> terms = fc.showSuppItems(suppId);
-        for(int i=0; i<terms.size(); i++) {
-            String itemName = fc.getItemNameByIndex(suppId,i);
-            int itemId= fc.getItemIdByIndex(suppId,i);
-            double itemPrice = fc.getPriceOfItem(suppId,itemId);
-            System.out.print(itemId + ". " + itemName + ", ");
-            System.out.print(itemPrice + " NIS \n");
+        Iterator<Integer> iter = terms.keySet().iterator();
+        for (int i = 0; i < terms.size(); i++) {
+            if (iter.hasNext()) {
+                int itemId = iter.next();
+                String itemName = fc.getItemNameById(itemId);
+                double itemPrice = terms.get(itemId);
+                System.out.println(itemId + ". " + itemName + ", " + itemPrice + " NIS");
+            }
         }
     }
 
-    private static String editAgreement(int suppId){
+    private static String editAgreement(int suppId){ //TODO working here!!!
         Scanner scanner = new Scanner(System.in);
-        System.out.println("\nChoose the id of the item it's price you wish to change.\n");
+        System.out.println("\nChoose the id of the item it's price you wish to change.");
         LinkedHashMap<Integer, Double> terms = fc.showSuppItems(suppId);
         displayItems(suppId);
 
         System.out.print("Item's id: ");
         int itemId = scanner.nextInt();
         while (!fc.validateItemId(suppId, itemId)) {
-            System.out.print("This supplier Does not have this item.\nEnter another one\n");
+            System.out.println("This supplier does not have this item, enter another one.");
             System.out.print("Item's identifier: ");
             itemId = scanner.nextInt();
         }
         Iterator<Integer> iter = terms.keySet().iterator();
         for(int i = 0; i < terms.size(); i++){
             if(iter.hasNext() && iter.next() == itemId) {
-                System.out.print(fc.getItemNameById(itemId) + ", ");
-                System.out.print(terms.get(itemId) + "NIS\n");
-                System.out.print("New price: ");
+                System.out.print(fc.getItemNameById(itemId) + ": " + terms.get(itemId) + " NIS\nNew price: ");
                 double newPrice = scanner.nextDouble();
                 fc.setItemPrice(suppId, itemId, newPrice);
             }
