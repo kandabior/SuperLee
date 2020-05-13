@@ -218,6 +218,21 @@ public class SupplierMenu {
                         size += addItems(suppId);
                         addItems = scanner.nextLine();
                     }
+                    int listSize = fc.getItemsListSize(supplierIdCounter);
+                    List<String> supplierItemsName = fc.getSupplierItems(supplierIdCounter);
+                    List<Integer> supplierItemsId = fc.getSupplierItemsId(supplierIdCounter);//todo need to check if null
+
+                    if (supplierItemsName!=null&&supplierItemsName.size()>0) {
+                        System.out.println("Please insert supplier's agreement (for each item insert it's cost).");
+                        for (int i = 0; i < listSize; i++) {
+                            System.out.print(supplierItemsName.get(i) + ": ");
+                            double itemPrice = scanner.nextInt();
+                            if(!fc.addItemToAgreement(supplierIdCounter, supplierItemsId.get(i), itemPrice))
+                                System.out.println("error with item : \n"+supplierItemsName.get(i) + "item does not insert to the agreement" );
+                        }
+                    }
+                    break;
+/*
                     if (size > counter) {
                         System.out.println("Please insert supplier's agreement (for each item insert it's cost).");
                         for (int i = counter; i < size; i++) {
@@ -225,8 +240,7 @@ public class SupplierMenu {
                             double itemPrice = scanner.nextDouble();
                             fc.addItemToAgreement(suppId, fc.getItemIdByIndex(suppId, i), itemPrice);
                         }
-                    }
-                    break;
+                    }*/
                 case "2": //Edit agreement
                     String toContinue;
                     do {
