@@ -13,6 +13,8 @@ import java.util.LinkedHashMap;
 public class SupplierController {
     private List<Supplier> suppliers;
     private static SupplierController sp_instance = null;
+    private Supplier supplier;
+    private Items item;
 
     public static SupplierController getSupplierController() {
         if (sp_instance == null)
@@ -22,10 +24,20 @@ public class SupplierController {
 
     private SupplierController() {
       this.suppliers = new LinkedList<>();
+      this.supplier = new Supplier();
+      this.item = new Items();
+    }
+
+    public static List<String> getSupplierItemsNames(int suppId) {
+        return SupplierMapper.getSupplierItemsNames(suppId);
+    }
+
+    public List<Integer> getSupplierItemsId(int suppId) {
+        return this.supplier.getSupplierItemsId(suppId);
     }
 
     public boolean deleteSupplier(int id) {
-        return Supplier.deleteSuppplier(id);
+        return Supplier.deleteSupplier(id);
 
 //
 //
@@ -66,7 +78,7 @@ public class SupplierController {
     }
 
     public boolean addItemToAgreement(Integer supp_id ,Integer item_id,Double cost){
-        return Supplier.addItemToAgreement(supp_id,item_id,cost);
+        return this.supplier.addItemToAgreement(supp_id,item_id,cost);
         //getSuppById(supp_id).addItemToAgreement(item_id,cost);
     }
 
@@ -92,8 +104,9 @@ public class SupplierController {
     public int getBillSize(int suppId) { return getSuppById(suppId).getBillSize(); }
 
     public LinkedHashMap<Integer, Double> showSuppItems(int suppId){
-        Supplier supplier = getSuppById(suppId);
-        return supplier.getAgreement().getTerms();
+        return this.supplier.showSuppItems(suppId);
+        /*Supplier supplier = getSuppById(suppId);
+        return supplier.getAgreement().getTerms();*/
     }
 
     public double getPriceOfItem(int suppId, int index) {
@@ -113,11 +126,11 @@ public class SupplierController {
     }
 
     public String getItemName( Integer itemId) {
-        return Items.getName(itemId);
+        return this.item.getName(itemId);
     }
 
     public String getItemNameByIndex(int suppId, int i) {
-        return Items.getName(getSuppById(suppId).getItemIdByIndex(i));
+        return this.item.getName(getSuppById(suppId).getItemIdByIndex(i));
     }
 
 
@@ -126,28 +139,47 @@ public class SupplierController {
     }
 
     public void addItemToSupplier(int suppId, int itemId) {
-        Supplier.addItemToSupplier(suppId,itemId);
+        this.supplier.addItemToSupplier(suppId,itemId);
         //this.getSuppById(suppId).addItemsToSupplier(itemId);
     }
 
     public int getItemsListSize(int suppId) {
-        return Supplier.getItemsListSize(suppId);
+        return this.supplier.getItemsListSize(suppId);
         //return this.getSuppById(suppId).getItemsListSize();
     }
 
     public void setItemPrice(int suppId, int itemId, double newPrice) {
-        getSuppById(suppId).setItemPrice(itemId, newPrice);
+        this.supplier.setItemPrice(suppId, itemId, newPrice);
+        //getSuppById(suppId).setItemPrice(itemId, newPrice);
     }
 
     public boolean validateItemId(int suppId, int itemId) {
-        return Supplier.validateItemId(suppId,itemId);
+        return this.supplier.validateItemId(suppId,itemId);
         //return getSuppById(suppId).validateItemId(itemId);
     }
 
     public int bestSuppForItem(Integer itemId, Integer quantity) {
+
+
         Double min=100000000.0;
         int bestSuppId=-1;
-        for(int i=0 ; i<suppliers.size();i++)
+        int size = this.supplier.getSupplierSize();
+        List<Integer> suppId = this.supplier.getSupplierIds();
+        for(int i=0 ; i<size;i++)
+        {
+             Double temp =getPriceOfAmountOfItem(suppId.get(i),itemId,quantity);
+             if(temp<min) {
+                 min = temp;
+                 bestSuppId=i;
+             }
+        }
+
+        return bestSuppId+1;
+
+
+
+      /*  List<Integer> suppId = this.supplier.getSupplierId();
+        for(int i=0 ; i<size;i++)
         {
              Double temp =suppliers.get(i).getPriceOfAmountOfItem(itemId,quantity);
              if(temp<min) {
@@ -156,28 +188,36 @@ public class SupplierController {
              }
         }
 
-        return bestSuppId+1;
+        return bestSuppId+1;*/
     }
 
     public Double getPriceOfAmountOfItem(int bestSuppForItem,Integer itemId, Integer amount) {
-        return getSuppById(bestSuppForItem).getPriceOfAmountOfItem(itemId,amount);
+         return this.supplier.getPriceOfAmountOfItem(bestSuppForItem,itemId,amount);
+       /* return getSuppById(bestSuppForItem).getPriceOfAmountOfItem(itemId,amount);*/
     }
 
     public boolean checkIfItemExist(int itemId) {
-        return Items.checkIfItemExist(itemId);
+        return this.item.checkIfItemExist(itemId);
 
         //return (Items.getName(itemId)!=null);
     }
 
     public Double getPriceOfAmountOfItemBeforeDiscount(int suppId , int itemId , int amount) {
-        return getSuppById(suppId).getPriceOfAmountOfItemBeforeDiscount(itemId, amount);
+
+        return this.supplier.getPriceOfAmountOfItemBeforeDiscount(suppId,itemId,amount);
+        //return getSuppById(suppId).getPriceOfAmountOfItemBeforeDiscount(itemId, amount);
     }
 
     public Double getDiscountOfItem(int bestSuppForItem, int itemId , int amount) {
-        return getSuppById(bestSuppForItem).getDiscountOfItem(itemId, amount);
+        return this.supplier.getDiscount(bestSuppForItem,itemId,amount);
+        //return getSuppById(bestSuppForItem).getDiscountOfItem(itemId, amount);
     }
 
     public List<Object> getSuppDetails(int bestSuppForItem) {
         return getSuppById(bestSuppForItem).getSuppDetails();
+    }
+
+    public int getSuppliersCounter() {
+        return this.supplier.getSuppliersCounter();
     }
 }

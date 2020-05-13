@@ -5,7 +5,7 @@ import java.sql.*;
 public class ItemMapper {
     private static Connection conn;
 
-    public static boolean checkIfItemExist(int itemId) {
+    public boolean checkIfItemExist(int itemId) {
         try {
             Class.forName("org.sqlite.JDBC");
             conn = DriverManager.getConnection("jdbc:sqlite:dev\\EOEDdatabase.db");
@@ -51,7 +51,7 @@ public class ItemMapper {
     }
 
 
-    public static String getName(Integer id) {
+    public String getName(Integer id) {
         try {
             Class.forName("org.sqlite.JDBC");
             conn = DriverManager.getConnection("jdbc:sqlite:dev\\EOEDdatabase.db");

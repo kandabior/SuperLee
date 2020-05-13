@@ -4,6 +4,7 @@ import DTO.SupplierDTO;
 import DataAccessLayer.SupplierMapper;
 
 import java.sql.SQLException;
+import java.text.DecimalFormat;
 import java.util.*;
 import javafx.util.Pair;
 
@@ -17,6 +18,12 @@ public class Supplier {
     private String supplyLocation;
     private List<Integer> items;
     private Agreement agreement;
+    private SupplierMapper supplierMapper = new SupplierMapper();
+
+
+    public Supplier() {
+    }
+
 
     public Supplier(int id, String name, String phoneNum, int bankAccount, String payment, String supplySchedule, String supplyLocation, String address) {
         this.id = id;
@@ -30,34 +37,33 @@ public class Supplier {
         this.agreement = new Agreement();
     }
 
-    public static boolean deleteSuppplier(int id) {
-        return SupplierMapper.deleteSuppplier(id);
+    public static boolean deleteSupplier(int id) {
+        return SupplierMapper.deleteSupplier(id);
     }
 
-    public static boolean validateItemId(int suppId, int itemId) {
-       return SupplierMapper.validateItemId(suppId,itemId);
+    public boolean validateItemId(int suppId, int itemId) {
+       return this.supplierMapper.validateItemId(suppId,itemId);
     }
 
-    public static void addItemToSupplier(int suppId, int itemId) {
-        SupplierMapper.addItemToSupplier(suppId,itemId);
-
+    public void addItemToSupplier(int suppId, int itemId) {
+        this.supplierMapper.addItemToSupplier(suppId,itemId);
     }
 
-    public static int getItemsListSize(int suppId) {
-
-        return SupplierMapper.getItemsListSize(suppId);
+    public int getItemsListSize(int suppId) {
+        return this.supplierMapper.getItemsListSize(suppId);
     }
 
-    public static List<String> getSupplierItems(int supplierIdCounter) {
-        return SupplierMapper.getSupplierItems(supplierIdCounter);
+    public static List<String> getSupplierItemsNames(int suppId) {
+        return SupplierMapper.getSupplierItemsNames(suppId);
     }
 
-    public static List<Integer> getSupplierItemsId(int supplierIdCounter) {
-        return SupplierMapper.getSupplierItemsId(supplierIdCounter);
+    public List<Integer> getSupplierItemsId(int suppId) {
+
+        return this.supplierMapper.getSupplierItemsId(suppId);
     }
 
-    public static boolean addItemToAgreement(Integer supp_id, Integer item_id, Double cost) {
-        return SupplierMapper.addItemToAgreement(supp_id,item_id,cost);
+    public boolean addItemToAgreement(Integer supp_id, Integer item_id, Double cost) {
+        return this.supplierMapper.addItemToAgreement(supp_id,item_id,cost);
     }
 
     public int getId() { return this.id; }
@@ -121,7 +127,7 @@ public class Supplier {
         return this.items.size();
     }
 
-    public void setItemPrice(int itemId, double newPrice) { getAgreement().setPrice(itemId, newPrice);}
+    public void setItemPrice(int suppId, int itemId, double newPrice) { this.supplierMapper.setItemPrice(suppId, itemId, newPrice); }
 
     public boolean validateItemId(int itemId){
         if(this.items.contains(itemId)) return true;
@@ -134,14 +140,41 @@ public class Supplier {
         return this.agreement.getOrderCost(itemId,quantity);
     }*/
 
-    public Double getPriceOfAmountOfItem(Integer itemId, Integer amount) {
-        if(agreement.checkIfItemExist(itemId))
-            return this.agreement.getPriceOfAmountOfItem(itemId,amount);
-        else return 100000001.0;
-    }
 
-    public Double getPriceOfAmountOfItemBeforeDiscount(int itemId , int amount) {
-        return this.agreement.getPriceOfAmountOfItemBeforeDiscount(itemId,amount);
+
+    public Double getPriceOfAmountOfItem(int supplierId, Integer itemId, Integer amount) {
+        if(this.supplierMapper.getSupplierItemsId(supplierId).contains(itemId))
+        {
+            if (this.supplierMapper.checkBillExist(supplierId) && this.supplierMapper.checkInBillForDiscount(supplierId,itemId,amount)) {
+                double discount = this.supplierMapper.getDiscount(supplierId,itemId);
+               // double discount = bill.getMoneyAmountofItemInBill(itemId, quantity);
+                double cost =this.supplierMapper.getPriceOfItem(supplierId,itemId);// terms.get(itemId);
+                //double cost = terms.get(itemId);
+                double costMulQuantity = (cost * amount);
+                double x = costMulQuantity * (1 - discount);
+                DecimalFormat df = new DecimalFormat("#.##");
+                String dx = df.format(x);
+                x = Double.valueOf(dx);
+                return x;
+            } else {
+                double cost =this.supplierMapper.getPriceOfItem(supplierId,itemId);
+                return (cost * amount);
+            }
+        }
+            //return this.supplierMapper.getPriceOfAmountOfItem(supplierId,itemId,amount);//agreement.getPriceOfAmountOfItem(itemId,amount);
+        else return 100000001.0;
+
+        }
+
+
+    /*    if(agreement.checkIfItemExist(itemId))
+            return this.agreement.getPriceOfAmountOfItem(itemId,amount);
+        else return 100000001.0;*/
+
+    public Double getPriceOfAmountOfItemBeforeDiscount(int suppId , int itemId , int amount) {
+        Double cost = this.supplierMapper.getPriceOfItem(suppId,itemId);
+        return cost*amount;
+        //return this.agreement.getPriceOfAmountOfItemBeforeDiscount(itemId,amount);
     }
 
     public Double getDiscountOfItem(int itemId , int amount) {
@@ -158,6 +191,26 @@ public class Supplier {
     }
 
     public boolean saveMe() {
-        return SupplierMapper.addSupplier(new SupplierDTO(id, name, phoneNum, bankAccount, payment, supplySchedule, supplyLocation));
+        return this.supplierMapper.addSupplier(new SupplierDTO(id, name, phoneNum, bankAccount, payment, supplySchedule, supplyLocation));
+    }
+
+    public int getSupplierSize() {
+        return this.supplierMapper.getSupplierSize();
+    }
+
+    public LinkedHashMap<Integer, Double> showSuppItems(int suppId) {
+        return this.supplierMapper.showSuppItems(suppId);
+    }
+
+    public List<Integer> getSupplierIds() {
+        return this.supplierMapper.getSupplierIds();
+    }
+
+    public Double getDiscount(int billId, int itemId, int amount) {
+        return this.supplierMapper.getDiscount(billId,itemId);
+    }
+
+    public int getSuppliersCounter() {
+        return this.supplierMapper.getSuppliersCounter();
     }
 }

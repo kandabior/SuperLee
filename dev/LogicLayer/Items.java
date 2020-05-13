@@ -8,6 +8,7 @@ import java.util.Map;
 public class Items {
 
     private static Map<Integer, String> items=new HashMap<>();
+    private ItemMapper itemMapper = new ItemMapper();
 
     public static boolean addItem(Integer id, String name ){
         if(items.containsKey(id)){
@@ -17,11 +18,10 @@ public class Items {
         return true;
     }
 
-    public static String getName(Integer id) {
-        if (!ItemMapper.checkIfItemExist(id))
+    public String getName(Integer id) {
+        if (!this.itemMapper.checkIfItemExist(id))
             return null;
-        return ItemMapper.getName(id);
-
+        return this.itemMapper.getName(id);
 //        if(!items.containsKey(id)){
 //            return null;
 //        }
@@ -35,7 +35,7 @@ public class Items {
     }
 
 
-    public static boolean checkIfItemExist(int itemId) {
-        return ItemMapper.checkIfItemExist(itemId);
+    public boolean checkIfItemExist(int itemId) {
+        return this.itemMapper.checkIfItemExist(itemId);
     }
 }

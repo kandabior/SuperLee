@@ -1,5 +1,7 @@
 package LogicLayer;
 
+import DTO.OrderDTO;
+import DTO.OrderLineDTO;
 import DataAccessLayer.OrderMapper;
 import InterfaceLayer.SupplierController;
 import javafx.util.Pair;
@@ -44,10 +46,11 @@ public class Order {
         status = Status.Pending;
     }
 
-    public String getStatus() {
-        if (this.status == Status.Complete)
+    public String getStatus(int orderId) {
+        return this.orderMapper.getStatud(orderId);
+        /*if (this.status == Status.Complete)
             return "COMPLETE";
-        return "PENDING";
+        return "PENDING";*/
     }
 
     public void setItems(List<OrderLine> orderLines) {
@@ -132,17 +135,50 @@ public class Order {
         return this.supplier.getId();
     }
 */
-    public double getTotalOrderMoney() {
+    public double getTotalOrderMoney(int orderId) {
+        return this.orderMapper.getTotalOrderMoney(orderId);
+
+
+      /*
         double totalAmount = 0;
         for (int i = 0; i < orderLines.size(); i++) {
             totalAmount += (orderLines.get(i).getFinalCost());
         }
-        return totalAmount;
+        return totalAmount;*/
     }
 
     public int getSize() {
 
        return this.orderMapper.getSize();
 
+    }
+
+    public List<List<Object>> getOrdersLineByOrderID(int id) {
+
+        return this.orderMapper.getOrdersLineByOrderID( id);
+
+
+
+
+    }
+
+    public List<Object> getSupplierDeatails(int id) {
+        return this.orderMapper.getSupplierDeatails(id);
+
+
+    }
+
+    public boolean insertOrder(OrderDTO o) {
+       //this.orderMapper.insert(o.getId(),o.getBranchId(),o.getSuppName(),o.getSuppId(),o.getOrderDate(),o.getAddress(),totalCost,o.getPhoneNumber(),o.getStatus());
+        if(this.orderMapper.insertOrder(o))
+        {
+            for (OrderLineDTO ot : o.getOrderLines())
+            {
+                this.orderMapper.insertOrderLines(ot);
+            }
+            return true;
+
+        }
+        return false;
     }
 }

@@ -1,5 +1,7 @@
 package InterfaceLayer;
 
+import DTO.OrderDTO;
+import DTO.OrderLineDTO;
 import LogicLayer.Order;
 import LogicLayer.OrderLine;
 import com.sun.org.apache.xpath.internal.operations.Or;
@@ -29,6 +31,10 @@ public class OrderController {
         return order_sp;
     }
 
+    public List<Object> getSupplierDeatails(int id) {
+       return this.order.getSupplierDeatails(id);
+    }
+
  /*   public boolean addOrder(int id, List<Pair<Integer, Integer>> items, int supplierId) {
         Order order = new Order(id, items, supplierId);
         boolean result = order.makeOrder();
@@ -54,12 +60,18 @@ public class OrderController {
 */
 
     public double getTotalOrderMoney(int orderId) {
+        return this.order.getTotalOrderMoney(orderId);
+
+
+/*
+
+
         for (int i = 0; i < orders.size(); i++) {
             if (orders.get(i).getId() == orderId) {
                 return orders.get(i).getTotalOrderMoney();
             }
         }
-        return -1;
+        return -1;*/
     }
 
     public void setOrderCost(int orderId, double totalMoney) {
@@ -69,6 +81,8 @@ public class OrderController {
             }
         }
     }
+
+
 
     public int getOrderIdByIndex(int i) {
         return this.orders.get(i).getId();
@@ -95,20 +109,24 @@ public class OrderController {
     }
 
     public String getOrderStatus(int orderId) {
-        for (int i = 0; i < orders.size(); i++) {
-            if (orders.get(i).getId() == orderId) {
-                return orders.get(i).getStatus();
-            }
-        }
-        return "";
+        return this.order.getStatus(orderId);
+
+//        for (int i = 0; i < orders.size(); i++) {
+//            if (orders.get(i).getId() == orderId) {
+//                return orders.get(i).getStatus();
+//            }
+//        }
+
+//        return "";
     }
 
     public void makeOrders(int branchId, Map<Integer, List<List<Object>>> orderMap , Map<Integer , List<Object>> suppliersList) {
         for (Integer key : orderMap.keySet())//go over suppliers
         {
-            Order o = new Order(branchId, orderIdCounter, (Integer) suppliersList.get(key).get(0), (String) suppliersList.get(key).get(1), (String) suppliersList.get(key).get(2), (String) suppliersList.get(key).get(3), LocalDate.now());
+
+            OrderDTO o = new OrderDTO(branchId, orderIdCounter, (Integer) suppliersList.get(key).get(0), (String) suppliersList.get(key).get(1), (String) suppliersList.get(key).get(2), (String) suppliersList.get(key).get(3), LocalDate.now());
             orderIdCounter++;
-            List<OrderLine> lines = new LinkedList<>();
+            List<OrderLineDTO> lines = new LinkedList<>();
             for (int j = 0; j < orderMap.get(key).size(); j++)//go over the orders line
             {
                 int itemId = (int) orderMap.get(key).get(j).get(0);
@@ -117,17 +135,18 @@ public class OrderController {
                 Double itemCost = (Double) orderMap.get(key).get(j).get(3);
                 Double itemDiscount = (Double) orderMap.get(key).get(j).get(4);
                 Double itemFinalCost = (Double) orderMap.get(key).get(j).get(5);
-                OrderLine orderLine = new OrderLine(o.getId(), itemId, itemName, itemQuantity, itemCost, itemDiscount, itemFinalCost);
+                OrderLineDTO orderLine = new OrderLineDTO(o.getId(), itemId, itemName, itemQuantity, itemCost, itemDiscount, itemFinalCost);
                 lines.add(orderLine);
             }
             o.setItems(lines);
-            orders.add(o);
+            this.order.insertOrder(o);
+           // orders.add(o);
         }
     }
 
-    public List<List<Object>> getOrdersLineByOrderIndex(int index) {
-
-        return this.orders.get(index).getOrdersLineByOrderIndex();
+    public List<List<Object>> getOrdersLineByOrderIndex(int id) {
+        return this.order.getOrdersLineByOrderID(id);
+        //return this.orders.get(index).getOrdersLineByOrderIndex();
 
     }
 

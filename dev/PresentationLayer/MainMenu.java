@@ -12,7 +12,7 @@ public class MainMenu{
     }
 
     private static void mainLoop() {
-        Printer.Print("Do you Want to initiate the System ? Y/N");
+        Printer.Print("Do you Want to initiate the System? Y/N ");
         String ans = scanner.next();
         if (ans.equals("Y") || ans.equals("y")) {
             initiateSystem();
@@ -23,7 +23,7 @@ public class MainMenu{
             Printer.Print("system was not initiate");
         }
         int choose;
-        Printer.Print("Welcome To EOED Digital Storage And Suppliers Manager");
+        Printer.Print("Welcome To EOED Digital Storage And Suppliers Manager!");
         do {
             Printer.Print("Day: "+(DayOfTheWeek+1));
             Printer.Print("\n\nPlease choose an action:\n" +
