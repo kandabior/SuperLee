@@ -30,8 +30,8 @@ public class Supplier {
         this.agreement = new Agreement();
     }
 
-    public static boolean deleteSuppplier(int id) {
-        return SupplierMapper.deleteSuppplier(id);
+    public static boolean deleteSupplier(int id) {
+        return SupplierMapper.deleteSupplier(id);
     }
 
     public static boolean validateItemId(int suppId, int itemId) {

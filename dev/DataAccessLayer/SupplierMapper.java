@@ -56,7 +56,7 @@ public class SupplierMapper {
     }
 
 
-    public static boolean deleteSuppplier(int suppId) {
+    public static boolean deleteSupplier(int suppId) {
         try {
             if (tryOpen()) {
                 Class.forName("org.sqlite.JDBC");
