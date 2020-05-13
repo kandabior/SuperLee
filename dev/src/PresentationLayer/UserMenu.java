@@ -9,7 +9,7 @@ import java.util.Date;
 public class UserMenu {
     private static Pool pool;
 
-    public static void main(String[] args) {
+    public static void main() {
         pool = Pool.getInstance();
         start();
         menu();
@@ -467,7 +467,7 @@ public class UserMenu {
                         }
                         break;
                     case 8:
-                        System.exit(0);
+                        return;
                     default:
                         System.out.println("Invalid option number!");
                         break;

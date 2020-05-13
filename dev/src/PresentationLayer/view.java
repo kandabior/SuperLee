@@ -12,29 +12,11 @@ public class view {
 
     BusinessLayer.EmployeeModule.service service = new service();
 
-    public static void main(String[] args) {
+    public static void main() {
         view view = new view();
-        view.promotDB();
         view.startSystem();
     }
 
-    private void promotDB() {
-        System.out.println("Welcome to the \"Super-Lee\" system!\n" +
-                "Load database?:\n" +
-                "1. yes\n" +
-                "2. no");
-        Scanner ans = new Scanner(System.in);
-        int role = ans.nextInt();
-        switch (role) {
-            case 1:
-                createDB();
-                return;
-            case 2:
-                return;
-            default:
-                return;
-        }
-    }
 
     private void startSystem(){
         while (true) {
