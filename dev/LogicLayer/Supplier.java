@@ -57,8 +57,9 @@ public class Supplier {
         return SupplierMapper.getSupplierItemsNames(suppId);
     }
 
-    public static List<Integer> getSupplierItemsId(int suppId) {
-        return SupplierMapper.getSupplierItemsId(suppId);
+    public List<Integer> getSupplierItemsId(int suppId) {
+
+        return this.supplierMapper.getSupplierItemsId(suppId);
     }
 
     public boolean addItemToAgreement(Integer supp_id, Integer item_id, Double cost) {
