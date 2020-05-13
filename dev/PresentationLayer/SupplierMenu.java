@@ -239,15 +239,6 @@ public class SupplierMenu {
                         }
                     }
                     break;
-/*
-                    if (size > counter) {
-                        System.out.println("Please insert supplier's agreement (for each item insert it's cost).");
-                        for (int i = counter; i < size; i++) {
-                            System.out.print(fc.getItemNameByIndex(suppId, i) + ": ");
-                            double itemPrice = scanner.nextDouble();
-                            fc.addItemToAgreement(suppId, fc.getItemIdByIndex(suppId, i), itemPrice);
-                        }
-                    }*/
                 case "2": //Edit agreement
                     String toContinue;
                     do {
@@ -381,8 +372,16 @@ public class SupplierMenu {
             System.out.print("Item's identifier: ");
             itemId = scanner.nextInt();
         }
-        for(int i=0; i<fc.showSuppItems(suppId).size(); i++){
-            if(fc.getItemIdByIndex(suppId,i) == itemId){
+        Iterator<Integer> iter = terms.keySet().iterator();
+        for(int i = 0; i < terms.size(); i++){
+            if(iter.hasNext() && iter.next() == itemId) {
+                System.out.print(fc.getItemNameById(itemId) + ", ");
+                System.out.print(terms.get(itemId) + "NIS\n");
+                System.out.print("New price: ");
+                double newPrice = scanner.nextDouble();
+                fc.setItemPrice(suppId, itemId, newPrice);
+            }
+           /* if(fc.getItemIdByIndex(suppId,i) == itemId){
                 String itemName = fc.getItemNameByIndex(suppId,i);
                 double itemPrice = terms.get(itemId);
                 System.out.print(itemName + ", ");
@@ -390,7 +389,7 @@ public class SupplierMenu {
                 System.out.print("New price: ");
                 double newPrice = scanner.nextDouble();
                 fc.setItemPrice(suppId, itemId, newPrice);
-            }
+            }*/
         }
         System.out.print("Price changed successfully. More items to update? [Y/N] ");
         Scanner scanner2 = new Scanner(System.in);

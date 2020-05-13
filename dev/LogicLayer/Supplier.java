@@ -128,7 +128,7 @@ public class Supplier {
         return this.items.size();
     }
 
-    public void setItemPrice(int itemId, double newPrice) { getAgreement().setPrice(itemId, newPrice);}
+    public void setItemPrice(int suppId, int itemId, double newPrice) { this.supplierMapper.setItemPrice(suppId, itemId, newPrice); }
 
     public boolean validateItemId(int itemId){
         if(this.items.contains(itemId)) return true;
@@ -170,5 +170,9 @@ public class Supplier {
 
     public int getSupplierSize() {
         return this.supplierMapper.getSupplierSize();
+    }
+
+    public LinkedHashMap<Integer, Double> showSuppItems(int suppId) {
+        return this.supplierMapper.showSuppItems(id);
     }
 }
