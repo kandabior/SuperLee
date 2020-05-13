@@ -5,6 +5,8 @@ import java.sql.*;
 import DTO.SupplierDTO;
 import com.sun.istack.internal.localization.NullLocalizable;
 import javafx.util.Pair;
+
+import java.text.DecimalFormat;
 import java.util.*;
 
 public class SupplierMapper {
@@ -241,6 +243,7 @@ public class SupplierMapper {
             }
             else return 0;
             } catch(Exception e){
+            tryClose();
                 System.err.println(e.getClass().getName() + ": " + e.getMessage());
                 return 0;
             }
@@ -270,7 +273,7 @@ public class SupplierMapper {
         }
     }
 
-    public static List<Integer> getSupplierItemsId(int suppId) {
+    public List<Integer> getSupplierItemsId(int suppId) {
         List<Integer> supplierItemsId = new LinkedList<>();
         try {
             if (tryOpen()) {
@@ -290,6 +293,7 @@ public class SupplierMapper {
             else return null;
         } catch(Exception e){
             System.err.println(e.getClass().getName() + ": " + e.getMessage());
+            tryClose();
             return null;
         }
     }
@@ -499,6 +503,171 @@ public class SupplierMapper {
         }
 
     }
+
+    public List<Integer> getSupplierIds() {
+        List<Integer> supplierId = new LinkedList<>();
+        try {
+            if (tryOpen()) {
+                Class.forName("org.sqlite.JDBC");
+                conn.setAutoCommit(false);
+                PreparedStatement st = conn.prepareStatement("SELECT id  FROM Suppliers ;");
+                ResultSet res = st.executeQuery();
+                while (res.next()) {
+                    supplierId.add(res.getInt("id"));
+                }
+                st.close();
+                conn.close();
+                return supplierId;
+            }
+            else return null;
+        } catch(Exception e){
+            System.err.println(e.getClass().getName() + ": " + e.getMessage());
+            tryClose();
+            return null;
+        }
+
+
+    }
+
+
+    public Double getPriceOfAmountOfItem(int supplierId, Integer itemId, Integer amount) {
+
+
+
+  /*      if (bill != null && bill.checkItemInBill(itemId, quantity) == true) {
+            double discount = bill.getMoneyAmountofItemInBill(itemId, quantity);
+            double cost = terms.get(itemId);
+            double costMulQuantity = (cost * quantity);
+            double x = costMulQuantity * (1 - discount);
+            DecimalFormat df = new DecimalFormat("#.##");
+            String dx = df.format(x);
+            x = Double.valueOf(dx);
+            return x;
+        } else {
+            double cost = terms.get(itemId);
+            return (cost * quantity);
+        }*/
+
+
+
+
+    return 0.0;
+    }
+
+    public boolean checkBillExist(int BillId) {
+        try {
+            if (tryOpen()) {
+                Class.forName("org.sqlite.JDBC");
+                conn.setAutoCommit(false);
+                PreparedStatement st = conn.prepareStatement("SELECT * FROM BillsOfQuantities WHERE billId = ?;");
+                st.setInt(1, BillId);
+                ResultSet res = st.executeQuery();
+                if (res.next()) {
+                    conn.commit();
+                    conn.close();
+                    st.close();
+                    return true;
+                } else {
+                    conn.rollback();
+                    conn.close();
+                    st.close();
+                    return false;
+                }
+            }
+        } catch (Exception e) {
+            tryClose();
+            System.err.println(e.getClass().getName() + ": " + e.getMessage());
+            return false;
+        }
+        return false;
+    }
+
+
+    public boolean checkInBillForDiscount(int BillId, Integer itemId, Integer amount) {
+        try {
+            if (tryOpen()) {
+                Class.forName("org.sqlite.JDBC");
+                conn.setAutoCommit(false);
+                PreparedStatement st = conn.prepareStatement("SELECT * FROM ItemsInBills WHERE billId = ? AND quantity<= ? AND itemId = ?;");
+                st.setInt(1, BillId);
+                st.setInt(2, amount);
+                st.setInt(3, itemId);
+                ResultSet res = st.executeQuery();
+                if (res.next()) {
+                    conn.commit();
+                    conn.close();
+                    st.close();
+                    return true;
+                } else {
+                    conn.rollback();
+                    conn.close();
+                    st.close();
+                    return false;
+                }
+            }
+        } catch (Exception e) {
+            tryClose();
+            System.err.println(e.getClass().getName() + ": " + e.getMessage());
+            return false;
+        }
+        return false;
+
+
+    }
+
+    public double getDiscount(int billId, Integer itemId) {
+        Double discount = 0.0;
+        try {
+            if (tryOpen()) {
+                Class.forName("org.sqlite.JDBC");
+                conn.setAutoCommit(false);
+                PreparedStatement st = conn.prepareStatement("SELECT discount  FROM ItemsInBills WHERE itemid =? AND billId = ? ;");
+                st.setInt(1, itemId);
+                st.setInt(2, billId);
+                ResultSet res = st.executeQuery();
+                if (res.next()) {
+                    discount = (res.getDouble("discount"));
+                }
+                st.close();
+                conn.close();
+                return discount;
+            }
+            else return 0.0;
+        } catch(Exception e){
+            System.err.println(e.getClass().getName() + ": " + e.getMessage());
+            tryClose();
+            return 0.0;
+        }
+
+    }
+
+    public double getPriceOfItem(int agreementId, Integer itemId) {
+        Double cost = 0.0;
+        try {
+            if (tryOpen()) {
+                Class.forName("org.sqlite.JDBC");
+                conn.setAutoCommit(false);
+                PreparedStatement st = conn.prepareStatement("SELECT price  FROM ItemsInAgreement WHERE itemid =? AND agreementId = ? ;");
+                st.setInt(1, itemId);
+                st.setInt(2, agreementId);
+                ResultSet res = st.executeQuery();
+                if (res.next()) {
+                    cost = (res.getDouble("discount"));
+                }
+                st.close();
+                conn.close();
+                return cost;
+            }
+            else return 0.0;
+        } catch(Exception e){
+            System.err.println(e.getClass().getName() + ": " + e.getMessage());
+            tryClose();
+            return 0.0;
+        }
+
+    }
+
+}
 /*
     public int bestSuppForItem(Integer itemId, Integer quantity) {
         Double min=100000000.0;
@@ -539,4 +708,4 @@ public class SupplierMapper {
 
  */
 
-}
+

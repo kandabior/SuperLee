@@ -201,11 +201,11 @@ public class FacadeController {
     }
 
     public List<String> getSupplierItemsNames(int suppId) {
-        return SupplierController.getSupplierItemsNames(suppId);
+        return supplierController.getSupplierItemsNames(suppId);
     }
 
     public List<Integer> getSupplierItemsId(int suppId) {
-        return SupplierController.getSupplierItemsId(suppId);
+        return supplierController.getSupplierItemsId(suppId);
     }
 
     public List<Object> getSupplierDeatails(int id) {

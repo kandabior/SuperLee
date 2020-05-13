@@ -1,5 +1,8 @@
 package DataAccessLayer;
 
+import DTO.OrderDTO;
+import DTO.OrderLineDTO;
+
 import java.sql.*;
 import java.util.*;
 
@@ -166,4 +169,79 @@ public class OrderMapper {
 
 
     }
+
+    public boolean insertOrder(OrderDTO o) {
+        //this.orderMapper.insert(o.getId(),o.getBranchId(),o.getSuppName(),o.getSuppId(),o.getOrderDate(),o.getAddress(),totalCost,o.getPhoneNumber(),o.getStatus());
+        try {
+            if (tryOpen()) {
+                Class.forName("org.sqlite.JDBC");
+                conn.setAutoCommit(false);
+                PreparedStatement st = conn.prepareStatement("INSERT INTO Orders VALUES (?,?,?,?,?,?,?,?,?);");
+                st.setInt(1, o.getId());
+                st.setInt(2, o.getBranchId());
+                st.setString(3, o.getSuppName());
+                st.setInt(4, o.getSuppId());
+                st.setString(5, o.getOrderDate());
+                st.setString(6, o.getAddress());
+                st.setDouble(7, o.getTotalCost());
+                st.setString(7, o.getPhoneNumber());
+                st.setString(7, o.getStatus());
+                int rowNum = st.executeUpdate();
+                st.close();
+                if (rowNum != 0) {
+                    conn.commit();
+                    conn.close();
+                    return true;
+                } else {
+                    conn.rollback();
+                    conn.close();
+
+                }
+            } else return false;
+        } catch (Exception e) {
+            tryClose();
+            System.err.println(e.getClass().getName() + ": " + e.getMessage());
+            return false;
+        }
+        return false;
+    }
+
+
+    public boolean insertOrderLines(OrderLineDTO o) {
+        try {
+            if (tryOpen()) {
+                Class.forName("org.sqlite.JDBC");
+                conn.setAutoCommit(false);
+                PreparedStatement st = conn.prepareStatement("INSERT INTO OrderLines VALUES (?,?,?,?,?,?,?,?);");
+                st.setInt(1, o.getOrderLineId());
+                st.setInt(2, o.getItemId());
+                st.setString(3, o.getItemName());
+                st.setInt(4, o.getItemQuantity());
+                st.setDouble(5, o.getItemCost());
+                st.setDouble(6, o.getItemDiscount());
+                st.setDouble(7, o.getFinalCost());
+                st.setInt(8, o.getOrderId());
+                int rowNum = st.executeUpdate();
+                st.close();
+                if (rowNum != 0) {
+                    conn.commit();
+                    conn.close();
+                    return true;
+                } else {
+                    conn.rollback();
+                    conn.close();
+
+                }
+            } else return false;
+        } catch (Exception e) {
+            tryClose();
+            System.err.println(e.getClass().getName() + ": " + e.getMessage());
+            return false;
+        }
+        return false;
+
+
+
+    }
 }
+

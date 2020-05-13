@@ -1,5 +1,7 @@
 package LogicLayer;
 
+import DTO.OrderDTO;
+import DTO.OrderLineDTO;
 import DataAccessLayer.OrderMapper;
 import InterfaceLayer.SupplierController;
 import javafx.util.Pair;
@@ -164,5 +166,19 @@ public class Order {
         return this.orderMapper.getSupplierDeatails(id);
 
 
+    }
+
+    public boolean insertOrder(OrderDTO o) {
+       //this.orderMapper.insert(o.getId(),o.getBranchId(),o.getSuppName(),o.getSuppId(),o.getOrderDate(),o.getAddress(),totalCost,o.getPhoneNumber(),o.getStatus());
+        if(this.orderMapper.insertOrder(o))
+        {
+            for (OrderLineDTO ot : o.getOrderLines())
+            {
+                this.orderMapper.insertOrderLines(ot);
+            }
+            return true;
+
+        }
+        return false;
     }
 }

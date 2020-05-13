@@ -30,8 +30,8 @@ public class SupplierController {
         return SupplierMapper.getSupplierItemsNames(suppId);
     }
 
-    public static List<Integer> getSupplierItemsId(int suppId) {
-        return SupplierMapper.getSupplierItemsId(suppId);
+    public List<Integer> getSupplierItemsId(int suppId) {
+        return this.supplier.getSupplierItemsId(suppId);
     }
 
     public boolean deleteSupplier(int id) {
@@ -160,7 +160,22 @@ public class SupplierController {
         Double min=100000000.0;
         int bestSuppId=-1;
         int size = this.supplier.getSupplierSize();
-        for(int i=0 ; i<suppliers.size();i++)
+        List<Integer> suppId = this.supplier.getSupplierIds();
+        for(int i=0 ; i<size;i++)
+        {
+             Double temp =getPriceOfAmountOfItem(suppId.get(i),itemId,quantity);
+             if(temp<min) {
+                 min = temp;
+                 bestSuppId=i;
+             }
+        }
+
+        return bestSuppId+1;
+
+
+
+      /*  List<Integer> suppId = this.supplier.getSupplierId();
+        for(int i=0 ; i<size;i++)
         {
              Double temp =suppliers.get(i).getPriceOfAmountOfItem(itemId,quantity);
              if(temp<min) {
@@ -169,11 +184,12 @@ public class SupplierController {
              }
         }
 
-        return bestSuppId+1;
+        return bestSuppId+1;*/
     }
 
     public Double getPriceOfAmountOfItem(int bestSuppForItem,Integer itemId, Integer amount) {
-        return getSuppById(bestSuppForItem).getPriceOfAmountOfItem(itemId,amount);
+         return this.supplier.getPriceOfAmountOfItem(bestSuppForItem,itemId,amount);
+       /* return getSuppById(bestSuppForItem).getPriceOfAmountOfItem(itemId,amount);*/
     }
 
     public boolean checkIfItemExist(int itemId) {
@@ -183,11 +199,14 @@ public class SupplierController {
     }
 
     public Double getPriceOfAmountOfItemBeforeDiscount(int suppId , int itemId , int amount) {
-        return getSuppById(suppId).getPriceOfAmountOfItemBeforeDiscount(itemId, amount);
+
+        return this.supplier.getPriceOfAmountOfItemBeforeDiscount(suppId,itemId,amount);
+        //return getSuppById(suppId).getPriceOfAmountOfItemBeforeDiscount(itemId, amount);
     }
 
     public Double getDiscountOfItem(int bestSuppForItem, int itemId , int amount) {
-        return getSuppById(bestSuppForItem).getDiscountOfItem(itemId, amount);
+        return this.supplier.getDiscount(bestSuppForItem,itemId,amount);
+        //return getSuppById(bestSuppForItem).getDiscountOfItem(itemId, amount);
     }
 
     public List<Object> getSuppDetails(int bestSuppForItem) {
