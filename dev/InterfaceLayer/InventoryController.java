@@ -1,10 +1,10 @@
 package InterfaceLayer;
 
-import LogicLayer.*;
+import LogicLayer.Inventory;
+import LogicLayer.ReportMaker;
 import javafx.util.Pair;
 
 import java.time.LocalDate;
-import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
@@ -12,21 +12,23 @@ import java.util.Map;
 public class InventoryController {
     private static InventoryController instance;
     //Global Manager : a manager that can change products include the prices of products
-    private Map<String,String> GlobalManager; // userName and Passwords of the inventory managers.
+    //private Map<String,String> GlobalManager; // userName and Passwords of the inventory managers.
 
     //inventory Manager : less than Global Manager, a manager that can change products but not prices
-    private Map<String,String> inventoryManagers; // userName and Passwords of the inventory managers.
+    //private Map<String,String> inventoryManagers; // userName and Passwords of the inventory managers.
 
     private ReportMaker reportMaker;
+    private Inventory inventory;
     //private Inventory inventory;
 
     //private Inventory inventory;
 
     private InventoryController(){
-        inventory = Inventory.getInventory();
         reportMaker = ReportMaker.getPrinter();
-        inventoryManagers = new HashMap<>();
-        GlobalManager = new HashMap<>();
+        inventory=Inventory.getInventory();
+        //    inventory = Inventory.getInventory();
+        //    inventoryManagers = new HashMap<>();
+        //   GlobalManager = new HashMap<>();
     }
 
     public static InventoryController getInventoryController() {
@@ -39,44 +41,27 @@ public class InventoryController {
 
     //Managers
 
-    /*public String addInventoryManager(String username, String password){
-        try {
-            if (inventoryManagers.containsKey(username))
-                return "can't register - username already exist";
-            inventoryManagers.put(username, password);
-            return "Inventory Manager " + username + " - registered successfully";
-        }
-        catch (Exception e){
-            return "can't execute the action";
-        }
-    }*/
     public String addInventoryManager(String username, String password){
-        return Inventory.addInventoryManager(username,password);
-    }
-    /*public String addGlobalManager(String username, String password){
         try {
-            if (GlobalManager.containsKey(username))
-                return "can't register - username already exist";
-            GlobalManager.put(username, password);
-            return "Global Manager " + username + " - registered successfully";
+            return inventory.addInventoryManager(username, password);
         }
         catch (Exception e){
-            return "can't execute the action";
+            return "cant execute the action";
         }
-    }*/
+    }
+
     public String addGlobalManager(String username, String password){
-        return Inventory.addGlobalManager(username,password);
+        try {
+            return inventory.addGlobalManager(username, password);
+        }
+        catch (Exception e){
+            return "cant execute the action";
+        }
     }
 
     public String removeInventoryManager(String username, String password , String usernameToRemove, String passwordToRemove){
         try {
-            if (!inventoryManagers.containsKey(username))
-                return "can't remove inventory manager - username doesnt exist";
-            if ((GlobalManager.containsKey(username) && GlobalManager.get(username).equals(password))) {
-                inventoryManagers.remove(usernameToRemove, passwordToRemove);
-                return "Inventory Manager - " + username + " removed";
-            } else
-                return "Only Global Manager can remove Inventory Manager";
+            return inventory.removeInventoryManagar(username,password,usernameToRemove);
         }
         catch (Exception e){
             return "can't execute the action";
@@ -84,11 +69,8 @@ public class InventoryController {
     }
     public String removeGlobalManager(String username, Integer password){
         try {
+            return inventory.removeGlobalManagar(username,password);
 
-            if (!GlobalManager.containsKey(username))
-                return "can't remove Global Manager - username doesnt exist";
-            GlobalManager.remove(username, password);
-            return "Global Manager - " + username + " removed";
         }
         catch (Exception e){
             return "can't execute the action";
@@ -99,7 +81,7 @@ public class InventoryController {
 
     public String CreateNewInventory(int newBranchId) {
         try{
-            return Inventory.CreateNewInventory(newBranchId);
+            return inventory.CreateNewInventory(newBranchId);
         }
         catch (Exception e){
             return "can't execute the action";
@@ -108,8 +90,8 @@ public class InventoryController {
     public String addProduct(int branchId,String username, String password, int prodid, int amount, Double costPrice, Double salePrice, LocalDate expDate, List<String> category, String manufacturer, int minAmount, String place){
         String prodName;
         try {
-            if ((GlobalManager.containsKey(username) && GlobalManager.get(username).equals(password)) || (inventoryManagers.containsKey(username) && inventoryManagers.get(username).equals(password))) {
-                prodName = Items.getName(prodid);
+            if (inventory.checkGlobalManagar(username,password)||inventory.checkInventoryManagar(username,password)) {
+                prodName = inventory.getItemName(prodid);
                 if(prodName!=null) {
                     return inventory.addProduct(branchId,prodid, amount, prodName, costPrice, salePrice, expDate, category, manufacturer, minAmount, place);
                 }
@@ -123,8 +105,9 @@ public class InventoryController {
     }
     public String removeProduct(int branchId,String username, String password, int prodid){
         try {
-            if ((GlobalManager.containsKey(username) && GlobalManager.get(username).equals(password)) || (inventoryManagers.containsKey(username) && inventoryManagers.get(username).equals(password)))
-                return inventory.removeProduct(branchId,prodid);
+            if (inventory.checkGlobalManagar(username,password)||inventory.checkInventoryManagar(username,password)) {
+                return inventory.removeProduct(branchId, prodid);
+            }
             return "can't remove product - you are need to be a Manager";
         }
         catch (Exception e){
@@ -149,8 +132,9 @@ public class InventoryController {
     }
     public String setSalePriceById(int branchId,String username, String password ,int prodid, Double price){
         try{
-            if(GlobalManager.containsKey(username) && GlobalManager.get(username).equals(password))
-                return inventory.setSalePrice(branchId,prodid,price);
+            if(inventory.checkGlobalManagar(username, password)) {
+                return inventory.setSalePrice(branchId, prodid, price);
+            }
             return "can't change price of product - you are need to be a Global Manager";
         }
         catch (Exception e){
@@ -159,8 +143,9 @@ public class InventoryController {
     }
     public String setPriceByCategory(int branchId,String username, String password , List<String> category,Double price){
         try {
-            if (GlobalManager.containsKey(username) && GlobalManager.get(username).equals(password))
-                return inventory.setPriceByCategory(branchId,category, price);
+            if (inventory.checkGlobalManagar(username, password)) {
+                return inventory.setPriceByCategory(branchId, category, price);
+            }
             return "can't change price of product - you are need to be a Global Manager";
         }
         catch (Exception e){
@@ -169,17 +154,19 @@ public class InventoryController {
     }
     public String setCategory(int branchId,String username, String password, int id, List<String> category){
         try{
-            if((GlobalManager.containsKey(username) && GlobalManager.get(username).equals(password)) || (inventoryManagers.containsKey(username) && inventoryManagers.get(username).equals(password)))
-                return inventory.setCategory(branchId, id,category);
+            if(inventory.checkGlobalManagar(username, password)||inventory.checkInventoryManagar(username, password)) {
+                return inventory.setCategory(branchId, id, category);
+            }
             return "can't remove product - you are need to be a Manager";
         }
         catch (Exception e){
             return "can't execute the action";
         }
     }
+
     public String setDefectiveProducts(int branchId,Integer prodId, Integer amount) {
         try {
-            return inventory.setDefectiveProducts(branchId,prodId,amount);
+            return inventory.setExpired(branchId,prodId,amount);
         }
         catch (Exception e){
             return "can't execute the action";
@@ -216,7 +203,7 @@ public class InventoryController {
             List<Pair<Integer,Integer>> toOrder=new LinkedList<>();
             List<Integer> noOrder=new LinkedList<>();
             for(Pair<Integer,Integer> prod : id_amount){
-                if(inventory.conteinsProduct(prod.getKey())){
+                if(inventory.conteinsProduct(branchId,prod.getKey())){
                     toOrder.add(prod);
                 }
                 else{
@@ -244,7 +231,7 @@ public class InventoryController {
     }
     public String PromoteDay(Integer dayOfTheWeek) {
         String output="";
-        List<Integer> branchIds= Inventory.getBranchIdsToWeeklyOrders(dayOfTheWeek);
+        List<Integer> branchIds= inventory.getBranchIdsToWeeklyOrders(dayOfTheWeek);
         for(Integer branchId : branchIds){
             List<Pair<Integer,Integer>> toOrder= inventory.getWeeklyOrder(branchId);
             if(!toOrder.isEmpty()) {

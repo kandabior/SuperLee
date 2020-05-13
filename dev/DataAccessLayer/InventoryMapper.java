@@ -9,11 +9,15 @@ import java.util.List;
 
 public class InventoryMapper {
 
+    private Connection c;
+    public InventoryMapper(){
+
+    }
+
     //Managers
 
-    public static String addInventoryManager(String username, String password) {
+    public boolean addInventoryManager(String username, String password) {
         PreparedStatement stmt = null;
-        Connection c = null;
         try {
             Class.forName("org.sqlite.JDBC");
             c = DriverManager.getConnection("jdbc:sqlite:dev\\EOEDdatabase.db");
@@ -24,7 +28,7 @@ public class InventoryMapper {
             stmt.executeUpdate();
             stmt.close();
             c.commit();
-            return "Inventory Manager " + username + " - registered successfully";
+            return true;
         } catch (Exception e) {
             if (c != null) {
                 try {
@@ -34,12 +38,11 @@ public class InventoryMapper {
                 }
             }
             System.err.println(e.getClass().getName() + ": " + e.getMessage());
-            return "cant register - " + username + " already exist";
+            return false;
         }
     }
-    public static String addGlobalManager(String username, String password){
+    public boolean addGlobalManager(String username, String password){
         PreparedStatement stmt = null;
-        Connection c = null;
         try {
             Class.forName("org.sqlite.JDBC");
             c = DriverManager.getConnection("jdbc:sqlite:dev\\EOEDdatabase.db");
@@ -50,7 +53,7 @@ public class InventoryMapper {
             stmt.executeUpdate();
             stmt.close();
             c.commit();
-            return "Global Manager " + username + " - registered successfully";
+            return true;
         } catch (Exception e) {
             if (c != null) {
                 try {
@@ -60,15 +63,34 @@ public class InventoryMapper {
                 }
             }
             System.err.println(e.getClass().getName() + ": " + e.getMessage());
-            return "cant register - " + username + " already exist";
+            return false;
         }
     }
+    public boolean isInventoryManagerExist(String username) {
+        return true;
+    }
 
+    public boolean isGlobalMannagerExist(String username) {
+        return true;
+    }
+
+    public boolean checkGlobalManagar(String username, String password) {
+        return true;
+    }
+
+    public boolean removeInventoryManagar(String usernameToRemove) {
+
+        return true;
+    }
+
+    public boolean removeGlobalManagar(String username, Integer password) {
+        return true;
+
+    }
 
     //Inventory
-    public static boolean CreateNewInventory(Integer branchId) {
+    public  boolean CreateNewInventory(Integer branchId) {
         PreparedStatement stmt = null;
-        Connection c = null;
         try {
             Class.forName("org.sqlite.JDBC");
             c = DriverManager.getConnection("jdbc:sqlite:dev\\EOEDdatabase.db");
@@ -91,9 +113,8 @@ public class InventoryMapper {
             return false;
         }
     }
-    public static boolean addProduct(int branchId, int id, String name, Double costPrice, Double salePrice, LocalDate expDate, List<String> category, String manufacturer, int minAmount, String place) {
+    public  boolean addProduct(int branchId, int id, String name, Double costPrice, Double salePrice, LocalDate expDate, List<String> category, String manufacturer, int minAmount, String place) {
         PreparedStatement stmt=null;
-        Connection c = null;
         try{
             Class.forName("org.sqlite.JDBC");
             c = DriverManager.getConnection("jdbc:sqlite:dev\\EOEDdatabase.db");
@@ -129,9 +150,8 @@ public class InventoryMapper {
         }
         return false;
     }
-    public static String getProductName(int branchId, int prodId) {
+    public  String getProductName(int branchId, int prodId) {
         PreparedStatement stmt=null;
-        Connection c = null;
         try{
             Class.forName("org.sqlite.JDBC");
             c = DriverManager.getConnection("jdbc:sqlite:dev\\EOEDdatabase.db");
@@ -150,9 +170,8 @@ public class InventoryMapper {
         return "Product Id :" + prodId + " Does not exist in inventory number " + branchId;
     }
 
-    public static String removeProduct(int branchId, int id) {
+    public  String removeProduct(int branchId, int id) {
         PreparedStatement stmt=null;
-        Connection c = null;
         try{
             Class.forName("org.sqlite.JDBC");
             c = DriverManager.getConnection("jdbc:sqlite:dev\\EOEDdatabase.db");
@@ -183,9 +202,8 @@ public class InventoryMapper {
         return "cant removed this product";
     }
 
-    public static boolean addNewAmountProductToQuantities(int branchId, int id, int amount) {
+    public  boolean addNewAmountProductToQuantities(int branchId, int id, int amount) {
         PreparedStatement stmt=null;
-        Connection c = null;
         try{
             Class.forName("org.sqlite.JDBC");
             c = DriverManager.getConnection("jdbc:sqlite:dev\\EOEDdatabase.db");
@@ -210,9 +228,8 @@ public class InventoryMapper {
         return false;
     }
 
-    public static boolean addAmountToProduct(int branchId, int id, int amount) { //adding half to storage half to shelf
+    public  boolean addAmountToProduct(int branchId, int id, int amount) { //adding half to storage half to shelf
         PreparedStatement stmt = null;
-        Connection c = null;
         try{
             Class.forName("org.sqlite.JDBC");
             c = DriverManager.getConnection("jdbc:sqlite:dev\\EOEDdatabase.db");
@@ -237,9 +254,8 @@ public class InventoryMapper {
         return false;
     }
 
-    public static String removeAmountFromProductShelf(int branchId, int id, int amount) {
+    public  String removeAmountFromProductShelf(int branchId, int id, int amount) {
         PreparedStatement stmt=null;
-        Connection c = null;
         try{
             Class.forName("org.sqlite.JDBC");
             c = DriverManager.getConnection("jdbc:sqlite:dev\\EOEDdatabase.db");
@@ -263,9 +279,8 @@ public class InventoryMapper {
         return "cant removed this amount of product";
     }
 
-    public static String removeAmountFromProductStorage(int branchId, int id, int amount) {
+    public  String removeAmountFromProductStorage(int branchId, int id, int amount) {
         PreparedStatement stmt=null;
-        Connection c = null;
         try{
             Class.forName("org.sqlite.JDBC");
             c = DriverManager.getConnection("jdbc:sqlite:dev\\EOEDdatabase.db");
@@ -289,9 +304,8 @@ public class InventoryMapper {
         return "cant removed this amount of product";
     }
 
-    public static boolean setSalePrice(int branchId, int id, Double price) {
+    public  boolean setSalePrice(int branchId, int id, Double price) {
         PreparedStatement stmt=null;
-        Connection c = null;
         try{
             Class.forName("org.sqlite.JDBC");
             c = DriverManager.getConnection("jdbc:sqlite:dev\\EOEDdatabase.db");
@@ -321,9 +335,8 @@ public class InventoryMapper {
         return false;
     }
 
-    public static int getProductMin(int branchId, int prodId) {
+    public  int getProductMin(int branchId, int prodId) {
         PreparedStatement stmt=null;
-        Connection c = null;
         try{
             Class.forName("org.sqlite.JDBC");
             c = DriverManager.getConnection("jdbc:sqlite:dev\\EOEDdatabase.db");
@@ -343,9 +356,8 @@ public class InventoryMapper {
         }
         return -1;
     }
-    public static String setCategory(int branchId, int id, List<String> category) {
+    public  String setCategory(int branchId, int id, List<String> category) {
         PreparedStatement stmt=null;
-        Connection c = null;
         try{
             Class.forName("org.sqlite.JDBC");
             c = DriverManager.getConnection("jdbc:sqlite:dev\\EOEDdatabase.db");
@@ -382,9 +394,8 @@ public class InventoryMapper {
         }
     }
 
-    public static boolean updateExpired(Integer branchId, Integer prodId, Integer amount) {
+    public  boolean updateExpired(Integer branchId, Integer prodId, Integer amount) {
         PreparedStatement stmt=null;
-        Connection c = null;
         try{
             Class.forName("org.sqlite.JDBC");
             c = DriverManager.getConnection("jdbc:sqlite:dev\\EOEDdatabase.db");
@@ -424,9 +435,8 @@ public class InventoryMapper {
         //"TODO//check";
     }
 
-    public static boolean addExpired(Integer branchId, Integer prodId, Integer amount) {
+    public  boolean addExpired(Integer branchId, Integer prodId, Integer amount) {
         PreparedStatement stmt=null;
-        Connection c = null;
         try{
 
 
@@ -451,9 +461,8 @@ public class InventoryMapper {
         //TODO//IMPlEMENT";
     }
 
-    public static boolean shelfToStorage(int branchId, int id, int amount) {
+    public  boolean shelfToStorage(int branchId, int id, int amount) {
         PreparedStatement stmt=null;
-        Connection c = null;
         try{
             Class.forName("org.sqlite.JDBC");
             c = DriverManager.getConnection("jdbc:sqlite:dev\\EOEDdatabase.db");
@@ -502,9 +511,8 @@ public class InventoryMapper {
         //TODO: check
     }
 
-    public static boolean storageToShelf(int branchId, int id, int amount) {
+    public  boolean storageToShelf(int branchId, int id, int amount) {
         PreparedStatement stmt=null;
-        Connection c = null;
         try{
             Class.forName("org.sqlite.JDBC");
             c = DriverManager.getConnection("jdbc:sqlite:dev\\EOEDdatabase.db");
@@ -558,9 +566,8 @@ public class InventoryMapper {
 //        return -1;
 //    }
 
-    public static int getProductQuantity(int branchId, Integer id) {
+    public  int getProductQuantity(int branchId, Integer id) {
         PreparedStatement stmt=null;
-        Connection c = null;
         try{
             Class.forName("org.sqlite.JDBC");
             c = DriverManager.getConnection("jdbc:sqlite:dev\\EOEDdatabase.db");
@@ -591,9 +598,8 @@ public class InventoryMapper {
 
     }
 
-    public static int getShelfQunatity(int branchId, Integer id) {
+    public  int getShelfQunatity(int branchId, Integer id) {
         PreparedStatement stmt=null;
-        Connection c = null;
         try{
             Class.forName("org.sqlite.JDBC");
             c = DriverManager.getConnection("jdbc:sqlite:dev\\EOEDdatabase.db");
@@ -622,9 +628,8 @@ public class InventoryMapper {
 
     }
 
-    public static int getStorageQunatity(int branchId, Integer id) {
+    public  int getStorageQunatity(int branchId, Integer id) {
         PreparedStatement stmt=null;
-        Connection c = null;
         try{
             Class.forName("org.sqlite.JDBC");
             c = DriverManager.getConnection("jdbc:sqlite:dev\\EOEDdatabase.db");
@@ -652,9 +657,8 @@ public class InventoryMapper {
         }
     }
 
-    public static int getExpiredQuantity(int branchId, Integer id) {
+    public  int getExpiredQuantity(int branchId, Integer id) {
         PreparedStatement stmt=null;
-        Connection c = null;
         try{
             Class.forName("org.sqlite.JDBC");
             c = DriverManager.getConnection("jdbc:sqlite:dev\\EOEDdatabase.db");
@@ -682,9 +686,8 @@ public class InventoryMapper {
         }
     }
 
-    public static List<Double> getSalePrices(int branchId, int id) {
+    public  List<Double> getSalePrices(int branchId, int id) {
         PreparedStatement stmt=null;
-        Connection c = null;
         try{
             List<Double> output=new LinkedList<>();
             Class.forName("org.sqlite.JDBC");
@@ -713,9 +716,8 @@ public class InventoryMapper {
         }
     }
 
-    public static List<Double> getCostPrices(int branchId, int id) {
+    public  List<Double> getCostPrices(int branchId, int id) {
         PreparedStatement stmt=null;
-        Connection c = null;
         try{
             List<Double> output=new LinkedList<>();
             Class.forName("org.sqlite.JDBC");
@@ -745,9 +747,8 @@ public class InventoryMapper {
 
     }
 
-    public static List<Integer> getBranchIdsToWeeklyOrders(int dayOfTheWeek) {
+    public  List<Integer> getBranchIdsToWeeklyOrders(int dayOfTheWeek) {
         PreparedStatement stmt=null;
-        Connection c = null;
         try{
             List<Integer> output=new LinkedList<>();
             Class.forName("org.sqlite.JDBC");
@@ -775,7 +776,7 @@ public class InventoryMapper {
         }
     }
 
-    private static void tryClose(Connection c) {
+    private void tryClose(Connection c) {
         try {
             c.rollback();
             c.close();
@@ -785,9 +786,8 @@ public class InventoryMapper {
 
     }
 
-    public static boolean isBranchExist(int branchId) {
+    public  boolean isBranchExist(int branchId) {
         PreparedStatement stmt=null;
-        Connection c = null;
         try{
             Class.forName("org.sqlite.JDBC");
             c = DriverManager.getConnection("jdbc:sqlite:dev\\EOEDdatabase.db");
@@ -815,9 +815,8 @@ public class InventoryMapper {
 
     }
 
-    public static boolean isInventoryConteinsProd(int branchId, int prodId) {
+    public  boolean isInventoryConteinsProd(int branchId, int prodId) {
         PreparedStatement stmt=null;
-        Connection c = null;
         try{
             Class.forName("org.sqlite.JDBC");
             c = DriverManager.getConnection("jdbc:sqlite:dev\\EOEDdatabase.db");
@@ -845,9 +844,8 @@ public class InventoryMapper {
         }
     }
 
-    public static double getCurrentCostPrices(int branchId, Integer prodId) {
+    public  double getCurrentCostPrices(int branchId, Integer prodId) {
         PreparedStatement stmt=null;
-        Connection c = null;
         try{
             Class.forName("org.sqlite.JDBC");
             c = DriverManager.getConnection("jdbc:sqlite:dev\\EOEDdatabase.db");
@@ -877,9 +875,8 @@ public class InventoryMapper {
 
     }
 
-    public static void setCostPrice(int branchId, Integer prodId, double newPrice) {
+    public  void setCostPrice(int branchId, Integer prodId, double newPrice) {
         PreparedStatement stmt=null;
-        Connection c = null;
         try{
             Class.forName("org.sqlite.JDBC");
             c = DriverManager.getConnection("jdbc:sqlite:dev\\EOEDdatabase.db");
@@ -913,9 +910,8 @@ public class InventoryMapper {
         }
     }
 
-    public static List<Integer> getProductsIds(int branchId) {
+    public  List<Integer> getProductsIds(int branchId) {
         PreparedStatement stmt=null;
-        Connection c = null;
         try{
             List<Integer> output=new LinkedList<>();
             Class.forName("org.sqlite.JDBC");
@@ -938,9 +934,8 @@ public class InventoryMapper {
 
     }
 
-    public static List<String> getProductCategories(int branchId, Integer id) {
+    public  List<String> getProductCategories(int branchId, Integer id) {
         PreparedStatement stmt=null;
-        Connection c = null;
         try{
             List<String> output=new LinkedList<>();
             Class.forName("org.sqlite.JDBC");
@@ -963,9 +958,8 @@ public class InventoryMapper {
         }
     }
 
-    public static List<Integer> getExpiredIds(int branchId) {
+    public  List<Integer> getExpiredIds(int branchId) {
         PreparedStatement stmt=null;
-        Connection c = null;
         try{
             List<Integer> output=new LinkedList<>();
             Class.forName("org.sqlite.JDBC");
@@ -988,9 +982,8 @@ public class InventoryMapper {
 
     }
 
-    public static boolean isExpiredContainProduct(int branchId, int productId) {
+    public  boolean isExpiredContainProduct(int branchId, int productId) {
         PreparedStatement stmt=null;
-        Connection c = null;
         try{
             Class.forName("org.sqlite.JDBC");
             c = DriverManager.getConnection("jdbc:sqlite:dev\\EOEDdatabase.db");
@@ -1019,9 +1012,8 @@ public class InventoryMapper {
 
     }
 
-    public static boolean setWeeklyOrder(int branchId, int day) {
+    public  boolean setWeeklyOrder(int branchId, int day) {
         PreparedStatement stmt=null;
-        Connection c = null;
         try{
             Class.forName("org.sqlite.JDBC");
             c = DriverManager.getConnection("jdbc:sqlite:dev\\EOEDdatabase.db");
@@ -1043,9 +1035,8 @@ public class InventoryMapper {
         }
     }
 
-    public static void AddToWeeklyOrder(int branchId, Integer key, Integer value) {
+    public  void AddToWeeklyOrder(int branchId, Integer key, Integer value) {
         PreparedStatement stmt=null;
-        Connection c = null;
         try{
             stmt=c.prepareStatement("INSERT INTO WeeklyOrders values (?,?,?)");
             stmt.setInt(1,branchId);
@@ -1067,9 +1058,8 @@ public class InventoryMapper {
         }
     }
 
-    public static boolean isWeeklyContainProd(int branchId,Integer ids) {
+    public  boolean isWeeklyContainProd(int branchId,Integer ids) {
         PreparedStatement stmt=null;
-        Connection c = null;
         try{
             Class.forName("org.sqlite.JDBC");
             c = DriverManager.getConnection("jdbc:sqlite:dev\\EOEDdatabase.db");
@@ -1097,9 +1087,8 @@ public class InventoryMapper {
 
     }
 
-    public static void removeFromWeeklyOrder(int branchId, Integer id) {
+    public  void removeFromWeeklyOrder(int branchId, Integer id) {
         PreparedStatement stmt=null;
-        Connection c = null;
         try{
             stmt=c.prepareStatement("DELETE FROM WeeklyOrders WHERE branchId=? AND productId=?");
             stmt.setInt(1,branchId);
@@ -1120,9 +1109,8 @@ public class InventoryMapper {
         }
     }
 
-    public static List<Pair<Integer, Integer>> getWeeklyOrder(int branchId) {
+    public  List<Pair<Integer, Integer>> getWeeklyOrder(int branchId) {
         PreparedStatement stmt=null;
-        Connection c = null;
         try{
             List<Pair<Integer,Integer>> output=new LinkedList<>();
             Class.forName("org.sqlite.JDBC");
@@ -1146,4 +1134,6 @@ public class InventoryMapper {
 
 
     }
+
+
 }
