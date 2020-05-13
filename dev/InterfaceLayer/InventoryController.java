@@ -20,7 +20,7 @@ public class InventoryController {
     private ReportMaker reportMaker;
     //private Inventory inventory;
 
-    private Inventory inventory;
+    //private Inventory inventory;
 
     private InventoryController(){
         inventory = Inventory.getInventory();
