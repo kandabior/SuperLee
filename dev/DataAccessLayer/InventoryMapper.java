@@ -25,7 +25,7 @@ public class InventoryMapper {
             stmt = c.prepareStatement("INSERT INTO InventoryManagers VALUES (?,?,?);");
             stmt.setInt(1, branchId);
             stmt.setString(2, username);
-            stmt.setString(2, password);
+            stmt.setString(3, password);
             stmt.executeUpdate();
             stmt.close();
             c.commit();
@@ -51,7 +51,7 @@ public class InventoryMapper {
             stmt = c.prepareStatement("INSERT INTO GlobalManagers VALUES (?,?,?);");
             stmt.setInt(1, branchId);
             stmt.setString(2, username);
-            stmt.setString(2, password);
+            stmt.setString(3, password);
             stmt.executeUpdate();
             stmt.close();
             c.commit();
@@ -68,7 +68,6 @@ public class InventoryMapper {
             return false;
         }
     }
-
     public boolean isInventoryManagerExist(int branchId,String username) {
         PreparedStatement stmt = null;
         try {
@@ -97,7 +96,6 @@ public class InventoryMapper {
         }
 
     }
-
     public boolean isGlobalMannagerExist(int branchId,String username) {
         PreparedStatement stmt = null;
         try {
@@ -126,7 +124,6 @@ public class InventoryMapper {
         }
 
     }
-
     public boolean checkGlobalManagar(int branchId,String username, String password) {
         PreparedStatement stmt = null;
         try {
@@ -135,14 +132,14 @@ public class InventoryMapper {
             c.setAutoCommit(false);
             stmt = c.prepareStatement("SELECT password FROM GlobalManagers WHERE branchId=? AND userName=?;");
             stmt.setInt(1, branchId);
-            stmt.setString(1, username);
+            stmt.setString(2, username);
             ResultSet rs = stmt.executeQuery();
             if (rs.next()) {
                 String realPass=rs.getString("password");
                 rs.close();
                 stmt.close();
                 c.close();
-                return realPass==password;
+                return realPass.equals(password);
             } else {
                 rs.close();
                 stmt.close();
@@ -156,7 +153,6 @@ public class InventoryMapper {
         }
 
     }
-
     public boolean checkInventoryManagar(int branchId,String username, String password) {
         PreparedStatement stmt = null;
         try {
@@ -165,18 +161,16 @@ public class InventoryMapper {
             c.setAutoCommit(false);
             stmt = c.prepareStatement("SELECT password FROM InventoryManagers WHERE branchId=? AND userName=?;");
             stmt.setInt(1, branchId);
-            stmt.setString(1, username);
+            stmt.setString(2, username);
             ResultSet rs = stmt.executeQuery();
             if (rs.next()) {
                 String realPass=rs.getString("password");
                 rs.close();
                 stmt.close();
-                c.close();
-                return realPass==password;
+                return realPass.equals(password);
             } else {
                 rs.close();
                 stmt.close();
-                c.close();
                 return false;
             }
         } catch (Exception e) {
@@ -185,7 +179,6 @@ public class InventoryMapper {
             return false;
         }
     }
-
     public boolean removeInventoryManagar(int branchId,String usernameToRemove) {
         PreparedStatement stmt = null;
         try {
@@ -211,7 +204,6 @@ public class InventoryMapper {
 
 
     }
-
     public boolean removeGlobalManagar(int branchId,String username, String password) {
         PreparedStatement stmt = null;
         try {
@@ -289,6 +281,18 @@ public class InventoryMapper {
                 stmt.setString(3, cat);
                 stmt.executeUpdate();
             }
+            stmt = c.prepareStatement("INSERT INTO LastCostPrices VALUES (?,?,?);");
+            stmt.setInt(1, branchId);
+            stmt.setInt(2, id);
+            stmt.setDouble(3, costPrice);
+            stmt.executeUpdate();
+
+            stmt = c.prepareStatement("INSERT INTO LastSalePrices VALUES (?,?,?);");
+            stmt.setInt(1, branchId);
+            stmt.setInt(2, id);
+            stmt.setDouble(3, salePrice);
+            stmt.executeUpdate();
+
             stmt.close();
             c.commit();
             return true;
@@ -321,7 +325,6 @@ public class InventoryMapper {
         }
         return "Product Id :" + prodId + " Does not exist in inventory number " + branchId;
     }
-
     public  String removeProduct(int branchId, int id) {
         PreparedStatement stmt=null;
         try{
@@ -336,7 +339,19 @@ public class InventoryMapper {
             stmt.setInt(1, branchId);
             stmt.setInt(2, id);
             stmt.executeUpdate();
-            stmt = c.prepareStatement("DELETE FROM Expired WHERE branchId=? AND productId=?;");
+            stmt = c.prepareStatement("DELETE FROM Expireds WHERE branchId=? AND productId=?;");
+            stmt.setInt(1, branchId);
+            stmt.setInt(2, id);
+            stmt.executeUpdate();
+            stmt = c.prepareStatement("DELETE FROM Categories WHERE branchId=? AND productId=?;");
+            stmt.setInt(1, branchId);
+            stmt.setInt(2, id);
+            stmt.executeUpdate();
+            stmt = c.prepareStatement("DELETE FROM LastCostPrices WHERE branchId=? AND productId=?;");
+            stmt.setInt(1, branchId);
+            stmt.setInt(2, id);
+            stmt.executeUpdate();
+            stmt = c.prepareStatement("DELETE FROM LastSalePrices WHERE branchId=? AND productId=?;");
             stmt.setInt(1, branchId);
             stmt.setInt(2, id);
             stmt.executeUpdate();
@@ -353,7 +368,6 @@ public class InventoryMapper {
         }
         return "cant removed this product";
     }
-
     public  boolean addNewAmountProductToQuantities(int branchId, int id, int amount) {
         PreparedStatement stmt=null;
         try{
@@ -379,7 +393,6 @@ public class InventoryMapper {
         }
         return false;
     }
-
     public  boolean addAmountToProduct(int branchId, int id, int amount) { //adding half to storage half to shelf
         PreparedStatement stmt = null;
         try{
@@ -405,7 +418,6 @@ public class InventoryMapper {
         }
         return false;
     }
-
     public  String removeAmountFromProductShelf(int branchId, int id, int amount) {
         PreparedStatement stmt=null;
         try{
@@ -430,7 +442,6 @@ public class InventoryMapper {
         }
         return "cant removed this amount of product";
     }
-
     public  String removeAmountFromProductStorage(int branchId, int id, int amount) {
         PreparedStatement stmt=null;
         try{
@@ -455,7 +466,6 @@ public class InventoryMapper {
         }
         return "cant removed this amount of product";
     }
-
     public  boolean setSalePrice(int branchId, int id, Double price) {
         PreparedStatement stmt=null;
         try{
@@ -467,6 +477,7 @@ public class InventoryMapper {
             stmt.setInt(2, branchId);
             stmt.setInt(3, id);
             stmt.executeUpdate();
+
             stmt = c.prepareStatement("INSERT INTO LastSalePrices VALUES (?,?,?);");
             stmt.setInt(1, branchId);
             stmt.setInt(2, id);
@@ -474,7 +485,6 @@ public class InventoryMapper {
             stmt.executeUpdate();
             stmt.close();
             c.commit();
-            c.close();
             return true;
         } catch ( Exception e ) {
             try {
@@ -482,11 +492,10 @@ public class InventoryMapper {
             } catch (SQLException ex) {
                 ex.printStackTrace();
             }
-            System.out.println(e.getClass().getName() + ": " + e.getMessage());
+            System.err.println(e.getClass().getName() + ": " + e.getMessage());
         }
         return false;
     }
-
     public  int getProductMin(int branchId, int prodId) {
         PreparedStatement stmt=null;
         try{
@@ -545,7 +554,6 @@ public class InventoryMapper {
             return "Failed to update categories for product: "+id+" in branch: "+branchId;
         }
     }
-
     public  boolean updateExpired(Integer branchId, Integer prodId, Integer amount) {
         PreparedStatement stmt=null;
         try{
@@ -586,7 +594,6 @@ public class InventoryMapper {
         }
         //"TODO//check";
     }
-
     public  boolean addExpired(Integer branchId, Integer prodId, Integer amount) {
         PreparedStatement stmt=null;
         try{
@@ -612,7 +619,6 @@ public class InventoryMapper {
         }
         //TODO//IMPlEMENT";
     }
-
     public  boolean shelfToStorage(int branchId, int id, int amount) {
         PreparedStatement stmt=null;
         try{
@@ -662,7 +668,6 @@ public class InventoryMapper {
         }
         //TODO: check
     }
-
     public  boolean storageToShelf(int branchId, int id, int amount) {
         PreparedStatement stmt=null;
         try{
@@ -712,12 +717,10 @@ public class InventoryMapper {
         }
         //TODO: check
     }
-
 //    public static List<Pair<Integer,Integer>> getProductQuantity(int branchId) {
 //        //"TODO//IMPlEMENT";
 //        return -1;
 //    }
-
     public  int getProductQuantity(int branchId, Integer id) {
         PreparedStatement stmt=null;
         try{
@@ -732,6 +735,7 @@ public class InventoryMapper {
                 int shelfQuantity = rs.getInt("shelfQuantity");
                 int storageQuantity = rs.getInt("storageQuantity");
                 stmt.close();
+                rs.close();
                 c.close();
                 return shelfQuantity+storageQuantity;
             }
@@ -749,7 +753,6 @@ public class InventoryMapper {
         //TODO: check
 
     }
-
     public  int getShelfQunatity(int branchId, Integer id) {
         PreparedStatement stmt=null;
         try{
@@ -779,7 +782,6 @@ public class InventoryMapper {
         }
 
     }
-
     public  int getStorageQunatity(int branchId, Integer id) {
         PreparedStatement stmt=null;
         try{
@@ -808,7 +810,6 @@ public class InventoryMapper {
             return 0;
         }
     }
-
     public  int getExpiredQuantity(int branchId, Integer id) {
         PreparedStatement stmt=null;
         try{
@@ -837,7 +838,6 @@ public class InventoryMapper {
             return 0;
         }
     }
-
     public  List<Double> getSalePrices(int branchId, int id) {
         PreparedStatement stmt=null;
         try{
@@ -867,7 +867,6 @@ public class InventoryMapper {
             return new LinkedList<>();
         }
     }
-
     public  List<Double> getCostPrices(int branchId, int id) {
         PreparedStatement stmt=null;
         try{
@@ -898,7 +897,6 @@ public class InventoryMapper {
         }
 
     }
-
     public  List<Integer> getBranchIdsToWeeklyOrders(int dayOfTheWeek) {
         PreparedStatement stmt=null;
         try{
@@ -927,7 +925,6 @@ public class InventoryMapper {
             return new LinkedList<>();
         }
     }
-
     private void tryClose(Connection c) {
         try {
             c.rollback();
@@ -937,7 +934,6 @@ public class InventoryMapper {
         }
 
     }
-
     public  boolean isBranchExist(int branchId) {
         PreparedStatement stmt=null;
         try{
@@ -966,7 +962,6 @@ public class InventoryMapper {
         }
 
     }
-
     public  boolean isInventoryConteinsProd(int branchId, int prodId) {
         PreparedStatement stmt=null;
         try{
@@ -995,7 +990,6 @@ public class InventoryMapper {
             return false;
         }
     }
-
     public  double getCurrentCostPrices(int branchId, Integer prodId) {
         PreparedStatement stmt=null;
         try{
@@ -1072,10 +1066,11 @@ public class InventoryMapper {
             stmt = c.prepareStatement("SELECT productId FROM Products WHERE branchId=?;");
             stmt.setInt(1, branchId);
             ResultSet rs = stmt.executeQuery();
-            if(rs.next()) {
+            while(rs.next()) {
                 output.add(rs.getInt("productId"));
             }
             stmt.close();
+            rs.close();
             c.close();
             return output;
         } catch ( Exception e ) {
@@ -1097,10 +1092,11 @@ public class InventoryMapper {
             stmt.setInt(1, branchId);
             stmt.setInt(2, id);
             ResultSet rs = stmt.executeQuery();
-            if(rs.next()) {
+            while(rs.next()) {
                 output.add(rs.getString("category"));
             }
             stmt.close();
+            rs.close();
             c.close();
             return output;
         } catch ( Exception e ) {

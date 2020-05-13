@@ -95,11 +95,12 @@ public class InventoryController {
                 if(prodName!=null) {
                     return inventory.addProduct(branchId,prodid, amount, prodName, costPrice, salePrice, expDate, category, manufacturer, minAmount, place);
                 }
-                return "can't execute the action";
+                return "can not execute the action";
 
             }
             return "can't add product - you are need to be a Manager";
         }catch (Exception e){
+            System.err.println(e.getClass().getName() + ": " + e.getMessage());
             return "can't execute the action";
         }
     }

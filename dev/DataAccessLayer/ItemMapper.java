@@ -63,6 +63,7 @@ public class ItemMapper {
                 String ans =res.getString("itemName");
                 st.close();
                 conn.close();
+                System.out.println(ans);
                return ans;
             }
             conn.close();
