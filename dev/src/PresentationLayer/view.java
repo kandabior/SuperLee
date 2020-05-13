@@ -1,7 +1,7 @@
 package PresentationLayer;
 
 
-import BusinessLayer.service;
+import BusinessLayer.EmployeeModule.service;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -10,7 +10,7 @@ import java.util.*;
 
 public class view {
 
-    BusinessLayer.service service = new service();
+    BusinessLayer.EmployeeModule.service service = new service();
 
     public static void main(String[] args) {
         view view = new view();

@@ -1,6 +1,4 @@
-package BusinessLayer;
-
-import BusinessLayer.ShiftType;
+package BusinessLayer.EmployeeModule;
 
 import java.util.Date;
 import java.util.List;

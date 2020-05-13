@@ -1,7 +1,7 @@
 package Tests;
 
-import BusinessLayer.Employee;
-import BusinessLayer.service;
+import BusinessLayer.EmployeeModule.Employee;
+import BusinessLayer.EmployeeModule.service;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
@@ -10,9 +10,6 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
-import java.util.SplittableRandom;
-
-import static org.junit.Assert.*;
 
 public class EmployeeTest {
     private Employee employee;

@@ -1,4 +1,4 @@
-package BusinessLayer;
+package BusinessLayer.EmployeeModule;
 
 import java.util.*;
 
@@ -105,7 +105,7 @@ public class shiftManager {
             }
         }
         if(details.equals(""))
-            return "There is no BusinessLayer.shift inlay at this date";
+            return "There is no BusinessLayer.EmployeeModule.shift inlay at this date";
         return details;
     }
 
@@ -121,7 +121,7 @@ public class shiftManager {
             }
         }
         if (req.equals(""))
-            return "No requirements for this day and BusinessLayer.shift type";
+            return "No requirements for this day and BusinessLayer.EmployeeModule.shift type";
         return req;
     }
 }

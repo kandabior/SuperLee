@@ -1,4 +1,4 @@
-package BusinessLayer;
+package BusinessLayer.EmployeeModule;
 
 public class Pair<Day,ShiftType> {
     private Day day;

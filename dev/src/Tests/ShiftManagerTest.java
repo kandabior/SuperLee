@@ -1,8 +1,8 @@
 package Tests;
 
-import BusinessLayer.Day;
-import BusinessLayer.ShiftType;
-import BusinessLayer.shiftManager;
+import BusinessLayer.EmployeeModule.Day;
+import BusinessLayer.EmployeeModule.ShiftType;
+import BusinessLayer.EmployeeModule.shiftManager;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;

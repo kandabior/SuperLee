@@ -1,5 +1,4 @@
 package Tests;
-import BusinessLayer.EmployeesManager;
 import org.junit.runner.JUnitCore;
 import org.junit.runner.Result;
 import org.junit.runner.notification.Failure;
@@ -22,6 +21,17 @@ public class TestsRunner {
             System.out.println(failure.toString());
         }
         System.out.println("Successful tests in EmployeesManager?: " +result3.wasSuccessful());
+
+
+        Result r4 = JUnitCore.runClasses(Tests.PoolTest.class);
+        for (Failure f : r4.getFailures()){
+            System.out.println(f.toString());
+        }
+        System.out.println("Number of test: "+r4.getRunCount());
+        if(r4.wasSuccessful()){
+            System.out.println("All tests passed!!:)");
+        }
+
     }
 
 }

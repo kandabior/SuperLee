@@ -1,8 +1,6 @@
 package Tests;
 
-import BusinessLayer.Employee;
-import BusinessLayer.EmployeesManager;
-import BusinessLayer.service;
+import BusinessLayer.EmployeeModule.EmployeesManager;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
@@ -10,8 +8,6 @@ import org.junit.Test;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
-
-import static org.junit.Assert.*;
 
 public class EmployeesManagerTest {
     EmployeesManager employeesManager;
