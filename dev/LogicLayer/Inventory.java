@@ -432,18 +432,18 @@ public class Inventory {
     }
 
     public boolean checkGlobalManagar(String username, String password) {
-
+        return true;
 
     }
 
     public boolean checkInventoryManagar(String username, String password) {
-
+        return true;
 
     }
 
     public String getItemName(int prodid) {
 
-
+        return "true";
     }
 
 
