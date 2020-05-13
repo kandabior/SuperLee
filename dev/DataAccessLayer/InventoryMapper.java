@@ -67,24 +67,24 @@ public class InventoryMapper {
         }
     }
     public boolean isInventoryManagerExist(String username) {
-
+        return true;
     }
 
     public boolean isGlobalMannagerExist(String username) {
-
+        return true;
     }
 
     public boolean checkGlobalManagar(String username, String password) {
-
+        return true;
     }
 
     public boolean removeInventoryManagar(String usernameToRemove) {
 
-
+        return true;
     }
 
     public boolean removeGlobalManagar(String username, Integer password) {
-
+        return true;
 
     }
 
