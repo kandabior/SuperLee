@@ -82,6 +82,7 @@ public class SupplierMenu {
 
     private static void showPreviousOrders() {
         int sizeOfOrders = fc.getOrdersSize();
+        //good
         if (sizeOfOrders == 0)
             System.out.println("No orders were found.");
         else {
