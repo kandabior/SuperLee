@@ -138,6 +138,34 @@ public class SupplierMapper {
         return false;
     }
 
+    public static boolean findSupplier(int id) {
+        try {
+            if (tryOpen()) {
+                Class.forName("org.sqlite.JDBC");
+                conn.setAutoCommit(false);
+                PreparedStatement st = conn.prepareStatement("SELECT * FROM Suppliers WHERE id = ?;");
+                st.setInt(1, id);
+                ResultSet res = st.executeQuery();
+                if (res.next()) {
+                    conn.commit();
+                    conn.close();
+                    st.close();
+                    return true;
+                } else {
+                    conn.rollback();
+                    conn.close();
+                    st.close();
+                    return false;
+                }
+            }
+        } catch (Exception e) {
+            tryClose();
+            System.err.println(e.getClass().getName() + ": " + e.getMessage());
+            return false;
+        }
+        return false;
+    }
+
 
 
 
@@ -152,6 +180,10 @@ public class SupplierMapper {
         }
 
     }
+
+
+
+
 
     public static void tryClose()
     {

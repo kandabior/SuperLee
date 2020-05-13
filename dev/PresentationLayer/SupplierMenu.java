@@ -81,7 +81,9 @@ public class SupplierMenu {
     }
 
     private static void showPreviousOrders() {
+
         int sizeOfOrders = fc.getOrdersSize();
+        //good
         if (sizeOfOrders == 0)
             System.out.println("No orders were found.");
         else {
@@ -138,7 +140,7 @@ public class SupplierMenu {
         return newItems;
     }
 
-    private static int addSupplier(int supplierIdCounter) {
+    private static int addSupplier(int supplierIdCounter) { //elad ya homo
         Scanner scanner = new Scanner(System.in);
         System.out.print("Supplier's name: ");
         String suppName = scanner.nextLine();
@@ -228,7 +230,7 @@ public class SupplierMenu {
                             System.out.print(supplierItemsName.get(i) + ": ");
                             double itemPrice = scanner.nextInt();
                             if(!fc.addItemToAgreement(supplierIdCounter, supplierItemsId.get(i), itemPrice))
-                                System.out.println("error with item : \n"+supplierItemsName.get(i) + "item does not insert to the agreement" );
+                                System.out.println("error with item: "+supplierItemsName.get(i) + ". Item does not belong to the agreement.");
                         }
                     }
                     break;

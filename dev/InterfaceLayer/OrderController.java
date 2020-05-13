@@ -13,12 +13,14 @@ import java.util.Map;
 public class OrderController {
 
     static int orderIdCounter = 1;
-
+    private Order order ;
     List<Order> orders;
     private static OrderController order_sp = null;
 
     private OrderController() {
+
         this.orders = new LinkedList<>();
+        this.order= new Order();
     }
 
     public static OrderController getOrderController() {
@@ -38,7 +40,8 @@ public class OrderController {
     }*/
 
     public int getOrdersSize() {
-        return this.orders.size();
+        return this.order.getSize();
+        //return this.orders.size();
     }
 
    /* public List<Pair<Integer, Integer>> getItemsInOrderById(int id) {
