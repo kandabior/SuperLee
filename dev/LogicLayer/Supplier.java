@@ -17,6 +17,15 @@ public class Supplier {
     private String supplyLocation;
     private List<Integer> items;
     private Agreement agreement;
+    private SupplierMapper supplierMapper;
+
+
+    public Supplier()
+    {
+        this.supplierMapper= new SupplierMapper();
+    }
+
+
 
     public Supplier(int id, String name, String phoneNum, int bankAccount, String payment, String supplySchedule, String supplyLocation, String address) {
         this.id = id;
@@ -55,8 +64,8 @@ public class Supplier {
         return SupplierMapper.getSupplierItemsId(suppId);
     }
 
-    public static boolean addItemToAgreement(Integer supp_id, Integer item_id, Double cost) {
-        return SupplierMapper.addItemToAgreement(supp_id,item_id,cost);
+    public boolean addItemToAgreement(Integer supp_id, Integer item_id, Double cost) {
+        return this.supplierMapper.addItemToAgreement(supp_id,item_id,cost);
     }
 
     public int getId() { return this.id; }

@@ -335,7 +335,7 @@ public class SupplierMapper {
      }
  }
 
-    public static boolean addItemToAgreement(Integer suppId, Integer itemId, Double cost){
+    public boolean addItemToAgreement(Integer suppId, Integer itemId, Double cost){
         try {
             if (tryOpen()) {
                 Class.forName("org.sqlite.JDBC");

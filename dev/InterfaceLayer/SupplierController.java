@@ -13,6 +13,7 @@ import java.util.LinkedHashMap;
 public class SupplierController {
     private List<Supplier> suppliers;
     private static SupplierController sp_instance = null;
+    private Supplier supplier;
 
     public static SupplierController getSupplierController() {
         if (sp_instance == null)
@@ -22,6 +23,7 @@ public class SupplierController {
 
     private SupplierController() {
       this.suppliers = new LinkedList<>();
+      this.supplier = new Supplier();
     }
 
     public static List<String> getSupplierItemsNames(int suppId) {
@@ -74,7 +76,7 @@ public class SupplierController {
     }
 
     public boolean addItemToAgreement(Integer supp_id ,Integer item_id,Double cost){
-        return Supplier.addItemToAgreement(supp_id,item_id,cost);
+        return this.supplier.addItemToAgreement(supp_id,item_id,cost);
         //getSuppById(supp_id).addItemToAgreement(item_id,cost);
     }
 
@@ -153,8 +155,11 @@ public class SupplierController {
     }
 
     public int bestSuppForItem(Integer itemId, Integer quantity) {
+
+
         Double min=100000000.0;
         int bestSuppId=-1;
+
         for(int i=0 ; i<suppliers.size();i++)
         {
              Double temp =suppliers.get(i).getPriceOfAmountOfItem(itemId,quantity);
