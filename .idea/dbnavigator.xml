@@ -26,20 +26,18 @@
     <loaded-nodes />
   </component>
   <component name="DBNavigator.Project.DatabaseConsoleManager">
-    <connection id="19cdea67-c22b-4266-a8d9-8aea2e0ac2c2">
-      <console name="Connection 1" type="STANDARD" schema="main" session="Main" />
+    <connection id="3cc13814-0383-45dc-8e4c-58b70cd71e68">
+      <console name="Connection" type="STANDARD" schema="" session="Main" />
     </connection>
   </component>
   <component name="DBNavigator.Project.DatabaseFileManager">
     <open-files />
   </component>
   <component name="DBNavigator.Project.DatabaseSessionManager">
-    <connection id="19cdea67-c22b-4266-a8d9-8aea2e0ac2c2" />
+    <connection id="3cc13814-0383-45dc-8e4c-58b70cd71e68" />
   </component>
   <component name="DBNavigator.Project.DatasetFilterManager">
-    <filter-actions connection-id="19cdea67-c22b-4266-a8d9-8aea2e0ac2c2" dataset="main.SupplierItems" active-filter-id="" />
-    <filter-actions connection-id="19cdea67-c22b-4266-a8d9-8aea2e0ac2c2" dataset="main.AdditionalCommentsReport" active-filter-id="" />
-    <filter-actions connection-id="19cdea67-c22b-4266-a8d9-8aea2e0ac2c2" dataset="main.Suppliers" active-filter-id="" />
+    <filter-actions connection-id="3cc13814-0383-45dc-8e4c-58b70cd71e68" dataset="main.Categories" active-filter-id="" />
   </component>
   <component name="DBNavigator.Project.EditorStateManager">
     <last-used-providers />
@@ -64,9 +62,9 @@
   </component>
   <component name="DBNavigator.Project.Settings">
     <connections>
-      <connection id="19cdea67-c22b-4266-a8d9-8aea2e0ac2c2" active="true">
+      <connection id="3cc13814-0383-45dc-8e4c-58b70cd71e68" active="true">
         <database>
-          <name value="Connection 1" />
+          <name value="Connection" />
           <description value="" />
           <database-type value="SQLITE" />
           <config-type value="BASIC" />

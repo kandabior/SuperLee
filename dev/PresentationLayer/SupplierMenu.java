@@ -10,7 +10,7 @@ public class SupplierMenu {
     static FacadeController fc = FacadeController.getFacadeController();
     static int supplierIdCounter = 1;
 
-    public static boolean displayMainMenu(){
+    public static boolean displaySupplierMenu(){
         try {
             boolean exit = false;
             int suppId;
