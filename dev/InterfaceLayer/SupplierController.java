@@ -159,7 +159,7 @@ public class SupplierController {
 
         Double min=100000000.0;
         int bestSuppId=-1;
-
+        int size = this.supplier.getSupplierSize();
         for(int i=0 ; i<suppliers.size();i++)
         {
              Double temp =suppliers.get(i).getPriceOfAmountOfItem(itemId,quantity);

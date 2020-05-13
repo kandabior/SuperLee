@@ -475,6 +475,30 @@ public class SupplierMapper {
             return false;
         }
     }
+
+    public int getSupplierSize() {
+        try {
+            if (tryOpen()) {
+                Class.forName("org.sqlite.JDBC");
+                conn.setAutoCommit(false);
+                PreparedStatement st = conn.prepareStatement("SELECT count(?) as num FROM Suppliers;");
+                ResultSet res = st.executeQuery();
+                if (res.next()) {
+                    int ans = res.getInt("num");
+                    conn.close();
+                    st.close();
+                    return ans;
+                }
+                conn.close();
+                return 0;
+            }
+            else return 0;
+        } catch(Exception e){
+            System.err.println(e.getClass().getName() + ": " + e.getMessage());
+            return 0;
+        }
+
+    }
 /*
     public int bestSuppForItem(Integer itemId, Integer quantity) {
         Double min=100000000.0;

@@ -168,4 +168,8 @@ public class Supplier {
     public boolean saveMe() {
         return SupplierMapper.addSupplier(new SupplierDTO(id, name, phoneNum, bankAccount, payment, supplySchedule, supplyLocation));
     }
+
+    public int getSupplierSize() {
+        return this.supplierMapper.getSupplierSize();
+    }
 }
