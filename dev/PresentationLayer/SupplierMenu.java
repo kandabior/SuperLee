@@ -138,7 +138,7 @@ public class SupplierMenu {
         return newItems;
     }
 
-    private static int addSupplier(int supplierIdCounter) {
+    private static int addSupplier(int supplierIdCounter) { //elad ya homo
         Scanner scanner = new Scanner(System.in);
         System.out.print("Supplier's name: ");
         String suppName = scanner.nextLine();
