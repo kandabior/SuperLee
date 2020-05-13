@@ -17,14 +17,11 @@ public class Supplier {
     private String supplyLocation;
     private List<Integer> items;
     private Agreement agreement;
-    private SupplierMapper supplierMapper;
+    private SupplierMapper supplierMapper = new SupplierMapper();
 
 
-    public Supplier()
-    {
-        this.supplierMapper= new SupplierMapper();
+    public Supplier() {
     }
-
 
 
     public Supplier(int id, String name, String phoneNum, int bankAccount, String payment, String supplySchedule, String supplyLocation, String address) {
