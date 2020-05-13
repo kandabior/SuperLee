@@ -41,35 +41,35 @@ public class InventoryController {
 
     //Managers
 
-    public String addInventoryManager(String username, String password){
+    public String addInventoryManager(int branchId, String username, String password){
         try {
-            return inventory.addInventoryManager(username, password);
+            return inventory.addInventoryManager(branchId,username, password);
         }
         catch (Exception e){
             return "cant execute the action";
         }
     }
 
-    public String addGlobalManager(String username, String password){
+    public String addGlobalManager(int branchId, String username, String password){
         try {
-            return inventory.addGlobalManager(username, password);
+            return inventory.addGlobalManager(branchId,username, password);
         }
         catch (Exception e){
             return "cant execute the action";
         }
     }
 
-    public String removeInventoryManager(String username, String password , String usernameToRemove, String passwordToRemove){
+    public String removeInventoryManager(int branchId,String username, String password , String usernameToRemove, String passwordToRemove){
         try {
-            return inventory.removeInventoryManagar(username,password,usernameToRemove);
+            return inventory.removeInventoryManagar(branchId,username,password,usernameToRemove);
         }
         catch (Exception e){
             return "can't execute the action";
         }
     }
-    public String removeGlobalManager(String username, Integer password){
+    public String removeGlobalManager(int branchId,String username, String password){
         try {
-            return inventory.removeGlobalManagar(username,password);
+            return inventory.removeGlobalManagar(branchId,username,password);
 
         }
         catch (Exception e){
@@ -90,7 +90,7 @@ public class InventoryController {
     public String addProduct(int branchId,String username, String password, int prodid, int amount, Double costPrice, Double salePrice, LocalDate expDate, List<String> category, String manufacturer, int minAmount, String place){
         String prodName;
         try {
-            if (inventory.checkGlobalManagar(username,password)||inventory.checkInventoryManagar(username,password)) {
+            if (inventory.checkGlobalManagar(branchId,username,password)||inventory.checkInventoryManagar(branchId,username,password)) {
                 prodName = inventory.getItemName(prodid);
                 if(prodName!=null) {
                     return inventory.addProduct(branchId,prodid, amount, prodName, costPrice, salePrice, expDate, category, manufacturer, minAmount, place);
@@ -105,7 +105,7 @@ public class InventoryController {
     }
     public String removeProduct(int branchId,String username, String password, int prodid){
         try {
-            if (inventory.checkGlobalManagar(username,password)||inventory.checkInventoryManagar(username,password)) {
+            if (inventory.checkGlobalManagar(branchId,username,password)||inventory.checkInventoryManagar(branchId,username,password)) {
                 return inventory.removeProduct(branchId, prodid);
             }
             return "can't remove product - you are need to be a Manager";
@@ -132,7 +132,7 @@ public class InventoryController {
     }
     public String setSalePriceById(int branchId,String username, String password ,int prodid, Double price){
         try{
-            if(inventory.checkGlobalManagar(username, password)) {
+            if(inventory.checkGlobalManagar(branchId,username, password)) {
                 return inventory.setSalePrice(branchId, prodid, price);
             }
             return "can't change price of product - you are need to be a Global Manager";
@@ -143,7 +143,7 @@ public class InventoryController {
     }
     public String setPriceByCategory(int branchId,String username, String password , List<String> category,Double price){
         try {
-            if (inventory.checkGlobalManagar(username, password)) {
+            if (inventory.checkGlobalManagar(branchId,username, password)) {
                 return inventory.setPriceByCategory(branchId, category, price);
             }
             return "can't change price of product - you are need to be a Global Manager";
@@ -154,7 +154,7 @@ public class InventoryController {
     }
     public String setCategory(int branchId,String username, String password, int id, List<String> category){
         try{
-            if(inventory.checkGlobalManagar(username, password)||inventory.checkInventoryManagar(username, password)) {
+            if(inventory.checkGlobalManagar(branchId,username, password)||inventory.checkInventoryManagar(branchId,username, password)) {
                 return inventory.setCategory(branchId, id, category);
             }
             return "can't remove product - you are need to be a Manager";

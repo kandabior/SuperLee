@@ -16,14 +16,15 @@ public class InventoryMapper {
 
     //Managers
 
-    public boolean addInventoryManager(String username, String password) {
+    public boolean addInventoryManager(int branchId,String username, String password) {
         PreparedStatement stmt = null;
         try {
             Class.forName("org.sqlite.JDBC");
             c = DriverManager.getConnection("jdbc:sqlite:dev\\EOEDdatabase.db");
             c.setAutoCommit(false);
-            stmt = c.prepareStatement("INSERT INTO InventoryManagers VALUES (?,?);");
-            stmt.setString(1, username);
+            stmt = c.prepareStatement("INSERT INTO InventoryManagers VALUES (?,?,?);");
+            stmt.setInt(1, branchId);
+            stmt.setString(2, username);
             stmt.setString(2, password);
             stmt.executeUpdate();
             stmt.close();
@@ -41,14 +42,15 @@ public class InventoryMapper {
             return false;
         }
     }
-    public boolean addGlobalManager(String username, String password){
+    public boolean addGlobalManager(int branchId,String username, String password){
         PreparedStatement stmt = null;
         try {
             Class.forName("org.sqlite.JDBC");
             c = DriverManager.getConnection("jdbc:sqlite:dev\\EOEDdatabase.db");
             c.setAutoCommit(false);
-            stmt = c.prepareStatement("INSERT INTO GlobalManagers VALUES (?,?);");
-            stmt.setString(1, username);
+            stmt = c.prepareStatement("INSERT INTO GlobalManagers VALUES (?,?,?);");
+            stmt.setInt(1, branchId);
+            stmt.setString(2, username);
             stmt.setString(2, password);
             stmt.executeUpdate();
             stmt.close();
@@ -66,25 +68,175 @@ public class InventoryMapper {
             return false;
         }
     }
-    public boolean isInventoryManagerExist(String username) {
-        return true;
+
+    public boolean isInventoryManagerExist(int branchId,String username) {
+        PreparedStatement stmt = null;
+        try {
+            Class.forName("org.sqlite.JDBC");
+            c = DriverManager.getConnection("jdbc:sqlite:dev\\EOEDdatabase.db");
+            c.setAutoCommit(false);
+            stmt = c.prepareStatement("SELECT * FROM InventoryManagers WHERE branchId=? AND userName=?;");
+            stmt.setInt(1, branchId);
+            stmt.setString(1, username);
+            ResultSet rs = stmt.executeQuery();
+            if (rs.next()) {
+                rs.close();
+                stmt.close();
+                c.close();
+                return true;
+            } else {
+                rs.close();
+                stmt.close();
+                c.close();
+                return false;
+            }
+        } catch (Exception e) {
+            tryClose(c);
+            System.err.println(e.getClass().getName() + ": " + e.getMessage());
+            return false;
+        }
+
     }
 
-    public boolean isGlobalMannagerExist(String username) {
-        return true;
+    public boolean isGlobalMannagerExist(int branchId,String username) {
+        PreparedStatement stmt = null;
+        try {
+            Class.forName("org.sqlite.JDBC");
+            c = DriverManager.getConnection("jdbc:sqlite:dev\\EOEDdatabase.db");
+            c.setAutoCommit(false);
+            stmt = c.prepareStatement("SELECT * FROM GlobalManagers WHERE branchId=? AND userName=?;");
+            stmt.setInt(1, branchId);
+            stmt.setString(1, username);
+            ResultSet rs = stmt.executeQuery();
+            if (rs.next()) {
+                rs.close();
+                stmt.close();
+                c.close();
+                return true;
+            } else {
+                rs.close();
+                stmt.close();
+                c.close();
+                return false;
+            }
+        } catch (Exception e) {
+            tryClose(c);
+            System.err.println(e.getClass().getName() + ": " + e.getMessage());
+            return false;
+        }
+
     }
 
-    public boolean checkGlobalManagar(String username, String password) {
-        return true;
+    public boolean checkGlobalManagar(int branchId,String username, String password) {
+        PreparedStatement stmt = null;
+        try {
+            Class.forName("org.sqlite.JDBC");
+            c = DriverManager.getConnection("jdbc:sqlite:dev\\EOEDdatabase.db");
+            c.setAutoCommit(false);
+            stmt = c.prepareStatement("SELECT password FROM GlobalManagers WHERE branchId=? AND userName=?;");
+            stmt.setInt(1, branchId);
+            stmt.setString(1, username);
+            ResultSet rs = stmt.executeQuery();
+            if (rs.next()) {
+                String realPass=rs.getString("password");
+                rs.close();
+                stmt.close();
+                c.close();
+                return realPass==password;
+            } else {
+                rs.close();
+                stmt.close();
+                c.close();
+                return false;
+            }
+        } catch (Exception e) {
+            tryClose(c);
+            System.err.println(e.getClass().getName() + ": " + e.getMessage());
+            return false;
+        }
+
     }
 
-    public boolean removeInventoryManagar(String usernameToRemove) {
-
-        return true;
+    public boolean checkInventoryManagar(int branchId,String username, String password) {
+        PreparedStatement stmt = null;
+        try {
+            Class.forName("org.sqlite.JDBC");
+            c = DriverManager.getConnection("jdbc:sqlite:dev\\EOEDdatabase.db");
+            c.setAutoCommit(false);
+            stmt = c.prepareStatement("SELECT password FROM InventoryManagers WHERE branchId=? AND userName=?;");
+            stmt.setInt(1, branchId);
+            stmt.setString(1, username);
+            ResultSet rs = stmt.executeQuery();
+            if (rs.next()) {
+                String realPass=rs.getString("password");
+                rs.close();
+                stmt.close();
+                c.close();
+                return realPass==password;
+            } else {
+                rs.close();
+                stmt.close();
+                c.close();
+                return false;
+            }
+        } catch (Exception e) {
+            tryClose(c);
+            System.err.println(e.getClass().getName() + ": " + e.getMessage());
+            return false;
+        }
     }
 
-    public boolean removeGlobalManagar(String username, Integer password) {
-        return true;
+    public boolean removeInventoryManagar(int branchId,String usernameToRemove) {
+        PreparedStatement stmt = null;
+        try {
+            Class.forName("org.sqlite.JDBC");
+            c = DriverManager.getConnection("jdbc:sqlite:dev\\EOEDdatabase.db");
+            c.setAutoCommit(false);
+            stmt = c.prepareStatement("DELETE FROM InventoryManagers WHERE branchId=? AND userName=?;");
+            stmt.setInt(1, branchId);
+            stmt.setString(2, usernameToRemove);
+            stmt.executeUpdate();
+            stmt.close();
+            c.commit();
+            return true;
+        } catch (Exception e) {
+            try {
+                c.rollback();
+            } catch (SQLException ex) {
+                ex.printStackTrace();
+            }
+            System.out.println(e.getClass().getName() + ": " + e.getMessage());
+        }
+        return false;
+
+
+    }
+
+    public boolean removeGlobalManagar(int branchId,String username, String password) {
+        PreparedStatement stmt = null;
+        try {
+            Class.forName("org.sqlite.JDBC");
+            c = DriverManager.getConnection("jdbc:sqlite:dev\\EOEDdatabase.db");
+            c.setAutoCommit(false);
+            stmt = c.prepareStatement("DELETE FROM GlobalManagers WHERE branchId=? AND userName=? AND password=?;");
+            stmt.setInt(1, branchId);
+            stmt.setString(2, username);
+            stmt.setString(2, password);
+            stmt.executeUpdate();
+            stmt.close();
+            c.commit();
+            return true;
+        } catch (Exception e) {
+            try {
+                c.rollback();
+            } catch (SQLException ex) {
+                ex.printStackTrace();
+            }
+            System.out.println(e.getClass().getName() + ": " + e.getMessage());
+        }
+        return false;
+
+
 
     }
 

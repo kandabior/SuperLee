@@ -382,9 +382,9 @@ public class Inventory {
     }
 
     //Managers
-    public String addInventoryManager(String username, String password){ //TODO remove the , Inventory controller will hold instance of Singletone Inventory.
-        if(!inventoryMapper.isInventoryManagerExist(username)) {
-            if(inventoryMapper.addInventoryManager(username,password)) {
+    public String addInventoryManager(int branchId,String username, String password){ //TODO remove the , Inventory controller will hold instance of Singletone Inventory.
+        if(!inventoryMapper.isInventoryManagerExist(branchId,username)) {
+            if(inventoryMapper.addInventoryManager(branchId,username,password)) {
                 return "Inventory Manager " + username + " - registered successfully";
             }
             return "cant execute the action";
@@ -393,9 +393,9 @@ public class Inventory {
             return "can't register - username already exist";
         }
     }
-    public  String addGlobalManager(String username, String password){  //TODO remove the , Inventory controller will hold instance of Singletone Inventory.
-        if(!inventoryMapper.isGlobalMannagerExist(username)) {
-            if( inventoryMapper.addGlobalManager(username, password)){
+    public  String addGlobalManager(int branchId,String username, String password){  //TODO remove the , Inventory controller will hold instance of Singletone Inventory.
+        if(!inventoryMapper.isGlobalMannagerExist(branchId,username)) {
+            if( inventoryMapper.addGlobalManager(branchId,username, password)){
                 return "Global Manager " + username + " - registered successfully";
             }
             return "cant execute the action";
@@ -405,12 +405,12 @@ public class Inventory {
         }
     }
 
-    public String removeInventoryManagar(String username, String password, String usernameToRemove) {
+    public String removeInventoryManagar(int branchId,String username, String password, String usernameToRemove) {
 
-        if (!inventoryMapper.isInventoryManagerExist(username))
+        if (!inventoryMapper.isInventoryManagerExist(branchId,username))
             return "can't remove inventory manager - username doesnt exist";
-        if (inventoryMapper.checkGlobalManagar(username,password)) {
-            if(inventoryMapper.removeInventoryManagar(usernameToRemove)) {
+        if (inventoryMapper.checkGlobalManagar(branchId,username,password)) {
+            if(inventoryMapper.removeInventoryManagar(branchId,usernameToRemove)) {
                 return "Inventory Manager - " + username + " removed";
             }
             return "cant execute the action";
@@ -418,11 +418,11 @@ public class Inventory {
             return "Only Global Manager can remove Inventory Manager";
     }
 
-    public String removeGlobalManagar(String username, Integer password) {
-        if (!inventoryMapper.isGlobalMannagerExist(username)) {
+    public String removeGlobalManagar(int branchId,String username, String password) {
+        if (!inventoryMapper.isGlobalMannagerExist(branchId,username)) {
             return "can't remove Global Manager - username doesnt exist";
         }
-        if(inventoryMapper.removeGlobalManagar(username, password)) {
+        if(inventoryMapper.removeGlobalManagar(branchId,username, password)) {
             return "Global Manager - " + username + " removed";
         }
         else{
@@ -431,12 +431,12 @@ public class Inventory {
 
     }
 
-    public boolean checkGlobalManagar(String username, String password) {
+    public boolean checkGlobalManagar(int branchId,String username, String password) {
         return true;
 
     }
 
-    public boolean checkInventoryManagar(String username, String password) {
+    public boolean checkInventoryManagar(int branchId,String username, String password) {
         return true;
 
     }
