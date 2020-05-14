@@ -64,8 +64,8 @@ public class Pool {
         suppliersPool.deleteSupplier(id);
     }
 
-    public String SupplierToString() {
-        return suppliersPool.toString();
+    public List<String> SupplierToString() {
+        return suppliersPool.SupplierstoString();
     }
 
     public void addStore(String address, String phoneNumber, String contactName, int area) {

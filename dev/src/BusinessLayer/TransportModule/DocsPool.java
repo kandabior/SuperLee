@@ -1,10 +1,14 @@
 package BusinessLayer.TransportModule;
 
+import DataAccessLayer.Transport.DocsMapper;
+import DataAccessLayer.Transport.SuppliersMapper;
+
 import java.util.*;
 
 public class DocsPool {
 
     private LinkedList<TransportDoc> transportDocs;
+    private DocsMapper mapper;
 
     private static DocsPool ourInstance = new DocsPool();
 
@@ -14,6 +18,7 @@ public class DocsPool {
 
     private DocsPool() {
         transportDocs = new LinkedList<TransportDoc>();
+        mapper = new DocsMapper();
     }
 
     public void addDoc(int area, Date date, String truckId, String driverId, String driverName, List<Integer> stores, List<Integer> suppliers){
@@ -152,13 +157,13 @@ public class DocsPool {
     }
 
     public boolean supplierIsBusy(int suppId) {
-        Iterator <TransportDoc> itr = transportDocs.iterator();
+        /*Iterator <TransportDoc> itr = transportDocs.iterator();
         while (itr.hasNext()){
             TransportDoc td = itr.next();
             if(td.getStatus().equals(TransportDoc.Status.PENDING) && td.getSuppliers().contains(suppId))
                 return true;
-        }
-        return false;
+        }*/
+        return mapper.supplierIsBusy(suppId);
     }
 
     public boolean storeIsBusy(int sId) {

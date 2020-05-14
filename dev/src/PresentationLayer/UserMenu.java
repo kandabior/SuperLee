@@ -11,7 +11,7 @@ public class UserMenu {
 
     public static void main() {
         pool = Pool.getInstance();
-        start();
+       // start();
         menu();
     }
 
@@ -54,9 +54,16 @@ public class UserMenu {
     private static void menu() {
         Scanner input = new Scanner(System.in);
         while (true) {
-            System.out.println("Welcome to Transport's system!\nPlease enter option number:\n" +
-                    "1. New transport\n2. Add weight to transport\n3. Add items to transport\n4. View system data\n"+
-                    "5. Add, delete or update a site\n6. Add or delete a driver\n7. Add or delete a truck\n8. exit");
+            System.out.println("Welcome to Transport's system!\n" +
+                    "Please enter option number:\n" +
+                    "1. New transport\n" +
+                    "2. Add weight to transport\n" +
+                    "3. Add items to transport\n" +
+                    "4. View system data\n"+
+                    "5. Add, delete or update a supplier\n" +
+                    "6. Add or delete a driver\n" + /******/
+                    "7. Add or delete a truck\n" +
+                    "8. exit");
             try {
                 int option = input.nextInt();
                 input.nextLine();
@@ -272,9 +279,11 @@ public class UserMenu {
 
                         }
                         break;
-                    case 5: //add/delete/update site
+                    case 5: //add/delete/update supplier
                         System.out.println("Please enter option number:\n" +
-                                "1. Add supplier\n2. Add store\n3. Delete supplier\n4. Delete store\n5. Update supplier\n6. Update store");
+                                "1. Add supplier\n" +
+                                "2. Delete supplier\n" +
+                                "3. Update supplier");
                         option = input.nextInt();
                         input.nextLine();
                         switch (option) {
@@ -292,22 +301,9 @@ public class UserMenu {
                                 pool.addSupplier(address, phoneNumber, contactName, area);
                                 System.out.println("Supplier add successfully");
                                 break;
-                            case 2:// add store
-                                System.out.println("Enter address, phone number, contact name and area of the Store");
-                                System.out.print("address: ");
-                                address = input.nextLine();
-                                System.out.print("phone number: ");
-                                phoneNumber = input.nextLine();
-                                System.out.print("contact name: ");
-                                contactName = input.nextLine();
-                                System.out.print("area: ");
-                                area = input.nextInt();
-                                input.nextLine();
-                                pool.addStore(address, phoneNumber, contactName, area);
-                                System.out.println("Store add successfully");
-                                break;
-                            case 3:// delete supplier
-                                System.out.println(pool.SupplierToString());
+                            case 2:// delete supplier
+                                System.out.println("Suppliers:");
+                                print(pool.SupplierToString());
                                 System.out.println("Enter the id of the supplier you want to delete");
                                 idNum = input.nextInt();
                                 input.nextLine();
@@ -322,23 +318,7 @@ public class UserMenu {
                                     }
                                 }
                                 break;
-                            case 4://delete store
-                                System.out.println(pool.StoreToString());
-                                System.out.println("Enter the id of the store you want to delete");
-                                idNum = input.nextInt();
-                                input.nextLine();
-                                if (!pool.isExistStore(idNum))
-                                    System.out.println("Invalid store id");
-                                else {
-                                    if (pool.storeIsBusy(idNum))
-                                        System.out.println("Store is in a pending transport,therefore - cannot be removed");
-                                    else {
-                                        pool.removeStore(idNum);
-                                        System.out.println("Store removed successfully");
-                                    }
-                                }
-                                break;
-                            case 5: // update supplier
+                            case 3: // update supplier
                                 System.out.println(pool.SupplierToString());
                                 System.out.println("Enter the id of the supplier you want to update");
                                 idNum = input.nextInt();
@@ -355,25 +335,6 @@ public class UserMenu {
                                     contactName = input.nextLine();
                                     pool.UpdateSupplier(idNum, address, phoneNumber, contactName);
                                     System.out.println("Supplier update successfully");
-                                }
-                                break;
-                            case 6: // update store
-                                System.out.println(pool.StoreToString());
-                                System.out.println("Enter the id of the Store you want to update");
-                                idNum = input.nextInt();
-                                input.nextLine();
-                                if (!pool.isExistStore(idNum))
-                                    System.out.println("Invalid store id");
-                                else {
-                                    System.out.println("Enter address, phone number, contact name and area of the Store");
-                                    System.out.print("address: ");
-                                    address = input.nextLine();
-                                    System.out.print("phone number: ");
-                                    phoneNumber = input.nextLine();
-                                    System.out.print("contact name: ");
-                                    contactName = input.nextLine();
-                                    pool.UpdateStore(idNum, address, phoneNumber, contactName);
-                                    System.out.println("Store update successfully");
                                 }
                                 break;
                             default:
