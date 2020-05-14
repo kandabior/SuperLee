@@ -55,4 +55,80 @@ public class AgreementMapper {
             System.err.println(e.getClass().getName() + ": " + e.getMessage());
         }
     }
+
+    public void changeInBillOfQuantities(int suppId, Integer itemId, Pair<Integer, Double> quantity_disc) {
+        try {
+            if (tryOpen()) {
+                Class.forName("org.sqlite.JDBC");
+                conn.setAutoCommit(false);
+                PreparedStatement st = conn.prepareStatement("UPDATE ItemsInBills SET quantity = ? AND discount = ?" +
+                        "WHERE billId = ? AND itemId = ?;");
+                st.setInt(1, quantity_disc.getKey());
+                st.setDouble(2, quantity_disc.getValue());
+                st.setInt(3, suppId);
+                st.setInt(4, itemId);
+                int rowNum = st.executeUpdate();
+                if (rowNum != 0) {
+                    conn.commit();
+                    conn.close();
+                    st.close();
+                } else {
+                    conn.rollback();
+                    conn.close();
+                    st.close();
+                }
+            }
+        } catch (Exception e) {
+            tryClose();
+            System.err.println(e.getClass().getName() + ": " + e.getMessage());
+        }
+
+    }
+
+    public void deleteFromBillOfQuantities(int suppId, Integer itemId) {
+        try {
+            if (tryOpen()) {
+                Class.forName("org.sqlite.JDBC");
+                conn.setAutoCommit(false);
+                PreparedStatement st = conn.prepareStatement("DELETE FROM ItemsInBills WHERE billId = ? AND itemId = ?;");
+                st.setInt(1, suppId);
+                st.setInt(2, itemId);
+                st.executeUpdate();
+                conn.commit();
+                conn.close();
+                st.close();
+            }
+        } catch (Exception e) {
+            tryClose();
+            System.err.println(e.getClass().getName() + ": " + e.getMessage());
+        }
+    }
+
+    public void deleteBillOfQuantities(int suppId) {
+        try {
+            if (tryOpen()) {
+                Class.forName("org.sqlite.JDBC");
+                conn.setAutoCommit(false);
+                PreparedStatement st = conn.prepareStatement("DELETE FROM ItemsInBills WHERE billId = ?;");
+                st.setInt(1, suppId);
+                st.executeUpdate();
+
+                st = conn.prepareStatement("DELETE FROM Bills WHERE billId = ?;");
+                st.setInt(1, suppId);
+                st.executeUpdate();
+
+                st = conn.prepareStatement("UPDATE Agreements SET billId = ? WHERE suppId = ?;");
+                st.setInt(1, 0);
+                st.setInt(2, suppId);
+                st.executeUpdate();
+
+                conn.commit();
+                conn.close();
+                st.close();
+            }
+        } catch (Exception e) {
+            tryClose();
+            System.err.println(e.getClass().getName() + ": " + e.getMessage());
+        }
+    }
 }

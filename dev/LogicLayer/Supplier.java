@@ -83,13 +83,13 @@ public class Supplier {
         return true;
     }*/
 
-    public void updateBillOfQuantities( Integer itemId, Pair<Integer, Double> quantity_disc) {
+    /*public void updateBillOfQuantities( Integer itemId, Pair<Integer, Double> quantity_disc) {
         this.agreement.updateBillOfQuantities(itemId,quantity_disc);
-    }
+    }*/
 
-    public void deleteFromBillOfQuantities(Integer itemId) {
+  /*  public void deleteFromBillOfQuantities(Integer itemId) {
         this.agreement.deleteFromBillOfQuantities(itemId);
-    }
+    }*/
 
     public void deleteBillOfQuantities() { this.agreement.deleteBillOfQuantities(); }
 
