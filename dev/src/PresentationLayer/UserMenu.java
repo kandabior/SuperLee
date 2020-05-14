@@ -266,7 +266,7 @@ public class UserMenu {
                                 break;
                             case 5:
                                 System.out.println("trucks");
-                                System.out.println((pool.TtoString()));
+                                print(pool.TtoString());
                                 break;
                             case 6:
                                 System.out.println("stores");
@@ -408,7 +408,8 @@ public class UserMenu {
                                     System.out.println("This id already exist please try again the next time");
                                 break;
                             case 2://delete truck
-                                System.out.println(pool.TtoString());
+                                System.out.println("Trucks in the system:");
+                                print(pool.TtoString());
                                 System.out.println("Enter the id of the truck you want to delete\nid: ");
                                 id = input.nextLine();
                                 if (pool.isUniqueTruck(id)) //the truck doesnt exists

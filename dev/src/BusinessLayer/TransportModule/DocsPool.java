@@ -89,26 +89,19 @@ public class DocsPool {
         }
     }
 
-    public LinkedList<String> getFailDocs(){
-        LinkedList<String> output = new LinkedList<>();
-        Iterator<TransportDoc> itr = transportDocs.iterator();
-        while (itr.hasNext()){
-            TransportDoc td = itr.next();
-            if(td.getStatus().equals(TransportDoc.Status.FAIL))
-                output.add(td.toString());
-        }
-        return output;
+    public List<String> getFailDocs(){
+        return mapper.getDocs("FAIL");
+
     }
 
-    public LinkedList<String> getPendingDocs(){
-        LinkedList<String> output = new LinkedList<>();
-        Iterator <TransportDoc> itr = transportDocs.iterator();
+    public List<String> getPendingDocs(){
+       /* Iterator <TransportDoc> itr = transportDocs.iterator();
         while (itr.hasNext()){
             TransportDoc td = itr.next();
             if(td.getStatus().equals(TransportDoc.Status.PENDING))
                 output.add(td.toString());
-        }
-        return output;
+        }*/
+        return mapper.getDocs("PENDING");
     }
 
     public String toString(){
@@ -146,14 +139,7 @@ public class DocsPool {
     }
 
     public List<String> getSuccessDoc() {
-        LinkedList<String> output = new LinkedList<>();
-        Iterator <TransportDoc> itr = transportDocs.iterator();
-        while (itr.hasNext()){
-            TransportDoc td = itr.next();
-            if(td.getStatus().equals(TransportDoc.Status.SUCCESS))
-                output.add(td.toString());
-        }
-        return output;
+        return mapper.getDocs("SUCCESS");
     }
 
     public boolean supplierIsBusy(int suppId) {
@@ -187,12 +173,6 @@ public class DocsPool {
     }
 
     public boolean truckIsBusy(String truckId) {
-        Iterator <TransportDoc> itr = transportDocs.iterator();
-        while (itr.hasNext()){
-            TransportDoc td = itr.next();
-            if(td.getStatus().equals(TransportDoc.Status.PENDING) && td.getTruckId().equals(truckId))
-                return true;
-        }
-        return false;
+        return mapper.truckIsBusy(truckId);
     }
 }

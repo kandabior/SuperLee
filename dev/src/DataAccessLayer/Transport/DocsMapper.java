@@ -1,10 +1,46 @@
 package DataAccessLayer.Transport;
 
+import BusinessLayer.TransportModule.DTO.DTO_Supplier;
+import BusinessLayer.TransportModule.DTO.DTO_TransportDoc;
+
 import java.sql.*;
+import java.util.HashMap;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Map;
 
 public class DocsMapper {
     private Connection con;
 
+
+    public boolean truckIsBusy(String truckId) {
+        try {
+            if (tryOpen()) {
+                Class.forName("org.sqlite.JDBC");
+                con.setAutoCommit(false);
+                PreparedStatement statement = con.prepareStatement("SELECT * FROM TransportDocs WHERE truckID = ? AND status = ?;");
+                statement.setString(1, truckId);
+                statement.setString(2,"PENDING");
+                ResultSet res = statement.executeQuery();
+                if (res.next()) {
+                    con.commit();
+                    con.close();
+                    statement.close();
+                    return true;
+                } else {
+                    con.rollback();
+                    con.close();
+                    statement.close();
+                    return false;
+                }
+            }
+        } catch (Exception e) {
+            tryClose();
+            System.err.println(e.getClass().getName() + ": " + e.getMessage());
+            return false;
+        }
+        return false;
+    }
 
     public boolean supplierIsBusy(int supplierId) {
         try {
@@ -49,6 +85,101 @@ public class DocsMapper {
             con.close();
         } catch (SQLException e) {
             e.printStackTrace();
+        }
+    }
+
+    public List<String> getDocs(String docStatus) {
+        List<String> pendingDocs = new LinkedList<>();
+        List<Integer> stores = new LinkedList<>();
+        List<Integer> suppliers = new LinkedList<>();
+        List<Map<Integer,Integer>> items = new LinkedList<>();
+
+        try {
+            if (tryOpen()) {
+                Class.forName("org.sqlite.JDBC");
+                con.setAutoCommit(false);
+                PreparedStatement statement = con.prepareStatement("SELECT * FROM TransportDocs WHERE status = ?;");
+                statement.setString(1,docStatus);
+                ResultSet result = statement.executeQuery();
+                while (result.next()) {
+                    int transportId = result.getInt("ID");
+                    suppliers = getTransportsSites("DocSuppliers",transportId);
+                    stores = getTransportsSites("DocStores", transportId);
+                    for (int i = 0; i < stores.size(); i++) {
+                        items.add(getTransportsItems(transportId, stores.get(i)));
+                    }
+                    DTO_TransportDoc.Status status ;
+                    switch (result.getString("status")){
+                        case "PENDING":
+                            status = DTO_TransportDoc.Status.PENDING;
+                            break;
+                        case "SUCCESS":
+                            status = DTO_TransportDoc.Status.SUCCESS;
+                            break;
+                        default: //FAIL
+                            status = DTO_TransportDoc.Status.FAIL;
+                    }
+                    DTO_TransportDoc s = new DTO_TransportDoc(transportId, result.getInt("area"),
+                            result.getString("date"),result.getString("truckId"), result.getInt("driverId"),
+                            result.getString("driverName"),stores, suppliers, items ,status, result.getDouble("finalWeight"));
+                    pendingDocs.add(s.toString());
+                }
+                statement.close();
+                con.close();
+                return pendingDocs;
+            } else return null;
+        } catch (Exception e) {
+            System.err.println(e.getClass().getName() + ": " + e.getMessage());
+            tryClose();
+            return null;
+        }
+    }
+
+    private Map<Integer, Integer> getTransportsItems(int transportId, int storeId) {
+        Map<Integer,Integer> storeItems = new HashMap<>();
+        try {
+            if (tryOpen()) {
+                Class.forName("org.sqlite.JDBC");
+                con.setAutoCommit(false);
+                PreparedStatement statement = con.prepareStatement("SELECT item,quantity FROM Order WHERE DocID = ? AND SID = ?;");
+                statement.setInt(1,transportId);
+                statement.setInt(2,storeId);
+                ResultSet result = statement.executeQuery();
+                while (result.next()) {
+                    storeItems.put(result.getInt("item"),result.getInt("quantity"));
+                }
+                statement.close();
+                con.close();
+                return storeItems;
+            } else return null;
+        } catch (Exception e) {
+            System.err.println(e.getClass().getName() + ": " + e.getMessage());
+            tryClose();
+            return null;
+        }
+    }
+
+    private List<Integer> getTransportsSites(String tableName, int transportId) {
+        List<Integer> sites = new LinkedList<>();
+        try {
+            if (tryOpen()) {
+                Class.forName("org.sqlite.JDBC");
+                con.setAutoCommit(false);
+                PreparedStatement statement = con.prepareStatement("SELECT SID FROM ? WHERE DocID = ?;");
+                statement.setString(1,tableName);
+                statement.setInt(2,transportId);
+                ResultSet result = statement.executeQuery();
+                while (result.next()) {
+                    sites.add(result.getInt("SID"));
+                }
+                statement.close();
+                con.close();
+                return sites;
+            } else return null;
+        } catch (Exception e) {
+            System.err.println(e.getClass().getName() + ": " + e.getMessage());
+            tryClose();
+            return null;
         }
     }
 }
