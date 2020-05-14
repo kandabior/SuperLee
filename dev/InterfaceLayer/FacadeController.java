@@ -139,7 +139,7 @@ public class FacadeController {
 
     public boolean findSupplier(int id) { return supplierController.findSupplier(id); }
 
-    public Map<Integer, Pair<Integer, Double>> getBillOfQuantities(int suppId) { return supplierController.getBillOfQuantities(suppId); }
+    public Map<Integer, Pair<Integer, Double>> getBillOfQuantities(int suppId) { return this.supplierController.getBillOfQuantities(suppId); }
 
     public String getItemNameById(Integer itemId) { return this.supplierController.getItemName(itemId); }
 

@@ -131,4 +131,28 @@ public class AgreementMapper {
             System.err.println(e.getClass().getName() + ": " + e.getMessage());
         }
     }
+
+    public Map<Integer, Pair<Integer, Double>> getBillOfQuantities(int suppId) {
+        Map<Integer, Pair<Integer, Double>> bill = new HashMap<>();
+        try {
+            if (tryOpen()) {
+                Class.forName("org.sqlite.JDBC");
+                conn.setAutoCommit(false);
+                PreparedStatement st = conn.prepareStatement("SELECT * FROM ItemsInBills WHERE billId = ?;");
+                st.setInt(1, suppId);
+                ResultSet res = st.executeQuery();
+                while (res.next()) {
+                    Pair<Integer, Double> p = new Pair<>(res.getInt("quantity"), res.getDouble("discount"));
+                    bill.put(res.getInt("itemId"), p);
+                }
+                conn.commit();
+                conn.close();
+                st.close();
+            }
+        } catch (Exception e) {
+            tryClose();
+            System.err.println(e.getClass().getName() + ": " + e.getMessage());
+        }
+        return bill;
+    }
 }
