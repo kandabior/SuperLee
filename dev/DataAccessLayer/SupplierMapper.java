@@ -28,6 +28,7 @@ public class SupplierMapper {
             if (tryOpen()) {
                 Class.forName("org.sqlite.JDBC");
                 conn.setAutoCommit(false);
+                //add supplier to "Suppliers"
                 PreparedStatement st = conn.prepareStatement("INSERT INTO Suppliers VALUES (?,?,?,?,?,?,?);");
                 st.setInt(1, supp.getId());
                 st.setString(2, supp.getName());
@@ -44,9 +45,15 @@ public class SupplierMapper {
                     int suppCount = 0;
                     if (res.next())
                         suppCount = res.getInt("counter");
+                    //increase supplier's counter in "Counters"
                     st = conn.prepareStatement("UPDATE Counters SET counter = ? WHERE name = ?;");
                     st.setInt(1, suppCount + 1);
                     st.setString(2, "suppliers");
+                    st.executeUpdate();
+                    //add supplier's agreement to "Agreements"
+                    st = conn.prepareStatement("INSERT INTO Agreements VALUES (?,?);");
+                    st.setInt(1, supp.getId());
+                    st.setInt(2, 0);
                     st.executeUpdate();
                     conn.commit();
                     conn.close();
@@ -202,14 +209,14 @@ public class SupplierMapper {
                 st.setInt(1, suppId);
                 st.setInt(2, itemId);
                 int rowNum = st.executeUpdate();
-                st.close();
                 if (rowNum != 0) {
                     conn.commit();
                     conn.close();
+                    st.close();
                 } else {
                     conn.rollback();
                     conn.close();
-
+                    st.close();
                 }
             }
         } catch (Exception e) {
@@ -461,6 +468,11 @@ public class SupplierMapper {
                     st.close();
                     return true;
                 }
+                else {
+                    conn.close();
+                    st.close();
+                    return false;
+                }
             } else {
                 conn.close();
                 return false;
@@ -470,7 +482,6 @@ public class SupplierMapper {
             tryClose();
             return false;
         }
-        return false;
     }
 
     public int getSupplierSize() {
