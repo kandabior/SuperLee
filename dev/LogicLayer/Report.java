@@ -78,7 +78,7 @@ public class Report {
         for(Pair<Integer,Integer> line: quantity){
             ReportLine reportLine= new ReportLine(line.getKey(),Inventory.getProdactNameStatic(branchId,line.getKey()),line.getValue());
             reportLine.addToLine("minimum amount: "+ Inventory.getProductMinStatic(branchId,line.getKey()));
-            //report.addLine(reportLine);
+            report.addLine(reportLine);
         }
         return report;
     }
@@ -107,7 +107,7 @@ public class Report {
         ReportLine reportLine=new ReportLine(prices.getKey(),Inventory.getProdactNameStatic(branch,prices.getKey()),Inventory.getAmountStatic(branch,prices.getKey()));
         reportLine.addToLine("Prices: "+prices.getValue().toString());
 
-        //report.addLine(reportLine);
+        report.addLine(reportLine);
         return report;
     }
     public static Report makeCostPriceReport(int branch,Pair<Integer, List<Double>> prices) {
@@ -115,7 +115,7 @@ public class Report {
         ReportLine reportLine=new ReportLine(prices.getKey(),Inventory.getProdactNameStatic(branch,prices.getKey()),Inventory.getAmountStatic(branch,prices.getKey()));
         reportLine.addToLine("Prices: "+prices.getValue().toString());
 
-        //report.addLine(reportLine);
+        report.addLine(reportLine);
         return report;
     }
 

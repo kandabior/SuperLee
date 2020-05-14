@@ -513,10 +513,12 @@ public class InventoryMapper {
                 int ans = Integer.parseInt(rs.getString("minAmount"));
                 rs.close();
                 stmt.close();
+                c.close();
                 return ans;
             }
         } catch ( Exception e ) {
             System.err.println( e.getClass().getName() + ": " + e.getMessage() );
+            tryClose(c);
         }
         return -1;
     }
@@ -878,7 +880,7 @@ public class InventoryMapper {
             Class.forName("org.sqlite.JDBC");
             c = DriverManager.getConnection("jdbc:sqlite:dev\\EOEDdatabase.db");
             c.setAutoCommit(false);
-            stmt = c.prepareStatement("SELECT lastCostPrice FROM LastSalePrices WHERE branchId=? AND productId=?;");
+            stmt = c.prepareStatement("SELECT lastCostPrice FROM LastCostPrices WHERE branchId=? AND productId=?;");
             stmt.setInt(1, branchId);
             stmt.setInt(2, id);
             ResultSet rs = stmt.executeQuery();
@@ -1117,11 +1119,11 @@ public class InventoryMapper {
             Class.forName("org.sqlite.JDBC");
             c = DriverManager.getConnection("jdbc:sqlite:dev\\EOEDdatabase.db");
             c.setAutoCommit(false);
-            stmt = c.prepareStatement("SELECT productId FROM Expired WHERE branchId=?;");
+            stmt = c.prepareStatement("SELECT productId FROM Expireds WHERE branchId=?;");
             stmt.setInt(1, branchId);
             ResultSet rs = stmt.executeQuery();
             if(rs.next()) {
-                output.add(rs.getInt("category"));
+                output.add(rs.getInt("productId"));
             }
             stmt.close();
             c.close();

@@ -123,7 +123,7 @@ public class Inventory {
         List<Pair<Integer,Integer>> needToBuy = new LinkedList<>();
         for (Integer id : inventoryMapper.getProductsIds(branchId)) {
             if (inventoryMapper.getProductMin(branchId,id) > inventoryMapper.getProductQuantity(branchId,id))
-                needToBuy.add(new Pair<>(id,inventoryMapper.getProductQuantity(branchId,id)-inventoryMapper.getProductMin(branchId,id)));
+                needToBuy.add(new Pair<>(id,inventoryMapper.getProductQuantity(branchId,id)));
         }
         return needToBuy;
     }
@@ -432,6 +432,16 @@ public class Inventory {
     }
     public String getItemName(int prodid) {
         return ItemMapper.getName(prodid);
+    }
+
+    public List<Pair<Integer, Integer>> NeedToBuyProductsForOrder(int branchId) {
+        List<Pair<Integer,Integer>> needToBuy = new LinkedList<>();
+        for (Integer id : inventoryMapper.getProductsIds(branchId)) {
+            if (inventoryMapper.getProductMin(branchId,id) > inventoryMapper.getProductQuantity(branchId,id))
+                needToBuy.add(new Pair<>(id,inventoryMapper.getProductMin(branchId,id)-inventoryMapper.getProductQuantity(branchId,id)));
+        }
+        return needToBuy;
+
     }
 
 

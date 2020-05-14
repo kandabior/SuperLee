@@ -191,7 +191,7 @@ public class InventoryController {
     }
     public String MakeMissingOrder(int branchId) {
         try {
-            List<Pair<Integer, Integer>> toBuy= inventory.NeedToBuyProducts(branchId);
+            List<Pair<Integer, Integer>> toBuy= inventory.NeedToBuyProductsForOrder(branchId);
             Map<Integer,Pair<Integer,Double>> orders= FacadeController.getFacadeController().makeOrder(branchId,toBuy);
             return inventory.mannageOrders(branchId,orders);
         }
