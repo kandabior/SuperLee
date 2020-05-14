@@ -339,15 +339,7 @@ public class InventoryMenu {
         String amount = scanner.next();
         Printer.Print(inventoryController.storageToShelf(Integer.parseInt(branchId),Integer.parseInt(prodId),Integer.parseInt(amount)));
     }
-    private static void addAmountToProduct(){
-        System.out.println("\nEnter branch id: ");
-        String branchId= scanner.next();
-        Printer.Print("\nPlease Enter Product Id:\n");
-        String prodId = scanner.next();
-        Printer.Print("\nPlease Enter amount to add:\n");
-        String amount = scanner.next();
-        Printer.Print(inventoryController.addAmountToProduct(Integer.parseInt(branchId),Integer.parseInt(prodId),Integer.parseInt(amount)));
-    }
+
     private static void removeAmountFromProduct(){
         System.out.println("\nEnter branch id: ");
         String branchId= scanner.next();

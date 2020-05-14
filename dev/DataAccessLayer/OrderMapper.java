@@ -191,7 +191,7 @@ public class OrderMapper {
                 if (rowNum != 0) {
                     //updateCounter
                     st = conn.prepareStatement("UPDATE Counters SET counter = ? WHERE name = ?;");
-                    st.setInt(1, o.getId());
+                    st.setInt(1, o.getId()+1);
                     st.setString(2, "orders");
                     st.executeUpdate();
                     ///
