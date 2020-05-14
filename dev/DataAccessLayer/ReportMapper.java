@@ -36,9 +36,16 @@ public class ReportMapper {
                 stmt.close();
                 c.commit();
                 for(String str: reportLineDTO.getOptional()) {
-
+                    stmt = c.prepareStatement("INSERT INTO ReportLineOptional VALUES (?,?,?);");
+                    stmt.setInt(1, reportDTO.getReportId());
+                    stmt.setInt(2, reportLineDTO.getProdId());
+                    stmt.setString(3, str);
+                    stmt.executeUpdate();
+                    stmt.close();
+                    c.commit();
                 }
             }
+            c.close();
         } catch (Exception e) {
             if (c != null) {
                 try {
