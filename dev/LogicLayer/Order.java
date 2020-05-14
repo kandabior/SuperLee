@@ -181,4 +181,8 @@ public class Order {
         }
         return false;
     }
+
+    public int getOrderIdCounter() {
+        return this.orderMapper.getOrderIdCounter();
+    }
 }

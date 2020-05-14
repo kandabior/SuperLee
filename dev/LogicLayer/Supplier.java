@@ -181,13 +181,15 @@ public class Supplier {
         return this.agreement.getDiscountOfItem(itemId , amount);
     }
 
-    public List<Object> getSuppDetails() {
-        List<Object> list = new LinkedList<>();
+    public List<Object> getSuppDetails(int bestSuppId) {
+
+        return this.supplierMapper.getSuppDetails(bestSuppId);
+        /*List<Object> list = new LinkedList<>();
         list.add(id);
         list.add(name);
         list.add(phoneNum);
         list.add(supplyLocation);
-        return list;
+        return list;*/
     }
 
     public boolean saveMe() {

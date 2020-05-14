@@ -489,7 +489,7 @@ public class SupplierMapper {
             if (tryOpen()) {
                 Class.forName("org.sqlite.JDBC");
                 conn.setAutoCommit(false);
-                PreparedStatement st = conn.prepareStatement("SELECT count(?) as num FROM Suppliers;");
+                PreparedStatement st = conn.prepareStatement("SELECT count(*) as num FROM Suppliers;");
                 ResultSet res = st.executeQuery();
                 if (res.next()) {
                     int ans = res.getInt("num");
@@ -681,7 +681,7 @@ public class SupplierMapper {
                 st.setInt(2, agreementId);
                 ResultSet res = st.executeQuery();
                 if (res.next()) {
-                    cost = (res.getDouble("discount"));
+                    cost = (res.getDouble("price"));
                 }
                 st.close();
                 conn.close();
@@ -717,6 +717,37 @@ public class SupplierMapper {
             tryClose();
         }
         return counter;
+    }
+
+    public List<Object> getSuppDetails(int bestSuppId) {
+        List<Object> supplierDeatails = new LinkedList<>();
+        try {
+            if (tryOpen()) {
+                Class.forName("org.sqlite.JDBC");
+                conn.setAutoCommit(false);
+                PreparedStatement st = conn.prepareStatement("SELECT *  FROM Suppliers WHERE id= ?  ;");
+                st.setInt(1, bestSuppId);
+                ResultSet res = st.executeQuery();
+                if (res.next()) {
+                    supplierDeatails.add(res.getInt("id"));
+                    supplierDeatails.add(res.getString("name"));
+                    supplierDeatails.add(res.getString("phoneNum"));
+                    supplierDeatails.add(res.getString("supplyLocation"));
+                }
+                st.close();
+                conn.close();
+                return supplierDeatails;
+            } else return null;
+        } catch (Exception e) {
+            System.err.println(e.getClass().getName() + ": " + e.getMessage());
+            tryClose();
+            return null;
+        }
+
+
+
+
+
     }
 }
 /*

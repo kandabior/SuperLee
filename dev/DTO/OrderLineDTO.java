@@ -1,7 +1,6 @@
 package DTO;
 
 public class OrderLineDTO {
-    private int orderLineId;
     private int orderId;
     private int itemId;
     private String itemName;
@@ -20,10 +19,6 @@ public class OrderLineDTO {
         this.finalCost = finalCost;
         //orderLineId = orderLineCounter;
         //orderLineCounter++;
-    }
-
-    public int getOrderLineId() {
-        return orderLineId;
     }
 
     public int getOrderId() {

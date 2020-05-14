@@ -37,7 +37,7 @@ public class OrderDTO {
     }
 
     public void setItems(List<OrderLineDTO> lines) {
-        this.orderLines = orderLines;
+        this.orderLines = lines;
     }
 
     public int getId() {
@@ -82,5 +82,9 @@ public class OrderDTO {
 
     public double getTotalCost() {
         return totalCost;
+    }
+
+    public void setTotalCost(double totalCost) {
+        this.totalCost = totalCost;
     }
 }
