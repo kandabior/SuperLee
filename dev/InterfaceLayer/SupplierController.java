@@ -1,6 +1,7 @@
 package InterfaceLayer;
 
 import DataAccessLayer.SupplierMapper;
+import LogicLayer.Agreement;
 import LogicLayer.Items;
 import LogicLayer.Supplier;
 import javafx.util.Pair;
@@ -11,6 +12,7 @@ public class SupplierController {
     private List<Supplier> suppliers;
     private static SupplierController sp_instance = null;
     private Supplier supplier;
+    private Agreement agreement;
     private Items item;
 
     public static SupplierController getSupplierController() {
@@ -22,6 +24,7 @@ public class SupplierController {
     private SupplierController() {
       this.suppliers = new LinkedList<>();
       this.supplier = new Supplier();
+      this.agreement = new Agreement();
       this.item = new Items();
     }
 
@@ -67,12 +70,12 @@ public class SupplierController {
         return sup.saveMe();
     }
 
-    public void createBillOfQuantities(int supplierId ,Map<Integer, Pair<Integer, Double>> bill) { //id, <quantity, discount>
+    public void createBillOfQuantities(int supplierId ,Map<Integer, Pair<Integer, Double>> bill) { //item id, <quantity, discount>
         this.supplier.createBillOfQuantities(supplierId);
         Iterator<Integer> iter = bill.keySet().iterator();
         while (iter.hasNext()){
-            int id = iter.next();
-            this.supplier.addItemToBillOfQuantities(id, bill.get(id).getKey(), bill.get(id).getValue());//TODO dorin was here
+            int itemId = iter.next();
+            this.agreement.addItemToBillOfQuantities(supplierId, itemId, bill.get(itemId).getKey(), bill.get(itemId).getValue());//TODO dorin was here
         }
     }
 
@@ -80,11 +83,12 @@ public class SupplierController {
         return this.supplier.addItemToAgreement(supp_id,item_id,cost);
     }
 
-    public void updateBillOfQuantities(int supplierId, Integer itemId, Pair<Integer, Double> quantity_disc) {
-       if(getSuppById(supplierId)!=null)
+    public void changeInBillOfQuantities(int supplierId, Integer itemId, Pair<Integer, Double> quantity_disc) {
+
+    /*   if(getSuppById(supplierId)!=null)
        {
            getSuppById(supplierId).updateBillOfQuantities(itemId,quantity_disc);
-       }
+       }*/
     }
 
     public void deleteFromBillOfQuantities(int suppId, Integer itemId) {
@@ -116,7 +120,8 @@ public class SupplierController {
     }
 
     public void addItemToBillOfQuantities(int suppId, int itemId, int itemQuantity, Double itemDiscount) {
-        getSuppById(suppId).addItemToBillOfQuantities(itemId,itemQuantity,itemDiscount);
+        this.agreement.addItemToBillOfQuantities(suppId, itemId, itemQuantity, itemDiscount);
+       // getSuppById(suppId).addItemToBillOfQuantities(itemId,itemQuantity,itemDiscount);
     }
 
     public Map<Integer, Pair<Integer, Double>> getBillOfQuantities(int suppId) {

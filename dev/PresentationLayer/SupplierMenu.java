@@ -309,7 +309,7 @@ public class SupplierMenu {
         int newAmount = scanner.nextInt();
         System.out.println("Enter the new discount: ");
         Double newDiscount = scanner.nextDouble();
-        fc.updateBillOfQuantities(suppId, itemId, new Pair(newAmount, newDiscount));
+        fc.changeInBillOfQuantities(suppId, itemId, new Pair(newAmount, newDiscount));
     }
 
     private static String deleteFromBillOfQuantities(int suppId, int itemId){
@@ -342,7 +342,7 @@ public class SupplierMenu {
             if (!fc.checkBillOfQuantity(suppId)) {
                 Map<Integer, Pair<Integer, Double>> map = new HashMap();
                 map.put(itemId, pair);
-                fc.addBillOfQuantities(suppId, map);
+                fc.createBillOfQuantities(suppId, map);
             } else {
                 fc.addItemToBillOfQuantities(suppId, itemId, itemQuantity, itemDiscount);
             }
@@ -405,7 +405,7 @@ public class SupplierMenu {
         Map<Integer, Pair<Integer,Double>> map = new HashMap<>();
         Pair<Integer,Double> p = new Pair<>(10, 0.7);
         map.put(2,p);
-        FacadeController.getFacadeController().addBillOfQuantities(1,map);
+        FacadeController.getFacadeController().createBillOfQuantities(1,map);
         FacadeController.getFacadeController().addItemToAgreement(2,1,6.0);
         FacadeController.getFacadeController().addItemToSupplier(2,1);
         FacadeController.getFacadeController().addItemToAgreement(2,2,7.0);

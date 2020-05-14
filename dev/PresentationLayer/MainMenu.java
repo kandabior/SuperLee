@@ -12,7 +12,6 @@ import java.util.Scanner;
 public class MainMenu{
     public static Scanner scanner=new Scanner(System.in);
     public static Integer DayOfTheWeek=0;
-    //todo dorin stop ruin the git
 
     public static void main(String[]args) {
         mainLoop();

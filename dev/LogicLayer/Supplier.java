@@ -105,9 +105,9 @@ public class Supplier {
         return this.supplierMapper.checkIfBillExists(agreementId);
     }
 
-    public void addItemToBillOfQuantities(int itemId, int itemQuantity, Double itemDiscount) {
+    /*public void addItemToBillOfQuantities(int itemId, int itemQuantity, Double itemDiscount) {
         this.agreement.addItemToBillOfQuantities(itemId,itemQuantity,itemDiscount);
-    }
+    }*/
 
     public Map<Integer, Pair<Integer, Double>> getBillOfQuantities() {
         return this.agreement.getBillOfQuantities();
