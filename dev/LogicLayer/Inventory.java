@@ -39,6 +39,10 @@ public class Inventory {
 
 
     }
+
+    public static String getProdactNameStatic(int branchId,int prodId) {
+        return instance.getProdactName(branchId,prodId);
+    }
     public  int getProductMin(int branchId,int prodId) {
         if(inventoryMapper.isBranchExist(branchId)) {
             if(inventoryMapper.isInventoryConteinsProd(branchId,prodId)) {

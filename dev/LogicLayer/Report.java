@@ -17,7 +17,7 @@ public class Report {
     private List<ReportLine> lines;
 
     private Report(String title){
-        reportId=globalId++;
+        reportId=reportMapper.getReportId();
         this.title=title;
         lines=new LinkedList<>();
     }
@@ -46,8 +46,8 @@ public class Report {
     public static Report totalStockReport(int branchId,List<Pair<Integer, Integer>> quantity) {
         Report report=new Report("Total Stock Report");
         for(Pair<Integer,Integer> line: quantity){
-           // ReportLine reportLine= new ReportLine(line.getKey(),Inventory.getProdactName(branchId,line.getKey()),line.getValue());
-            //report.addLine(reportLine);
+            ReportLine reportLine= new ReportLine(line.getKey(),Inventory.getProdactNameStatic(branchId,line.getKey()),line.getValue());
+            report.addLine(reportLine);
         }
         return report;
     }
