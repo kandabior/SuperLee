@@ -1,5 +1,7 @@
 package LogicLayer;
 
+import DataAccessLayer.AgreementMapper;
+import DataAccessLayer.SupplierMapper;
 import javafx.util.Pair;
 
 import java.text.DecimalFormat;
@@ -10,6 +12,7 @@ public class Agreement {
 
     private LinkedHashMap<Integer, Double> terms; //item id, price
     private BillOfQuantities bill;
+    private AgreementMapper agreementMapper = new AgreementMapper();
 
     public Agreement() {
         this.terms = new LinkedHashMap<>();
@@ -52,8 +55,8 @@ public class Agreement {
         return this.bill != null;
     }
 
-    public void addItemToBillOfQuantities(int itemId, int itemQuantity, Double itemDiscount) {
-        this.bill.addItemToBillOfQuantities(itemId, itemQuantity, itemDiscount);
+    public void addItemToBillOfQuantities(int supplierId, int itemId, int itemQuantity, Double itemDiscount) {
+        this.agreementMapper.addItemToBillOfQuantities(supplierId, itemId, itemQuantity, itemDiscount);
     }
 
     public Map<Integer, Pair<Integer, Double>> getBillOfQuantities() {

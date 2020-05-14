@@ -558,7 +558,6 @@ public class SupplierMapper {
 
     }
 
-
     public Double getPriceOfAmountOfItem(int supplierId, Integer itemId, Integer amount) {
 
 
@@ -610,7 +609,6 @@ public class SupplierMapper {
         }
         return false;
     }
-
 
     public boolean checkInBillForDiscount(int BillId, Integer itemId, Integer amount) {
         try {
@@ -746,6 +744,7 @@ public class SupplierMapper {
 
 
     }
+
     public void createBillOfQuantities(int suppId) {
         try{
             if(tryOpen()) {
@@ -779,45 +778,3 @@ public class SupplierMapper {
         }
     }
 }
-
-/*
-    public int bestSuppForItem(Integer itemId, Integer quantity) {
-        Double min=100000000.0;
-        int bestSuppId=-1;
-        for(int i=0 ; i<suppliers.size();i++)
-        {
-             Double temp =suppliers.get(i).getPriceOfAmountOfItem(itemId,quantity);
-             if(temp<min) {
-                 min = temp;
-                 bestSuppId=i;
-             }
-        }
-
-        return bestSuppId+1;
-    }
-
-    public Double getPriceOfAmountOfItem(int bestSuppForItem,Integer itemId, Integer amount) {
-        return getSuppById(bestSuppForItem).getPriceOfAmountOfItem(itemId,amount);
-    }
-
-    public boolean checkIfItemExist(int itemId) {
-        return (Items.getName(itemId)!=null);
-    }
-
-    public Double getPriceOfAmountOfItemBeforeDiscount(int suppId , int itemId , int amount) {
-        return getSuppById(suppId).getPriceOfAmountOfItemBeforeDiscount(itemId, amount);
-    }
-
-    public Double getDiscountOfItem(int bestSuppForItem, int itemId , int amount) {
-        return getSuppById(bestSuppForItem).getDiscountOfItem(itemId, amount);
-    }
-
-    public List<Object> getSuppDetails(int bestSuppForItem) { //TODO create dto
-        return getSuppById(bestSuppForItem).getSuppDetails();
-    }
-}
-
-
- */
-
-
