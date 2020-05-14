@@ -37,8 +37,8 @@ public class Pool {
         trucksPool.deleteTruck(id);
     }
 
-    public String TtoString() {
-        return trucksPool.toString();
+    public List<String> TtoString() {
+        return trucksPool.trucksToString();
     }
 
     public void addDriver(String id, String name, String license) {
@@ -64,8 +64,8 @@ public class Pool {
         suppliersPool.deleteSupplier(id);
     }
 
-    public String SupplierToString() {
-        return suppliersPool.toString();
+    public List<String> SupplierToString() {
+        return suppliersPool.SupplierstoString();
     }
 
     public void addStore(String address, String phoneNumber, String contactName, int area) {

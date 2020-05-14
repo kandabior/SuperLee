@@ -1,12 +1,16 @@
 package BusinessLayer.TransportModule;
 
 
+
+import BusinessLayer.TransportModule.DTO.DTO_Truck;
+import DataAccessLayer.Transport.TrucksMapper;
+
 import java.util.*;
 
 public class TrucksPool {
 
     private LinkedList<Truck> trucks;
-
+    private TrucksMapper mapper;
     private static TrucksPool ourInstance = new TrucksPool();
 
     public static TrucksPool getInstance() {
@@ -15,37 +19,23 @@ public class TrucksPool {
 
     private TrucksPool() {
         trucks = new LinkedList<Truck>();
+        mapper = new TrucksMapper();
     }
 
     public void addTruck(String id, String model , double weight, double maxWeight){
-        Truck t = new Truck(id,model,weight,maxWeight);
-        trucks.add(t);
+        DTO_Truck t = new DTO_Truck(id,model,weight,maxWeight);
+        mapper.addTruck(t);
     }
 
     public void deleteTruck(String id){
-        Truck tr = null;
-        for (Truck t:trucks){
-            if(t.getId().equals(id))
-                tr = t;
-        }
-        trucks.remove(tr);
+        mapper.removeTruck(id);
     }
-    public String toString(){
-        String s = "";
-        Iterator itr = trucks.iterator();
-        while (itr.hasNext()){
-            s = s + itr.next().toString() + "\n";
-        }
-     return s;
+    public List<String> trucksToString(){
+      return mapper.getTrucksString();
     }
 
     public boolean isUniqueId (String id){
-        boolean isUnique = true;
-        for (Truck t:trucks){
-            if (t.getId().equals(id))
-                isUnique = false;
-        }
-        return isUnique;
+        return mapper.isUniqueTruck(id);
     }
 
 

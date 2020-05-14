@@ -1,5 +1,8 @@
 package BusinessLayer.TransportModule;
 
+import BusinessLayer.TransportModule.DTO.DTO_Supplier;
+import DataAccessLayer.Transport.SuppliersMapper;
+
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
@@ -7,6 +10,7 @@ import java.util.List;
 public class SuppliersPool {
 
     private LinkedList<Supplier> suppliers;
+    private SuppliersMapper mapper;
 
     private static SuppliersPool ourInstance = new SuppliersPool();
 
@@ -15,13 +19,16 @@ public class SuppliersPool {
     }
 
     private SuppliersPool() {
-
         suppliers = new LinkedList<Supplier>();
+        mapper = new SuppliersMapper();
     }
 
     public void addSupplier(String address, String phoneNumber, String contactName, int area){
-        Supplier s = new Supplier(address, phoneNumber,contactName,area);
-        suppliers.add(s);
+        int maxId = mapper.getSupplierId();
+        if(maxId >= 0) {
+            DTO_Supplier s = new DTO_Supplier(maxId + 1, address, phoneNumber, contactName, area);
+            mapper.addSupplier(s);
+        }
     }
     public void addSupplier(int id,String address, String phoneNumber, String contactName, int area){
         Supplier s = new Supplier(id,address, phoneNumber,contactName,area);
@@ -29,12 +36,13 @@ public class SuppliersPool {
     }
 
     public void deleteSupplier(int id){
-        Supplier sp = null;
+        /*Supplier sp = null;
         for (Supplier s:suppliers){
             if(s.getId() == id)
                 sp = s;
         }
-        suppliers.remove(sp);
+        suppliers.remove(sp);*/
+        mapper.removeSupplier(id);
     }
 
     public List<String> getSuppliers(int area){
@@ -54,13 +62,8 @@ public class SuppliersPool {
         return false;
     }
 
-    public String toString(){
-        String s = "";
-        Iterator itr = suppliers.iterator();
-        while (itr.hasNext()){
-            s = s + itr.next().toString() + "\n";
-        }
-        return s;
+    public List<String> SupplierstoString(){
+       return mapper.getSuppliersString();
     }
     public void Update(int id,String address, String phoneNumber, String contactName){
         Supplier sp = null;
@@ -76,12 +79,13 @@ public class SuppliersPool {
     }
 
     public boolean isExistsId (int id){
-        boolean isExists = false;
+      /*  boolean isExists = false;
         for (Supplier s:suppliers){
             if (s.getId() == id)
                 isExists = true;
         }
-        return isExists;
+        return isExists;*/
+     return mapper.isExist(id);
     }
 
 

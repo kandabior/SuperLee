@@ -1,10 +1,14 @@
 package BusinessLayer.TransportModule;
 
+import DataAccessLayer.Transport.DocsMapper;
+import DataAccessLayer.Transport.SuppliersMapper;
+
 import java.util.*;
 
 public class DocsPool {
 
     private LinkedList<TransportDoc> transportDocs;
+    private DocsMapper mapper;
 
     private static DocsPool ourInstance = new DocsPool();
 
@@ -14,6 +18,7 @@ public class DocsPool {
 
     private DocsPool() {
         transportDocs = new LinkedList<TransportDoc>();
+        mapper = new DocsMapper();
     }
 
     public void addDoc(int area, Date date, String truckId, String driverId, String driverName, List<Integer> stores, List<Integer> suppliers){
@@ -84,26 +89,19 @@ public class DocsPool {
         }
     }
 
-    public LinkedList<String> getFailDocs(){
-        LinkedList<String> output = new LinkedList<>();
-        Iterator<TransportDoc> itr = transportDocs.iterator();
-        while (itr.hasNext()){
-            TransportDoc td = itr.next();
-            if(td.getStatus().equals(TransportDoc.Status.FAIL))
-                output.add(td.toString());
-        }
-        return output;
+    public List<String> getFailDocs(){
+        return mapper.getDocs("FAIL");
+
     }
 
-    public LinkedList<String> getPendingDocs(){
-        LinkedList<String> output = new LinkedList<>();
-        Iterator <TransportDoc> itr = transportDocs.iterator();
+    public List<String> getPendingDocs(){
+       /* Iterator <TransportDoc> itr = transportDocs.iterator();
         while (itr.hasNext()){
             TransportDoc td = itr.next();
             if(td.getStatus().equals(TransportDoc.Status.PENDING))
                 output.add(td.toString());
-        }
-        return output;
+        }*/
+        return mapper.getDocs("PENDING");
     }
 
     public String toString(){
@@ -141,24 +139,17 @@ public class DocsPool {
     }
 
     public List<String> getSuccessDoc() {
-        LinkedList<String> output = new LinkedList<>();
-        Iterator <TransportDoc> itr = transportDocs.iterator();
-        while (itr.hasNext()){
-            TransportDoc td = itr.next();
-            if(td.getStatus().equals(TransportDoc.Status.SUCCESS))
-                output.add(td.toString());
-        }
-        return output;
+        return mapper.getDocs("SUCCESS");
     }
 
     public boolean supplierIsBusy(int suppId) {
-        Iterator <TransportDoc> itr = transportDocs.iterator();
+        /*Iterator <TransportDoc> itr = transportDocs.iterator();
         while (itr.hasNext()){
             TransportDoc td = itr.next();
             if(td.getStatus().equals(TransportDoc.Status.PENDING) && td.getSuppliers().contains(suppId))
                 return true;
-        }
-        return false;
+        }*/
+        return mapper.supplierIsBusy(suppId);
     }
 
     public boolean storeIsBusy(int sId) {
@@ -182,12 +173,6 @@ public class DocsPool {
     }
 
     public boolean truckIsBusy(String truckId) {
-        Iterator <TransportDoc> itr = transportDocs.iterator();
-        while (itr.hasNext()){
-            TransportDoc td = itr.next();
-            if(td.getStatus().equals(TransportDoc.Status.PENDING) && td.getTruckId().equals(truckId))
-                return true;
-        }
-        return false;
+        return mapper.truckIsBusy(truckId);
     }
 }
