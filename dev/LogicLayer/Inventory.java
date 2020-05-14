@@ -164,7 +164,7 @@ public class Inventory {
         return "all prices for categories: " + category.toString() + " changed to: " + price;
     }
     public  String setExpired(int branchId, int productId, Integer amount){ //removing a specific amount of expired products from the storage inventory to the expired inventory.
-        if(inventoryMapper.isInventoryConteinsProd(branchId,productId)) {
+        if(!inventoryMapper.isInventoryConteinsProd(branchId,productId)) {
             return "product ID doesnt exist";
         }
         int currentAmount=inventoryMapper.getProductQuantity(branchId,productId);
@@ -270,7 +270,7 @@ public class Inventory {
     public  String storageToShelf(int branchId,int id, int amount){
         if (inventoryMapper.isBranchExist(branchId)) {
             if (inventoryMapper.isInventoryConteinsProd(branchId, id)) {
-                if(inventoryMapper.shelfToStorage(branchId,id,amount)){
+                if(inventoryMapper.storageToShelf(branchId,id,amount)){
                     return "product id: " + id + " - amount of " + amount + " removed from the storage to the shelf";
                 }
                 else{
