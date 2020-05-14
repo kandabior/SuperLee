@@ -23,16 +23,18 @@ public class Agreement {
         this.bill = new BillOfQuantities(bill);
     }
 
-    public void updateBillOfQuantities(Integer itemId, Pair<Integer, Double> quantity_disc) {
-        this.bill.updateBillOfQuantities(itemId, quantity_disc);
+    public void changeInBillOfQuantities(int suppId, Integer itemId, Pair<Integer, Double> quantity_disc) {
+        this.agreementMapper.changeInBillOfQuantities(suppId, itemId, quantity_disc);
     }
 
-    public void deleteFromBillOfQuantities(Integer itemId) {
-        this.bill.deleteFromBillOfQuantities(itemId);
+    public void deleteFromBillOfQuantities(int suppId, Integer itemId) {
+        this.agreementMapper.deleteFromBillOfQuantities(suppId, itemId);
+        /*this.bill.deleteFromBillOfQuantities(itemId);*/
     }
 
-    public void deleteBillOfQuantities() {
-        this.bill = null;
+    public void deleteBillOfQuantities(int suppId) {
+        this.agreementMapper.deleteBillOfQuantities(suppId);
+        //this.bill = null;
     }
 
     public void insertItem(Integer itemId, Double price) {

@@ -75,7 +75,7 @@ public class SupplierController {
         Iterator<Integer> iter = bill.keySet().iterator();
         while (iter.hasNext()){
             int itemId = iter.next();
-            this.agreement.addItemToBillOfQuantities(supplierId, itemId, bill.get(itemId).getKey(), bill.get(itemId).getValue());//TODO dorin was here
+            this.agreement.addItemToBillOfQuantities(supplierId, itemId, bill.get(itemId).getKey(), bill.get(itemId).getValue());
         }
     }
 
@@ -84,23 +84,22 @@ public class SupplierController {
     }
 
     public void changeInBillOfQuantities(int supplierId, Integer itemId, Pair<Integer, Double> quantity_disc) {
-
-    /*   if(getSuppById(supplierId)!=null)
-       {
-           getSuppById(supplierId).updateBillOfQuantities(itemId,quantity_disc);
-       }*/
+        this.agreement.changeInBillOfQuantities(supplierId, itemId, quantity_disc);
     }
 
     public void deleteFromBillOfQuantities(int suppId, Integer itemId) {
-        if (getSuppById(suppId) != null) {
+        this.agreement.deleteFromBillOfQuantities(suppId, itemId);
+     /*   if (getSuppById(suppId) != null) {
             getSuppById(suppId).deleteFromBillOfQuantities(itemId);
-        }
+        }*/
     }
 
     public void deleteBillOfQuantities(int suppId) {
+        this.agreement.deleteBillOfQuantities(suppId);
+        /*
         if (getSuppById(suppId) != null) {
             getSuppById(suppId).deleteBillOfQuantities();
-        }
+        }*/
     }
 
     public int getBillSize(int suppId) { return getSuppById(suppId).getBillSize(); }
@@ -121,7 +120,6 @@ public class SupplierController {
 
     public void addItemToBillOfQuantities(int suppId, int itemId, int itemQuantity, Double itemDiscount) {
         this.agreement.addItemToBillOfQuantities(suppId, itemId, itemQuantity, itemDiscount);
-       // getSuppById(suppId).addItemToBillOfQuantities(itemId,itemQuantity,itemDiscount);
     }
 
     public Map<Integer, Pair<Integer, Double>> getBillOfQuantities(int suppId) {
@@ -135,7 +133,6 @@ public class SupplierController {
     public String getItemNameByIndex(int suppId, int i) {
         return this.item.getName(getSuppById(suppId).getItemIdByIndex(i));
     }
-
 
     public int getItemIdByIndex(int suppId, int i) {
         return getSuppById(suppId).getItemIdByIndex(i);
