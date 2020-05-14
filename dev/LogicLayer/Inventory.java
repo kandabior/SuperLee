@@ -28,6 +28,14 @@ public class Inventory {
         return instance;
     }
 
+    public static int getProductMinStatic(int branchId, Integer key) {
+        return instance.getProductMin(branchId,key);
+    }
+
+    public static int getAmountStatic(int branch, Integer key) {
+        return instance.getAmount(branch, key);
+    }
+
     public  String getProdactName(int branchId,int prodId) {
         if (inventoryMapper.isBranchExist(branchId)) {
             if (inventoryMapper.isInventoryConteinsProd(branchId, prodId)) {

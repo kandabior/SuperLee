@@ -316,10 +316,13 @@ public class InventoryMapper {
             stmt.setInt(1, branchId);
             stmt.setInt(2, prodId);
             ResultSet rs = stmt.executeQuery();
-            if(rs.next())
-                return rs.getString("name");
-            rs.close();
-            stmt.close();
+            if(rs.next()) {
+                String output=rs.getString("name");
+                rs.close();
+                stmt.close();
+                c.close();
+                return output;
+            }
         } catch ( Exception e ) {
             System.err.println( e.getClass().getName() + ": " + e.getMessage() );
         }
