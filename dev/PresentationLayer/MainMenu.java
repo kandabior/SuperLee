@@ -12,6 +12,7 @@ import java.util.Scanner;
 public class MainMenu{
     public static Scanner scanner=new Scanner(System.in);
     public static Integer DayOfTheWeek=0;
+    //todo dorin stop ruin the git
 
     public static void main(String[]args) {
         mainLoop();
@@ -31,15 +32,6 @@ public class MainMenu{
         int choose;
         Printer.Print("Welcome To EOED Digital Storage And Suppliers Manager!");
         do {
-            //ELAD TEST//
-            List<Pair<Integer,Integer>> toOrder=new LinkedList<>();
-            Pair<Integer,Integer> p = new Pair(1,2);
-            Pair<Integer,Integer> p1 = new Pair(2,2);
-            toOrder.add(p);
-            toOrder.add(p1);
-            Map<Integer,Pair<Integer,Double>> orders= FacadeController.getFacadeController().makeOrder(1,toOrder);
-            //ELAD TEST//
-
             Printer.Print("Day: "+(DayOfTheWeek+1));
             Printer.Print("\n\nPlease choose an action:\n" +
                     "1. Enter Inventory & Reports Menu\n" +

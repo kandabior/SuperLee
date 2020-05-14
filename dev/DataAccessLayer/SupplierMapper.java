@@ -745,11 +745,41 @@ public class SupplierMapper {
         }
 
 
+    }
+    public void createBillOfQuantities(int suppId) {
+        try{
+            if(tryOpen()) {
+                Class.forName("org.sqlite.JDBC");
+                conn.setAutoCommit(false);
+                PreparedStatement st = conn.prepareStatement("INSERT INTO BillsOfQuantities VALUES (?);");
+                st.setInt(1, suppId);
+                st.executeUpdate();
 
+                st = conn.prepareStatement("UPDATE Agreements SET billId = ? WHERE suppId = ?;");
+                st.setInt(1, suppId);
+                st.setInt(2, suppId);
+                st.executeUpdate();
 
+                if(st.executeUpdate() != 0) {
+                    conn.commit();
+                    conn.close();
+                    st.close();
+                    return;
+                }
+                else {
+                    conn.close();
+                    st.close();
+                }
+            }
 
+            else return;
+        } catch (Exception e) {
+            System.err.println(e.getClass().getName() + ": " + e.getMessage());
+            tryClose();
+        }
     }
 }
+
 /*
     public int bestSuppForItem(Integer itemId, Integer quantity) {
         Double min=100000000.0;
