@@ -218,5 +218,6 @@ public class Supplier {
 
     public void createBillOfQuantities(int suppId) {
         this.supplierMapper.createBillOfQuantities(suppId);
+
     }
 }
