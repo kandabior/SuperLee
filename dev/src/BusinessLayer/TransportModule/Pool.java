@@ -37,8 +37,8 @@ public class Pool {
         trucksPool.deleteTruck(id);
     }
 
-    public String TtoString() {
-        return trucksPool.toString();
+    public List<String> TtoString() {
+        return trucksPool.trucksToString();
     }
 
     public void addDriver(String id, String name, String license) {
