@@ -25,6 +25,7 @@ public class SupplierController {
     private SupplierController() {
       this.suppliers = new LinkedList<>();
       this.supplier = new Supplier();
+      this.item = new Items();
     }
 
     public static List<String> getSupplierItemsNames(int suppId) {
@@ -143,7 +144,7 @@ public class SupplierController {
     }
 
     public int getItemsListSize(int suppId) {
-        return Supplier.getItemsListSize(suppId);
+        return this.supplier.getItemsListSize(suppId);
         //return this.getSuppById(suppId).getItemsListSize();
     }
 
@@ -153,7 +154,7 @@ public class SupplierController {
     }
 
     public boolean validateItemId(int suppId, int itemId) {
-        return Supplier.validateItemId(suppId,itemId);
+        return this.supplier.validateItemId(suppId,itemId);
         //return getSuppById(suppId).validateItemId(itemId);
     }
 
@@ -196,7 +197,7 @@ public class SupplierController {
     }
 
     public boolean checkIfItemExist(int itemId) {
-        return Items.checkIfItemExist(itemId);
+        return this.item.checkIfItemExist(itemId);
 
         //return (Items.getName(itemId)!=null);
     }
@@ -214,5 +215,9 @@ public class SupplierController {
 
     public List<Object> getSuppDetails(int bestSuppForItem) {
         return getSuppById(bestSuppForItem).getSuppDetails();
+    }
+
+    public int getSuppliersCounter() {
+        return this.supplier.getSuppliersCounter();
     }
 }

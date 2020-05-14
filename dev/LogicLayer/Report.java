@@ -1,5 +1,8 @@
 package LogicLayer;
 
+import DTO.ReportDTO;
+import DTO.ReportLineDTO;
+import DataAccessLayer.ReportMapper;
 import javafx.util.Pair;
 
 import java.util.LinkedList;
@@ -7,6 +10,7 @@ import java.util.List;
 
 public class Report {
     private static  int globalId=1;
+    private static ReportMapper reportMapper=new ReportMapper();
 
     private int reportId;
     private String title;
@@ -131,4 +135,13 @@ public class Report {
     }
 
 
+    public void saveMe() {
+        ReportDTO reportDTO= new ReportDTO(reportId,title);
+        List<ReportLineDTO> lineDTOS= new LinkedList<>();
+        for( ReportLine line: lines ){
+            lineDTOS.add( new ReportLineDTO(line.getProdId(),line.getProdName(),line.getAmount(),line.getOptional()));
+        }
+        reportDTO.setLines(lineDTOS);
+        reportMapper.addReport(reportDTO);
+    }
 }

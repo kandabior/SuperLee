@@ -1,6 +1,7 @@
 package LogicLayer;
 
 import DataAccessLayer.InventoryMapper;
+import DataAccessLayer.ItemMapper;
 import javafx.util.Pair;
 import java.time.LocalDate;
 import java.util.*;
@@ -66,7 +67,6 @@ public class Inventory {
     public  List<Integer> getBranchIdsToWeeklyOrders(int dayOfTheWeek) {
         return inventoryMapper.getBranchIdsToWeeklyOrders(dayOfTheWeek);
     }
-
     public  String mannageOrders(int branchId, Map<Integer,Pair<Integer,Double>> orders) {
         for(Integer prodId: orders.keySet()){
             addAmountToProduct(branchId, prodId,orders.get(prodId).getKey());
@@ -83,7 +83,6 @@ public class Inventory {
     private  void setCostPrice(int branchId,Integer prodId, double newPrice) {
         inventoryMapper.setCostPrice(branchId,prodId,newPrice);
     }
-
     public  List<Pair<Integer,Integer>> getQuantity(int branchId){ // Pair[0] = productId, Pair[1] = storage + shelf Quantity
         List<Pair<Integer,Integer>> qnty = new LinkedList<>();
         for(Integer id : inventoryMapper.getProductsIds(branchId)){
@@ -116,7 +115,6 @@ public class Inventory {
         }
         return needToBuy;
     }
-
     public   List<Pair<Integer,Integer>> getProductsByCategories(int branchId, List<String> category){  //Integer = productId
         List<Pair<Integer,Integer>> prodectList = new LinkedList<>();
         for(Integer id : inventoryMapper.getProductsIds(branchId)){
@@ -131,7 +129,6 @@ public class Inventory {
         }
         return prodectList;
     }
-
     public   List<Pair<Integer,Integer>> ExpiredProducts(int branchId){  //Integer = productId
         List<Pair<Integer,Integer>> expiredProducts = new LinkedList<>();
         for(Integer id : inventoryMapper.getExpiredIds(branchId)){
@@ -140,8 +137,10 @@ public class Inventory {
         return expiredProducts;
     }
     public   String setSalePrice(int branchId, int id, Double price) {
-        if(inventoryMapper.setSalePrice(branchId,id,price)) {
-            return "product " + id + "- price changed to: " + price;
+        if(inventoryMapper.isInventoryConteinsProd(branchId,id)) {
+            if (inventoryMapper.setSalePrice(branchId, id, price)) {
+                return "product " + id + "- price changed to: " + price;
+            }
         }
         return "could not set sale price to product "+id;
     }
@@ -152,7 +151,6 @@ public class Inventory {
         }
         return "all prices for categories: " + category.toString() + " changed to: " + price;
     }
-
     public  String setExpired(int branchId, int productId, Integer amount){ //removing a specific amount of expired products from the storage inventory to the expired inventory.
         if(inventoryMapper.isInventoryConteinsProd(branchId,productId)) {
             return "product ID doesnt exist";
@@ -181,9 +179,6 @@ public class Inventory {
         }
 
     }
-
-
-
     public String addProduct(int branchId, int id,int amount, String name, Double costPrice, Double salePrice, LocalDate expDate, List<String> category, String manufacturer, int minAmount, String place) {
         if(inventoryMapper.isBranchExist(branchId)) {
             if(!inventoryMapper.isInventoryConteinsProd(branchId,id)) {
@@ -197,7 +192,6 @@ public class Inventory {
         }
         return "Error - branch id does not exist";
     }
-
     public String removeProduct(int branchId, int id) {
         if (inventoryMapper.isBranchExist(branchId)) {
             if (inventoryMapper.isInventoryConteinsProd(branchId, id)) {
@@ -207,7 +201,6 @@ public class Inventory {
         }
         return "branch id does not exist";
     }
-
     public  String addAmountToProduct(int branchId, int id, int amount){
         if (inventoryMapper.isBranchExist(branchId)) {
             if (inventoryMapper.isInventoryConteinsProd(branchId, id)) {
@@ -248,8 +241,6 @@ public class Inventory {
         }
         return "branch id does not exist";
     }
-
-
     public  String shelfToStorage(int branchId, int id, int amount){
         if (inventoryMapper.isBranchExist(branchId)) {
             if (inventoryMapper.isInventoryConteinsProd(branchId, id)) {
@@ -264,7 +255,6 @@ public class Inventory {
         }
         return "branch id does not exist";
     }
-
     public  String storageToShelf(int branchId,int id, int amount){
         if (inventoryMapper.isBranchExist(branchId)) {
             if (inventoryMapper.isInventoryConteinsProd(branchId, id)) {
@@ -279,7 +269,6 @@ public class Inventory {
         }
         return "branch id does not exist";
     }
-
     public  String getLastCostPrice(int branchId,int id) {
         if (inventoryMapper.isBranchExist(branchId)) {
             if (inventoryMapper.isInventoryConteinsProd(branchId, id)) {
@@ -289,7 +278,6 @@ public class Inventory {
         }
         return "branch id does not exist";
     }
-
     public  String getLastSalePrice(int branchId,int id){
         if (inventoryMapper.isBranchExist(branchId)) {
             if (inventoryMapper.isInventoryConteinsProd(branchId, id)) {
@@ -299,11 +287,9 @@ public class Inventory {
         }
         return "branch id does not exist";
     }
-
     public Pair<Integer, List<Double>> SalePricesById(int branchId,int id) {
         return new Pair<>(id,inventoryMapper.getSalePrices(branchId,id));
     }
-
     public Pair<Integer, List<Double>> CostPricesById(int branchId,int id) {
         return new Pair<>(id,inventoryMapper.getCostPrices(branchId,id));
     }
@@ -364,7 +350,6 @@ public class Inventory {
         }
         return "branch id does not exist";
     }
-
     public List<Pair<Integer, Integer>> getWeeklyOrder(int branchId) {
         if (inventoryMapper.isBranchExist(branchId)) {
             return inventoryMapper.getWeeklyOrder(branchId);
@@ -376,14 +361,13 @@ public class Inventory {
         }
         return null;
     }
-
     public  boolean conteinsProduct(int branchId,Integer key) {
         return inventoryMapper.isInventoryConteinsProd(branchId,key);
     }
 
     //Managers
     public String addInventoryManager(int branchId,String username, String password){ //TODO remove the , Inventory controller will hold instance of Singletone Inventory.
-        if(!inventoryMapper.isInventoryManagerExist(branchId,username)) {
+        if(!inventoryMapper.isInventoryManagerExist(branchId,username) && inventoryMapper.isBranchExist(branchId)) {
             if(inventoryMapper.addInventoryManager(branchId,username,password)) {
                 return "Inventory Manager " + username + " - registered successfully";
             }
@@ -394,7 +378,7 @@ public class Inventory {
         }
     }
     public  String addGlobalManager(int branchId,String username, String password){  //TODO remove the , Inventory controller will hold instance of Singletone Inventory.
-        if(!inventoryMapper.isGlobalMannagerExist(branchId,username)) {
+        if(!inventoryMapper.isGlobalMannagerExist(branchId,username) && inventoryMapper.isBranchExist(branchId)) {
             if( inventoryMapper.addGlobalManager(branchId,username, password)){
                 return "Global Manager " + username + " - registered successfully";
             }
@@ -404,7 +388,6 @@ public class Inventory {
             return "can't register - username already exist";
         }
     }
-
     public String removeInventoryManagar(int branchId,String username, String password, String usernameToRemove) {
 
         if (!inventoryMapper.isInventoryManagerExist(branchId,username))
@@ -417,7 +400,6 @@ public class Inventory {
         } else
             return "Only Global Manager can remove Inventory Manager";
     }
-
     public String removeGlobalManagar(int branchId,String username, String password) {
         if (!inventoryMapper.isGlobalMannagerExist(branchId,username)) {
             return "can't remove Global Manager - username doesnt exist";
@@ -430,20 +412,14 @@ public class Inventory {
         }
 
     }
-
     public boolean checkGlobalManagar(int branchId,String username, String password) {
-        return true;
-
+        return inventoryMapper.checkGlobalManagar(branchId, username, password);
     }
-
     public boolean checkInventoryManagar(int branchId,String username, String password) {
-        return true;
-
+        return inventoryMapper.checkInventoryManagar(branchId, username, password);
     }
-
     public String getItemName(int prodid) {
-
-        return "true";
+        return ItemMapper.getName(prodid);
     }
 
 

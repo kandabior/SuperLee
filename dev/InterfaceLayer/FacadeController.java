@@ -65,7 +65,7 @@ public class FacadeController {
 
 
     public String getItemNameByIndex(int suppId, int index) {
-        return supplierController.getItemNameByIndex(suppId, index);
+        return this.supplierController.getItemNameByIndex(suppId, index);
     }
 
     public Map<Integer,Pair<Integer,Double>> makeOrder(int branchId, List<Pair<Integer,Integer>> list)//return itemId , <Quantity , FinalCost>
@@ -141,9 +141,9 @@ public class FacadeController {
 
     public Map<Integer, Pair<Integer, Double>> getBillOfQuantities(int suppId) { return supplierController.getBillOfQuantities(suppId); }
 
-    public String getItemNameById(Integer itemId) { return supplierController.getItemName(itemId); }
+    public String getItemNameById(Integer itemId) { return this.supplierController.getItemName(itemId); }
 
-    public void setItemPrice(int suppId, int itemId, double newPrice) { supplierController.setItemPrice(suppId, itemId, newPrice);}
+    public void setItemPrice(int suppId, int itemId, double newPrice) { this.supplierController.setItemPrice(suppId, itemId, newPrice);}
 
     public boolean validateItemId(int suppId, int itemId) { return supplierController.validateItemId(suppId, itemId); }
 
@@ -210,5 +210,9 @@ public class FacadeController {
 
     public List<Object> getSupplierDeatails(int id) {
         return orderController.getSupplierDeatails(id);
+    }
+
+    public int getSuppliersCounter() {
+        return this.supplierController.getSuppliersCounter();
     }
 }

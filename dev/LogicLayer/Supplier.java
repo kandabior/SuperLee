@@ -41,16 +41,16 @@ public class Supplier {
         return SupplierMapper.deleteSupplier(id);
     }
 
-    public static boolean validateItemId(int suppId, int itemId) {
-       return SupplierMapper.validateItemId(suppId,itemId);
+    public boolean validateItemId(int suppId, int itemId) {
+       return this.supplierMapper.validateItemId(suppId,itemId);
     }
 
     public void addItemToSupplier(int suppId, int itemId) {
         this.supplierMapper.addItemToSupplier(suppId,itemId);
     }
 
-    public static int getItemsListSize(int suppId) {
-        return SupplierMapper.getItemsListSize(suppId);
+    public int getItemsListSize(int suppId) {
+        return this.supplierMapper.getItemsListSize(suppId);
     }
 
     public static List<String> getSupplierItemsNames(int suppId) {
@@ -199,7 +199,7 @@ public class Supplier {
     }
 
     public LinkedHashMap<Integer, Double> showSuppItems(int suppId) {
-        return this.supplierMapper.showSuppItems(id);
+        return this.supplierMapper.showSuppItems(suppId);
     }
 
     public List<Integer> getSupplierIds() {
@@ -208,5 +208,9 @@ public class Supplier {
 
     public Double getDiscount(int billId, int itemId, int amount) {
         return this.supplierMapper.getDiscount(billId,itemId);
+    }
+
+    public int getSuppliersCounter() {
+        return this.supplierMapper.getSuppliersCounter();
     }
 }
