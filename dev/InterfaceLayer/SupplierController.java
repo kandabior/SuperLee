@@ -5,10 +5,7 @@ import LogicLayer.Items;
 import LogicLayer.Supplier;
 import javafx.util.Pair;
 
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Map;
-import java.util.LinkedHashMap;
+import java.util.*;
 
 public class SupplierController {
     private List<Supplier> suppliers;
@@ -70,9 +67,13 @@ public class SupplierController {
         return sup.saveMe();
     }
 
-    public void createBillOfQuantities(int supplierId ,Map<Integer, Pair<Integer, Double>> bill) { //TODO here
+    public void createBillOfQuantities(int supplierId ,Map<Integer, Pair<Integer, Double>> bill) { //id, <quantity, discount>
         this.supplier.createBillOfQuantities(supplierId);
-        //for
+        Iterator<Integer> iter = bill.keySet().iterator();
+        while (iter.hasNext()){
+            int id = iter.next();
+            this.supplier.addItemToBillOfQuantities(id, bill.get(id).getKey(), bill.get(id).getValue());//TODO dorin was here
+        }
     }
 
     public boolean addItemToAgreement(Integer supp_id ,Integer item_id,Double cost){

@@ -29,8 +29,8 @@ public class FacadeController {
 
     public boolean deleteSupplier(int suppId) { return supplierController.deleteSupplier(suppId); }
 
-    public void addBillOfQuantities (int supplierId, Map<Integer, Pair<Integer, Double>> bill ) {
-        this.supplierController.addBillOfQuantities(supplierId, bill);
+    public void addBillOfQuantities (int supplierId, Map<Integer, Pair<Integer, Double>> bill) {
+        this.supplierController.createBillOfQuantities(supplierId, bill);
     }
 
     public void updateBillOfQuantities(int supplierId, Integer itemId, Pair<Integer, Double> quantity_disc) {
