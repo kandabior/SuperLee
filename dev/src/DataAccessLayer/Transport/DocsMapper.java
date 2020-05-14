@@ -5,7 +5,6 @@ import java.sql.*;
 public class DocsMapper {
     private Connection con;
 
-
     public boolean supplierIsBusy(int supplierId) {
         try {
             if (tryOpen()) {
@@ -34,6 +33,7 @@ public class DocsMapper {
         }
         return false;
     }
+
     private boolean tryOpen() {
         try {
             String url = "jdbc:sqlite:transportsAndWorkers.db";

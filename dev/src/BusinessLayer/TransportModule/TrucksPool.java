@@ -1,11 +1,16 @@
 package BusinessLayer.TransportModule;
 
 
+import BusinessLayer.TransportModule.DTO.DTO_Supplier;
+import BusinessLayer.TransportModule.DTO.DTO_Truck;
+import DataAccessLayer.Transport.TrucksMapper;
+
 import java.util.*;
 
 public class TrucksPool {
 
     private LinkedList<Truck> trucks;
+    private TrucksMapper mapper;
 
     private static TrucksPool ourInstance = new TrucksPool();
 
@@ -18,8 +23,8 @@ public class TrucksPool {
     }
 
     public void addTruck(String id, String model , double weight, double maxWeight){
-        Truck t = new Truck(id,model,weight,maxWeight);
-        trucks.add(t);
+        DTO_Truck t = new DTO_Truck(id , model, weight, maxWeight);
+        mapper.addTruck(t);
     }
 
     public void deleteTruck(String id){
@@ -30,22 +35,12 @@ public class TrucksPool {
         }
         trucks.remove(tr);
     }
-    public String toString(){
-        String s = "";
-        Iterator itr = trucks.iterator();
-        while (itr.hasNext()){
-            s = s + itr.next().toString() + "\n";
-        }
-     return s;
+    public List<String> TruckstoString(){
+       return mapper.getTrucksString();
     }
 
     public boolean isUniqueId (String id){
-        boolean isUnique = true;
-        for (Truck t:trucks){
-            if (t.getId().equals(id))
-                isUnique = false;
-        }
-        return isUnique;
+        return mapper.isUniqueTruck(id);
     }
 
 
