@@ -109,9 +109,9 @@ public class Supplier {
         this.agreement.addItemToBillOfQuantities(itemId,itemQuantity,itemDiscount);
     }*/
 
-    public Map<Integer, Pair<Integer, Double>> getBillOfQuantities() {
-        return this.agreement.getBillOfQuantities();
-    }
+//    public Map<Integer, Pair<Integer, Double>> getBillOfQuantities() {
+//        return this.agreement.getBillOfQuantities();
+//    }
 
 
 
