@@ -19,49 +19,54 @@ public class view {
 
 
     private void startSystem(){
-        while (true) {
-            System.out.println("Welcome to the \"Super-Lee\" system!\n" +
-                    "Choose your role:\n" +
-                    "1. Personnel Manager\n" +
-                    "2. exit");
-            Scanner ans = new Scanner(System.in);
-            int role = ans.nextInt();
-            switch (role) {
-                case 1:
-                    startPersonnelManager();
+        try {
+            createDB();//TODO remove
+            while (true) {
+                System.out.println("Welcome to the \"Super-Lee\" system!\n" +
+                        "Select a branch:\n" +
+                        "for drivers area, enter:\n     0 \n" +
+                        "Otherwise enter a store number, a number between\n     1-9\n" +
+                        "Return to previous menu Insert\n     10\n");
+                Scanner ans = new Scanner(System.in);
+                int branch = ans.nextInt();
+                if (branch >= 0 & branch <= 9) {
+                    service.loadBranch(branch);
                     break;
-                case 2:
+                } else if (branch == 10)
                     return;
-                default:
-                    System.out.println("Invalid selection");
-                    break;
+                else
+                    System.out.println("\nInvalid selection\n");
             }
+            startPersonnelManager();
+        }catch (Exception e){
+            System.out.println("\nSorry, you have entered invalid input in this action\n");
+            return;
         }
     }
 
     private void startPersonnelManager(){
-        boolean stop = false;
-        while (!stop) {
-            System.out.println("Where to enter?\n" +
-                    "1. Employees\n" +
-                    "2. Shifts\n" +
-                    "3. Back");
-            Scanner ans = new Scanner(System.in);
-            int selectedClass = ans.nextInt();
-            switch (selectedClass) {
-                case 1:
-                    startEmployee();
-                    break;
-                case 2:
-                    startShift();
-                    break;
-                case 3:
-                    return;
-                default:
-                    System.out.println("Invalid selection");
-                    break;
+            boolean stop = false;
+            while (!stop) {
+                System.out.println("Where to enter?\n" +
+                        "1. Employees\n" +
+                        "2. Shifts\n" +
+                        "3. Back");
+                Scanner ans = new Scanner(System.in);
+                int selectedClass = ans.nextInt();
+                switch (selectedClass) {
+                    case 1:
+                        startEmployee();
+                        break;
+                    case 2:
+                        startShift();
+                        break;
+                    case 3:
+                        return;
+                    default:
+                        System.out.println("\nInvalid selection\n");
+                        break;
+                }
             }
-        }
     }
 
     private void startEmployee(){
@@ -103,28 +108,23 @@ public class view {
     private void addNewWorker() {
         Scanner ans = new Scanner(System.in);
         System.out.println("Write the following worker's details:");
-        System.out.println("name");
-        String name = ans.nextLine();
-        System.out.println("ID");
-        String ID = ans.nextLine();
-        System.out.println("hiring condiotions:");
-        String hiringConditions = ans.nextLine();
-        System.out.println("bank Id");
-        String bankId = ans.nextLine();
-        System.out.println("salary");
-        int salary = ans.nextInt();
-        System.out.println("start of employment:"+
-                "Please enter the date in the format dd/mm/yyyy");
-        String date = ans.nextLine();
+        String name = inputNotEmpty("name");
+        String ID = inputNotEmpty("ID");
+        String hiringConditions =inputNotEmpty("hiring conditions:");
+        String bankId = inputNotEmpty("bank Id");
+        int salary = Integer.parseInt(inputNotEmpty("salary"));
+        String date;// = ans.nextLine();
         Date startEmployment=new Date();
         boolean correctdate=false;
         while(!correctdate)
             try {
+                System.out.println("start of employment:"+
+                        "Please enter the date in the format dd/mm/yyyy");
                 date = ans.nextLine();
                 startEmployment= new SimpleDateFormat("dd/MM/yyyy").parse(date);
                 correctdate=true;
             } catch (ParseException e) {
-                System.out.println("Invalid date");
+                System.out.println("\nInvalid date\n");
             }
         String emplyeeId =service.addworker(name,ID,hiringConditions,bankId,salary,startEmployment);
         if(emplyeeId==null)
@@ -226,11 +226,11 @@ public class view {
         String day=chooseDay();
         while (day==null){
             day=chooseDay();
-            System.out.println("Invalid option");
+            System.out.println("\nInvalid option\n");
         }
         String shiftType=chooseShiftType();
         while (shiftType==null){
-            System.out.println("Invalid option");
+            System.out.println("\nInvalid option\n");
             shiftType=chooseShiftType();
         }
         service.addConstrain(id,day,shiftType);
@@ -269,7 +269,7 @@ public class view {
                 case 6:
                     return;
                 default:
-                    System.out.println("Invalid selection");
+                    System.out.println("\nInvalid selection\n");
                     break;
             }
         }
@@ -287,16 +287,16 @@ public class view {
         Map<String,Integer> roles = new HashMap<String, Integer>();
         boolean stop = false;
         while (!stop){
-            System.out.println("Insert a role:");
-            Scanner ans = new Scanner(System.in);
-            String role = ans.nextLine();
+            String role = roleFromList();
+            while (role == null){
+                role = roleFromList();
+            }
             System.out.println("How Many Employees in the role "+role+" needed?");
             Scanner ans1 = new Scanner(System.in);
             int numOfEmployee = ans1.nextInt();
             roles.put(role,numOfEmployee);
-            System.out.println("Need more roles? Select y/n");
-            Scanner ans2 = new Scanner(System.in);
-            String needMore = ans2.nextLine();
+            String ask = "Need more roles? Select y/n";
+            String needMore = yesOrNo(ask);
             if(needMore.equals("n"))
                 stop = true;
         }
@@ -322,9 +322,8 @@ public class view {
 
         boolean Exists = service.ShiftExists(date, shiftType);
         if (Exists) {
-            System.out.println("There is already an inlay for this date, would you like to replace the existing one? Select y/n");
-            Scanner ans2 = new Scanner(System.in);
-            String needMore = ans2.nextLine();
+            String ask = "There is already an inlay for this date, would you like to replace the existing one? Select y/n";
+            String needMore = yesOrNo(ask);
             if (needMore.equals("n")) {
                 return;
             } else {
@@ -349,18 +348,25 @@ public class view {
                     boolean success = true;
                     for (String currRole : roles.keySet()) {
                         List<String> relevantEmployees = service.relevantEmployees(day, shiftType, currRole);
-                        if (relevantEmployees == null) {
-                            System.out.println("There is no employee available for the role, you can change shift requirements");
+                        if (relevantEmployees == null || relevantEmployees.size() == 0) {
+                            System.out.println("\nThere is no employee available for the role "+currRole+", you can change shift requirements\n");
                             success = false;
                             return;
                         } else {
                             int numOfEmployee = roles.get(currRole);
                             List<String> employees = new LinkedList<String>();
+                            if(numOfEmployee > relevantEmployees.size()) {
+                                System.out.println("\nThere are not enough employees available for the job " +currRole +",\n"+
+                                        "Therefore this inlay cannot be performed\n");
+                                return;
+                            }
                             while (numOfEmployee > 0) {
                                 System.out.println("Select the employees for the role " + currRole + " :\n" +
                                         numOfEmployee + " more left to choose for this role");
                                 String Employee = chooseFromList(relevantEmployees);
+                                relevantEmployees.remove(Employee);
                                 employees.add(Employee);
+
                                 numOfEmployee--;
                             }
                             workers.put(currRole, employees);
@@ -378,7 +384,7 @@ public class view {
         if (relevant_personnel_manager == null)
             return null;
         else {
-            System.out.println("Select the personnel manager:\n");
+            System.out.println("Select the Shift manager:");
             String manager = chooseFromList(relevant_personnel_manager);
             return manager;
         }
@@ -436,6 +442,7 @@ public class view {
             case 7:
                 return "Saturday";
             default:
+                System.out.println("\nInvalid selection\n");
                 return null;
         }
     }
@@ -451,7 +458,7 @@ public class view {
             case 2:
                 return "Evening";
             default:
-                System.out.println("Invalid selection");
+                System.out.println("\nInvalid selection\n");
                 return null;
         }
     }
@@ -477,11 +484,94 @@ public class view {
         try {
             date = new SimpleDateFormat("dd/MM/yyyy").parse(dd);
         } catch (ParseException e) {
-            System.out.println("Invalid date");
+            System.out.println("\nInvalid date\n");
         }
         return date;
     }
 
+
+    private String dayByNumber(int day){
+        switch (day) {
+            case 1:
+                return "Sunday";
+            case 2:
+                return "Monday";
+            case 3:
+                return "Tuesday";
+            case 4:
+                return "Wednesday";
+            case 5:
+                return "Thursday";
+            case 6:
+                return "Friday";
+            case 7:
+                return "Saturday";
+
+        }
+        return null;
+    }
+
+    private String roleFromList(){
+        System.out.println("Choose a role:\n"+
+                "1. cashier\n" +
+                "2. storekeeper\n" +
+                "3. rate\n" +
+                "4. baker\n" +
+                "5. Shop worker\n" +
+                "6. Guard");
+        Scanner ans = new Scanner(System.in);
+        int r = ans.nextInt();
+        switch (r) {
+            case 1:
+                return "cashier";
+            case 2:
+                return "storekeeper";
+            case 3:
+                return "rate";
+            case 4:
+                return "baker";
+            case 5:
+                return "Shop worker";
+            case 6:
+                return "Guard";
+            default:
+                System.out.println("\nInvalid selection\n");
+                return null;
+        }
+    }
+
+    private String yesOrNo(String ask){
+        while (true) {
+            System.out.println(ask);
+            Scanner ans2 = new Scanner(System.in);
+            String needMore = ans2.nextLine();
+            if (needMore.equals("n")) {
+                return "n";
+            } else if (needMore.equals("y")) {
+                return "y";
+            } else {
+                System.out.println("\nExpected to receive y / n\n");
+            }
+        }
+    }
+
+    private String inputNotEmpty(String in){
+        while (true) {
+            System.out.println(in);
+            if(in.equals("salary"))
+                System.out.println("(Please make sure to enter a number..)");
+            Scanner ans = new Scanner(System.in);
+            String ret = ans.nextLine();
+            if(!ret.equals(""))
+                return ret;
+            else
+                System.out.println("Employee's " + in + " cannot be empty");
+        }
+    }
+
+
+
+    //TODO remove , just for check
     private void createDB() {
         addHistory();
         addRequirements();
@@ -584,25 +674,5 @@ public class view {
         service.editRequirements(tue,e,r5);
         service.editRequirements(fri,m,r6);
         service.editRequirements(sat,m,r7);
-    }
-    private String dayByNumber(int day){
-        switch (day) {
-            case 1:
-                return "Sunday";
-            case 2:
-                return "Monday";
-            case 3:
-                return "Tuesday";
-            case 4:
-                return "Wednesday";
-            case 5:
-                return "Thursday";
-            case 6:
-                return "Friday";
-            case 7:
-                return "Saturday";
-
-        }
-        return null;
     }
 }
