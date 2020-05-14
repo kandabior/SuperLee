@@ -40,8 +40,6 @@ public class MainMenu{
             Map<Integer,Pair<Integer,Double>> orders= FacadeController.getFacadeController().makeOrder(1,toOrder);
             //ELAD TEST//
 
-
-
             Printer.Print("Day: "+(DayOfTheWeek+1));
             Printer.Print("\n\nPlease choose an action:\n" +
                     "1. Enter Inventory & Reports Menu\n" +

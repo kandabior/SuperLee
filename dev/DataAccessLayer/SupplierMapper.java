@@ -583,7 +583,7 @@ public class SupplierMapper {
     return 0.0;
     }
 
-    public boolean checkBillExist(int BillId) {
+    public boolean checkIfBillExists(int BillId) {
         try {
             if (tryOpen()) {
                 Class.forName("org.sqlite.JDBC");
