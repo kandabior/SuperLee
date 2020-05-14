@@ -17,6 +17,22 @@ public class ReportLine {
         optional=new LinkedList<>();
     }
 
+    public String getProdName() {
+        return prodName;
+    }
+
+    public List<String> getOptional() {
+        return optional;
+    }
+
+    public int getProdId() {
+        return prodId;
+    }
+
+    public int getAmount() {
+        return amount;
+    }
+
     public boolean addToLine(String toAdd){
         return optional.add(toAdd);
     }

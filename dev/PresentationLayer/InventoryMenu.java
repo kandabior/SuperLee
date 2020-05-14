@@ -443,8 +443,10 @@ public class InventoryMenu {
         String password=scanner.next();
         Printer.Print("product Id: ");
         String prodId=scanner.next();
-        Printer.Print("name: ");
-        String name=scanner.next();
+        /*Printer.Print("name: ");
+        String name=scanner.next();*/
+        Printer.Print("Quantity: ");
+        String amount=scanner.next();
         Printer.Print("cost price: ");
         String costPrice=scanner.next();
         Printer.Print("salePrice: ");
@@ -462,7 +464,7 @@ public class InventoryMenu {
         List<String> categoriesList= Arrays.asList(categories.split(","));
         String []dateArr=expdate.split("/");
         LocalDate date = LocalDate.of(Integer.parseInt(dateArr[2]),Integer.parseInt(dateArr[1]),Integer.parseInt(dateArr[0]));
-        Printer.Print(inventoryController.addProduct(Integer.parseInt(branchId),userName,password,Integer.parseInt(prodId),0,Double.parseDouble(costPrice),Double.parseDouble(salePrice), date,categoriesList,manufacturer,Integer.parseInt(minAmount),place));
+        Printer.Print(inventoryController.addProduct(Integer.parseInt(branchId),userName,password,Integer.parseInt(prodId),Integer.parseInt(amount),Double.parseDouble(costPrice),Double.parseDouble(salePrice), date,categoriesList,manufacturer,Integer.parseInt(minAmount),place));
     }
     public static void initiateSystem(){
         try {

@@ -51,7 +51,7 @@ public class ItemMapper {
     }
 
 
-    public String getName(Integer id) {
+    public static String getName(Integer id) {
         try {
             Class.forName("org.sqlite.JDBC");
             conn = DriverManager.getConnection("jdbc:sqlite:dev\\EOEDdatabase.db");
@@ -63,6 +63,7 @@ public class ItemMapper {
                 String ans =res.getString("itemName");
                 st.close();
                 conn.close();
+                System.out.println(ans);
                return ans;
             }
             conn.close();
