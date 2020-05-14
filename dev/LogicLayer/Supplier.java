@@ -101,8 +101,8 @@ public class Supplier {
         return  this.agreement.getPriceOfItem(index);
     }
 
-    public Boolean checkBillOfQuantity() {
-        return this.agreement.checkBillOfQuantity();
+    public Boolean checkBillOfQuantity(int agreementId) {
+        return this.supplierMapper.checkIfBillExists(agreementId);
     }
 
     public void addItemToBillOfQuantities(int itemId, int itemQuantity, Double itemDiscount) {
@@ -145,7 +145,7 @@ public class Supplier {
     public Double getPriceOfAmountOfItem(int supplierId, Integer itemId, Integer amount) {
         if(this.supplierMapper.getSupplierItemsId(supplierId).contains(itemId))
         {
-            if (this.supplierMapper.checkBillExist(supplierId) && this.supplierMapper.checkInBillForDiscount(supplierId,itemId,amount)) {
+            if (this.supplierMapper.checkIfBillExists(supplierId) && this.supplierMapper.checkInBillForDiscount(supplierId,itemId,amount)) {
                 double discount = this.supplierMapper.getDiscount(supplierId,itemId);
                // double discount = bill.getMoneyAmountofItemInBill(itemId, quantity);
                 double cost =this.supplierMapper.getPriceOfItem(supplierId,itemId);// terms.get(itemId);
@@ -214,5 +214,9 @@ public class Supplier {
 
     public int getSuppliersCounter() {
         return this.supplierMapper.getSuppliersCounter();
+    }
+
+    public void createBillOfQuantities(int suppId) {
+        this.supplierMapper.createBillOfQuantities(suppId);
     }
 }

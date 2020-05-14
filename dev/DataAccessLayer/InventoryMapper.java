@@ -104,7 +104,7 @@ public class InventoryMapper {
             c.setAutoCommit(false);
             stmt = c.prepareStatement("SELECT * FROM GlobalManagers WHERE branchId=? AND userName=?;");
             stmt.setInt(1, branchId);
-            stmt.setString(1, username);
+            stmt.setString(2, username);
             ResultSet rs = stmt.executeQuery();
             if (rs.next()) {
                 rs.close();
@@ -746,6 +746,7 @@ public class InventoryMapper {
                 return 0;
             }
         } catch ( Exception e ) {
+
             tryClose(c);
             System.err.println( e.getClass().getName() + ": " + e.getMessage() );
             return 0;

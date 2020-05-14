@@ -330,7 +330,7 @@ public class SupplierMenu {
             System.out.print("Choose the id of the item you want to add to this bill: ");
             int itemId = scanner.nextInt();
             while (!fc.validateItemId(suppId, itemId)) {
-                System.out.print("This supplier Does not have this item.\nEnter another one\n");
+                System.out.print("This supplier Does not have this item, please enter another one.\n");
                 System.out.print("Item's identifier: ");
                 itemId = scanner.nextInt();
             }
@@ -365,7 +365,7 @@ public class SupplierMenu {
         }
     }
 
-    private static String editAgreement(int suppId){ //TODO working here!!!
+    private static String editAgreement(int suppId){
         Scanner scanner = new Scanner(System.in);
         System.out.println("\nChoose the id of the item it's price you wish to change.");
         LinkedHashMap<Integer, Double> terms = fc.showSuppItems(suppId);

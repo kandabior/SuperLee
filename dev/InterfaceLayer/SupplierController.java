@@ -5,10 +5,7 @@ import LogicLayer.Items;
 import LogicLayer.Supplier;
 import javafx.util.Pair;
 
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Map;
-import java.util.LinkedHashMap;
+import java.util.*;
 
 public class SupplierController {
     private List<Supplier> suppliers;
@@ -68,18 +65,19 @@ public class SupplierController {
     public boolean addSupplier(int id, String name, String phoneNum, int bankAccount, String payment, String supplySchedule, String supplyLocation , String address) {
         Supplier sup = new Supplier(id, name, phoneNum, bankAccount, payment, supplySchedule, supplyLocation, address);
         return sup.saveMe();
-        /*this.suppliers.add(sup);*/
     }
 
-    public void addBillOfQuantities(int supplierId,Map<Integer, Pair<Integer, Double>> bill) {
-        if (getSuppById(supplierId) != null) {
-            getSuppById(supplierId).getAgreement().addBillOfQuantities(bill);
+    public void createBillOfQuantities(int supplierId ,Map<Integer, Pair<Integer, Double>> bill) { //id, <quantity, discount>
+        this.supplier.createBillOfQuantities(supplierId);
+        Iterator<Integer> iter = bill.keySet().iterator();
+        while (iter.hasNext()){
+            int id = iter.next();
+            this.supplier.addItemToBillOfQuantities(id, bill.get(id).getKey(), bill.get(id).getValue());//TODO dorin was here
         }
     }
 
     public boolean addItemToAgreement(Integer supp_id ,Integer item_id,Double cost){
         return this.supplier.addItemToAgreement(supp_id,item_id,cost);
-        //getSuppById(supp_id).addItemToAgreement(item_id,cost);
     }
 
     public void updateBillOfQuantities(int supplierId, Integer itemId, Pair<Integer, Double> quantity_disc) {
@@ -114,7 +112,7 @@ public class SupplierController {
     }
 
     public boolean checkBillOfQuantity(int suppId) {
-        return getSuppById(suppId).checkBillOfQuantity();
+        return this.supplier.checkBillOfQuantity(suppId);
     }
 
     public void addItemToBillOfQuantities(int suppId, int itemId, int itemQuantity, Double itemDiscount) {
