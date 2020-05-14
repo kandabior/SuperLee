@@ -1,5 +1,11 @@
 package PresentationLayer;
+import InterfaceLayer.FacadeController;
 import LogicLayer.Items;
+import javafx.util.Pair;
+
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Map;
 import java.util.Scanner;
 
 
@@ -25,6 +31,17 @@ public class MainMenu{
         int choose;
         Printer.Print("Welcome To EOED Digital Storage And Suppliers Manager!");
         do {
+            //ELAD TEST//
+            List<Pair<Integer,Integer>> toOrder=new LinkedList<>();
+            Pair<Integer,Integer> p = new Pair(1,2);
+            Pair<Integer,Integer> p1 = new Pair(2,2);
+            toOrder.add(p);
+            toOrder.add(p1);
+            Map<Integer,Pair<Integer,Double>> orders= FacadeController.getFacadeController().makeOrder(1,toOrder);
+            //ELAD TEST//
+
+
+
             Printer.Print("Day: "+(DayOfTheWeek+1));
             Printer.Print("\n\nPlease choose an action:\n" +
                     "1. Enter Inventory & Reports Menu\n" +

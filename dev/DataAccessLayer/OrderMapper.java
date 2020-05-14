@@ -184,11 +184,17 @@ public class OrderMapper {
                 st.setString(5, o.getOrderDate());
                 st.setString(6, o.getAddress());
                 st.setDouble(7, o.getTotalCost());
-                st.setString(7, o.getPhoneNumber());
-                st.setString(7, o.getStatus());
+                st.setString(8, o.getPhoneNumber());
+                st.setString(9, o.getStatus());
                 int rowNum = st.executeUpdate();
                 st.close();
                 if (rowNum != 0) {
+                    //updateCounter
+                    st = conn.prepareStatement("UPDATE Counters SET counter = ? WHERE name = ?;");
+                    st.setInt(1, o.getId());
+                    st.setString(2, "orders");
+                    st.executeUpdate();
+                    ///
                     conn.commit();
                     conn.close();
                     return true;
@@ -212,15 +218,14 @@ public class OrderMapper {
             if (tryOpen()) {
                 Class.forName("org.sqlite.JDBC");
                 conn.setAutoCommit(false);
-                PreparedStatement st = conn.prepareStatement("INSERT INTO OrderLines VALUES (?,?,?,?,?,?,?,?);");
-                st.setInt(1, o.getOrderLineId());
-                st.setInt(2, o.getItemId());
-                st.setString(3, o.getItemName());
-                st.setInt(4, o.getItemQuantity());
-                st.setDouble(5, o.getItemCost());
-                st.setDouble(6, o.getItemDiscount());
-                st.setDouble(7, o.getFinalCost());
-                st.setInt(8, o.getOrderId());
+                PreparedStatement st = conn.prepareStatement("INSERT INTO OrderLines VALUES (?,?,?,?,?,?,?);");
+                st.setInt(1, o.getItemId());
+                st.setString(2, o.getItemName());
+                st.setInt(3, o.getItemQuantity());
+                st.setDouble(4, o.getItemCost());
+                st.setDouble(5, o.getItemDiscount());
+                st.setDouble(6, o.getFinalCost());
+                st.setInt(7, o.getOrderId());
                 int rowNum = st.executeUpdate();
                 st.close();
                 if (rowNum != 0) {
@@ -242,6 +247,29 @@ public class OrderMapper {
 
 
 
+    }
+
+    public int getOrderIdCounter() {
+        int counter = 0;
+        try {
+            if (tryOpen()) {
+                Class.forName("org.sqlite.JDBC");
+                conn.setAutoCommit(false);
+                PreparedStatement st = conn.prepareStatement("SELECT counter  FROM Counters WHERE name = ?;");
+                st.setString(1, "orders");
+                ResultSet res = st.executeQuery();
+                if (res.next()) {
+                    counter = res.getInt("counter");
+                }
+                st.close();
+                conn.close();
+                return counter;
+            }
+        } catch (Exception e) {
+            System.err.println(e.getClass().getName() + ": " + e.getMessage());
+            tryClose();
+        }
+        return counter;
     }
 }
 

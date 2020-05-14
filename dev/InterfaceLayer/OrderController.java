@@ -14,7 +14,9 @@ import java.util.Map;
 
 public class OrderController {
 
-    static int orderIdCounter = 1;
+    static int orderIdCounter ;
+
+
     private Order order ;
     List<Order> orders;
     private static OrderController order_sp = null;
@@ -23,6 +25,7 @@ public class OrderController {
 
         this.orders = new LinkedList<>();
         this.order= new Order();
+        orderIdCounter = this.order.getOrderIdCounter();
     }
 
     public static OrderController getOrderController() {
@@ -139,10 +142,21 @@ public class OrderController {
                 lines.add(orderLine);
             }
             o.setItems(lines);
+            o.setTotalCost(getTotalCost(lines));
             this.order.insertOrder(o);
            // orders.add(o);
         }
     }
+
+    private double getTotalCost(List<OrderLineDTO> lines) {
+        double ans = 0.0;
+        for(OrderLineDTO ot : lines)
+        {
+            ans+=ot.getFinalCost();
+        }
+        return ans;
+    }
+
 
     public List<List<Object>> getOrdersLineByOrderIndex(int id) {
         return this.order.getOrdersLineByOrderID(id);

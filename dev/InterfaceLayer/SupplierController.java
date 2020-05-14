@@ -168,11 +168,11 @@ public class SupplierController {
              Double temp =getPriceOfAmountOfItem(suppId.get(i),itemId,quantity);
              if(temp<min) {
                  min = temp;
-                 bestSuppId=i;
+                 bestSuppId=suppId.get(i);
              }
         }
 
-        return bestSuppId+1;
+        return bestSuppId;
 
 
 
@@ -212,7 +212,7 @@ public class SupplierController {
     }
 
     public List<Object> getSuppDetails(int bestSuppForItem) {
-        return getSuppById(bestSuppForItem).getSuppDetails();
+        return this.supplier.getSuppDetails(bestSuppForItem);// getSuppById(bestSuppForItem).();
     }
 
     public int getSuppliersCounter() {
