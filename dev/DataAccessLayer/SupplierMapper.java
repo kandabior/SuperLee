@@ -558,7 +558,6 @@ public class SupplierMapper {
 
     }
 
-
     public Double getPriceOfAmountOfItem(int supplierId, Integer itemId, Integer amount) {
 
 
@@ -583,13 +582,13 @@ public class SupplierMapper {
     return 0.0;
     }
 
-    public boolean checkBillExist(int BillId) {
+    public boolean checkIfBillExists(int billId) { //supp id = agreement id = bill id
         try {
             if (tryOpen()) {
                 Class.forName("org.sqlite.JDBC");
                 conn.setAutoCommit(false);
                 PreparedStatement st = conn.prepareStatement("SELECT * FROM BillsOfQuantities WHERE billId = ?;");
-                st.setInt(1, BillId);
+                st.setInt(1, billId);
                 ResultSet res = st.executeQuery();
                 if (res.next()) {
                     conn.commit();
@@ -610,7 +609,6 @@ public class SupplierMapper {
         }
         return false;
     }
-
 
     public boolean checkInBillForDiscount(int BillId, Integer itemId, Integer amount) {
         try {
@@ -718,6 +716,39 @@ public class SupplierMapper {
         }
         return counter;
     }
+
+    public void createBillOfQuantities(int suppId) {
+        try{
+            if(tryOpen()) {
+                Class.forName("org.sqlite.JDBC");
+                conn.setAutoCommit(false);
+                PreparedStatement st = conn.prepareStatement("INSERT INTO BillsOfQuantities VALUES (?);");
+                st.setInt(1, suppId);
+                st.executeUpdate();
+
+                st = conn.prepareStatement("UPDATE Agreements SET billId = ? WHERE suppId = ?;");
+                st.setInt(1, suppId);
+                st.setInt(2, suppId);
+                st.executeUpdate();
+
+                if(st.executeUpdate() != 0) {
+                    conn.commit();
+                    conn.close();
+                    st.close();
+                    return;
+                }
+                else {
+                    conn.close();
+                    st.close();
+                }
+            }
+
+            else return;
+        } catch (Exception e) {
+            System.err.println(e.getClass().getName() + ": " + e.getMessage());
+            tryClose();
+        }
+    }
 }
 /*
     public int bestSuppForItem(Integer itemId, Integer quantity) {
@@ -758,5 +789,3 @@ public class SupplierMapper {
 
 
  */
-
-

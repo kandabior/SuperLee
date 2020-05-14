@@ -68,18 +68,15 @@ public class SupplierController {
     public boolean addSupplier(int id, String name, String phoneNum, int bankAccount, String payment, String supplySchedule, String supplyLocation , String address) {
         Supplier sup = new Supplier(id, name, phoneNum, bankAccount, payment, supplySchedule, supplyLocation, address);
         return sup.saveMe();
-        /*this.suppliers.add(sup);*/
     }
 
-    public void addBillOfQuantities(int supplierId,Map<Integer, Pair<Integer, Double>> bill) {
-        if (getSuppById(supplierId) != null) {
-            getSuppById(supplierId).getAgreement().addBillOfQuantities(bill);
-        }
+    public void createBillOfQuantities(int supplierId ,Map<Integer, Pair<Integer, Double>> bill) { //TODO here
+        this.supplier.createBillOfQuantities(supplierId);
+        //for
     }
 
     public boolean addItemToAgreement(Integer supp_id ,Integer item_id,Double cost){
         return this.supplier.addItemToAgreement(supp_id,item_id,cost);
-        //getSuppById(supp_id).addItemToAgreement(item_id,cost);
     }
 
     public void updateBillOfQuantities(int supplierId, Integer itemId, Pair<Integer, Double> quantity_disc) {
@@ -114,7 +111,7 @@ public class SupplierController {
     }
 
     public boolean checkBillOfQuantity(int suppId) {
-        return getSuppById(suppId).checkBillOfQuantity();
+        return this.supplier.checkBillOfQuantity(suppId);
     }
 
     public void addItemToBillOfQuantities(int suppId, int itemId, int itemQuantity, Double itemDiscount) {
