@@ -102,7 +102,7 @@ public class Supplier {
     }
 
     public Boolean checkBillOfQuantity(int agreementId) {
-        //return this.supplierMapper.checkIfBillExists(agreementId);
+        return this.supplierMapper.checkIfBillExists(agreementId);
     }
 
     public void addItemToBillOfQuantities(int itemId, int itemQuantity, Double itemDiscount) {
@@ -218,6 +218,5 @@ public class Supplier {
 
     public void createBillOfQuantities(int suppId) {
         this.supplierMapper.createBillOfQuantities(suppId);
-
     }
 }
