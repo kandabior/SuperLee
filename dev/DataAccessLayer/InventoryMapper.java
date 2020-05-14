@@ -76,7 +76,7 @@ public class InventoryMapper {
             c.setAutoCommit(false);
             stmt = c.prepareStatement("SELECT * FROM InventoryManagers WHERE branchId=? AND userName=?;");
             stmt.setInt(1, branchId);
-            stmt.setString(1, username);
+            stmt.setString(2, username);
             ResultSet rs = stmt.executeQuery();
             if (rs.next()) {
                 rs.close();
@@ -316,10 +316,13 @@ public class InventoryMapper {
             stmt.setInt(1, branchId);
             stmt.setInt(2, prodId);
             ResultSet rs = stmt.executeQuery();
-            if(rs.next())
-                return rs.getString("name");
-            rs.close();
-            stmt.close();
+            if(rs.next()) {
+                String output=rs.getString("name");
+                rs.close();
+                stmt.close();
+                c.close();
+                return output;
+            }
         } catch ( Exception e ) {
             System.err.println( e.getClass().getName() + ": " + e.getMessage() );
         }
@@ -510,10 +513,12 @@ public class InventoryMapper {
                 int ans = Integer.parseInt(rs.getString("minAmount"));
                 rs.close();
                 stmt.close();
+                c.close();
                 return ans;
             }
         } catch ( Exception e ) {
             System.err.println( e.getClass().getName() + ": " + e.getMessage() );
+            tryClose(c);
         }
         return -1;
     }
@@ -525,17 +530,16 @@ public class InventoryMapper {
             c.setAutoCommit(false);
             //remove previous categories
             for(String cat: category) {
-                String sql= "DELETE FROM Categories WHERE branchId= ? AND productID= ? AND category=?";
+                String sql= "DELETE FROM Categories WHERE branchId= ? AND productID= ?";
                 stmt= c.prepareStatement(sql);
                 stmt.setInt(1,branchId);
                 stmt.setInt(2,id);
-                stmt.setString(3,cat);
                 stmt.executeUpdate();
                 stmt.close();
             }
             //set new categories
             for(String cat : category) {
-                stmt = c.prepareStatement("INSERT INTO Categiries VALUES (?,?,?);");
+                stmt = c.prepareStatement("INSERT INTO Categories VALUES (?,?,?);");
                 stmt.setInt(1,branchId);
                 stmt.setInt(2,id);
                 stmt.setString(3,cat);
@@ -568,7 +572,7 @@ public class InventoryMapper {
                 int currentAmount= Integer.parseInt(rs.getString("amount"));
                 stmt.close();
                 stmt=c.prepareStatement("UPDATE Expireds SET amount=? WHERE branchId=? AND productId=?;");
-                stmt.setInt(1,currentAmount);
+                stmt.setInt(1,currentAmount+amount);
                 stmt.setInt(2,branchId);
                 stmt.setInt(3,prodId);
                 int numOfUpdates=stmt.executeUpdate();
@@ -578,6 +582,7 @@ public class InventoryMapper {
                 }
                 stmt.close();
                 rs.close();
+                c.commit();
                 c.close();
                 return output;
             }
@@ -597,8 +602,9 @@ public class InventoryMapper {
     public  boolean addExpired(Integer branchId, Integer prodId, Integer amount) {
         PreparedStatement stmt=null;
         try{
-
-
+            Class.forName("org.sqlite.JDBC");
+            c = DriverManager.getConnection("jdbc:sqlite:dev\\EOEDdatabase.db");
+            c.setAutoCommit(false);
             stmt=c.prepareStatement("INSERT INTO Expireds values (?,?,?)");
             stmt.setInt(1,branchId);
             stmt.setInt(2,prodId);
@@ -609,6 +615,7 @@ public class InventoryMapper {
                 output=true;
             }
             stmt.close();
+            c.commit();
             c.close();
             return output;
 
@@ -646,6 +653,7 @@ public class InventoryMapper {
                     }
                     stmt.close();
                     rs.close();
+                    c.commit();
                     c.close();
                     return output;
                 } else {
@@ -695,6 +703,7 @@ public class InventoryMapper {
                     }
                     stmt.close();
                     rs.close();
+                    c.commit();
                     c.close();
                     return output;
                 } else {
@@ -850,14 +859,8 @@ public class InventoryMapper {
             stmt.setInt(1, branchId);
             stmt.setInt(2, id);
             ResultSet rs = stmt.executeQuery();
-            if(rs.next()) {
+            while(rs.next()) {
                 output.add(rs.getDouble("lastSalePrice"));
-            }
-            else {
-                rs.close();
-                stmt.close();
-                c.close();
-                return output;
             }
             stmt.close();
             c.close();
@@ -875,7 +878,7 @@ public class InventoryMapper {
             Class.forName("org.sqlite.JDBC");
             c = DriverManager.getConnection("jdbc:sqlite:dev\\EOEDdatabase.db");
             c.setAutoCommit(false);
-            stmt = c.prepareStatement("SELECT lastCostPrice FROM LastSalePrices WHERE branchId=? AND productId=?;");
+            stmt = c.prepareStatement("SELECT lastCostPrice FROM LastCostPrices WHERE branchId=? AND productId=?;");
             stmt.setInt(1, branchId);
             stmt.setInt(2, id);
             ResultSet rs = stmt.executeQuery();
@@ -1114,11 +1117,11 @@ public class InventoryMapper {
             Class.forName("org.sqlite.JDBC");
             c = DriverManager.getConnection("jdbc:sqlite:dev\\EOEDdatabase.db");
             c.setAutoCommit(false);
-            stmt = c.prepareStatement("SELECT productId FROM Expired WHERE branchId=?;");
+            stmt = c.prepareStatement("SELECT productId FROM Expireds WHERE branchId=?;");
             stmt.setInt(1, branchId);
             ResultSet rs = stmt.executeQuery();
             if(rs.next()) {
-                output.add(rs.getInt("category"));
+                output.add(rs.getInt("productId"));
             }
             stmt.close();
             c.close();
@@ -1137,7 +1140,7 @@ public class InventoryMapper {
             Class.forName("org.sqlite.JDBC");
             c = DriverManager.getConnection("jdbc:sqlite:dev\\EOEDdatabase.db");
             c.setAutoCommit(false);
-            stmt = c.prepareStatement("SELECT * FROM Expired WHERE branchId=? AND productId=?;");
+            stmt = c.prepareStatement("SELECT * FROM Expireds WHERE branchId=? AND productId=?;");
             stmt.setInt(1, branchId);
             stmt.setInt(2, productId);
             ResultSet rs = stmt.executeQuery();
