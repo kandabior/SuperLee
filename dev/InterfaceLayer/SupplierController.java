@@ -123,7 +123,8 @@ public class SupplierController {
     }
 
     public Map<Integer, Pair<Integer, Double>> getBillOfQuantities(int suppId) {
-        return getSuppById(suppId).getBillOfQuantities();
+        return this.agreement.getBillOfQuantities(suppId);
+        //return getSuppById(suppId).getBillOfQuantities();
     }
 
     public String getItemName( Integer itemId) {

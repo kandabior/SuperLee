@@ -269,7 +269,7 @@ public class SupplierMenu {
             System.out.println("No bill of quantities was found.");
         } else {
             do {
-                Map<Integer, Pair<Integer, Double>> map = fc.getBillOfQuantities(suppId);
+                Map<Integer, Pair<Integer, Double>> map = fc.getBillOfQuantities(suppId); //TODO falls here
                 for (Integer itemId : map.keySet()) {
                     String itemName = fc.getItemNameById(itemId);
                     Integer itemQuantity = map.get(itemId).getKey();

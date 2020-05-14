@@ -61,8 +61,9 @@ public class Agreement {
         this.agreementMapper.addItemToBillOfQuantities(supplierId, itemId, itemQuantity, itemDiscount);
     }
 
-    public Map<Integer, Pair<Integer, Double>> getBillOfQuantities() {
-        return this.bill.getBillOfQuantities();
+    public Map<Integer, Pair<Integer, Double>> getBillOfQuantities(int suppId) {
+        return this.agreementMapper.getBillOfQuantities(suppId);
+       // return this.bill.getBillOfQuantities();
     }
 
     public int getBillSize() {
