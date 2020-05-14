@@ -385,15 +385,6 @@ public class SupplierMenu {
                 double newPrice = scanner.nextDouble();
                 fc.setItemPrice(suppId, itemId, newPrice);
             }
-           /* if(fc.getItemIdByIndex(suppId,i) == itemId){
-                String itemName = fc.getItemNameByIndex(suppId,i);
-                double itemPrice = terms.get(itemId);
-                System.out.print(itemName + ", ");
-                System.out.print(itemPrice + "NIS\n");
-                System.out.print("New price: ");
-                double newPrice = scanner.nextDouble();
-                fc.setItemPrice(suppId, itemId, newPrice);
-            }*/
         }
         System.out.print("Price changed successfully. More items to update? [Y/N] ");
         Scanner scanner2 = new Scanner(System.in);

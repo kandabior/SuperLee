@@ -5,7 +5,7 @@ import DataAccessLayer.ItemMapper;
 import java.util.HashMap;
 import java.util.Map;
 
-public class Items {
+public class Items {//check
 
     private static Map<Integer, String> items=new HashMap<>();
     private ItemMapper itemMapper = new ItemMapper();
