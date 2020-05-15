@@ -3,10 +3,6 @@ package DataAccessLayer;
 import java.sql.*;
 
 import DTO.SupplierDTO;
-import com.sun.istack.internal.localization.NullLocalizable;
-import javafx.util.Pair;
-
-import java.text.DecimalFormat;
 import java.util.*;
 
 public class SupplierMapper {
@@ -296,46 +292,6 @@ public class SupplierMapper {
         }
     }
 
-    public boolean addBillOfQuantities(int supplierId, Map<Integer, Pair<Integer, Double>> bill) {
-        try {
-            Class.forName("org.sqlite.JDBC");
-            conn = DriverManager.getConnection("jdbc:sqlite:EOEDdatabase.db");
-            conn.setAutoCommit(false);
-            PreparedStatement st = conn.prepareStatement("INSERT INTO BillsOfQuantities VALUES (?);");
-            st.setInt(1, supplierId);
-            int rowNum = st.executeUpdate();
-            st.close();
-            if (rowNum != 0) {
-                conn.commit();
-            } else {
-                conn.rollback();
-                conn.close();
-                return false;
-            }
-            Set<Integer> ids = bill.keySet();
-            for (int i = 0; i < bill.size(); i++) {
-                st = conn.prepareStatement("INSERT INTO ItemsInBills VALUES (?,?,?,?);");
-                st.setInt(1, supplierId);
-                st.setInt(2, ids.iterator().next()); //no fucking idea if works
-                st.setInt(3, bill.get(i).getKey());
-                st.setDouble(4, bill.get(i).getValue());
-                rowNum = st.executeUpdate();
-                st.close();
-                if (rowNum != 0) {
-                    conn.commit();
-                } else {
-                    conn.rollback();
-                    conn.close();
-                    return false;
-                }
-            }
-            return true;
-        } catch (Exception e) {
-            System.err.println(e.getClass().getName() + ": " + e.getMessage());
-            return false;
-        }
-    }
-
     public boolean addItemToAgreement(Integer suppId, Integer itemId, Double cost) {
         try {
             if (tryOpen()) {
@@ -363,78 +319,15 @@ public class SupplierMapper {
         }
     }
 
-    /*
-        public void updateBillOfQuantities(int supplierId, Integer itemId, Pair<Integer, Double> quantity_disc) {
-           if(getSuppById(supplierId)!=null)
-           {
-               getSuppById(supplierId).updateBillOfQuantities(itemId,quantity_disc);
-           }
-        }
-
-        public void deleteFromBillOfQuantities(int suppId, Integer itemId) {
-            if (getSuppById(suppId) != null) {
-                getSuppById(suppId).deleteFromBillOfQuantities(itemId);
-            }
-        }
-
-        public void deleteBillOfQuantities(int suppId) {
-            if (getSuppById(suppId) != null) {
-                getSuppById(suppId).deleteBillOfQuantities();
-            }
-        }
-
-        public int getBillSize(int suppId) { return getSuppById(suppId).getBillSize(); }
-
-        public LinkedHashMap<Integer, Double> showSuppItems(int suppId){
-            Supplier supplier = getSuppById(suppId);
-            return supplier.getAgreement().getTerms();
-        }
-
-        public double getPriceOfItem(int suppId, int index) {
-            return getSuppById(suppId).getPriceOfItem(index);
-        }
-
-        public boolean checkBillOfQuantity(int suppId) {
-            return getSuppById(suppId).checkBillOfQuantity();
-        }
-
-        public void addItemToBillOfQuantities(int suppId, int itemId, int itemQuantity, Double itemDiscount) {
-            getSuppById(suppId).addItemToBillOfQuantities(itemId,itemQuantity,itemDiscount);
-        }
-
-        public Map<Integer, Pair<Integer, Double>> getBillOfQuantities(int suppId) {
-            return getSuppById(suppId).getBillOfQuantities();
-        }
-
-        public String getItemName( Integer itemId) {
-            return Items.getName(itemId);
-        }
-
-        public String getItemNameByIndex(int suppId, int i) {
-            return Items.getName(getSuppById(suppId).getItemIdByIndex(i));
-        }
-
-
-        public int getItemIdByIndex(int suppId, int i) {
-            return getSuppById(suppId).getItemIdByIndex(i);
-        }
-
-        public void addItemToSupplier(int suppId, int itemId) { //TODO already have addItemToAgreement - must have item price!
-            this.getSuppById(suppId).addItemsToSupplier(itemId);
-        }
-
-        public int getItemsListSize(int suppId) {
-            return this.getSuppById(suppId).getItemsListSize();
-        }
-    */
     public boolean setItemPrice(int suppId, int itemId, double newPrice) {
         try {
             if (tryOpen()) {
                 Class.forName("org.sqlite.JDBC");
                 conn.setAutoCommit(false);
-                PreparedStatement st = conn.prepareStatement("UPDATE ItemsInAgreement SET price = ? WHERE agreementId = ?;");
+                PreparedStatement st = conn.prepareStatement("UPDATE ItemsInAgreement SET price = ? WHERE agreementId = ? AND itemId= ?;");
                 st.setDouble(1, newPrice);
                 st.setInt(2, suppId);
+                st.setInt(3, itemId);
                 int rowNum = st.executeUpdate();
                 if (rowNum != 0) {
                     conn.commit();
@@ -776,5 +669,64 @@ public class SupplierMapper {
             System.err.println(e.getClass().getName() + ": " + e.getMessage());
             tryClose();
         }
+    }
+
+    public boolean validateItemIdInBill(int suppId, int itemId) {
+        try {
+            if (tryOpen()) {
+                Class.forName("org.sqlite.JDBC");
+                conn.setAutoCommit(false);
+                PreparedStatement st = conn.prepareStatement("SELECT * FROM ItemsInBills WHERE billId = ? AND itemId = ?;");
+                st.setInt(1, suppId);
+                st.setInt(2, itemId);
+                ResultSet res = st.executeQuery();
+                if (res.next()) {
+                    conn.commit();
+                    conn.close();
+                    st.close();
+                    return true;
+                } else {
+                    conn.rollback();
+                    conn.close();
+                    st.close();
+                    return false;
+                }
+            }
+        } catch (Exception e) {
+            tryClose();
+            System.err.println(e.getClass().getName() + ": " + e.getMessage());
+            return false;
+        }
+        return false;
+    }
+
+    public List<List<Object>> getAllSuppliers() {
+        List<List<Object>> suppliers = new LinkedList<>();
+        try {
+            if (tryOpen()) {
+                Class.forName("org.sqlite.JDBC");
+                conn.setAutoCommit(false);
+                PreparedStatement st = conn.prepareStatement("SELECT *  FROM Suppliers ;");
+                ResultSet res = st.executeQuery();
+                while (res.next()) {
+                    List<Object> temp= new LinkedList<>();
+                    temp.add(res.getInt("id"));
+                    temp.add(res.getString("name"));
+                    temp.add(res.getString("phoneNum"));
+                    temp.add(res.getString("supplyLocation"));
+                    suppliers.add(temp);
+                }
+                st.close();
+                conn.close();
+                return suppliers;
+            } else return null;
+        } catch (Exception e) {
+            System.err.println(e.getClass().getName() + ": " + e.getMessage());
+            tryClose();
+            return null;
+        }
+
+
+
     }
 }

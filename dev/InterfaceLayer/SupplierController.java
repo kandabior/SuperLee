@@ -89,20 +89,13 @@ public class SupplierController {
 
     public void deleteFromBillOfQuantities(int suppId, Integer itemId) {
         this.agreement.deleteFromBillOfQuantities(suppId, itemId);
-     /*   if (getSuppById(suppId) != null) {
-            getSuppById(suppId).deleteFromBillOfQuantities(itemId);
-        }*/
     }
 
     public void deleteBillOfQuantities(int suppId) {
         this.agreement.deleteBillOfQuantities(suppId);
-        /*
-        if (getSuppById(suppId) != null) {
-            getSuppById(suppId).deleteBillOfQuantities();
-        }*/
     }
 
-    public int getBillSize(int suppId) { return getSuppById(suppId).getBillSize(); }
+    public int getBillSize(int suppId) { return this.agreement.getBillSize(suppId); }
 
     public LinkedHashMap<Integer, Double> showSuppItems(int suppId){
         return this.supplier.showSuppItems(suppId);
@@ -124,7 +117,6 @@ public class SupplierController {
 
     public Map<Integer, Pair<Integer, Double>> getBillOfQuantities(int suppId) {
         return this.agreement.getBillOfQuantities(suppId);
-        //return getSuppById(suppId).getBillOfQuantities();
     }
 
     public String getItemName( Integer itemId) {
@@ -220,5 +212,13 @@ public class SupplierController {
 
     public int getSuppliersCounter() {
         return this.supplier.getSuppliersCounter();
+    }
+
+    public boolean validateItemIdInBill(int suppId, int itemId) {
+        return this.supplier.validateItemIdInBill(suppId,itemId);
+    }
+
+    public List<List<Object>> getAllSuppliers() {
+        return this.supplier.getAllSuppliers();
     }
 }

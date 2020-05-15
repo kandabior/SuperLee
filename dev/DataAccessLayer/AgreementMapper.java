@@ -61,10 +61,10 @@ public class AgreementMapper {
             if (tryOpen()) {
                 Class.forName("org.sqlite.JDBC");
                 conn.setAutoCommit(false);
-                PreparedStatement st = conn.prepareStatement("UPDATE ItemsInBills SET quantity = ? AND discount = ?" +
+                PreparedStatement st = conn.prepareStatement("UPDATE ItemsInBills SET quantity = ?, discount = ?" +
                         "WHERE billId = ? AND itemId = ?;");
-                st.setInt(1, quantity_disc.getKey());
-                st.setDouble(2, quantity_disc.getValue());
+                st.setInt(1, quantity_disc.getKey().intValue());
+                st.setDouble(2, quantity_disc.getValue().doubleValue());
                 st.setInt(3, suppId);
                 st.setInt(4, itemId);
                 int rowNum = st.executeUpdate();
@@ -113,7 +113,7 @@ public class AgreementMapper {
                 st.setInt(1, suppId);
                 st.executeUpdate();
 
-                st = conn.prepareStatement("DELETE FROM Bills WHERE billId = ?;");
+                st = conn.prepareStatement("DELETE FROM BillsOfQuantities WHERE billId = ?;");
                 st.setInt(1, suppId);
                 st.executeUpdate();
 
@@ -154,5 +154,30 @@ public class AgreementMapper {
             System.err.println(e.getClass().getName() + ": " + e.getMessage());
         }
         return bill;
+    }
+
+    public int getBillSize(int suppId) {
+        try {
+            if (tryOpen()) {
+                Class.forName("org.sqlite.JDBC");
+                conn.setAutoCommit(false);
+                PreparedStatement st = conn.prepareStatement("SELECT count(*) as count FROM ItemsInBills WHERE billId = ?;");
+                st.setInt(1, suppId);
+                ResultSet res = st.executeQuery();
+                if (res.next()) {
+                    int ans = res.getInt("count");
+                    conn.close();
+                    st.close();
+                    return ans;
+                }
+                conn.close();
+                return 0;
+            }
+            else return 0;
+        } catch(Exception e){
+            System.err.println(e.getClass().getName() + ": " + e.getMessage());
+            tryClose();
+            return 0;
+        }
     }
 }

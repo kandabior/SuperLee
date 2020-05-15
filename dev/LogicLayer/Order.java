@@ -185,4 +185,12 @@ public class Order {
     public int getOrderIdCounter() {
         return this.orderMapper.getOrderIdCounter();
     }
+
+    public boolean checkIfOrderExists(int orderId) {
+        return this.orderMapper.checkIfOrderExists(orderId);
+    }
+
+    public boolean updateOrderStatus(int orderId) {
+        return this.orderMapper.updateOrderStatus(orderId);
+    }
 }

@@ -271,5 +271,61 @@ public class OrderMapper {
         }
         return counter;
     }
+
+    public boolean checkIfOrderExists(int orderId) {
+        try {
+            if (tryOpen()) {
+                Class.forName("org.sqlite.JDBC");
+                conn.setAutoCommit(false);
+                PreparedStatement st = conn.prepareStatement("SELECT * FROM Orders WHERE id = ?;");
+                st.setInt(1, orderId);
+                ResultSet res = st.executeQuery();
+                if (res.next()) {
+                    conn.commit();
+                    conn.close();
+                    st.close();
+                    return true;
+                } else {
+                    conn.rollback();
+                    conn.close();
+                    st.close();
+                    return false;
+                }
+            }
+        } catch (Exception e) {
+            tryClose();
+            System.err.println(e.getClass().getName() + ": " + e.getMessage());
+            return false;
+        }
+        return false;
+    }
+
+    public boolean updateOrderStatus(int orderId) {
+        try {
+            if (tryOpen()) {
+                Class.forName("org.sqlite.JDBC");
+                conn.setAutoCommit(false);
+                PreparedStatement st = conn.prepareStatement("UPDATE Orders SET status = ? WHERE id = ?;");
+                st.setString(1, "Complete");
+                st.setInt(2, orderId);
+                int rowNum = st.executeUpdate();
+                if (rowNum != 0) {
+                    conn.commit();
+                    conn.close();
+                } else {
+                    conn.rollback();
+                    conn.close();
+                    st.close();
+                    return false;
+                }
+                st.close();
+                return true;
+            } else return false;
+        } catch (Exception e) {
+            System.err.println(e.getClass().getName() + ": " + e.getMessage());
+            return false;
+        }
+
+    }
 }
 

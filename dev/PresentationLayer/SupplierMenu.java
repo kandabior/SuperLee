@@ -22,8 +22,9 @@ public class SupplierMenu {
                 System.out.println("2. Delete supplier");
                 System.out.println("3. Manage supplier");
                 System.out.println("4. View previous orders");
-               // System.out.println("6. Update order status");
-                System.out.println("5. Main menu");
+                System.out.println("5. Show all suppliers");
+                System.out.println("6. Update order status");
+                System.out.println("7. Main menu");
                 System.out.print("Option: ");
                 Scanner scanner = new Scanner(System.in);
                 choice = scanner.nextLine();
@@ -46,10 +47,13 @@ public class SupplierMenu {
                      case "4":
                          showPreviousOrders();
                         break;
-     /*               case "6":
-                        updateOrderStatus();*/
-                       // break;
                     case "5":
+                        showSuppliers();
+                        break;
+                    case "6":
+                        updateOrderStatus();
+                        break;
+                    case "7":
                         exit = true;
                         break;
                 }
@@ -62,13 +66,30 @@ public class SupplierMenu {
         }
     }
 
+    private static void showSuppliers() {
+        List<List<Object>> suppliers = fc.getAllSuppliers();
+        if(suppliers.size()==0)
+        {
+            System.out.print("No Suppliers in the system\n");
+        }
+        else {
+            for (List<Object> list : suppliers) {
+                System.out.println("ID: " + list.get(0).toString() + "     Supplier Name : " + list.get(1) + "      Phone Number: " + list.get(2) + "     Supplier Location: " + list.get(3) + "\n");
+            }
+        }
+    }
+
     private static void updateOrderStatus() {
         Scanner scanner = new Scanner(System.in);
         System.out.print("Enter id of the arrived order: ");
         int choice = scanner.nextInt();
         if (fc.checkIfOrderExists(choice)) {
-            fc.updateOrderStatus(choice);
-            System.out.println("Status order is updated to COMPLETE.");
+            if(fc.updateOrderStatus(choice))
+            {
+                System.out.println("Status order is updated to COMPLETE.");
+            }
+            else
+                System.out.println("Status order Fail to change");
         } else {
             System.out.println("Order id was not found.");
         }
@@ -269,7 +290,7 @@ public class SupplierMenu {
             System.out.println("No bill of quantities was found.");
         } else {
             do {
-                Map<Integer, Pair<Integer, Double>> map = fc.getBillOfQuantities(suppId); //TODO falls here
+                Map<Integer, Pair<Integer, Double>> map = fc.getBillOfQuantities(suppId);
                 for (Integer itemId : map.keySet()) {
                     String itemName = fc.getItemNameById(itemId);
                     Integer itemQuantity = map.get(itemId).getKey();
@@ -279,7 +300,7 @@ public class SupplierMenu {
                 System.out.print("Choose the id of the item you wish to change: ");
                 Scanner scanner2 = new Scanner(System.in);
                 int itemId = scanner2.nextInt();
-                while (!fc.validateItemId(suppId, itemId)) {
+                while (!fc.validateItemIdInBill(suppId, itemId)) {
                     System.out.print("This supplier Does not have this item.\nEnter another one\n");
                     System.out.print("Item's identifier: ");
                     itemId = scanner2.nextInt();
@@ -329,7 +350,7 @@ public class SupplierMenu {
             Scanner scanner = new Scanner(System.in);
             System.out.print("Choose the id of the item you want to add to this bill: ");
             int itemId = scanner.nextInt();
-            while (!fc.validateItemId(suppId, itemId)) {
+            while (!fc.validateItemIdInBill(suppId, itemId)) {
                 System.out.print("This supplier Does not have this item, please enter another one.\n");
                 System.out.print("Item's identifier: ");
                 itemId = scanner.nextInt();

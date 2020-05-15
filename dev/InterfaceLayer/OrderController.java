@@ -92,23 +92,11 @@ public class OrderController {
     }
 
     public boolean checkIfOrderExists(int orderId) {
-        for (int i =0 ;i<orders.size();i++)
-        {
-            if (orders.get(i).getId()==orderId)
-                return true;
-        }
-        return false;
+       return this.order.checkIfOrderExists(orderId);
     }
 
-    public void updateOrderStatus(int orderId) {
-        for (int i =0;i<orders.size();i++)
-        {
-            if(orders.get(i).getId()==orderId)
-            {
-                orders.get(i).setStatus();
-                break;
-            }
-        }
+    public boolean updateOrderStatus(int orderId) {
+        return this.order.updateOrderStatus(orderId);
     }
 
     public String getOrderStatus(int orderId) {
