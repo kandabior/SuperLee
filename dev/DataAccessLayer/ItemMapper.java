@@ -70,7 +70,7 @@ public class ItemMapper {
 
     }*/
 
-    public static void tryClose()
+   /* public static void tryClose()
     {
         try {
             conn.close();
@@ -78,7 +78,7 @@ public class ItemMapper {
             e.printStackTrace();
         }
 
-    }
+    }*/
 
 
     public static String getName(Integer id) {
