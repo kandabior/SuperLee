@@ -699,4 +699,34 @@ public class SupplierMapper {
         }
         return false;
     }
+
+    public List<List<Object>> getAllSuppliers() {
+        List<List<Object>> suppliers = new LinkedList<>();
+        try {
+            if (tryOpen()) {
+                Class.forName("org.sqlite.JDBC");
+                conn.setAutoCommit(false);
+                PreparedStatement st = conn.prepareStatement("SELECT *  FROM Suppliers ;");
+                ResultSet res = st.executeQuery();
+                while (res.next()) {
+                    List<Object> temp= new LinkedList<>();
+                    temp.add(res.getInt("id"));
+                    temp.add(res.getString("name"));
+                    temp.add(res.getString("phoneNum"));
+                    temp.add(res.getString("supplyLocation"));
+                    suppliers.add(temp);
+                }
+                st.close();
+                conn.close();
+                return suppliers;
+            } else return null;
+        } catch (Exception e) {
+            System.err.println(e.getClass().getName() + ": " + e.getMessage());
+            tryClose();
+            return null;
+        }
+
+
+
+    }
 }

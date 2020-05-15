@@ -208,4 +208,8 @@ public class Supplier {
         return this.supplierMapper.validateItemIdInBill(suppId, itemId);
 
     }
+
+    public List<List<Object>> getAllSuppliers() {
+        return this.supplierMapper.getAllSuppliers();
+    }
 }

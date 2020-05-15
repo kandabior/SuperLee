@@ -157,8 +157,8 @@ public class FacadeController {
        return orderController.checkIfOrderExists(orderId);
     }
 
-    public void updateOrderStatus(int orderId) {
-        orderController.updateOrderStatus(orderId);
+    public boolean updateOrderStatus(int orderId) {
+        return orderController.updateOrderStatus(orderId);
     }
 
     public String getOrderStatus(int orderId) {
@@ -213,5 +213,9 @@ public class FacadeController {
     public boolean validateItemIdInBill(int suppId, int itemId) {
 
         return supplierController.validateItemIdInBill(suppId, itemId);
+    }
+
+    public List<List<Object>> getAllSuppliers() {
+        return this.supplierController.getAllSuppliers();
     }
 }

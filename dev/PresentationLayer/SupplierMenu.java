@@ -22,8 +22,9 @@ public class SupplierMenu {
                 System.out.println("2. Delete supplier");
                 System.out.println("3. Manage supplier");
                 System.out.println("4. View previous orders");
-               // System.out.println("6. Update order status");
-                System.out.println("5. Main menu");
+                System.out.println("5. Show all suppliers");
+                System.out.println("6. Update order status");
+                System.out.println("7. Main menu");
                 System.out.print("Option: ");
                 Scanner scanner = new Scanner(System.in);
                 choice = scanner.nextLine();
@@ -46,10 +47,13 @@ public class SupplierMenu {
                      case "4":
                          showPreviousOrders();
                         break;
-     /*               case "6":
-                        updateOrderStatus();*/
-                       // break;
                     case "5":
+                        showSuppliers();
+                        break;
+                    case "6":
+                        updateOrderStatus();
+                        break;
+                    case "7":
                         exit = true;
                         break;
                 }
@@ -62,13 +66,30 @@ public class SupplierMenu {
         }
     }
 
+    private static void showSuppliers() {
+        List<List<Object>> suppliers = fc.getAllSuppliers();
+        if(suppliers.size()==0)
+        {
+            System.out.print("No Suppliers in the system\n");
+        }
+        else {
+            for (List<Object> list : suppliers) {
+                System.out.println("ID: " + list.get(0).toString() + "     Supplier Name : " + list.get(1) + "      Phone Number: " + list.get(2) + "     Supplier Location: " + list.get(3) + "\n");
+            }
+        }
+    }
+
     private static void updateOrderStatus() {
         Scanner scanner = new Scanner(System.in);
         System.out.print("Enter id of the arrived order: ");
         int choice = scanner.nextInt();
         if (fc.checkIfOrderExists(choice)) {
-            fc.updateOrderStatus(choice);
-            System.out.println("Status order is updated to COMPLETE.");
+            if(fc.updateOrderStatus(choice))
+            {
+                System.out.println("Status order is updated to COMPLETE.");
+            }
+            else
+                System.out.println("Status order Fail to change");
         } else {
             System.out.println("Order id was not found.");
         }

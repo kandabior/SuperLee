@@ -217,4 +217,8 @@ public class SupplierController {
     public boolean validateItemIdInBill(int suppId, int itemId) {
         return this.supplier.validateItemIdInBill(suppId,itemId);
     }
+
+    public List<List<Object>> getAllSuppliers() {
+        return this.supplier.getAllSuppliers();
+    }
 }
