@@ -19,7 +19,7 @@ public class EmployeesMenu {
 
     private void startSystem(){
         try {
-            createDB();//TODO remove
+            //createDB();//TODO remove
             while (true) {
                 System.out.println("Welcome to the employee department!\n" +
                         "Select a branch:\n" +
