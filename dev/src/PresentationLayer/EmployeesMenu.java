@@ -8,36 +8,33 @@ import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.*;
 
-public class view {
+public class EmployeesMenu {
 
     BusinessLayer.EmployeeModule.service service = new service();
 
     public static void main() {
-        view view = new view();
+        EmployeesMenu view = new EmployeesMenu();
         view.startSystem();
     }
-
 
     private void startSystem(){
         try {
             createDB();//TODO remove
             while (true) {
-                System.out.println("Welcome to the \"Super-Lee\" system!\n" +
+                System.out.println("Welcome to the employee department!\n" +
                         "Select a branch:\n" +
                         "for drivers area, enter:\n     0 \n" +
                         "Otherwise enter a store number, a number between\n     1-9\n" +
-                        "Return to previous menu Insert\n     10\n");
-                Scanner ans = new Scanner(System.in);
-                int branch = ans.nextInt();
+                        "To return to the main menu, enter\n     10\n");
+                int branch = numberFromRange(0,10);
                 if (branch >= 0 & branch <= 9) {
                     service.loadBranch(branch);
-                    break;
+                    startPersonnelManager();
                 } else if (branch == 10)
                     return;
                 else
                     System.out.println("\nInvalid selection\n");
             }
-            startPersonnelManager();
         }catch (Exception e){
             System.out.println("\nSorry, you have entered invalid input in this action\n");
             return;
@@ -51,8 +48,7 @@ public class view {
                         "1. Employees\n" +
                         "2. Shifts\n" +
                         "3. Back");
-                Scanner ans = new Scanner(System.in);
-                int selectedClass = ans.nextInt();
+                int selectedClass = numberFromRange(1,3);
                 switch (selectedClass) {
                     case 1:
                         startEmployee();
@@ -78,7 +74,7 @@ public class view {
                     "3. Add new worker\n" +
                     "4. Back");
             Scanner ans = new Scanner(System.in);
-            int selectedAction = Integer.parseInt(ans.nextLine());
+            int selectedAction = numberFromRange(1,4);
             switch (selectedAction) {
                 case 1:
                     System.out.println(service.getAllEmplyees());
@@ -86,7 +82,7 @@ public class view {
                 case 2:
                     System.out.println("enter employee ID:");
                     String ID=ans.nextLine();
-                    if(!service.employeeExist(ID)&& service.employeeAvailable(ID))
+                    if(!service.employeeExist(ID)|| service.employeeAvailable(ID))
                         System.out.println("not exist/available ID!");
                     else{
                         handleSingleEmplyee(ID);
@@ -113,7 +109,7 @@ public class view {
         String hiringConditions =inputNotEmpty("hiring conditions:");
         String bankId = inputNotEmpty("bank Id");
         int salary = Integer.parseInt(inputNotEmpty("salary"));
-        String date;// = ans.nextLine();
+        String date;
         Date startEmployment=new Date();
         boolean correctdate=false;
         while(!correctdate)
@@ -152,8 +148,8 @@ public class view {
                     "11. Change bank details\n" +
                     "12. Change hiring conditions\n" +
                     "13. Back");
-            Scanner ans = new Scanner(System.in);
-            int selectedAction = ans.nextInt();
+            String ask;
+            int selectedAction = numberFromRange(1,13);
             switch (selectedAction) {
                 case 1:
                     System.out.println(service.employeeDetails(ID));
@@ -165,12 +161,12 @@ public class view {
                     removeConstrain(ID);
                     break;
                 case 4:
-                    System.out.println("enter new role:");
-                    service.addRole(ID,ans.nextLine());
+                    ask = "enter new role:";
+                    service.addRole(ID,inputNotEmpty(ask));
                     break;
                 case 5:
-                    System.out.println("enter role to delete:");
-                    service.deletRole(ID,ans.nextLine());
+                    ask = "enter role to delete:";
+                    service.deletRole(ID,inputNotEmpty(ask));
                     break;
                 case 6:
                     service.deleteWorker(ID);
@@ -178,12 +174,12 @@ public class view {
                     contin=false;
                     break;
                 case 7:
-                    System.out.println("enter new salary:");
-                    service.changeSalary(ID,ans.nextInt());
+                    ask = "enter new salary:";
+                    service.changeSalary(ID,Integer.parseInt(inputNotEmpty(ask)));
                     break;
                 case 8:
-                    System.out.println("enter new name:");
-                    service.changeName(ID,ans.nextLine());
+                    ask = "enter new name:";
+                    service.changeName(ID,inputNotEmpty(ask));
                     break;
                 case 9:
                     service.setSupervisor(ID,true);
@@ -192,12 +188,12 @@ public class view {
                     service.setSupervisor(ID,false);
                     break;
                 case 11:
-                    System.out.println("enter new bank details:");
-                    service.setBankId(ID,ans.nextLine());
+                    ask = "enter new bank details:";
+                    service.setBankId(ID,inputNotEmpty(ask));
                     break;
                 case 12:
-                    System.out.println("enter new hiring conditions");
-                    service.setHiringConditions(ID,ans.nextLine());
+                    ask = "enter new hiring conditions";
+                    service.setHiringConditions(ID,inputNotEmpty(ask));
                     break;
                 case 13:
                     contin=false;
@@ -248,8 +244,7 @@ public class view {
                     "4. Watch inlay for shift by date and type of shift\n" +
                     "5. View all shift history\n" +
                     "6. Back");
-            Scanner ans = new Scanner(System.in);
-            int selectedAction = ans.nextInt();
+            int selectedAction = numberFromRange(1,6);
             switch (selectedAction) {
                 case 1:
                     editRequirements();
@@ -291,12 +286,11 @@ public class view {
             while (role == null){
                 role = roleFromList();
             }
-            System.out.println("How Many Employees in the role "+role+" needed?");
-            Scanner ans1 = new Scanner(System.in);
-            int numOfEmployee = ans1.nextInt();
+            String ask = "How Many Employees in the role "+role+" needed?";
+            int numOfEmployee = Integer.parseInt(ask);
             roles.put(role,numOfEmployee);
-            String ask = "Need more roles? Select y/n";
-            String needMore = yesOrNo(ask);
+            String ask1 = "Need more roles? Select y/n";
+            String needMore = yesOrNo(ask1);
             if(needMore.equals("n"))
                 stop = true;
         }
@@ -346,8 +340,10 @@ public class view {
                     service.addShift(date, shiftType, employeeManager, workers);
                 } else {
                     boolean success = true;
+                    List<String> selectedEmployees = new LinkedList<>();
                     for (String currRole : roles.keySet()) {
                         List<String> relevantEmployees = service.relevantEmployees(day, shiftType, currRole);
+                        relevantEmployees.removeAll(selectedEmployees);
                         if (relevantEmployees == null || relevantEmployees.size() == 0) {
                             System.out.println("\nThere is no employee available for the role "+currRole+", you can change shift requirements\n");
                             success = false;
@@ -363,9 +359,13 @@ public class view {
                             while (numOfEmployee > 0) {
                                 System.out.println("Select the employees for the role " + currRole + " :\n" +
                                         numOfEmployee + " more left to choose for this role");
-                                String Employee = chooseFromList(relevantEmployees);
+                                String Employee = null;
+                                while (Employee == null) {
+                                    chooseFromList(relevantEmployees);
+                                }
                                 relevantEmployees.remove(Employee);
                                 employees.add(Employee);
+                                selectedEmployees.add(Employee);
 
                                 numOfEmployee--;
                             }
@@ -422,57 +422,50 @@ public class view {
     }
 
     private String chooseDay() {
-        System.out.println("Choose the day:\n"+
-                "1.Sunday\n2.Monday\n3.Tuesday\n4.Wednesday\n5.Thursday\n6.Friday\n7.Saturday");
-        Scanner ans = new Scanner(System.in);
-        int selectedDay = ans.nextInt();
-        switch (selectedDay) {
-            case 1:
-                return "Sunday";
-            case 2:
-                return "Monday";
-            case 3:
-                return "Tuesday";
-            case 4:
-                return "Wednesday";
-            case 5:
-                return "Thursday";
-            case 6:
-                return "Friday";
-            case 7:
-                return "Saturday";
-            default:
-                System.out.println("\nInvalid selection\n");
-                return null;
-        }
+        List<String> days = new LinkedList<>();
+        days.add("Sunday");
+        days.add("Monday");
+        days.add("Tuesday");
+        days.add("Wednesday");
+        days.add("Thursday");
+        days.add("Friday");
+        days.add("Saturday");
+        System.out.println("Choose the day:");
+        return chooseFromList(days);
     }
 
     private String chooseShiftType() {
-        System.out.println("Choose the shift type:\n"+
-                "1.Morning\n2.Evening");
-        Scanner ans = new Scanner(System.in);
-        int selectedShiftType = ans.nextInt();
-        switch (selectedShiftType){
-            case 1:
-                return "Morning";
-            case 2:
-                return "Evening";
-            default:
-                System.out.println("\nInvalid selection\n");
-                return null;
-        }
+        List<String> shiftTypes = new LinkedList<>();
+        shiftTypes.add("Morning");
+        shiftTypes.add("Evening");
+        System.out.println("Choose the shift type:");
+        return chooseFromList(shiftTypes);
     }
 
 
-    private String chooseFromList(List<String> list){
+    private String chooseFromList(List<String> list) {
         for (int t = 0; t < list.size(); t++) {
             int numbering = t + 1;
             System.out.println(numbering + ". " + list.get(t));
         }
-        Scanner ans = new Scanner(System.in);
-        int selected = ans.nextInt();
+        int selected = numberFromRange(1, list.size());
         String choose = list.get(selected - 1);
         return choose;
+    }
+
+    private Integer numberFromRange(int start,int end){
+        while (true) {
+            try {
+                Scanner ans = new Scanner(System.in);
+                int answer = ans.nextInt();
+                if (answer >= start & answer <= end)
+                    return answer;
+                else
+                    System.out.println("Expected to get a number in range " + start + "-" + end);
+            } catch (Exception e) {
+                System.out.println("Expected to get a number in range " + start + "-" + end);
+            }
+        }
     }
 
     private Date dateFromUser() {
@@ -512,32 +505,15 @@ public class view {
     }
 
     private String roleFromList(){
-        System.out.println("Choose a role:\n"+
-                "1. cashier\n" +
-                "2. storekeeper\n" +
-                "3. rate\n" +
-                "4. baker\n" +
-                "5. Shop worker\n" +
-                "6. Guard");
-        Scanner ans = new Scanner(System.in);
-        int r = ans.nextInt();
-        switch (r) {
-            case 1:
-                return "cashier";
-            case 2:
-                return "storekeeper";
-            case 3:
-                return "rate";
-            case 4:
-                return "baker";
-            case 5:
-                return "Shop worker";
-            case 6:
-                return "Guard";
-            default:
-                System.out.println("\nInvalid selection\n");
-                return null;
-        }
+        List<String> roles = new LinkedList<>();
+        roles.add("cashier");
+        roles.add("storekeeper");
+        roles.add("rate");
+        roles.add("baker");
+        roles.add("Shop worker");
+        roles.add("Guard");
+        System.out.println("Choose a role:");
+        return chooseFromList(roles);
     }
 
     private String yesOrNo(String ask){
@@ -545,10 +521,8 @@ public class view {
             System.out.println(ask);
             Scanner ans2 = new Scanner(System.in);
             String needMore = ans2.nextLine();
-            if (needMore.equals("n")) {
-                return "n";
-            } else if (needMore.equals("y")) {
-                return "y";
+            if (needMore.equals("n")| (needMore.equals("y"))) {
+                return needMore;
             } else {
                 System.out.println("\nExpected to receive y / n\n");
             }
@@ -558,7 +532,7 @@ public class view {
     private String inputNotEmpty(String in){
         while (true) {
             System.out.println(in);
-            if(in.equals("salary"))
+            if(in.equals("salary")|| in.equals("enter new salary:")||in.equals("How Many Employees in the role \"+role+\" needed?"))
                 System.out.println("(Please make sure to enter a number..)");
             Scanner ans = new Scanner(System.in);
             String ret = ans.nextLine();
