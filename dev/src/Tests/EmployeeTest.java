@@ -22,7 +22,7 @@ public class EmployeeTest {
         } catch (ParseException e) {
             e.printStackTrace();
         }
-        employee = new Employee("Raviv", "315", "a lot ", "555", 30000, d2, "1");
+        employee = new Employee("Raviv", "315", "a lot ", "555", 30000, d2, "1",2);
     }
     @Before
     public void setService() {
@@ -33,11 +33,16 @@ public class EmployeeTest {
         } catch (ParseException e) {
             e.printStackTrace();
         }
-        service.addWorker("Raviv", "315", "a lot ", "555", 30000, d2);
-        service.addWorker("Hodaya", "320", "a lot ", "555", 30000, d2);
-        service.setSupervisor("2",true);
-        service.addRole("1","Chef");
-        service.addRole("2","Chef");
+        try {
+            service.addWorker("Raviv", "315", "a lot ", "555", 30000, d2);
+            service.addWorker("Hodaya", "320", "a lot ", "555", 30000, d2);
+            service.setSupervisor("2", true);
+            service.addRole("1", "Chef");
+            service.addRole("2", "Chef");
+        }
+        catch (Exception e){
+
+        }
 
         service.addConstrain("2","Sunday","Morning");
     }
