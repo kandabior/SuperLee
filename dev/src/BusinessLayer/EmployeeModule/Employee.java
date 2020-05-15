@@ -16,9 +16,10 @@ public class Employee {
     private Date startOfEmployment;
     private String employeeId;
     private List<Constrain> constrains;
+    private int branch;
 
     public Employee(String name, String ID,
-                    String hiringConditions, String bankId, int salary, Date startOfEmployment, String employeeId) {
+                    String hiringConditions, String bankId, int salary, Date startOfEmployment, String employeeId,int branch) {
         this.name = name;
         this.ID = ID;
         this.isSupervisor = false;
@@ -27,9 +28,11 @@ public class Employee {
         this.salary = salary;
         this.startOfEmployment = startOfEmployment;
         this.employeeId = employeeId;
+        this.branch=branch;
         constrains=new LinkedList<>();
         roles = new LinkedList<>();
         isAvailable=true;
+
     }
 
     public boolean isAvailable()
@@ -165,4 +168,9 @@ public class Employee {
     public void setAvailble(boolean avail) {
         isAvailable = avail;
     }
+
+    public int getBranch() {
+        return branch;
+    }
+
 }

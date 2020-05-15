@@ -31,8 +31,8 @@ public class EmployeesManagerTest {
 
     @Test
     public void emplyeeExist() {
-        Assert.assertTrue(employeesManager.emplyeeExist("1"));
-        Assert.assertFalse(employeesManager.emplyeeExist("2"));
+        Assert.assertTrue(employeesManager.employeeExist("1"));
+        Assert.assertFalse(employeesManager.employeeExist("2"));
 
     }
 

@@ -1,6 +1,6 @@
 package BusinessLayer.TransportModule.DTO;
 
-import BusinessLayer.TransportModule.TransportDoc;
+import BusinessLayer.TransportModule.TransportDoc.Status;
 
 import java.util.Date;
 import java.util.LinkedList;
@@ -9,7 +9,7 @@ import java.util.Map;
 
 public class DTO_TransportDoc {
 
-    public enum Status {PENDING, SUCCESS, FAIL;  };
+    //public enum Status {PENDING, SUCCESS, FAIL;  };
     private int id;
     private int area;
     private String date;
@@ -19,10 +19,11 @@ public class DTO_TransportDoc {
     private List<Integer> suppliers;
     private List<Integer> stores;
     private List<Map<Integer, Integer>> items;
-    private DTO_TransportDoc.Status status;
+    private Status status;
     private double finalWeight;
 
-    public DTO_TransportDoc(int id, int area, String date, String truckId,int driverId, String driverName, List<Integer> stores, List<Integer> suppliers, List<Map<Integer,Integer>> items,DTO_TransportDoc.Status status, double finalWeight) {
+
+    public DTO_TransportDoc(int id, int area, String date, String truckId, int driverId, String driverName, List<Integer> stores, List<Integer> suppliers, List<Map<Integer,Integer>> items, String status, double finalWeight) {
         this.id = id;
         this.area = area;
         this.date = date;
@@ -32,7 +33,16 @@ public class DTO_TransportDoc {
         this.stores = stores;
         this.suppliers = suppliers;
         this.items = items;
-        this.status = status;
+        switch (status) {
+            case "PENDING":
+                this.status = Status.PENDING;
+                break;
+            case "SUCCESS":
+                this.status = Status.SUCCESS;
+                break;
+            default: //FAIL
+                this.status = Status.FAIL;
+        }
         this.finalWeight = finalWeight;
     }
     public DTO_TransportDoc(int id, int area, String date, String truckId,int driverId, String driverName, List<Integer> stores, List<Integer> suppliers) {
@@ -48,5 +58,95 @@ public class DTO_TransportDoc {
         this.status = Status.PENDING;
         this.finalWeight = -1;
     }
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
+
+    public int getArea() {
+        return area;
+    }
+
+    public void setArea(int area) {
+        this.area = area;
+    }
+
+    public String getDate() {
+        return date;
+    }
+
+    public void setDate(String date) {
+        this.date = date;
+    }
+
+    public String getTruckId() {
+        return truckId;
+    }
+
+    public void setTruckId(String truckId) {
+        this.truckId = truckId;
+    }
+
+    public int getDriverId() {
+        return driverId;
+    }
+
+    public void setDriverId(int driverId) {
+        this.driverId = driverId;
+    }
+
+    public String getDriverName() {
+        return driverName;
+    }
+
+    public void setDriverName(String driverName) {
+        this.driverName = driverName;
+    }
+
+    public List<Integer> getSuppliers() {
+        return suppliers;
+    }
+
+    public void setSuppliers(List<Integer> suppliers) {
+        this.suppliers = suppliers;
+    }
+
+    public List<Integer> getStores() {
+        return stores;
+    }
+
+    public void setStores(List<Integer> stores) {
+        this.stores = stores;
+    }
+
+    public List<Map<Integer, Integer>> getItems() {
+        return items;
+    }
+
+    public void setItems(List<Map<Integer, Integer>> items) {
+        this.items = items;
+    }
+
+    public Status getStatus() {
+        return status;
+    }
+
+    public void setStatus(Status status) {
+        this.status = status;
+    }
+
+    public double getFinalWeight() {
+        return finalWeight;
+    }
+
+    public void setFinalWeight(double finalWeight) {
+        this.finalWeight = finalWeight;
+    }
+
+
 
 }

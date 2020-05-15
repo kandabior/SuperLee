@@ -242,7 +242,7 @@ public class UserMenu {
                         pool.addItems(docId, allItems);
                         System.out.println("Items was added successfully");
                         break;
-                    case 4://view system data
+                    case 4://EmployeesMenu system data
                         System.out.println("Please enter option number:\n" +
                                 "1. View pending transports\n2. View failed transports\n3. View successful transports\n4. View drivers\n5. View trucks\n6. View stores\n7. View suppliers\n");
                         option = input.nextInt();

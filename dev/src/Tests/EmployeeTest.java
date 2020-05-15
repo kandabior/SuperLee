@@ -1,7 +1,7 @@
 package Tests;
 
 import BusinessLayer.EmployeeModule.Employee;
-import BusinessLayer.EmployeeModule.service;
+import BusinessLayer.EmployeeModule.Service;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
@@ -13,7 +13,7 @@ import java.util.List;
 
 public class EmployeeTest {
     private Employee employee;
-    private service service;
+    private Service service;
     @Before
     public void singleEmployee() {
         Date d2 = null;
@@ -22,22 +22,27 @@ public class EmployeeTest {
         } catch (ParseException e) {
             e.printStackTrace();
         }
-        employee = new Employee("Raviv", "315", "a lot ", "555", 30000, d2, "1");
+        employee = new Employee("Raviv", "315", "a lot ", "555", 30000, d2, "1",2);
     }
     @Before
     public void setService() {
-        service =new service();
+        service =new Service();
         Date d2 = null;
         try {
             d2 = new SimpleDateFormat("dd/MM/yyyy").parse("21/04/2020");
         } catch (ParseException e) {
             e.printStackTrace();
         }
-        service.addworker("Raviv", "315", "a lot ", "555", 30000, d2);
-        service.addworker("Hodaya", "320", "a lot ", "555", 30000, d2);
-        service.setSupervisor("2",true);
-        service.addRole("1","Chef");
-        service.addRole("2","Chef");
+        try {
+            service.addWorker("Raviv", "315", "a lot ", "555", 30000, d2);
+            service.addWorker("Hodaya", "320", "a lot ", "555", 30000, d2);
+            service.setSupervisor("2", true);
+            service.addRole("1", "Chef");
+            service.addRole("2", "Chef");
+        }
+        catch (Exception e){
+
+        }
 
         service.addConstrain("2","Sunday","Morning");
     }

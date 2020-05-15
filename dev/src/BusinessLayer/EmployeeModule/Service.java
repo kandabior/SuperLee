@@ -5,13 +5,13 @@ import java.util.List;
 import java.util.Map;
 
 
-public class service {
+public class Service {
 
-    private shiftManager shiftManager;
+    private ShiftManager shiftManager;
     private EmployeesManager employeesManager;
 
-    public service(){
-        shiftManager = new shiftManager();
+    public Service(){
+        shiftManager = new ShiftManager();
         employeesManager=new EmployeesManager();
     }
 
@@ -45,8 +45,8 @@ public class service {
 
     public String getShiftHistory() {
         String history = "";
-        List<shift> shifts = shiftManager.getShifts();
-        for (shift s : shifts) {
+        List<Shift> Shifts = shiftManager.getShifts();
+        for (Shift s : Shifts) {
             history = history + "\nDate: " + shiftManager.shiftDate(s)+
                     "\nShift type: " + shiftManager.shiftType(s)+
                     "\nPersonnel Manager ID: " + shiftManager.shiftManager(s)+
@@ -63,10 +63,10 @@ public class service {
         return shiftManager.requirementsRoleDetails(stringToDay(day),stringToShiftType(shiftType));
     }
     public boolean employeeExist(String employeeID){
-        return employeesManager.emplyeeExist(employeeID);
+        return employeesManager.employeeExist(employeeID);
     }
     public boolean employeeAvailable(String employeeID){
-        return employeesManager.emplyeeAvailable(employeeID);
+        return employeesManager.employeeAvailable(employeeID);
     }
     public void addConstrain(String employeeID, String day, String shiftType) {
         employeesManager.addConstrain(employeeID,stringToShiftType(shiftType),stringToDay(day));
@@ -101,7 +101,7 @@ public class service {
     public void deleteWorker(String employeeID){
         employeesManager.deleteEmployee(employeeID);
     }
-    public String addworker(String name,String ID,String hiringConditions,String bankId,int salary,Date startOfEmployment){
+    public String addWorker(String name, String ID, String hiringConditions, String bankId, int salary, Date startOfEmployment) throws Exception {
         return employeesManager.addWorker(name,ID,hiringConditions,bankId,salary,startOfEmployment);
 
     }
@@ -109,7 +109,7 @@ public class service {
         return employeesManager.getEmployeeDetails(emolyeeID);
     }
     public String getAllEmplyees() {
-        return employeesManager.getAllEmpoyees();
+        return employeesManager.getAllEmployees();
     }
     private Day stringToDay(String day) {
         if (day.equals("Sunday"))
@@ -136,4 +136,20 @@ public class service {
         return null;
     }
 
+    public void loadBranch(int branch) {
+        employeesManager.loadBranch(branch);
+    }
+
+    public List<Integer> getStoresWithStoreKeeper(Date date) {
+        return shiftManager.getStoresWithStoreKeeperAtDate(date);
+    }
+
+    public List<Integer> getDriversAvailableAtDate(Date date, String license) {
+        return employeesManager.getDriversAvailableAtDate(date,license);
+
+    }
+
+    public String getDriveName(int employeeID) throws Exception {
+        return employeesManager.getDriverName(employeeID);
+    }
 }
