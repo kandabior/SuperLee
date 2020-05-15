@@ -80,17 +80,22 @@ public class Inventory {
         return inventoryMapper.getBranchIdsToWeeklyOrders(dayOfTheWeek);
     }
     public  String mannageOrders(int branchId, Map<Integer,Pair<Integer,Double>> orders) {
-        for(Integer prodId: orders.keySet()){
-            addAmountToProduct(branchId, prodId,orders.get(prodId).getKey());
-            int amount=orders.get(prodId).getKey();
-            double totalPrice= orders.get(prodId).getValue();
-            double newPrice= totalPrice/amount;
-            double currentPrice= inventoryMapper.getCurrentCostPrices(branchId,prodId);
-            if(currentPrice!=newPrice){
-                setCostPrice(branchId,prodId,newPrice);
+        if(inventoryMapper.isBranchExist(branchId)) {
+            for (Integer prodId : orders.keySet()) {
+                addAmountToProduct(branchId, prodId, orders.get(prodId).getKey());
+                int amount = orders.get(prodId).getKey();
+                double totalPrice = orders.get(prodId).getValue();
+                double newPrice = totalPrice / amount;
+                double currentPrice = inventoryMapper.getCurrentCostPrices(branchId, prodId);
+                if (currentPrice != newPrice) {
+                    setCostPrice(branchId, prodId, newPrice);
+                }
             }
+            return "Order Completed Successfully for branch: " + branchId;
         }
-        return "Order Completed Successfully for branch: "+branchId;
+        else{
+            return "branch id does not exist";
+        }
     }
     private  void setCostPrice(int branchId,Integer prodId, double newPrice) {
         inventoryMapper.setCostPrice(branchId,prodId,newPrice);
@@ -213,16 +218,14 @@ public class Inventory {
         }
         return "branch id does not exist";
     }
-    public  String addAmountToProduct(int branchId, int id, int amount){
-        if (inventoryMapper.isBranchExist(branchId)) {
-            if (inventoryMapper.isInventoryConteinsProd(branchId, id)) {
-                inventoryMapper.addAmountToProduct(branchId, id, amount);
-                return "product id: " + id + " - amount of " + amount + " added to the inventory";
-            }
-            return "product id does not exist";
+    public  String addAmountToProduct(int branchId, int id, int amount) {
+        if (inventoryMapper.isInventoryConteinsProd(branchId, id)) {
+            inventoryMapper.addAmountToProduct(branchId, id,inventoryMapper.getProductQuantity(branchId,id), amount);
+            return "product id: " + id + " - amount of " + amount + " added to the inventory";
         }
-        return "branch id does not exist";
+        return "product id does not exist";
     }
+
     public  String removeAmountFromProduct(int branchId, int id, int amount){
         if (inventoryMapper.isBranchExist(branchId)) {
             if (inventoryMapper.isInventoryConteinsProd(branchId, id)) {

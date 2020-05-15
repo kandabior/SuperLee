@@ -396,20 +396,20 @@ public class InventoryMapper {
         }
         return false;
     }
-    public  boolean addAmountToProduct(int branchId, int id, int amount) { //adding half to storage half to shelf
+    public  boolean addAmountToProduct(int branchId, int id, int currentAmount,int toAddAmount) { //adding half to storage half to shelf
         PreparedStatement stmt = null;
         try{
             Class.forName("org.sqlite.JDBC");
             c = DriverManager.getConnection("jdbc:sqlite:dev\\EOEDdatabase.db");
             c.setAutoCommit(false);
-            stmt = c.prepareStatement("UPDATE Quantities SET storageQuantity=? AND shelfQuantity=? WHERE branchId=? AND productId=?;");
-            stmt.setInt(1, amount/2);
-            stmt.setInt(2, amount/2);
-            stmt.setInt(3, branchId);
-            stmt.setInt(4, id);
+            stmt = c.prepareStatement("UPDATE Quantities SET storageQuantity=? WHERE branchId=? AND productId=?;");
+            stmt.setInt(1, toAddAmount+currentAmount);
+            stmt.setInt(2, branchId);
+            stmt.setInt(3, id);
             stmt.executeUpdate();
             stmt.close();
             c.commit();
+            c.close();
             return true;
         } catch ( Exception e ) {
             try {
@@ -1171,13 +1171,15 @@ public class InventoryMapper {
             c = DriverManager.getConnection("jdbc:sqlite:dev\\EOEDdatabase.db");
             c.setAutoCommit(false);
             stmt = c.prepareStatement("UPDATE Inventory SET dayForWeeklyOrder= ? WHERE branchId=?;");
-            stmt.setDouble(1, branchId);
+            stmt.setInt(1, day);
+            stmt.setInt(2, branchId);
             int numOfUpdates=stmt.executeUpdate();
             boolean output1=false;
             if(numOfUpdates!=0){
                 output1=true;
             }
             stmt.close();
+            c.commit();
             c.close();
             return output1;
         } catch ( Exception e ) {
@@ -1187,9 +1189,12 @@ public class InventoryMapper {
         }
     }
 
-    public  void AddToWeeklyOrder(int branchId, Integer key, Integer value) {
+    public  boolean AddToWeeklyOrder(int branchId, Integer key, Integer value) {
         PreparedStatement stmt=null;
         try{
+            Class.forName("org.sqlite.JDBC");
+            c = DriverManager.getConnection("jdbc:sqlite:dev\\EOEDdatabase.db");
+            c.setAutoCommit(false);
             stmt=c.prepareStatement("INSERT INTO WeeklyOrders values (?,?,?)");
             stmt.setInt(1,branchId);
             stmt.setInt(2,key);
@@ -1200,14 +1205,16 @@ public class InventoryMapper {
                 output=true;
             }
             stmt.close();
+            c.commit();
             c.close();
-
+            return output;
 
         } catch ( Exception e ) {
             tryClose(c);
             System.err.println( e.getClass().getName() + ": " + e.getMessage() );
 
         }
+        return false;
     }
 
     public  boolean isWeeklyContainProd(int branchId,Integer ids) {
@@ -1242,6 +1249,9 @@ public class InventoryMapper {
     public  void removeFromWeeklyOrder(int branchId, Integer id) {
         PreparedStatement stmt=null;
         try{
+            Class.forName("org.sqlite.JDBC");
+            c = DriverManager.getConnection("jdbc:sqlite:dev\\EOEDdatabase.db");
+            c.setAutoCommit(false);
             stmt=c.prepareStatement("DELETE FROM WeeklyOrders WHERE branchId=? AND productId=?");
             stmt.setInt(1,branchId);
             stmt.setInt(2,id);
@@ -1251,6 +1261,7 @@ public class InventoryMapper {
                 output=true;
             }
             stmt.close();
+            c.commit();
             c.close();
 
 

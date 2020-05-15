@@ -91,7 +91,7 @@ public class Supplier {
         this.agreement.deleteFromBillOfQuantities(itemId);
     }*/
 
-    //public void deleteBillOfQuantities() { this.agreement.deleteBillOfQuantities(); }
+  //  public void deleteBillOfQuantities() { this.agreement.deleteBillOfQuantities(); }
 
     public void addItemToAgreement(Integer item_id, Double cost) {
         this.agreement.insertItem(item_id,cost);
@@ -109,10 +109,10 @@ public class Supplier {
         this.agreement.addItemToBillOfQuantities(itemId,itemQuantity,itemDiscount);
     }*/
 
-    /*public Map<Integer, Pair<Integer, Double>> getBillOfQuantities() {
-        return this.agreement.getBillOfQuantities();
-    }
-*/
+//    public Map<Integer, Pair<Integer, Double>> getBillOfQuantities() {
+//        return this.agreement.getBillOfQuantities();
+//    }
+
 
 
     public int getItemIdByIndex(int i) {

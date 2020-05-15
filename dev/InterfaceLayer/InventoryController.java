@@ -115,14 +115,7 @@ public class InventoryController {
             return "can't execute the action";
         }
     }
-    public String addAmountToProduct(int branchId,int id, int amount){
-        try {
-            return inventory.addAmountToProduct(branchId,id, amount);
-        }
-        catch (Exception e){
-            return "can't execute the action";
-        }
-    }
+
     public String removeAmountFromProduct(int branchId,int id, int amount){
         try{
             return inventory.removeAmountFromProduct(branchId,id,amount);
