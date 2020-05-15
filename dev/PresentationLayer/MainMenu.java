@@ -12,14 +12,13 @@ import java.util.Scanner;
 public class MainMenu{
     public static Scanner scanner=new Scanner(System.in);
     public static Integer DayOfTheWeek=0;
-    //todo dorin stop ruin the git
 
     public static void main(String[]args) {
         mainLoop();
     }
 
     private static void mainLoop() {
-        Printer.Print("Do you Want to initiate the System? Y/N ");
+        /*Printer.Print("Do you Want to initiate the System? Y/N ");
         String ans = scanner.next();
         if (ans.equals("Y") || ans.equals("y")) {
             initiateSystem();
@@ -28,7 +27,7 @@ public class MainMenu{
         }
         else {
             Printer.Print("system was not initiate");
-        }
+        }*/
         int choose;
         Printer.Print("Welcome To EOED Digital Storage And Suppliers Manager!");
         do {
@@ -83,13 +82,13 @@ public class MainMenu{
         Items.PrintAllItems();
     }
 
-    public static void initiateSystem(){
+   /* public static void initiateSystem(){
         Items.addItem(1,"Milk");
         Items.addItem(2,"Corn");
         Items.addItem(3,"Banana");
         Items.addItem(4,"Tomato");
         Items.addItem(5,"Carrot");
         Items.addItem(6,"Chips");
-    }
+    }*/
 
 }

@@ -1,21 +1,24 @@
 package LogicLayer;
 
 import DataAccessLayer.ItemMapper;
+import javafx.util.Pair;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 public class Items {//check
 
-    private static Map<Integer, String> items=new HashMap<>();
-    private ItemMapper itemMapper = new ItemMapper();
+    //private static Map<Integer, String> items=new HashMap<>();
+    private static ItemMapper itemMapper=new ItemMapper();
+
+
 
     public static boolean addItem(Integer id, String name ){
-        if(items.containsKey(id)){
+        if(itemMapper.checkIfItemExist(id)){
             return false;
         }
-        items.put(id,name);
-        return true;
+        return itemMapper.addItem(id,name);
     }
 
     public String getName(Integer id) {
@@ -29,8 +32,9 @@ public class Items {//check
     }
 
     public static void PrintAllItems() {
-        for ( Integer id: items.keySet()) {
-            System.out.println("Product id: "+id+", name: "+items.get(id));
+        List<Pair<Integer,String>> items= itemMapper.getAllItems();
+        for ( Pair pair: items) {
+            System.out.println("Product id: "+pair.getKey()+", name: "+pair.getValue());
         }
     }
 

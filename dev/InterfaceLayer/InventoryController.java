@@ -115,14 +115,7 @@ public class InventoryController {
             return "can't execute the action";
         }
     }
-    public String addAmountToProduct(int branchId,int id, int amount){
-        try {
-            return inventory.addAmountToProduct(branchId,id, amount);
-        }
-        catch (Exception e){
-            return "can't execute the action";
-        }
-    }
+
     public String removeAmountFromProduct(int branchId,int id, int amount){
         try{
             return inventory.removeAmountFromProduct(branchId,id,amount);
@@ -191,7 +184,7 @@ public class InventoryController {
     }
     public String MakeMissingOrder(int branchId) {
         try {
-            List<Pair<Integer, Integer>> toBuy= inventory.NeedToBuyProducts(branchId);
+            List<Pair<Integer, Integer>> toBuy= inventory.NeedToBuyProductsForOrder(branchId);
             Map<Integer,Pair<Integer,Double>> orders= FacadeController.getFacadeController().makeOrder(branchId,toBuy);
             return inventory.mannageOrders(branchId,orders);
         }

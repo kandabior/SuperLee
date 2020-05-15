@@ -1,6 +1,10 @@
 package DataAccessLayer;
 
+import javafx.util.Pair;
+
 import java.sql.*;
+import java.util.LinkedList;
+import java.util.List;
 
 public class ItemMapper {
     private static Connection conn;
@@ -28,7 +32,33 @@ public class ItemMapper {
         }
     }
 
-    public static boolean tryOpen()
+    public boolean addItem(int itemId,String name) {
+        try {
+            Class.forName("org.sqlite.JDBC");
+            conn = DriverManager.getConnection("jdbc:sqlite:dev\\EOEDdatabase.db");
+            conn.setAutoCommit(false);
+            PreparedStatement st = conn.prepareStatement("INSERT INTO Items VALUES (?,?);");
+            st.setInt(1, itemId);
+            st.setString(2, name );
+            st.executeUpdate();
+            st.close();
+            conn.commit();
+            conn.close();
+            return true;
+
+        } catch (Exception e) {
+            System.err.println(e.getClass().getName() + ": " + e.getMessage());
+            try {
+                conn.close();
+            }
+            catch (Exception e2){
+
+            }
+            return false;
+        }
+    }
+
+    /*public static boolean tryOpen()
     {
         try {
             conn = DriverManager.getConnection("jdbc:sqlite:dev\\EOEDdatabase.db");
@@ -38,7 +68,7 @@ public class ItemMapper {
             return false;
         }
 
-    }
+    }*/
 
     public static void tryClose()
     {
@@ -71,5 +101,35 @@ public class ItemMapper {
             System.err.println(e.getClass().getName() + ": " + e.getMessage());
             return null;
         }
+    }
+
+    public List<Pair<Integer, String>> getAllItems() {
+        try {
+            List<Pair<Integer, String>> output= new LinkedList<>();
+            Class.forName("org.sqlite.JDBC");
+            conn = DriverManager.getConnection("jdbc:sqlite:dev\\EOEDdatabase.db");
+            conn.setAutoCommit(false);
+            PreparedStatement st = conn.prepareStatement("SELECT * FROM Items;");
+            ResultSet res = st.executeQuery();
+            while(res.next()) {
+                output.add(new Pair<>(res.getInt("itemId"),res.getString("itemName")));
+            }
+            res.close();
+            st.close();
+            conn.close();
+            return output;
+        } catch (Exception e) {
+            try {
+
+                conn.close();
+            }
+            catch (Exception e2){
+
+            }
+            System.err.println(e.getClass().getName() + ": " + e.getMessage());
+            return null;
+        }
+
+
     }
 }

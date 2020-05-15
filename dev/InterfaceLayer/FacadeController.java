@@ -1,7 +1,5 @@
 package InterfaceLayer;
 
-import LogicLayer.Inventory;
-import LogicLayer.Supplier;
 import javafx.util.Pair;
 
 import java.time.LocalDate;
@@ -29,12 +27,12 @@ public class FacadeController {
 
     public boolean deleteSupplier(int suppId) { return supplierController.deleteSupplier(suppId); }
 
-    public void addBillOfQuantities (int supplierId, Map<Integer, Pair<Integer, Double>> bill) {
+    public void createBillOfQuantities (int supplierId, Map<Integer, Pair<Integer, Double>> bill) {
         this.supplierController.createBillOfQuantities(supplierId, bill);
     }
 
-    public void updateBillOfQuantities(int supplierId, Integer itemId, Pair<Integer, Double> quantity_disc) {
-        this.supplierController.updateBillOfQuantities(supplierId, itemId, quantity_disc);
+    public void changeInBillOfQuantities(int supplierId, Integer itemId, Pair<Integer, Double> quantity_disc) {
+        this.supplierController.changeInBillOfQuantities(supplierId, itemId, quantity_disc);
     }
 
     public void deleteFromBillOfQuantities(int supplierId,Integer itemId) {
@@ -45,11 +43,7 @@ public class FacadeController {
         this.supplierController.deleteBillOfQuantities(suppId);
     }
 
-    public int getBillSize(int suppId) { return supplierController.getBillSize(suppId); }
-
-  /*  public boolean addOrder(int id, List<Pair<Integer, Integer>> items, int supplierId) {
-        return orderController.addOrder(id, items, supplierId);
-    }*/
+    public int getBillSize(int suppId) { return this.supplierController.getBillSize(suppId); }
 
     public LinkedHashMap<Integer, Double> showSuppItems(int suppId) {
         return supplierController.showSuppItems(suppId);
@@ -60,7 +54,7 @@ public class FacadeController {
     }
 
     public void addItemToBillOfQuantities(int suppId, int itemId, int itemQuantity, Double itemDiscount) {
-        supplierController.addItemToBillOfQuantities(suppId, itemId, itemQuantity, itemDiscount);
+        this.supplierController.addItemToBillOfQuantities(suppId, itemId, itemQuantity, itemDiscount);
     }
 
 
@@ -139,7 +133,7 @@ public class FacadeController {
 
     public boolean findSupplier(int id) { return supplierController.findSupplier(id); }
 
-    public Map<Integer, Pair<Integer, Double>> getBillOfQuantities(int suppId) { return supplierController.getBillOfQuantities(suppId); }
+    public Map<Integer, Pair<Integer, Double>> getBillOfQuantities(int suppId) { return this.supplierController.getBillOfQuantities(suppId); }
 
     public String getItemNameById(Integer itemId) { return this.supplierController.getItemName(itemId); }
 

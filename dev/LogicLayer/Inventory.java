@@ -28,6 +28,14 @@ public class Inventory {
         return instance;
     }
 
+    public static int getProductMinStatic(int branchId, Integer key) {
+        return instance.getProductMin(branchId,key);
+    }
+
+    public static int getAmountStatic(int branch, Integer key) {
+        return instance.getAmount(branch, key);
+    }
+
     public  String getProdactName(int branchId,int prodId) {
         if (inventoryMapper.isBranchExist(branchId)) {
             if (inventoryMapper.isInventoryConteinsProd(branchId, prodId)) {
@@ -72,17 +80,22 @@ public class Inventory {
         return inventoryMapper.getBranchIdsToWeeklyOrders(dayOfTheWeek);
     }
     public  String mannageOrders(int branchId, Map<Integer,Pair<Integer,Double>> orders) {
-        for(Integer prodId: orders.keySet()){
-            addAmountToProduct(branchId, prodId,orders.get(prodId).getKey());
-            int amount=orders.get(prodId).getKey();
-            double totalPrice= orders.get(prodId).getValue();
-            double newPrice= totalPrice/amount;
-            double currentPrice= inventoryMapper.getCurrentCostPrices(branchId,prodId);
-            if(currentPrice!=newPrice){
-                setCostPrice(branchId,prodId,newPrice);
+        if(inventoryMapper.isBranchExist(branchId)) {
+            for (Integer prodId : orders.keySet()) {
+                addAmountToProduct(branchId, prodId, orders.get(prodId).getKey());
+                int amount = orders.get(prodId).getKey();
+                double totalPrice = orders.get(prodId).getValue();
+                double newPrice = totalPrice / amount;
+                double currentPrice = inventoryMapper.getCurrentCostPrices(branchId, prodId);
+                if (currentPrice != newPrice) {
+                    setCostPrice(branchId, prodId, newPrice);
+                }
             }
+            return "Order Completed Successfully for branch: " + branchId;
         }
-        return "Order Completed Successfully for branch: "+branchId;
+        else{
+            return "branch id does not exist";
+        }
     }
     private  void setCostPrice(int branchId,Integer prodId, double newPrice) {
         inventoryMapper.setCostPrice(branchId,prodId,newPrice);
@@ -115,7 +128,7 @@ public class Inventory {
         List<Pair<Integer,Integer>> needToBuy = new LinkedList<>();
         for (Integer id : inventoryMapper.getProductsIds(branchId)) {
             if (inventoryMapper.getProductMin(branchId,id) > inventoryMapper.getProductQuantity(branchId,id))
-                needToBuy.add(new Pair<>(id,inventoryMapper.getProductQuantity(branchId,id)-inventoryMapper.getProductMin(branchId,id)));
+                needToBuy.add(new Pair<>(id,inventoryMapper.getProductQuantity(branchId,id)));
         }
         return needToBuy;
     }
@@ -156,7 +169,7 @@ public class Inventory {
         return "all prices for categories: " + category.toString() + " changed to: " + price;
     }
     public  String setExpired(int branchId, int productId, Integer amount){ //removing a specific amount of expired products from the storage inventory to the expired inventory.
-        if(inventoryMapper.isInventoryConteinsProd(branchId,productId)) {
+        if(!inventoryMapper.isInventoryConteinsProd(branchId,productId)) {
             return "product ID doesnt exist";
         }
         int currentAmount=inventoryMapper.getProductQuantity(branchId,productId);
@@ -205,16 +218,14 @@ public class Inventory {
         }
         return "branch id does not exist";
     }
-    public  String addAmountToProduct(int branchId, int id, int amount){
-        if (inventoryMapper.isBranchExist(branchId)) {
-            if (inventoryMapper.isInventoryConteinsProd(branchId, id)) {
-                inventoryMapper.addAmountToProduct(branchId, id, amount);
-                return "product id: " + id + " - amount of " + amount + " added to the inventory";
-            }
-            return "product id does not exist";
+    public  String addAmountToProduct(int branchId, int id, int amount) {
+        if (inventoryMapper.isInventoryConteinsProd(branchId, id)) {
+            inventoryMapper.addAmountToProduct(branchId, id,inventoryMapper.getProductQuantity(branchId,id), amount);
+            return "product id: " + id + " - amount of " + amount + " added to the inventory";
         }
-        return "branch id does not exist";
+        return "product id does not exist";
     }
+
     public  String removeAmountFromProduct(int branchId, int id, int amount){
         if (inventoryMapper.isBranchExist(branchId)) {
             if (inventoryMapper.isInventoryConteinsProd(branchId, id)) {
@@ -262,7 +273,7 @@ public class Inventory {
     public  String storageToShelf(int branchId,int id, int amount){
         if (inventoryMapper.isBranchExist(branchId)) {
             if (inventoryMapper.isInventoryConteinsProd(branchId, id)) {
-                if(inventoryMapper.shelfToStorage(branchId,id,amount)){
+                if(inventoryMapper.storageToShelf(branchId,id,amount)){
                     return "product id: " + id + " - amount of " + amount + " removed from the storage to the shelf";
                 }
                 else{
@@ -424,6 +435,16 @@ public class Inventory {
     }
     public String getItemName(int prodid) {
         return ItemMapper.getName(prodid);
+    }
+
+    public List<Pair<Integer, Integer>> NeedToBuyProductsForOrder(int branchId) {
+        List<Pair<Integer,Integer>> needToBuy = new LinkedList<>();
+        for (Integer id : inventoryMapper.getProductsIds(branchId)) {
+            if (inventoryMapper.getProductMin(branchId,id) > inventoryMapper.getProductQuantity(branchId,id))
+                needToBuy.add(new Pair<>(id,inventoryMapper.getProductMin(branchId,id)-inventoryMapper.getProductQuantity(branchId,id)));
+        }
+        return needToBuy;
+
     }
 
 

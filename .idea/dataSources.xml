@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="DataSourceManagerImpl" format="xml" multifile-model="true">
-    <data-source source="LOCAL" name="db" uuid="82d57c22-2848-4ef7-8a20-9f6b7716d8d7">
+    <data-source source="LOCAL" name="EOEDdatabase.db" uuid="68012e35-bb90-44fb-8795-a063536c62a8">
       <driver-ref>sqlite.xerial</driver-ref>
       <synchronize>true</synchronize>
       <jdbc-driver>org.sqlite.JDBC</jdbc-driver>
-      <jdbc-url>jdbc:sqlite:C:\Users\אלעד\Desktop\nituz\dev\EOEDdatabase.db</jdbc-url>
+      <jdbc-url>jdbc:sqlite:$PROJECT_DIR$/dev/EOEDdatabase.db</jdbc-url>
     </data-source>
   </component>
 </project>

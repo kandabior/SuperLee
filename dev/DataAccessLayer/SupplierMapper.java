@@ -3,10 +3,6 @@ package DataAccessLayer;
 import java.sql.*;
 
 import DTO.SupplierDTO;
-import com.sun.istack.internal.localization.NullLocalizable;
-import javafx.util.Pair;
-
-import java.text.DecimalFormat;
 import java.util.*;
 
 public class SupplierMapper {
@@ -296,46 +292,6 @@ public class SupplierMapper {
         }
     }
 
-    public boolean addBillOfQuantities(int supplierId, Map<Integer, Pair<Integer, Double>> bill) {
-        try {
-            Class.forName("org.sqlite.JDBC");
-            conn = DriverManager.getConnection("jdbc:sqlite:EOEDdatabase.db");
-            conn.setAutoCommit(false);
-            PreparedStatement st = conn.prepareStatement("INSERT INTO BillsOfQuantities VALUES (?);");
-            st.setInt(1, supplierId);
-            int rowNum = st.executeUpdate();
-            st.close();
-            if (rowNum != 0) {
-                conn.commit();
-            } else {
-                conn.rollback();
-                conn.close();
-                return false;
-            }
-            Set<Integer> ids = bill.keySet();
-            for (int i = 0; i < bill.size(); i++) {
-                st = conn.prepareStatement("INSERT INTO ItemsInBills VALUES (?,?,?,?);");
-                st.setInt(1, supplierId);
-                st.setInt(2, ids.iterator().next()); //no fucking idea if works
-                st.setInt(3, bill.get(i).getKey());
-                st.setDouble(4, bill.get(i).getValue());
-                rowNum = st.executeUpdate();
-                st.close();
-                if (rowNum != 0) {
-                    conn.commit();
-                } else {
-                    conn.rollback();
-                    conn.close();
-                    return false;
-                }
-            }
-            return true;
-        } catch (Exception e) {
-            System.err.println(e.getClass().getName() + ": " + e.getMessage());
-            return false;
-        }
-    }
-
     public boolean addItemToAgreement(Integer suppId, Integer itemId, Double cost) {
         try {
             if (tryOpen()) {
@@ -363,70 +319,6 @@ public class SupplierMapper {
         }
     }
 
-    /*
-        public void updateBillOfQuantities(int supplierId, Integer itemId, Pair<Integer, Double> quantity_disc) {
-           if(getSuppById(supplierId)!=null)
-           {
-               getSuppById(supplierId).updateBillOfQuantities(itemId,quantity_disc);
-           }
-        }
-
-        public void deleteFromBillOfQuantities(int suppId, Integer itemId) {
-            if (getSuppById(suppId) != null) {
-                getSuppById(suppId).deleteFromBillOfQuantities(itemId);
-            }
-        }
-
-        public void deleteBillOfQuantities(int suppId) {
-            if (getSuppById(suppId) != null) {
-                getSuppById(suppId).deleteBillOfQuantities();
-            }
-        }
-
-        public int getBillSize(int suppId) { return getSuppById(suppId).getBillSize(); }
-
-        public LinkedHashMap<Integer, Double> showSuppItems(int suppId){
-            Supplier supplier = getSuppById(suppId);
-            return supplier.getAgreement().getTerms();
-        }
-
-        public double getPriceOfItem(int suppId, int index) {
-            return getSuppById(suppId).getPriceOfItem(index);
-        }
-
-        public boolean checkBillOfQuantity(int suppId) {
-            return getSuppById(suppId).checkBillOfQuantity();
-        }
-
-        public void addItemToBillOfQuantities(int suppId, int itemId, int itemQuantity, Double itemDiscount) {
-            getSuppById(suppId).addItemToBillOfQuantities(itemId,itemQuantity,itemDiscount);
-        }
-
-        public Map<Integer, Pair<Integer, Double>> getBillOfQuantities(int suppId) {
-            return getSuppById(suppId).getBillOfQuantities();
-        }
-
-        public String getItemName( Integer itemId) {
-            return Items.getName(itemId);
-        }
-
-        public String getItemNameByIndex(int suppId, int i) {
-            return Items.getName(getSuppById(suppId).getItemIdByIndex(i));
-        }
-
-
-        public int getItemIdByIndex(int suppId, int i) {
-            return getSuppById(suppId).getItemIdByIndex(i);
-        }
-
-        public void addItemToSupplier(int suppId, int itemId) { //TODO already have addItemToAgreement - must have item price!
-            this.getSuppById(suppId).addItemsToSupplier(itemId);
-        }
-
-        public int getItemsListSize(int suppId) {
-            return this.getSuppById(suppId).getItemsListSize();
-        }
-    */
     public boolean setItemPrice(int suppId, int itemId, double newPrice) {
         try {
             if (tryOpen()) {
@@ -558,7 +450,6 @@ public class SupplierMapper {
 
     }
 
-
     public Double getPriceOfAmountOfItem(int supplierId, Integer itemId, Integer amount) {
 
 
@@ -610,7 +501,6 @@ public class SupplierMapper {
         }
         return false;
     }
-
 
     public boolean checkInBillForDiscount(int BillId, Integer itemId, Integer amount) {
         try {
@@ -746,6 +636,7 @@ public class SupplierMapper {
 
 
     }
+
     public void createBillOfQuantities(int suppId) {
         try{
             if(tryOpen()) {
@@ -779,45 +670,3 @@ public class SupplierMapper {
         }
     }
 }
-
-/*
-    public int bestSuppForItem(Integer itemId, Integer quantity) {
-        Double min=100000000.0;
-        int bestSuppId=-1;
-        for(int i=0 ; i<suppliers.size();i++)
-        {
-             Double temp =suppliers.get(i).getPriceOfAmountOfItem(itemId,quantity);
-             if(temp<min) {
-                 min = temp;
-                 bestSuppId=i;
-             }
-        }
-
-        return bestSuppId+1;
-    }
-
-    public Double getPriceOfAmountOfItem(int bestSuppForItem,Integer itemId, Integer amount) {
-        return getSuppById(bestSuppForItem).getPriceOfAmountOfItem(itemId,amount);
-    }
-
-    public boolean checkIfItemExist(int itemId) {
-        return (Items.getName(itemId)!=null);
-    }
-
-    public Double getPriceOfAmountOfItemBeforeDiscount(int suppId , int itemId , int amount) {
-        return getSuppById(suppId).getPriceOfAmountOfItemBeforeDiscount(itemId, amount);
-    }
-
-    public Double getDiscountOfItem(int bestSuppForItem, int itemId , int amount) {
-        return getSuppById(bestSuppForItem).getDiscountOfItem(itemId, amount);
-    }
-
-    public List<Object> getSuppDetails(int bestSuppForItem) { //TODO create dto
-        return getSuppById(bestSuppForItem).getSuppDetails();
-    }
-}
-
-
- */
-
-

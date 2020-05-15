@@ -1,6 +1,7 @@
 package InterfaceLayer;
 
 import DataAccessLayer.SupplierMapper;
+import LogicLayer.Agreement;
 import LogicLayer.Items;
 import LogicLayer.Supplier;
 import javafx.util.Pair;
@@ -11,6 +12,7 @@ public class SupplierController {
     private List<Supplier> suppliers;
     private static SupplierController sp_instance = null;
     private Supplier supplier;
+    private Agreement agreement;
     private Items item;
 
     public static SupplierController getSupplierController() {
@@ -22,6 +24,7 @@ public class SupplierController {
     private SupplierController() {
       this.suppliers = new LinkedList<>();
       this.supplier = new Supplier();
+      this.agreement = new Agreement();
       this.item = new Items();
     }
 
@@ -67,12 +70,12 @@ public class SupplierController {
         return sup.saveMe();
     }
 
-    public void createBillOfQuantities(int supplierId ,Map<Integer, Pair<Integer, Double>> bill) { //id, <quantity, discount>
+    public void createBillOfQuantities(int supplierId ,Map<Integer, Pair<Integer, Double>> bill) { //item id, <quantity, discount>
         this.supplier.createBillOfQuantities(supplierId);
         Iterator<Integer> iter = bill.keySet().iterator();
         while (iter.hasNext()){
-            int id = iter.next();
-            this.supplier.addItemToBillOfQuantities(id, bill.get(id).getKey(), bill.get(id).getValue());//TODO dorin was here
+            int itemId = iter.next();
+            this.agreement.addItemToBillOfQuantities(supplierId, itemId, bill.get(itemId).getKey(), bill.get(itemId).getValue());
         }
     }
 
@@ -80,26 +83,19 @@ public class SupplierController {
         return this.supplier.addItemToAgreement(supp_id,item_id,cost);
     }
 
-    public void updateBillOfQuantities(int supplierId, Integer itemId, Pair<Integer, Double> quantity_disc) {
-       if(getSuppById(supplierId)!=null)
-       {
-           getSuppById(supplierId).updateBillOfQuantities(itemId,quantity_disc);
-       }
+    public void changeInBillOfQuantities(int supplierId, Integer itemId, Pair<Integer, Double> quantity_disc) {
+        this.agreement.changeInBillOfQuantities(supplierId, itemId, quantity_disc);
     }
 
     public void deleteFromBillOfQuantities(int suppId, Integer itemId) {
-        if (getSuppById(suppId) != null) {
-            getSuppById(suppId).deleteFromBillOfQuantities(itemId);
-        }
+        this.agreement.deleteFromBillOfQuantities(suppId, itemId);
     }
 
     public void deleteBillOfQuantities(int suppId) {
-        if (getSuppById(suppId) != null) {
-            getSuppById(suppId).deleteBillOfQuantities();
-        }
+        this.agreement.deleteBillOfQuantities(suppId);
     }
 
-    public int getBillSize(int suppId) { return getSuppById(suppId).getBillSize(); }
+    public int getBillSize(int suppId) { return this.agreement.getBillSize(suppId); }
 
     public LinkedHashMap<Integer, Double> showSuppItems(int suppId){
         return this.supplier.showSuppItems(suppId);
@@ -116,11 +112,11 @@ public class SupplierController {
     }
 
     public void addItemToBillOfQuantities(int suppId, int itemId, int itemQuantity, Double itemDiscount) {
-        getSuppById(suppId).addItemToBillOfQuantities(itemId,itemQuantity,itemDiscount);
+        this.agreement.addItemToBillOfQuantities(suppId, itemId, itemQuantity, itemDiscount);
     }
 
     public Map<Integer, Pair<Integer, Double>> getBillOfQuantities(int suppId) {
-        return getSuppById(suppId).getBillOfQuantities();
+        return this.agreement.getBillOfQuantities(suppId);
     }
 
     public String getItemName( Integer itemId) {
@@ -130,7 +126,6 @@ public class SupplierController {
     public String getItemNameByIndex(int suppId, int i) {
         return this.item.getName(getSuppById(suppId).getItemIdByIndex(i));
     }
-
 
     public int getItemIdByIndex(int suppId, int i) {
         return getSuppById(suppId).getItemIdByIndex(i);
