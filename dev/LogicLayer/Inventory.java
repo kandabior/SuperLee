@@ -337,10 +337,12 @@ public class Inventory {
         if (inventoryMapper.isBranchExist(branchId)) {
             List<Integer> noOrder=new LinkedList<>();
             String output="";
-            inventoryMapper.setWeeklyOrder(branchId,day);
+            if(!inventoryMapper.weeklyOrderDayExist(branchId,day)) {
+                inventoryMapper.setWeeklyOrder(branchId, day);
+            }
             for(Pair<Integer,Integer> p: id_amount){
                 if(inventoryMapper.isInventoryConteinsProd(branchId,p.getKey())) {
-                    inventoryMapper.AddToWeeklyOrder(branchId,p.getKey(), p.getValue());
+                    inventoryMapper.AddToWeeklyOrder(branchId,p.getKey(), p.getValue(),day);
                 }
                 else{
                     noOrder.add(p.getKey());
@@ -354,20 +356,20 @@ public class Inventory {
         }
         return "branch id does not exist";
     }
-    public String removeFromWeeklyOrder(int branchId, List<Integer> ids){
+    public String removeFromWeeklyOrder(int branchId, List<Integer> ids,int day){
         if (inventoryMapper.isBranchExist(branchId)) {
             for (Integer id : ids) {
-                if (inventoryMapper.isWeeklyContainProd(branchId,id)) {
-                    inventoryMapper.removeFromWeeklyOrder(branchId,id);
+                if (inventoryMapper.isWeeklyContainProd(branchId,id,day)) {
+                    inventoryMapper.removeFromWeeklyOrder(branchId,id,day);
                 }
             }
             return "Weekly order was update for branch: " + branchId + "\n";
         }
         return "branch id does not exist";
     }
-    public List<Pair<Integer, Integer>> getWeeklyOrder(int branchId) {
+    public List<Pair<Integer, Integer>> getWeeklyOrder(int branchId, int day) {
         if (inventoryMapper.isBranchExist(branchId)) {
-            return inventoryMapper.getWeeklyOrder(branchId);
+            return inventoryMapper.getWeeklyOrder(branchId,day);
             /*List<Pair<Integer, Integer>> output = new LinkedList<>();
             for (Integer id : WeeklyOrder.keySet()) {
                 output.add(new Pair<>(id, WeeklyOrder.get(id)));

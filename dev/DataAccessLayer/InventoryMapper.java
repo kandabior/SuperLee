@@ -912,7 +912,9 @@ public class InventoryMapper {
             stmt.setInt(1, dayOfTheWeek);
             ResultSet rs = stmt.executeQuery();
             if(rs.next()) {
-                output.add(rs.getInt("branchId"));
+                if(!output.contains(rs.getInt("branchId"))) {
+                    output.add(rs.getInt("branchId"));
+                }
             }
             else {
                 rs.close();
@@ -1171,9 +1173,9 @@ public class InventoryMapper {
             Class.forName("org.sqlite.JDBC");
             c = DriverManager.getConnection("jdbc:sqlite:dev\\EOEDdatabase.db");
             c.setAutoCommit(false);
-            stmt = c.prepareStatement("UPDATE Inventory SET dayForWeeklyOrder= ? WHERE branchId=?;");
-            stmt.setInt(1, day);
-            stmt.setInt(2, branchId);
+            stmt = c.prepareStatement("INSERT INTO Inventory VALUES (?,?)");
+            stmt.setInt(1, branchId);
+            stmt.setInt(2, day);
             int numOfUpdates=stmt.executeUpdate();
             boolean output1=false;
             if(numOfUpdates!=0){
@@ -1190,16 +1192,17 @@ public class InventoryMapper {
         }
     }
 
-    public  boolean AddToWeeklyOrder(int branchId, Integer key, Integer value) {
+    public  boolean AddToWeeklyOrder(int branchId, Integer key, Integer value, int day) {
         PreparedStatement stmt=null;
         try{
             Class.forName("org.sqlite.JDBC");
             c = DriverManager.getConnection("jdbc:sqlite:dev\\EOEDdatabase.db");
             c.setAutoCommit(false);
-            stmt=c.prepareStatement("INSERT INTO WeeklyOrders values (?,?,?)");
+            stmt=c.prepareStatement("INSERT INTO WeeklyOrders values (?,?,?,?)");
             stmt.setInt(1,branchId);
-            stmt.setInt(2,key);
-            stmt.setInt(3,value);
+            stmt.setInt(2,day);
+            stmt.setInt(3,key);
+            stmt.setInt(4,value);
             int numOfUpdates=stmt.executeUpdate();
             boolean output=false;
             if(numOfUpdates!=0){
@@ -1218,14 +1221,15 @@ public class InventoryMapper {
         return false;
     }
 
-    public  boolean isWeeklyContainProd(int branchId,Integer ids) {
+    public  boolean isWeeklyContainProd(int branchId,Integer ids,int day) {
         PreparedStatement stmt=null;
         try{
             Class.forName("org.sqlite.JDBC");
             c = DriverManager.getConnection("jdbc:sqlite:dev\\EOEDdatabase.db");
             c.setAutoCommit(false);
-            stmt = c.prepareStatement("SELECT * FROM WeeklyOrders WHERE branchId=?;");
+            stmt = c.prepareStatement("SELECT * FROM WeeklyOrders WHERE branchId=? AND dayOfTheWeek=?;");
             stmt.setInt(1, branchId);
+            stmt.setInt(2, day);
             ResultSet rs = stmt.executeQuery();
             if(rs.next()) {
                 rs.close();
@@ -1247,15 +1251,16 @@ public class InventoryMapper {
 
     }
 
-    public  void removeFromWeeklyOrder(int branchId, Integer id) {
+    public  void removeFromWeeklyOrder(int branchId, Integer id, int day) {
         PreparedStatement stmt=null;
         try{
             Class.forName("org.sqlite.JDBC");
             c = DriverManager.getConnection("jdbc:sqlite:dev\\EOEDdatabase.db");
             c.setAutoCommit(false);
-            stmt=c.prepareStatement("DELETE FROM WeeklyOrders WHERE branchId=? AND productId=?");
+            stmt=c.prepareStatement("DELETE FROM WeeklyOrders WHERE branchId=? AND productId=? AND dayOfTheWeek=?");
             stmt.setInt(1,branchId);
             stmt.setInt(2,id);
+            stmt.setInt(3,day);
             int numOfUpdates=stmt.executeUpdate();
             boolean output=false;
             if(numOfUpdates!=0){
@@ -1273,15 +1278,16 @@ public class InventoryMapper {
         }
     }
 
-    public  List<Pair<Integer, Integer>> getWeeklyOrder(int branchId) {
+    public  List<Pair<Integer, Integer>> getWeeklyOrder(int branchId,int day) {
         PreparedStatement stmt=null;
         try{
             List<Pair<Integer,Integer>> output=new LinkedList<>();
             Class.forName("org.sqlite.JDBC");
             c = DriverManager.getConnection("jdbc:sqlite:dev\\EOEDdatabase.db");
             c.setAutoCommit(false);
-            stmt = c.prepareStatement("SELECT productId, amount FROM WeeklyOrders WHERE branchId=?;");
+            stmt = c.prepareStatement("SELECT productId, amount FROM WeeklyOrders WHERE branchId=? AND dayOfTheWeek=?;");
             stmt.setInt(1, branchId);
+            stmt.setInt(2, day);
             ResultSet rs = stmt.executeQuery();
             while(rs.next()) {
                 output.add(new Pair<>(rs.getInt("productId"),rs.getInt("amount")));
@@ -1300,4 +1306,34 @@ public class InventoryMapper {
     }
 
 
+    public boolean weeklyOrderDayExist(int branchId, int day) {
+        PreparedStatement stmt=null;
+        try{
+            Class.forName("org.sqlite.JDBC");
+            c = DriverManager.getConnection("jdbc:sqlite:dev\\EOEDdatabase.db");
+            c.setAutoCommit(false);
+            stmt = c.prepareStatement("SELECT * FROM Inventory WHERE branchId=? AND dayForWeeklyOrder=?;");
+            stmt.setInt(1, branchId);
+            stmt.setInt(2, day);
+            ResultSet rs = stmt.executeQuery();
+            if(rs.next()) {
+                rs.close();
+                stmt.close();
+                c.close();
+                return true;
+            }
+            else {
+                rs.close();
+                stmt.close();
+                c.close();
+                return false;
+            }
+        } catch ( Exception e ) {
+            tryClose(c);
+            System.err.println( e.getClass().getName() + ": " + e.getMessage() );
+            return false;
+        }
+
+
+    }
 }

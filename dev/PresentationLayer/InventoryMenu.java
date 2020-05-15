@@ -133,6 +133,8 @@ public class InventoryMenu {
         boolean stop=false;
         System.out.println("Enter branch id");
         String branchId= scanner.next();
+        System.out.println("Enter day of the week");
+        String day= scanner.next();
         System.out.println("please enter product id.\n" +
                 "To stop insert products, insert '0'.\n");
         List<Integer> ids=new LinkedList<>();
@@ -146,7 +148,7 @@ public class InventoryMenu {
                 ids.add(Integer.parseInt(prodId));
             }
         }
-        Printer.Print(inventoryController.RemoveFromWeeklyOrder(Integer.parseInt(branchId),ids));
+        Printer.Print(inventoryController.RemoveFromWeeklyOrder(Integer.parseInt(branchId),ids,Integer.parseInt(day)));
 
     }
     private static void addToWeeklyOrder() {
@@ -273,7 +275,9 @@ public class InventoryMenu {
     private static void PrintWeeklyOrder() {
         System.out.println("\nEnter branch id: ");
         String branchId= scanner.next();
-        Printer.Print(inventoryController.PrintWeeklyOrder(Integer.parseInt(branchId)));
+        System.out.println("Enter day of the week: ");
+        String day= scanner.next();
+        Printer.Print(inventoryController.PrintWeeklyOrder(Integer.parseInt(branchId),Integer.parseInt(day)));
 
 
     }
