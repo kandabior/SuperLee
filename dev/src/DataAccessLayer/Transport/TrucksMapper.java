@@ -32,6 +32,8 @@ import java.util.List;
             }
         }
 
+
+
         public boolean isUniqueTruck(String TruckId) {
             try {
                 if (tryOpen()) {
