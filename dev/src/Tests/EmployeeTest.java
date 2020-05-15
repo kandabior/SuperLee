@@ -33,8 +33,8 @@ public class EmployeeTest {
         } catch (ParseException e) {
             e.printStackTrace();
         }
-        service.addworker("Raviv", "315", "a lot ", "555", 30000, d2);
-        service.addworker("Hodaya", "320", "a lot ", "555", 30000, d2);
+        service.addWorker("Raviv", "315", "a lot ", "555", 30000, d2);
+        service.addWorker("Hodaya", "320", "a lot ", "555", 30000, d2);
         service.setSupervisor("2",true);
         service.addRole("1","Chef");
         service.addRole("2","Chef");

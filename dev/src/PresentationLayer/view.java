@@ -126,7 +126,7 @@ public class view {
             } catch (ParseException e) {
                 System.out.println("\nInvalid date\n");
             }
-        String emplyeeId =service.addworker(name,ID,hiringConditions,bankId,salary,startEmployment);
+        String emplyeeId =service.addWorker(name,ID,hiringConditions,bankId,salary,startEmployment);
         if(emplyeeId==null)
         {
             System.out.println("ID is in use! aborted...");
@@ -588,8 +588,8 @@ public class view {
         } catch (ParseException e) {
             e.printStackTrace();
         }
-        service.addworker("Raviv","315","a lot ","555",30000,d1);
-        service.addworker("Hodaya","257","a few ","777",30000,d2);
+        service.addWorker("Raviv","315","a lot ","555",30000,d1);
+        service.addWorker("Hodaya","257","a few ","777",30000,d2);
         service.setSupervisor("1",true);
         service.setSupervisor("2",true);
 
