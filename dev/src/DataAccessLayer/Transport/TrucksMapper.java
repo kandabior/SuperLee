@@ -177,6 +177,29 @@ import java.util.List;
         }
 
 
+        public void removeTruckDate(String truckId, String date) {
+            try {
+                if (tryOpen()) {
+                    Class.forName("org.sqlite.JDBC");
+                    con.setAutoCommit(false);
+                    PreparedStatement st = con.prepareStatement("DELETE FROM TrucksDates WHERE DATE = (?) AND TID= (?) ;");
+                    st.setString(1, date);
+                    st.setString(2, truckId);
+                    int rowNum = st.executeUpdate();
+                    st.close();
+                    if (rowNum != 0) {
+                        con.commit();
+                        con.close();
+                    } else {
+                        con.rollback();
+                        con.close();
+                    }
+                }
+            } catch (Exception e) {
+                tryClose();
+                System.err.println(e.getClass().getName() + ": " + e.getMessage());
+            }
+            }
     }
 
 

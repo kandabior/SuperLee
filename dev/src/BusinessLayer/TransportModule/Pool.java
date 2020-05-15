@@ -160,7 +160,8 @@ public class Pool {
     public void addDateToTruck(String truckId, Date date) {trucksPool.addDateToTruck(truckId,date);    }
 
     public void freeTruckDate(int docId) {
-        trucksPool.freeTruck(docsPool.getTruckId(docId),docsPool.getDate(docId));
+        DTO_TransportDoc td= docsPool.getDoc(docId);
+        trucksPool.freeTruck(td.getTruckId(),td.getDate());
     }
 
     public void freeDriverDate(int docId) {

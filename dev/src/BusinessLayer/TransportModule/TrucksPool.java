@@ -29,12 +29,7 @@ public class TrucksPool {
                 List<Date> dates = new LinkedList<>();
                 if (datesS != null) {
                     for (String s : datesS) {
-                        String[] parts = s.split("/");
-                        Calendar cal = Calendar.getInstance();
-                        cal.set(Calendar.YEAR, Integer.parseInt(parts[2]));
-                        cal.set(Calendar.MONTH, Integer.parseInt(parts[1]) - 1);//Calendar.DECEMBER);
-                        cal.set(Calendar.DAY_OF_MONTH, Integer.parseInt(parts[0]));
-                        dates.add(cal.getTime());
+                        dates.add(stringToDate(s));
                     }
                 }
                 trucks.add(t);
@@ -118,14 +113,31 @@ public class TrucksPool {
         }
     }
 
-    public void freeTruck(String truckId, Date date) {
+    public void freeTruck(String truckId, String date) {
+        Date d = stringToDate(date);
         Truck truck = null;
         for (Truck t:trucks){
             if (t.getId().equals(truckId))
                 truck = t;
         }
         if(truck != null){
-            truck.removeDate(date);
+            truck.removeDate(d);
+            mapper.removeTruckDate(truckId,date);
         }
+    }
+
+    private static Date stringToDate(String s){
+        String[] parts = s.split("/");
+        Calendar cal = Calendar.getInstance();
+        cal.set(Calendar.YEAR, Integer.parseInt(parts[2]));
+        cal.set(Calendar.MONTH, Integer.parseInt(parts[1]) - 1);//Calendar.DECEMBER);
+        cal.set(Calendar.DAY_OF_MONTH, Integer.parseInt(parts[0]));
+        return cal.getTime();
+    }
+
+    private static String dateToString(Date date){
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTime(date);
+        return calendar.get(Calendar.DATE)+"/"+(calendar.get(Calendar.MONTH)+1) +"/" + calendar.get(Calendar.YEAR);
     }
 }
