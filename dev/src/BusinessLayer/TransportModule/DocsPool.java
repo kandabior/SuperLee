@@ -38,31 +38,6 @@ public class DocsPool {
        return mapper.validTransport(docId);
     }
 
-    public double addWeight(int id, double total,double maxWeight) {
-        DTO_TransportDoc dto_doc = mapper.getTransportDoc(id);
-        double output;
-       // TransportDoc doc = null;
-      /*  for (TransportDoc t : transportDocs) {
-            if (t.getId() == id)
-                doc = t;
-        }*/
-        if (total <= maxWeight) {
-            if (dto_doc != null) {
-                dto_doc.setFinalWeight(total);
-                if(!dto_doc.getItems().isEmpty())//if the doc contain all the detail,including the items list.
-                  dto_doc.setStatus(TransportDoc.Status.SUCCESS);
-            }
-            output = 0;
-        } else {
-            if (dto_doc != null) {
-                dto_doc.setStatus(TransportDoc.Status.FAIL);
-                dto_doc.setFinalWeight(total);
-            }
-            output = total-maxWeight;
-        }
-        mapper.updateTransportDoc(dto_doc);
-        return output;
-    }
 
     public String getTruckId(int docId) {
         for (TransportDoc t:transportDocs){
@@ -180,5 +155,46 @@ public class DocsPool {
 
     public boolean truckIsBusy(String truckId) {
         return mapper.truckIsBusy(truckId);
+    }
+
+    public double addWeight(DTO_TransportDoc dto_doc, double total,double maxWeight) {
+
+        double output;
+        // TransportDoc doc = null;
+      /*  for (TransportDoc t : transportDocs) {
+            if (t.getId() == id)
+                doc = t;
+        }*/
+        if (total <= maxWeight) {
+            if (dto_doc != null) {
+                dto_doc.setFinalWeight(total);
+                if(!dto_doc.getItems().isEmpty())//if the doc contain all the detail,including the items list.
+                    dto_doc.setStatus(TransportDoc.Status.SUCCESS);
+            }
+            output = 0;
+        } else {
+            if (dto_doc != null) {
+                dto_doc.setStatus(TransportDoc.Status.FAIL);
+                dto_doc.setFinalWeight(total);
+            }
+            output = total-maxWeight;
+        }
+        String status;
+        switch (dto_doc.getStatus()) {
+            case SUCCESS:
+                status = "SUCCES";
+                break;
+            case PENDING:
+                status = "PENDING";
+                break;
+            default: //FAIL
+                status = "FAIL";
+        }
+        mapper.updateTransportDoc(dto_doc.getFinalWeight(),status,dto_doc.getId());
+        return output;
+    }
+
+    public DTO_TransportDoc getDoc(int docId) {
+        return mapper.getTransportDoc(docId);
     }
 }
