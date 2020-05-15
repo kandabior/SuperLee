@@ -13,6 +13,7 @@ import java.util.Scanner;
 public class MainMenu{
     public static Scanner scanner=new Scanner(System.in);
     public static Integer DayOfTheWeek=getCurrentDay();
+    public static int plusDay=0;
 
     private static Integer getCurrentDay() {
         String day = LocalDate.now().getDayOfWeek().toString();
@@ -53,7 +54,7 @@ public class MainMenu{
         int choose;
         Printer.Print("Welcome To EOED Digital Storage And Suppliers Manager!");
         do {
-            Printer.Print("Day: "+(LocalDate.now().plusDays(DayOfTheWeek+1).toString()));
+            Printer.Print("Day: "+(LocalDate.now().plusDays(plusDay).toString()));
             Printer.Print("\n\nPlease choose an action:\n" +
                     "1. Enter Inventory & Reports Menu\n" +
                     "2. Enter Suppliers Menu\n" +
@@ -77,8 +78,8 @@ public class MainMenu{
                         AddGlobalProduct();
                         break;
                     case 5:
-                        DayOfTheWeek=(DayOfTheWeek+1)%7;
-                        InventoryMenu.PromoteDay(DayOfTheWeek+1);
+                        plusDay++;
+                        InventoryMenu.PromoteDay((DayOfTheWeek+plusDay)%7);
                     case 6:
                         break;
                 }

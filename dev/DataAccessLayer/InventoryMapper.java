@@ -1041,6 +1041,7 @@ public class InventoryMapper {
                 output1=true;
             }
             stmt.close();
+            c.commit();
             if(output1){
                 stmt = c.prepareStatement("INSERT INTO LastCostPrices VALUES (?,?,?)");
                 stmt.setInt(1, branchId);
