@@ -213,4 +213,8 @@ public class SupplierController {
     public int getSuppliersCounter() {
         return this.supplier.getSuppliersCounter();
     }
+
+    public boolean validateItemIdInBill(int suppId, int itemId) {
+        return this.supplier.validateItemIdInBill(suppId,itemId);
+    }
 }

@@ -209,4 +209,9 @@ public class FacadeController {
     public int getSuppliersCounter() {
         return this.supplierController.getSuppliersCounter();
     }
+
+    public boolean validateItemIdInBill(int suppId, int itemId) {
+
+        return supplierController.validateItemIdInBill(suppId, itemId);
+    }
 }

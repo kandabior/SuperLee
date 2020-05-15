@@ -279,7 +279,7 @@ public class SupplierMenu {
                 System.out.print("Choose the id of the item you wish to change: ");
                 Scanner scanner2 = new Scanner(System.in);
                 int itemId = scanner2.nextInt();
-                while (!fc.validateItemId(suppId, itemId)) { //TODO validateItemInBill
+                while (!fc.validateItemIdInBill(suppId, itemId)) {
                     System.out.print("This supplier Does not have this item.\nEnter another one\n");
                     System.out.print("Item's identifier: ");
                     itemId = scanner2.nextInt();
@@ -329,7 +329,7 @@ public class SupplierMenu {
             Scanner scanner = new Scanner(System.in);
             System.out.print("Choose the id of the item you want to add to this bill: ");
             int itemId = scanner.nextInt();
-            while (!fc.validateItemId(suppId, itemId)) {
+            while (!fc.validateItemIdInBill(suppId, itemId)) {
                 System.out.print("This supplier Does not have this item, please enter another one.\n");
                 System.out.print("Item's identifier: ");
                 itemId = scanner.nextInt();

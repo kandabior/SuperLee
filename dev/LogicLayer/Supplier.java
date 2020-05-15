@@ -203,4 +203,9 @@ public class Supplier {
     public void createBillOfQuantities(int suppId) {
         this.supplierMapper.createBillOfQuantities(suppId);
     }
+
+    public boolean validateItemIdInBill(int suppId, int itemId) {
+        return this.supplierMapper.validateItemIdInBill(suppId, itemId);
+
+    }
 }

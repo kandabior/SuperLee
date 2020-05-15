@@ -324,9 +324,10 @@ public class SupplierMapper {
             if (tryOpen()) {
                 Class.forName("org.sqlite.JDBC");
                 conn.setAutoCommit(false);
-                PreparedStatement st = conn.prepareStatement("UPDATE ItemsInAgreement SET price = ? WHERE agreementId = ?;");
+                PreparedStatement st = conn.prepareStatement("UPDATE ItemsInAgreement SET price = ? WHERE agreementId = ? AND itemId= ?;");
                 st.setDouble(1, newPrice);
                 st.setInt(2, suppId);
+                st.setInt(3, itemId);
                 int rowNum = st.executeUpdate();
                 if (rowNum != 0) {
                     conn.commit();
@@ -668,5 +669,34 @@ public class SupplierMapper {
             System.err.println(e.getClass().getName() + ": " + e.getMessage());
             tryClose();
         }
+    }
+
+    public boolean validateItemIdInBill(int suppId, int itemId) {
+        try {
+            if (tryOpen()) {
+                Class.forName("org.sqlite.JDBC");
+                conn.setAutoCommit(false);
+                PreparedStatement st = conn.prepareStatement("SELECT * FROM ItemsInBills WHERE billId = ? AND itemId = ?;");
+                st.setInt(1, suppId);
+                st.setInt(2, itemId);
+                ResultSet res = st.executeQuery();
+                if (res.next()) {
+                    conn.commit();
+                    conn.close();
+                    st.close();
+                    return true;
+                } else {
+                    conn.rollback();
+                    conn.close();
+                    st.close();
+                    return false;
+                }
+            }
+        } catch (Exception e) {
+            tryClose();
+            System.err.println(e.getClass().getName() + ": " + e.getMessage());
+            return false;
+        }
+        return false;
     }
 }
