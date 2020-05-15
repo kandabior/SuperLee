@@ -8,7 +8,9 @@ import java.util.LinkedList;
 import java.util.List;
 
     public class TrucksMapper {
+
         private Connection con;
+
         public List<String> getTrucksString() {
             List<String> trucks = new LinkedList<>();
             try {

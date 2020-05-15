@@ -1,5 +1,6 @@
 package BusinessLayer.TransportModule;
 
+import BusinessLayer.TransportModule.DTO.DTO_TransportDoc;
 import DataAccessLayer.Transport.DocsMapper;
 import DataAccessLayer.Transport.SuppliersMapper;
 
@@ -29,33 +30,38 @@ public class DocsPool {
     }
 
     public boolean validTransport(int docId) {
-        for (TransportDoc t:transportDocs) {
+       /* for (TransportDoc t:transportDocs) {
             if(t.getId() == docId && t.getStatus() == TransportDoc.Status.PENDING)
                 return true;
         }
-        return false;
+        return false;*/
+       return mapper.validTransport(docId);
     }
 
     public double addWeight(int id, double total,double maxWeight) {
-        TransportDoc doc = null;
-        for (TransportDoc t : transportDocs) {
+        DTO_TransportDoc dto_doc = mapper.getTransportDoc(id);
+        double output;
+       // TransportDoc doc = null;
+      /*  for (TransportDoc t : transportDocs) {
             if (t.getId() == id)
                 doc = t;
-        }
+        }*/
         if (total <= maxWeight) {
-            if (doc != null) {
-                doc.setFinalWeight(total);
-                if(!doc.getItems().isEmpty())//if the doc contain all the detail,including the items list.
-                  doc.setStatus(TransportDoc.Status.SUCCESS);
+            if (dto_doc != null) {
+                dto_doc.setFinalWeight(total);
+                if(!dto_doc.getItems().isEmpty())//if the doc contain all the detail,including the items list.
+                  dto_doc.setStatus(TransportDoc.Status.SUCCESS);
             }
-            return 0;
+            output = 0;
         } else {
-            if (doc != null) {
-                doc.setStatus(TransportDoc.Status.FAIL);
-                doc.setFinalWeight(total);
+            if (dto_doc != null) {
+                dto_doc.setStatus(TransportDoc.Status.FAIL);
+                dto_doc.setFinalWeight(total);
             }
-            return total-maxWeight;
+            output = total-maxWeight;
         }
+        mapper.updateTransportDoc(dto_doc);
+        return output;
     }
 
     public String getTruckId(int docId) {

@@ -153,4 +153,10 @@ public class SuppliersMapper {
             return null;
         }
     }
+
+    public void updateSupplier(int supplierId) {
+
+
+
+    }
 }
