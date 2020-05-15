@@ -247,7 +247,31 @@ public class DocsMapper {
         }
     }
 
-    public void updateTransportDoc(DTO_TransportDoc dto_doc) {
+    public void updateTransportDoc(double finalWeight, String status, int docId ) {
+        try {
+            if (tryOpen()) {
+                Class.forName("org.sqlite.JDBC");
+                con.setAutoCommit(false);
+
+                PreparedStatement statement = con.prepareStatement("UPDATE TransportDocs SET finalWeight = ? , status = ? WHERE ID = ? ;");
+                statement.setDouble(1, finalWeight);
+                statement.setString(2, status);
+                statement.setInt(3, docId);
+                int rowNum = statement.executeUpdate();
+                if (rowNum != 0) {
+                    statement.close();;
+                    con.commit();
+                    con.close();
+                } else {
+                    con.rollback();
+                    con.close();
+                    statement.close();
+                    System.err.println("Update failed");
+                }
+            }
+        } catch (Exception e) {
+            System.err.println(e.getClass().getName() + ": " + e.getMessage());
+        }
 
     }
 }
