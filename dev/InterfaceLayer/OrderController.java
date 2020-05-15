@@ -111,11 +111,12 @@ public class OrderController {
 //        return "";
     }
 
-    public void makeOrders(int branchId, Map<Integer, List<List<Object>>> orderMap , Map<Integer , List<Object>> suppliersList) {
+    public void makeOrders(int branchId, Map<Integer, List<List<Object>>> orderMap , Map<Integer , List<Object>> suppliersList, int day) {
         for (Integer key : orderMap.keySet())//go over suppliers
         {
 
-            OrderDTO o = new OrderDTO(branchId, orderIdCounter, (Integer) suppliersList.get(key).get(0), (String) suppliersList.get(key).get(1), (String) suppliersList.get(key).get(2), (String) suppliersList.get(key).get(3), LocalDate.now());
+
+            OrderDTO o = new OrderDTO(branchId, orderIdCounter, (Integer) suppliersList.get(key).get(0), (String) suppliersList.get(key).get(1), (String) suppliersList.get(key).get(2), (String) suppliersList.get(key).get(3), LocalDate.now().plusDays(day));
             orderIdCounter++;
             List<OrderLineDTO> lines = new LinkedList<>();
             for (int j = 0; j < orderMap.get(key).size(); j++)//go over the orders line

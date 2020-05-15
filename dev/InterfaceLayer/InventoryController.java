@@ -2,6 +2,7 @@ package InterfaceLayer;
 
 import LogicLayer.Inventory;
 import LogicLayer.ReportMaker;
+import PresentationLayer.MainMenu;
 import javafx.util.Pair;
 
 import java.time.LocalDate;
@@ -185,7 +186,7 @@ public class InventoryController {
     public String MakeMissingOrder(int branchId) {
         try {
             List<Pair<Integer, Integer>> toBuy= inventory.NeedToBuyProductsForOrder(branchId);
-            Map<Integer,Pair<Integer,Double>> orders= FacadeController.getFacadeController().makeOrder(branchId,toBuy);
+            Map<Integer,Pair<Integer,Double>> orders= FacadeController.getFacadeController().makeOrder(branchId,toBuy, MainMenu.DayOfTheWeek);
             return inventory.mannageOrders(branchId,orders);
         }
         catch (Exception e){
@@ -208,7 +209,7 @@ public class InventoryController {
             if (!noOrder.isEmpty()){
                 output="cant Order the Products: "+noOrder+"\n";
             }
-            Map<Integer,Pair<Integer,Double>> orders=FacadeController.getFacadeController().makeOrder(branchId,toOrder);
+            Map<Integer,Pair<Integer,Double>> orders=FacadeController.getFacadeController().makeOrder(branchId,toOrder, MainMenu.DayOfTheWeek);
             output=output+inventory.mannageOrders(branchId,orders);
             return output;
         }
@@ -229,7 +230,7 @@ public class InventoryController {
         for(Integer branchId : branchIds){
             List<Pair<Integer,Integer>> toOrder= inventory.getWeeklyOrder(branchId);
             if(!toOrder.isEmpty()) {
-                Map<Integer, Pair<Integer, Double>> orders = FacadeController.getFacadeController().makeOrder(branchId,toOrder);
+                Map<Integer, Pair<Integer, Double>> orders = FacadeController.getFacadeController().makeOrder(branchId,toOrder,dayOfTheWeek);
                 output = output + inventory.mannageOrders(branchId,orders) + "\n";
             }
         }

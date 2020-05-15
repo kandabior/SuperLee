@@ -62,7 +62,7 @@ public class FacadeController {
         return this.supplierController.getItemNameByIndex(suppId, index);
     }
 
-    public Map<Integer,Pair<Integer,Double>> makeOrder(int branchId, List<Pair<Integer,Integer>> list)//return itemId , <Quantity , FinalCost>
+    public Map<Integer,Pair<Integer,Double>> makeOrder(int branchId, List<Pair<Integer,Integer>> list , int day)//return itemId , <Quantity , FinalCost>
     {
         Map<Integer, Pair<Integer, Double>> map = new HashMap();
         Map<Integer, List<List<Object>>> orderMap = new HashMap<>();
@@ -109,7 +109,7 @@ public class FacadeController {
                 }
             }
         }
-        orderController.makeOrders(branchId, orderMap, suppliersMap);
+        orderController.makeOrders(branchId, orderMap, suppliersMap,day);
         return map;
     }
 
