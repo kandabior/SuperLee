@@ -101,7 +101,7 @@ public class EmployeesMenu {
         }
     }
 
-    private void addNewWorker() {
+    private void addNewWorker(){
         Scanner ans = new Scanner(System.in);
         System.out.println("Write the following worker's details:");
         String name = inputNotEmpty("name");
@@ -122,13 +122,16 @@ public class EmployeesMenu {
             } catch (ParseException e) {
                 System.out.println("\nInvalid date\n");
             }
-        String emplyeeId =service.addWorker(name,ID,hiringConditions,bankId,salary,startEmployment);
-        if(emplyeeId==null)
-        {
-            System.out.println("ID is in use! aborted...");
+        try {
+            String emplyeeId = service.addWorker(name, ID, hiringConditions, bankId, salary, startEmployment);
+            if (emplyeeId == null) {
+                System.out.println("ID is in use! aborted...");
+            } else
+                System.out.println("Success! new worker ID: " + emplyeeId);
         }
-        else
-            System.out.println("Success! new worker ID: "+emplyeeId);
+        catch (Exception e){
+            e.printStackTrace();
+        }
     }
 
     private void handleSingleEmplyee(String ID) {
@@ -553,6 +556,7 @@ public class EmployeesMenu {
     }
 
     private void createEmloyees() {
+        //LOAD
         Date d1 = null;
         Date d2 = null;
         try {
@@ -562,10 +566,15 @@ public class EmployeesMenu {
         } catch (ParseException e) {
             e.printStackTrace();
         }
-        service.addWorker("Raviv","315","a lot ","555",30000,d1);
-        service.addWorker("Hodaya","257","a few ","777",30000,d2);
-        service.setSupervisor("1",true);
-        service.setSupervisor("2",true);
+        try {
+            service.addWorker("Raviv", "315", "a lot ", "555", 30000, d1);
+            service.addWorker("Hodaya", "257", "a few ", "777", 30000, d2);
+            service.setSupervisor("1", true);
+            service.setSupervisor("2", true);
+        }
+        catch (Exception e){
+
+        }
 
         service.addRole("2","cashier");
         service.addRole("2","storekeeper");
