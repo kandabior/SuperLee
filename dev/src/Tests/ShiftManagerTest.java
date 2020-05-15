@@ -2,7 +2,7 @@ package Tests;
 
 import BusinessLayer.EmployeeModule.Day;
 import BusinessLayer.EmployeeModule.ShiftType;
-import BusinessLayer.EmployeeModule.shiftManager;
+import BusinessLayer.EmployeeModule.ShiftManager;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
@@ -13,11 +13,11 @@ import java.util.Date;
 import java.util.HashMap;
 
 public class ShiftManagerTest {
-    private shiftManager shiftManager;
+    private ShiftManager shiftManager;
 
     @Before
     public void setShiftManager(){
-        shiftManager=new shiftManager();
+        shiftManager=new ShiftManager();
         HashMap<String, Integer> roles = new HashMap();
         roles.put("chef", 5);
         shiftManager.editRequirements(Day.Friday, ShiftType.Morning, roles);

@@ -1,7 +1,7 @@
 package PresentationLayer;
 
 
-import BusinessLayer.EmployeeModule.service;
+import BusinessLayer.EmployeeModule.Service;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -10,7 +10,7 @@ import java.util.*;
 
 public class EmployeesMenu {
 
-    BusinessLayer.EmployeeModule.service service = new service();
+    Service service = new Service();
 
     public static void main() {
         EmployeesMenu view = new EmployeesMenu();
@@ -238,11 +238,11 @@ public class EmployeesMenu {
         boolean stop = false;
         while (!stop) {
             System.out.println("Select the action you want to take:\n" +
-                    "1. Creating/Change role requirements for shift (by day and type of shift)\n" +
-                    "2. Creating a new shift and role inlay\n" +
-                    "3. View role requirements for shift by day and shift type\n" +
-                    "4. Watch inlay for shift by date and type of shift\n" +
-                    "5. View all shift history\n" +
+                    "1. Creating/Change role requirements for Shift (by day and type of Shift)\n" +
+                    "2. Creating a new Shift and role inlay\n" +
+                    "3. View role requirements for Shift by day and Shift type\n" +
+                    "4. Watch inlay for Shift by date and type of Shift\n" +
+                    "5. View all Shift history\n" +
                     "6. Back");
             int selectedAction = numberFromRange(1,6);
             switch (selectedAction) {
@@ -328,7 +328,7 @@ public class EmployeesMenu {
         if (!Exists) {
             String employeeManager = chooseEmployeeManager(day, shiftType);
             if(employeeManager == null){
-                System.out.println("There is no manager available for a shift, a shift cannot exist without a manager.");
+                System.out.println("There is no manager available for a Shift, a Shift cannot exist without a manager.");
                 return;
             }
             else {
@@ -336,7 +336,7 @@ public class EmployeesMenu {
 
                 Map<String, Integer> roles = service.requiredRoles(day, shiftType);
                 if (roles == null) {
-                    System.out.println("There are no role requirements for this shift, The shift is kept with a manager only");
+                    System.out.println("There are no role requirements for this Shift, The Shift is kept with a manager only");
                     service.addShift(date, shiftType, employeeManager, workers);
                 } else {
                     boolean success = true;
@@ -345,7 +345,7 @@ public class EmployeesMenu {
                         List<String> relevantEmployees = service.relevantEmployees(day, shiftType, currRole);
                         relevantEmployees.removeAll(selectedEmployees);
                         if (relevantEmployees == null || relevantEmployees.size() == 0) {
-                            System.out.println("\nThere is no employee available for the role "+currRole+", you can change shift requirements\n");
+                            System.out.println("\nThere is no employee available for the role "+currRole+", you can change Shift requirements\n");
                             success = false;
                             return;
                         } else {
@@ -438,7 +438,7 @@ public class EmployeesMenu {
         List<String> shiftTypes = new LinkedList<>();
         shiftTypes.add("Morning");
         shiftTypes.add("Evening");
-        System.out.println("Choose the shift type:");
+        System.out.println("Choose the Shift type:");
         return chooseFromList(shiftTypes);
     }
 
@@ -470,7 +470,7 @@ public class EmployeesMenu {
 
     private Date dateFromUser() {
         Date date = null;
-        System.out.println("What's the date of the shift?\n" +
+        System.out.println("What's the date of the Shift?\n" +
                 "Please enter the date in the format dd/mm/yyyy");
         Scanner d = new Scanner(System.in);
         String dd = d.nextLine();

@@ -17,9 +17,14 @@ public class EmployeesMapper {
     }
 
     public Employee getByID(String id) {
+        throw new NotImplementedException();
     }
 
-    public Employee addEmployee(String name, String id, String hiringConditions, String bankId, int salary, Date startOfEmployment, int currentBranch) {
+    public Employee addEmployee(String name, String id, String hiringConditions, String bankId, int salary,
+                                Date startOfEmployment, int currentBranch)
+    {
+        throw new NotImplementedException();
+
     }
 
     public void updateEmployee(Employee e) {

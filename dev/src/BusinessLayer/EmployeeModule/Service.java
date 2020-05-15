@@ -1,19 +1,17 @@
 package BusinessLayer.EmployeeModule;
 
-import sun.reflect.generics.reflectiveObjects.NotImplementedException;
-
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
 
-public class service {
+public class Service {
 
-    private shiftManager shiftManager;
+    private ShiftManager shiftManager;
     private EmployeesManager employeesManager;
 
-    public service(){
-        shiftManager = new shiftManager();
+    public Service(){
+        shiftManager = new ShiftManager();
         employeesManager=new EmployeesManager();
     }
 
@@ -47,8 +45,8 @@ public class service {
 
     public String getShiftHistory() {
         String history = "";
-        List<shift> shifts = shiftManager.getShifts();
-        for (shift s : shifts) {
+        List<Shift> Shifts = shiftManager.getShifts();
+        for (Shift s : Shifts) {
             history = history + "\nDate: " + shiftManager.shiftDate(s)+
                     "\nShift type: " + shiftManager.shiftType(s)+
                     "\nPersonnel Manager ID: " + shiftManager.shiftManager(s)+

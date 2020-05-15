@@ -4,14 +4,14 @@ import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
-public class shift {
+public class Shift {
 
     private Date date;
     private ShiftType shiftType;
     private String shiftManagerID;
     private Map<String,List<String>> RoleInlay;
 
-    public shift(Date date, ShiftType shiftType, String shiftManagerID, Map<String,List<String>> RoleInlay){
+    public Shift(Date date, ShiftType shiftType, String shiftManagerID, Map<String,List<String>> RoleInlay){
         this.date = date;
         this.shiftType = shiftType;
         this.shiftManagerID = shiftManagerID;

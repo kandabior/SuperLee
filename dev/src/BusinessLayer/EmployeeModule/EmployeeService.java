@@ -4,9 +4,9 @@ import java.util.Date;
 import java.util.List;
 
 public class EmployeeService {
-    service service;
+    Service service;
     public EmployeeService(){
-        service=new service();
+        service=new Service();
     }
     public List<Integer> getStores  (Date date){
         return service.getStoresWithStoreKeeper(date);

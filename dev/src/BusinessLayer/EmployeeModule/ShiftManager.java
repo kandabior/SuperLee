@@ -1,13 +1,15 @@
 package BusinessLayer.EmployeeModule;
 
+import sun.reflect.generics.reflectiveObjects.NotImplementedException;
+
 import java.util.*;
 
-public class shiftManager {
-    private List<shift> shifts;
+public class ShiftManager {
+    private List<Shift> Shifts;
     private Map<Pair<Day, ShiftType>,Map<String,Integer>> requirements;
 
-    public shiftManager(){
-        shifts = new LinkedList<shift>();
+    public ShiftManager(){
+        Shifts = new LinkedList<Shift>();
         requirements = new HashMap<Pair<Day,ShiftType>, Map<String, Integer>>();
     }
 
@@ -37,12 +39,12 @@ public class shiftManager {
     }
 
     public void addShift(Date date, ShiftType shiftType, String employeeManager, Map<String, List<String>> workers) {
-        shift shift = new shift(date,shiftType,employeeManager,workers);
-        shifts.add(shift);
+        Shift shift = new Shift(date,shiftType,employeeManager,workers);
+        Shifts.add(shift);
     }
 
     public boolean ShiftExists(Date date, ShiftType shiftType) {
-        for (shift s:shifts) {
+        for (Shift s: Shifts) {
             if(s.getDate().equals(date) && s.getShiftType().equals(shiftType))
                 return true;
         }
@@ -50,34 +52,34 @@ public class shiftManager {
     }
 
     public void deleteShift(Date date, ShiftType shiftType) {
-        for (shift s:shifts) {
+        for (Shift s: Shifts) {
             if(s.getDate().equals(date) && s.getShiftType().equals(shiftType))
-                shifts.remove(s);
+                Shifts.remove(s);
         }
     }
 
 
-    public List<shift> getShifts(){return shifts;}
+    public List<Shift> getShifts(){return Shifts;}
     public Map<Pair<Day,ShiftType>,Map<String,Integer>> getRequirements(){return requirements;}
 
 
-    public String shiftDate(shift s) {
+    public String shiftDate(Shift s) {
         String dateString = s.getDate().toString();
         return dateString;
     }
 
-    public String shiftType(shift s) {
+    public String shiftType(Shift s) {
         if(s.getShiftType().equals(ShiftType.Morning))
             return "Morning";
         else
             return "Evening";
     }
 
-    public String shiftManager(shift s) {
+    public String shiftManager(Shift s) {
         return s.getShiftManagerID();
     }
 
-    public String shiftWorkers(shift s) {
+    public String shiftWorkers(Shift s) {
         Map<String,List<String>> workers = s.getRoleInlay();
         String details = "";
         for (String curr : workers.keySet()) {
@@ -91,7 +93,7 @@ public class shiftManager {
 
     public String shiftDetails(Date date, ShiftType shiftType) {
         String details = "";
-        for (shift s : shifts) {
+        for (Shift s : Shifts) {
             if(s.getDate().equals(date) && s.getShiftType().equals(shiftType)){
                 details = details + "Personnel Manager ID: " + s.getShiftManagerID();
                 Map<String,List<String>> workers = s.getRoleInlay();
@@ -105,7 +107,7 @@ public class shiftManager {
             }
         }
         if(details.equals(""))
-            return "There is no BusinessLayer.EmployeeModule.shift inlay at this date";
+            return "There is no BusinessLayer.EmployeeModule.Shift inlay at this date";
         return details;
     }
 
@@ -121,7 +123,12 @@ public class shiftManager {
             }
         }
         if (req.equals(""))
-            return "No requirements for this day and BusinessLayer.EmployeeModule.shift type";
+            return "No requirements for this day and BusinessLayer.EmployeeModule.Shift type";
         return req;
+    }
+
+    public List<Integer> getStoresWithStoreKeeperAtDate(Date date) {
+        //TODO
+        throw new NotImplementedException();
     }
 }

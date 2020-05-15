@@ -1,7 +1,7 @@
 package Tests;
 
 import BusinessLayer.EmployeeModule.Employee;
-import BusinessLayer.EmployeeModule.service;
+import BusinessLayer.EmployeeModule.Service;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
@@ -13,7 +13,7 @@ import java.util.List;
 
 public class EmployeeTest {
     private Employee employee;
-    private service service;
+    private Service service;
     @Before
     public void singleEmployee() {
         Date d2 = null;
@@ -26,7 +26,7 @@ public class EmployeeTest {
     }
     @Before
     public void setService() {
-        service =new service();
+        service =new Service();
         Date d2 = null;
         try {
             d2 = new SimpleDateFormat("dd/MM/yyyy").parse("21/04/2020");
