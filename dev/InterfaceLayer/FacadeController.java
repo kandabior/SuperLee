@@ -109,7 +109,7 @@ public class FacadeController {
                 }
             }
         }
-        orderController.makeOrders(branchId, orderMap, suppliersMap);
+        orderController.makeOrders(branchId, orderMap, suppliersMap,day);
         return map;
     }
 

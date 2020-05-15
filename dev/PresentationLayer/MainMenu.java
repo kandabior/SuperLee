@@ -3,6 +3,7 @@ import InterfaceLayer.FacadeController;
 import LogicLayer.Items;
 import javafx.util.Pair;
 
+import java.time.LocalDate;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
@@ -11,7 +12,28 @@ import java.util.Scanner;
 
 public class MainMenu{
     public static Scanner scanner=new Scanner(System.in);
-    public static Integer DayOfTheWeek=0;
+    public static Integer DayOfTheWeek=getCurrentDay();
+
+    private static Integer getCurrentDay() {
+        String day = LocalDate.now().getDayOfWeek().toString();
+        switch (day){
+            case "SUNDAY":
+                return 1;
+            case "MONDAY":
+                return 2;
+            case "TUESDAY":
+                return 3;
+            case "WEDNESDAY":
+                return 4;
+            case "THURSDAY":
+                return 5;
+            case "FRIDAY":
+                return 6;
+            case "SATURDAY":
+                return 7;
+        }
+        return 1;
+    }
 
     public static void main(String[]args) {
         mainLoop();
@@ -31,7 +53,7 @@ public class MainMenu{
         int choose;
         Printer.Print("Welcome To EOED Digital Storage And Suppliers Manager!");
         do {
-            Printer.Print("Day: "+(DayOfTheWeek+1));
+            Printer.Print("Day: "+(LocalDate.now().plusDays(DayOfTheWeek+1).toString()));
             Printer.Print("\n\nPlease choose an action:\n" +
                     "1. Enter Inventory & Reports Menu\n" +
                     "2. Enter Suppliers Menu\n" +
