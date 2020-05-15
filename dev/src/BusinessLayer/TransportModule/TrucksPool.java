@@ -9,6 +9,7 @@ import java.util.*;
 
 public class TrucksPool {
 
+    private List<DTO_Truck> DTOtrucks;
     private LinkedList<Truck> trucks;
     private TrucksMapper mapper;
     private static TrucksPool ourInstance = new TrucksPool();
@@ -18,20 +19,52 @@ public class TrucksPool {
     }
 
     private TrucksPool() {
-        trucks = new LinkedList<Truck>();
         mapper = new TrucksMapper();
+        DTOtrucks = mapper.getTrucks();
+        trucks = new LinkedList<>();
+        if(DTOtrucks != null) {
+            for (DTO_Truck dt : DTOtrucks) {
+                Truck t = new Truck(dt.getId(), dt.getModel(), dt.getWeight(), dt.getMaxWeight());
+                List<String> datesS = mapper.getTruckDates(t.getId());
+                List<Date> dates = new LinkedList<>();
+                if (datesS != null) {
+                    for (String s : datesS) {
+                        String[] parts = s.split("/");
+                        Calendar cal = Calendar.getInstance();
+                        cal.set(Calendar.YEAR, Integer.parseInt(parts[2]));
+                        cal.set(Calendar.MONTH, Integer.parseInt(parts[1]) - 1);//Calendar.DECEMBER);
+                        cal.set(Calendar.DAY_OF_MONTH, Integer.parseInt(parts[0]));
+                        dates.add(cal.getTime());
+                    }
+                }
+                trucks.add(t);
+                t.setDates(dates);
+            }
+        }
     }
 
     public void addTruck(String id, String model , double weight, double maxWeight){
-        DTO_Truck t = new DTO_Truck(id,model,weight,maxWeight);
-        mapper.addTruck(t);
+        Truck t = new Truck(id,model,weight,maxWeight);
+        trucks.add(t);
+        DTO_Truck dt = new DTO_Truck(id,model,weight,maxWeight);
+        mapper.addTruck(dt);
     }
 
     public void deleteTruck(String id){
+        Truck truck = null;
+        for (Truck t : trucks){
+            if(t.getId().equals(id))
+                truck = t;
+        }
+        trucks.remove(truck);
         mapper.removeTruck(id);
     }
     public List<String> trucksToString(){
-      return mapper.getTrucksString();
+        List<String> output = new LinkedList<>();
+        for (Truck t : trucks){
+            output.add(t.toString());
+        }
+        return output;
     }
 
     public boolean isUniqueId (String id){

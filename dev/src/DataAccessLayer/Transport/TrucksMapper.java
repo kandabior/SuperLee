@@ -34,6 +34,51 @@ import java.util.List;
             }
         }
 
+        public List<DTO_Truck> getTrucks() {
+            List<DTO_Truck> trucks = new LinkedList<>();
+            try {
+                if (tryOpen()) {
+                    Class.forName("org.sqlite.JDBC");
+                    con.setAutoCommit(false);
+                    PreparedStatement statement = con.prepareStatement("SELECT * FROM Trucks;");
+                    ResultSet result = statement.executeQuery();
+                    while (result.next()) {
+                        DTO_Truck t = new DTO_Truck(result.getString(1), result.getString(2),result.getDouble(3), result.getDouble(4));
+                        trucks.add(t);
+                    }
+                    statement.close();
+                    con.close();
+                    return trucks;
+                } else return null;
+            } catch (Exception e) {
+                System.err.println(e.getClass().getName() + ": " + e.getMessage());
+                tryClose();
+                return null;
+            }
+        }
+
+        public List<String> getTruckDates(String id) {
+            List<String> output = new LinkedList<>();
+            try {
+                if (tryOpen()) {
+                    Class.forName("org.sqlite.JDBC");
+                    con.setAutoCommit(false);
+                    PreparedStatement statement = con.prepareStatement("SELECT DATE FROM TrucksDates WHERE TID = ?;");
+                    statement.setString(1, id);
+                    ResultSet result = statement.executeQuery();
+                    while (result.next()) { DTO_Truck t = new DTO_Truck(result.getString(1), result.getString(2),result.getDouble(3), result.getDouble(4));
+                        output.add(result.getString(1));
+                    }
+                    statement.close();
+                    con.close();
+                    return output;
+                } else return null;
+            } catch (Exception e) {
+                System.err.println(e.getClass().getName() + ": " + e.getMessage());
+                tryClose();
+                return null;
+            }
+        }
 
 
         public boolean isUniqueTruck(String TruckId) {

@@ -10,7 +10,7 @@ public class UserMenu {
     private static Pool pool;
 
     public static void main() {
-        pool = Pool.getInstance();
+       pool = Pool.getInstance();
        // start();
         menu();
     }
@@ -53,6 +53,7 @@ public class UserMenu {
 
     private static void menu() {
         Scanner input = new Scanner(System.in);
+
         while (true) {
             System.out.println("Welcome to Transport's system!\n" +
                     "Please enter option number:\n" +
