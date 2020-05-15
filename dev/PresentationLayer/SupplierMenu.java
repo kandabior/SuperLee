@@ -350,7 +350,7 @@ public class SupplierMenu {
             Scanner scanner = new Scanner(System.in);
             System.out.print("Choose the id of the item you want to add to this bill: ");
             int itemId = scanner.nextInt();
-            while (!fc.validateItemIdInBill(suppId, itemId)) {
+            while (!fc.validateItemId(suppId, itemId)) {
                 System.out.print("This supplier Does not have this item, please enter another one.\n");
                 System.out.print("Item's identifier: ");
                 itemId = scanner.nextInt();

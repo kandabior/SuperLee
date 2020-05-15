@@ -389,7 +389,7 @@ public class Inventory {
             return "cant execute the action";
         }
         else{
-            return "can't register - username already exist";
+            return "can't register to the current branch id - Try again ";
         }
     }
     public  String addGlobalManager(int branchId,String username, String password){  //TODO remove the , Inventory controller will hold instance of Singletone Inventory.
@@ -400,7 +400,7 @@ public class Inventory {
             return "cant execute the action";
         }
         else{
-            return "can't register - username already exist";
+            return "can't register to the current branch id - Try again ";
         }
     }
     public String removeInventoryManagar(int branchId,String username, String password, String usernameToRemove) {
