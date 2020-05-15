@@ -269,7 +269,7 @@ public class SupplierMenu {
             System.out.println("No bill of quantities was found.");
         } else {
             do {
-                Map<Integer, Pair<Integer, Double>> map = fc.getBillOfQuantities(suppId); //TODO falls here
+                Map<Integer, Pair<Integer, Double>> map = fc.getBillOfQuantities(suppId);
                 for (Integer itemId : map.keySet()) {
                     String itemName = fc.getItemNameById(itemId);
                     Integer itemQuantity = map.get(itemId).getKey();
@@ -279,7 +279,7 @@ public class SupplierMenu {
                 System.out.print("Choose the id of the item you wish to change: ");
                 Scanner scanner2 = new Scanner(System.in);
                 int itemId = scanner2.nextInt();
-                while (!fc.validateItemId(suppId, itemId)) {
+                while (!fc.validateItemId(suppId, itemId)) { //TODO validateItemInBill
                     System.out.print("This supplier Does not have this item.\nEnter another one\n");
                     System.out.print("Item's identifier: ");
                     itemId = scanner2.nextInt();

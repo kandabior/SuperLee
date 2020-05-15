@@ -1,7 +1,5 @@
 package InterfaceLayer;
 
-import LogicLayer.Inventory;
-import LogicLayer.Supplier;
 import javafx.util.Pair;
 
 import java.time.LocalDate;
@@ -45,11 +43,7 @@ public class FacadeController {
         this.supplierController.deleteBillOfQuantities(suppId);
     }
 
-    public int getBillSize(int suppId) { return supplierController.getBillSize(suppId); }
-
-  /*  public boolean addOrder(int id, List<Pair<Integer, Integer>> items, int supplierId) {
-        return orderController.addOrder(id, items, supplierId);
-    }*/
+    public int getBillSize(int suppId) { return this.supplierController.getBillSize(suppId); }
 
     public LinkedHashMap<Integer, Double> showSuppItems(int suppId) {
         return supplierController.showSuppItems(suppId);

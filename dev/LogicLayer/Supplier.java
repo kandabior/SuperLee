@@ -134,21 +134,19 @@ public class Supplier {
         else return false;
     }
 
-    public int getBillSize() { return this.agreement.getBillSize(); }
+    public int getBillSize(int suppId) { return this.agreement.getBillSize(suppId); }
 
    /* public double getOrderCost(int itemId, int quantity) {
         return this.agreement.getOrderCost(itemId,quantity);
     }*/
 
 
-
     public Double getPriceOfAmountOfItem(int supplierId, Integer itemId, Integer amount) {
-        if(this.supplierMapper.getSupplierItemsId(supplierId).contains(itemId))
-        {
-            if (this.supplierMapper.checkIfBillExists(supplierId) && this.supplierMapper.checkInBillForDiscount(supplierId,itemId,amount)) {
-                double discount = this.supplierMapper.getDiscount(supplierId,itemId);
-               // double discount = bill.getMoneyAmountofItemInBill(itemId, quantity);
-                double cost =this.supplierMapper.getPriceOfItem(supplierId,itemId);// terms.get(itemId);
+        if (this.supplierMapper.getSupplierItemsId(supplierId).contains(itemId)) {
+            if (this.supplierMapper.checkIfBillExists(supplierId) && this.supplierMapper.checkInBillForDiscount(supplierId, itemId, amount)) {
+                double discount = this.supplierMapper.getDiscount(supplierId, itemId);
+                // double discount = bill.getMoneyAmountofItemInBill(itemId, quantity);
+                double cost = this.supplierMapper.getPriceOfItem(supplierId, itemId);// terms.get(itemId);
                 //double cost = terms.get(itemId);
                 double costMulQuantity = (cost * amount);
                 double x = costMulQuantity * (1 - discount);
@@ -157,19 +155,12 @@ public class Supplier {
                 x = Double.valueOf(dx);
                 return x;
             } else {
-                double cost =this.supplierMapper.getPriceOfItem(supplierId,itemId);
+                double cost = this.supplierMapper.getPriceOfItem(supplierId, itemId);
                 return (cost * amount);
             }
-        }
-            //return this.supplierMapper.getPriceOfAmountOfItem(supplierId,itemId,amount);//agreement.getPriceOfAmountOfItem(itemId,amount);
-        else return 100000001.0;
+        } else return 100000001.0;
+    }
 
-        }
-
-
-    /*    if(agreement.checkIfItemExist(itemId))
-            return this.agreement.getPriceOfAmountOfItem(itemId,amount);
-        else return 100000001.0;*/
 
     public Double getPriceOfAmountOfItemBeforeDiscount(int suppId , int itemId , int amount) {
         Double cost = this.supplierMapper.getPriceOfItem(suppId,itemId);
@@ -182,14 +173,7 @@ public class Supplier {
     }
 
     public List<Object> getSuppDetails(int bestSuppId) {
-
         return this.supplierMapper.getSuppDetails(bestSuppId);
-        /*List<Object> list = new LinkedList<>();
-        list.add(id);
-        list.add(name);
-        list.add(phoneNum);
-        list.add(supplyLocation);
-        return list;*/
     }
 
     public boolean saveMe() {
