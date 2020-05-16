@@ -1,6 +1,7 @@
 package BusinessLayer.EmployeeModule;
 
 import DataAccessLayer.Employee.ShiftMapper;
+import DataAccessLayer.Employee.Shift_DTO;
 
 import java.util.*;
 
@@ -20,6 +21,7 @@ public class ShiftManager {
         existRequirements(day,shiftType);
         Pair<Day,ShiftType> newShift = new Pair<Day, ShiftType>(day,shiftType);
         requirements.put(newShift,roles);
+        shiftMapper.addRequirements(dayToString(day),stToString(shiftType),roles);
     }
 
     public void existRequirements(Day day,ShiftType shiftType){
@@ -27,6 +29,7 @@ public class ShiftManager {
         for (Pair<Day,ShiftType> curr : requirements.keySet()) {
             if (curr.newEquals(check)) {
                 requirements.remove(curr);
+                shiftMapper.deleteReq(dayToString(day),stToString(shiftType));
                 break;
             }
         }
@@ -44,6 +47,7 @@ public class ShiftManager {
     public void addShift(Date date, ShiftType shiftType, String employeeManager, Map<String, List<String>> workers) {
         Shift shift = new Shift(date,shiftType,employeeManager,workers,currentBranch);
         Shifts.add(shift);
+        shiftMapper.add(shiftDTOfromShift(shift));
     }
 
     public boolean ShiftExists(Date date, ShiftType shiftType) {
@@ -56,8 +60,10 @@ public class ShiftManager {
 
     public void deleteShift(Date date, ShiftType shiftType) {
         for (Shift s: Shifts) {
-            if(s.getDate().equals(date) && s.getShiftType().equals(shiftType))
+            if(s.getDate().equals(date) && s.getShiftType().equals(shiftType)) {
                 Shifts.remove(s);
+                shiftMapper.deleteShift(shiftDTOfromShift(s));
+            }
         }
     }
 
@@ -135,6 +141,69 @@ public class ShiftManager {
     }
 
     public void loadBranch(int branch){
-        List<Shift> = shiftMapper.loadBranch(branch);
+       List<Shift_DTO> shifts_of_the_current_branch = shiftMapper.loadBranch(branch);
+       loadShifts(shifts_of_the_current_branch);
+    }
+
+    public void loadShifts(List<Shift_DTO> shifts){
+        //TODO
+    }
+
+    private Shift_DTO shiftDTOfromShift(Shift shift) {
+        //TODO
+        return null;
+    }
+
+    private Shift ShiftFromShiftDTO(Shift_DTO shift_dto){
+        //TODO
+        return null;
+    }
+
+    private String stToString(ShiftType shiftType) {
+        switch (shiftType){
+            case Morning:
+                return "Morning";
+            case Evening:
+                return "Evening";
+            default:
+                return null;
+
+        }
+    }
+
+    private String dayToString(Day day) {
+        switch (day) {
+            case Sunday:
+                return "Sunday";
+            case Monday:
+                return "Monday";
+            case Tuesday:
+                return "Tuesday";
+            case Wednesday:
+                return "Wednesday";
+            case Thursday:
+                return "Thursday";
+            case Friday:
+                return "Friday";
+            case Saturday:
+                return "Saturday";
+            default:
+                    return null;
+        }
     }
 }
+
+/*    private static Date stringToDate(String s){
+        String[] parts = s.split("/");
+        Calendar cal = Calendar.getInstance();
+        cal.set(Calendar.YEAR, Integer.parseInt(parts[2]));
+        cal.set(Calendar.MONTH, Integer.parseInt(parts[1]) - 1);//Calendar.DECEMBER);
+        cal.set(Calendar.DAY_OF_MONTH, Integer.parseInt(parts[0]));
+        return cal.getTime();
+    }
+
+    private static String dateToString(Date date){
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTime(date);
+        return calendar.get(Calendar.DATE)+"/"+(calendar.get(Calendar.MONTH)+1) +"/" + calendar.get(Calendar.YEAR);
+    }*/

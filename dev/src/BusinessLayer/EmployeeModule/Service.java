@@ -139,6 +139,7 @@ public class Service {
 
     public void loadBranch(int branch) {
         employeesManager.loadBranch(branch);
+        shiftManager.loadBranch(branch);
     }
 
     public List<Integer> getStoresWithStoreKeeper(Date date) {
