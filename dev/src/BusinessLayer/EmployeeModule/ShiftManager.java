@@ -1,22 +1,29 @@
 package BusinessLayer.EmployeeModule;
 
-import sun.reflect.generics.reflectiveObjects.NotImplementedException;
+import DataAccessLayer.Employee.ShiftMapper;
+import DataAccessLayer.Employee.Shift_DTO;
 
 import java.util.*;
 
 public class ShiftManager {
+    private int currentBranch;
     private List<Shift> Shifts;
     private Map<Pair<Day, ShiftType>,Map<String,Integer>> requirements;
+    private ShiftMapper shiftMapper;
 
     public ShiftManager(){
         Shifts = new LinkedList<Shift>();
         requirements = new HashMap<Pair<Day,ShiftType>, Map<String, Integer>>();
+        shiftMapper = new ShiftMapper();
     }
 
     public void editRequirements(Day day, ShiftType shiftType, Map<String, Integer> roles) {
         existRequirements(day,shiftType);
         Pair<Day,ShiftType> newShift = new Pair<Day, ShiftType>(day,shiftType);
         requirements.put(newShift,roles);
+        for (String rol:roles.keySet()) {
+            shiftMapper.addRequirements(dayToString(day),stToString(shiftType),rol,roles.get(rol));
+        }
     }
 
     public void existRequirements(Day day,ShiftType shiftType){
@@ -24,6 +31,7 @@ public class ShiftManager {
         for (Pair<Day,ShiftType> curr : requirements.keySet()) {
             if (curr.newEquals(check)) {
                 requirements.remove(curr);
+                shiftMapper.deleteReq(dayToString(day),stToString(shiftType));
                 break;
             }
         }
@@ -39,8 +47,9 @@ public class ShiftManager {
     }
 
     public void addShift(Date date, ShiftType shiftType, String employeeManager, Map<String, List<String>> workers) {
-        Shift shift = new Shift(date,shiftType,employeeManager,workers);
+        Shift shift = new Shift(date,shiftType,employeeManager,workers,currentBranch);
         Shifts.add(shift);
+        shiftMapper.add(shiftDTOfromShift(shift));
     }
 
     public boolean ShiftExists(Date date, ShiftType shiftType) {
@@ -53,8 +62,10 @@ public class ShiftManager {
 
     public void deleteShift(Date date, ShiftType shiftType) {
         for (Shift s: Shifts) {
-            if(s.getDate().equals(date) && s.getShiftType().equals(shiftType))
+            if(s.getDate().equals(date) && s.getShiftType().equals(shiftType)) {
                 Shifts.remove(s);
+                shiftMapper.deleteShift(dateToString(s.getDate()),currentBranch,stToString(s.getShiftType()));
+            }
         }
     }
 
@@ -128,7 +139,79 @@ public class ShiftManager {
     }
 
     public List<Integer> getStoresWithStoreKeeperAtDate(Date date) {
+        return shiftMapper.getStoresWithStoreKeeperAtDate(date);
+    }
+
+    public void loadBranch(int branch){
+       List<Shift_DTO> shifts_of_the_current_branch = shiftMapper.loadBranch(branch);
+       loadShifts(shifts_of_the_current_branch);
+    }
+
+    public void loadShifts(List<Shift_DTO> shifts){
+
+    }
+
+    private List<Shift_DTO> shiftDTOfromShift(Shift shift) {
         //TODO
-        throw new NotImplementedException();
+        return null;
+    }
+
+    private Shift ShiftFromShiftDTO(List<Shift_DTO> shift_dto){
+        //TODO
+        return null;
+    }
+
+    private String stToString(ShiftType shiftType) {
+        switch (shiftType){
+            case Morning:
+                return "Morning";
+            case Evening:
+                return "Evening";
+            default:
+                return null;
+
+        }
+    }
+
+    private String dayToString(Day day) {
+        switch (day) {
+            case Sunday:
+                return "Sunday";
+            case Monday:
+                return "Monday";
+            case Tuesday:
+                return "Tuesday";
+            case Wednesday:
+                return "Wednesday";
+            case Thursday:
+                return "Thursday";
+            case Friday:
+                return "Friday";
+            case Saturday:
+                return "Saturday";
+            default:
+                    return null;
+        }
+    }
+
+    private String dateToString(Date date){
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTime(date);
+        return calendar.get(Calendar.DATE)+"/"+(calendar.get(Calendar.MONTH)+1) +"/" + calendar.get(Calendar.YEAR);
     }
 }
+
+/*    private static Date stringToDate(String s){
+        String[] parts = s.split("/");
+        Calendar cal = Calendar.getInstance();
+        cal.set(Calendar.YEAR, Integer.parseInt(parts[2]));
+        cal.set(Calendar.MONTH, Integer.parseInt(parts[1]) - 1);//Calendar.DECEMBER);
+        cal.set(Calendar.DAY_OF_MONTH, Integer.parseInt(parts[0]));
+        return cal.getTime();
+    }
+
+    private static String dateToString(Date date){
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTime(date);
+        return calendar.get(Calendar.DATE)+"/"+(calendar.get(Calendar.MONTH)+1) +"/" + calendar.get(Calendar.YEAR);
+    }*/

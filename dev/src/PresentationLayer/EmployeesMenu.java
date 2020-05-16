@@ -11,6 +11,7 @@ import java.util.*;
 public class EmployeesMenu {
 
     Service service = new Service();
+    int currentBranch;
 
     public static void main() {
         EmployeesMenu view = new EmployeesMenu();
@@ -28,6 +29,7 @@ public class EmployeesMenu {
                         "To return to the main menu, enter\n     10\n");
                 int branch = numberFromRange(0,10);
                 if (branch >= 0 & branch <= 9) {
+                    currentBranch = branch;
                     service.loadBranch(branch);
                     startPersonnelManager();
                 } else if (branch == 10)
@@ -42,27 +44,27 @@ public class EmployeesMenu {
     }
 
     private void startPersonnelManager(){
-            boolean stop = false;
-            while (!stop) {
-                System.out.println("Where to enter?\n" +
-                        "1. Employees\n" +
-                        "2. Shifts\n" +
-                        "3. Back");
-                int selectedClass = numberFromRange(1,3);
-                switch (selectedClass) {
-                    case 1:
-                        startEmployee();
-                        break;
-                    case 2:
-                        startShift();
-                        break;
-                    case 3:
-                        return;
-                    default:
-                        System.out.println("\nInvalid selection\n");
-                        break;
-                }
+        boolean stop = false;
+        while (!stop) {
+            System.out.println("Where to enter?\n" +
+                    "1. Employees\n" +
+                    "2. Shifts\n" +
+                    "3. Back");
+            int selectedClass = numberFromRange(1,3);
+            switch (selectedClass) {
+                case 1:
+                    startEmployee();
+                    break;
+                case 2:
+                    startShift();
+                    break;
+                case 3:
+                    return;
+                default:
+                    System.out.println("\nInvalid selection\n");
+                    break;
             }
+        }
     }
 
     private void startEmployee(){
@@ -122,8 +124,11 @@ public class EmployeesMenu {
             } catch (ParseException e) {
                 System.out.println("\nInvalid date\n");
             }
+        String licence = null;
+        if(currentBranch == 0)
+            licence = choseLicence();
         try {
-            String emplyeeId = service.addWorker(name, ID, hiringConditions, bankId, salary, startEmployment,null); // Raviv added this null.
+            String emplyeeId = service.addWorker(name, ID, hiringConditions, bankId, salary, startEmployment,licence);
             if (emplyeeId == null) {
                 System.out.println("ID is in use! aborted...");
             } else
@@ -550,13 +555,21 @@ public class EmployeesMenu {
             Scanner ans = new Scanner(System.in);
             int ret;
             try {
-                 ret = ans.nextInt();
-                 return ret;
+                ret = ans.nextInt();
+                return ret;
             }
             catch (Exception e){
                 System.out.println("\nInvalid input\nPlease make sure to enter a number..\n");
             }
         }
+    }
+
+    private String choseLicence() {
+        List<String> shiftTypes = new LinkedList<>();
+        shiftTypes.add("C");
+        shiftTypes.add("C1");
+        System.out.println("Select the employee's license:");
+        return chooseFromList(shiftTypes);
     }
 
 
