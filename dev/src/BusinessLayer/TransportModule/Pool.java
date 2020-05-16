@@ -1,6 +1,6 @@
 package BusinessLayer.TransportModule;
 
-import BusinessLayer.TransportModule.DTO.DTO_TransportDoc;
+import DataAccessLayer.DTO.DTO_TransportDoc;
 
 import java.util.Date;
 import java.util.List;
@@ -10,7 +10,7 @@ import java.util.Map;
 public class Pool {
 
     private TrucksPool trucksPool;
-    private DriversPool driversPool;
+    private OccupiedDriversPool driversPool;
     private DocsPool docsPool;
     private SuppliersPool suppliersPool;
     private StoresPool storesPool;
@@ -24,7 +24,7 @@ public class Pool {
 
     private Pool() {
         trucksPool = TrucksPool.getInstance();
-        driversPool = DriversPool.getInstance();
+        driversPool = OccupiedDriversPool.getInstance();
         docsPool = DocsPool.getInstance();
         suppliersPool = SuppliersPool.getInstance();
         storesPool = StoresPool.getInstance();
@@ -43,13 +43,13 @@ public class Pool {
         return trucksPool.trucksToString();
     }
 
-    public void addDriver(String id, String name, String license) {
+    /*public void addDriver(String id, String name, String license) {
         driversPool.addDriver(id, name, license);
     }
 
     public void removeDriver(String id) {
         driversPool.deleteDriver(id);
-    }
+    }*/
 
     public String DtoString() {
         return driversPool.toString();
@@ -106,7 +106,7 @@ public class Pool {
         return trucksPool.validTruck(id,date);
     }
 
-    public List<String> getDrivers(String truckId,Date date) {
+    /*public List<String> getDrivers(String truckId,Date date) {
         return driversPool.getDrivers(trucksPool.getWeight(truckId),date);
     }
 
@@ -119,7 +119,7 @@ public class Pool {
 
     public String getDriverName(String driverId) {
         return driversPool.getDriverName(driverId);
-    }
+    }*/
 
     public void addDoc(int area, Date date, String truckId, String driverId, String driverName, List<Integer> stores, List<Integer> suppliers) {
         docsPool.addDoc(area, date, truckId, driverId, driverName, stores, suppliers);
@@ -127,7 +127,7 @@ public class Pool {
     public void addDoc(int id,int area, Date date, String truckId, String driverId, String driverName, List<Integer> stores, List<Integer> suppliers) {
         docsPool.addDoc(id,area, date, truckId, driverId, driverName, stores, suppliers);
     }
-    public boolean isUniqueDriver(String id) {return driversPool.isUniqueId(id);   }
+   // public boolean isUniqueDriver(String id) {return driversPool.isUniqueId(id);   }
 
     public boolean isUniqueTruck(String id) {return trucksPool.isUniqueId(id);  }
 
@@ -153,9 +153,9 @@ public class Pool {
     public List<String> PrintFailDoc(){return docsPool.getFailDocs();}
     public List<String> PrintPendingDoc(){return docsPool.getPendingDocs();}
     public boolean validArea(int area) {return (storesPool.validArea(area) &  suppliersPool.validArea(area));    }
-    public boolean validLicense(String license){return driversPool.isValidLicense(license);}
+    //public boolean validLicense(String license){return driversPool.isValidLicense(license);}
 
-    public void addDateToDriver(String driverId, Date date) { driversPool.addDateToDriver(driverId,date);    }
+    //public void addDateToDriver(String driverId, Date date) { driversPool.addDateToDriver(driverId,date);    }
 
     public void addDateToTruck(String truckId, Date date) {trucksPool.addDateToTruck(truckId,date);    }
 
@@ -164,9 +164,9 @@ public class Pool {
         trucksPool.freeTruck(td.getTruckId(),td.getDate());
     }
 
-    public void freeDriverDate(int docId) {
+    /*public void freeDriverDate(int docId) {
         driversPool.freeDriver(docsPool.getDriverId(docId),docsPool.getDate(docId));
-    }
+    }*/
 
     public void removeDoc(int id) {docsPool.removeDoc(id);   }
 

@@ -1,7 +1,7 @@
 package DataAccessLayer.Transport;
 
 
-import BusinessLayer.TransportModule.DTO.DTO_Truck;
+import DataAccessLayer.DTO.DTO_Truck;
 
 import java.sql.*;
 import java.util.LinkedList;
@@ -66,7 +66,7 @@ import java.util.List;
                     PreparedStatement statement = con.prepareStatement("SELECT DATE FROM TrucksDates WHERE TID = ?;");
                     statement.setString(1, id);
                     ResultSet result = statement.executeQuery();
-                    while (result.next()) { DTO_Truck t = new DTO_Truck(result.getString(1), result.getString(2),result.getDouble(3), result.getDouble(4));
+                    while (result.next()) {
                         output.add(result.getString(1));
                     }
                     statement.close();
@@ -200,6 +200,29 @@ import java.util.List;
                 System.err.println(e.getClass().getName() + ": " + e.getMessage());
             }
             }
+
+        public void addDateToTruck(String id, String date) {
+            try {
+                if (tryOpen()) {
+                    Class.forName("org.sqlite.JDBC");
+                    con.setAutoCommit(false);
+                    PreparedStatement statement = con.prepareStatement("INSERT INTO TrucksDates VALUES (?,?);");
+                    statement.setString(1, id);
+                    statement.setString(2, date);
+                    int rowNum = statement.executeUpdate();
+                    if (rowNum != 0) {
+                        con.commit();
+                        con.close();
+                    } else {
+                        con.rollback();
+                        con.close();
+                    }
+                    statement.close();
+                }
+            } catch (Exception e) {
+                System.err.println(e.getClass().getName() + ": " + e.getMessage());
+            }
+        }
     }
 
 

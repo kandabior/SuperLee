@@ -1,8 +1,7 @@
-package BusinessLayer.TransportModule.DTO;
+package DataAccessLayer.DTO;
 import java.util.Date;
 import java.util.LinkedList;
 import java.util.List;
-import java.util.LinkedList;
 
 public class DTO_Truck {
 

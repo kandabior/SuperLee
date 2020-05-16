@@ -6,7 +6,7 @@ import java.util.*;
 import java.util.Date;
 
 
-public class UserMenu {
+public class TransportsMenu {
     private static Pool pool;
 
     public static void main() {
@@ -17,8 +17,8 @@ public class UserMenu {
 
 
     private static void start() {
-        pool.addDriver("100","a","C1");
-        pool.addDriver("101","b","C");
+        //pool.addDriver("100","a","C1");
+        //pool.addDriver("101","b","C");
         pool.addTruck("200","1000",12,20);
         pool.addTruck("201","1000",13,20);
         pool.addStore("ashdod1","111111","a1",1);
@@ -42,10 +42,10 @@ public class UserMenu {
         cal.set(Calendar.DAY_OF_MONTH, 1);
         Date date2 = cal.getTime();
         pool.addDoc(1,date,"200","100","a",stores,suppliers);
-        pool.addDateToDriver("100",date);
+        //pool.addDateToDriver("100",date);
         pool.addDateToTruck("200",date);
         pool.addDoc(1,date2,"201","101","b",stores,suppliers);
-        pool.addDateToDriver("101",date2);
+        //pool.addDateToDriver("101",date2);
         pool.addDateToTruck("201",date2);
 
 
@@ -62,9 +62,8 @@ public class UserMenu {
                     "3. Add items to transport\n" +
                     "4. View system data\n"+
                     "5. Add, delete or update a supplier\n" +
-                    "6. Add or delete a driver\n" + /******/
-                    "7. Add or delete a truck\n" +
-                    "8. exit");
+                    "6. Add or delete a truck\n" +
+                    "7. exit");
             try {
                 int option = input.nextInt();
                 input.nextLine();
@@ -199,7 +198,7 @@ public class UserMenu {
                                     + " tons,\nyou can see the transport detail under failed transports,\n" +
                                     " and create new one if you want.");
                             pool.freeTruckDate(docId);
-                            pool.freeDriverDate(docId);
+                            //pool.freeDriverDate(docId);
                         }
                         break;
                     case 3://add items
@@ -217,7 +216,7 @@ public class UserMenu {
                         }
                         stores = pool.getStoresFromDoc(docId);
                         print(pool.getStoresStrings(stores));
-                        //System.out.println(pool.getStoresStrings(stores).toString());
+                        System.out.println(pool.getStoresStrings(stores).toString());
                         int i = 0;
                         int itemId;
                         int quantity;
@@ -343,50 +342,7 @@ public class UserMenu {
                                 break;
                         }
                         break;
-                    case 6:// add/delete driver
-                        System.out.println("Please enter option number:\n" +
-                                "1. Add driver\n2. Delete driver");
-                        option = input.nextInt();
-                        input.nextLine();
-                        switch (option) {
-                            case 1://add driver
-                                System.out.println("Enter id, name and license of the driver");
-                                System.out.print("id: ");
-                                String id = input.nextLine();
-                                System.out.print("name: ");
-                                String name = input.nextLine();
-                                System.out.print("license can be C or C1, license: ");
-                                String license = input.nextLine();
-                                if (pool.isUniqueDriver(id)) {
-                                    if (pool.validLicense(license)) {
-                                        pool.addDriver(id, name, license);
-                                        System.out.println("Driver add successfully");
-                                    } else
-                                        System.out.println("This is not a legal license please try again the next time");
-                                } else
-                                    System.out.println("This id already exist please try again the next time");
-                                break;
-                            case 2://delete driver
-                                System.out.println(pool.DtoString());
-                                System.out.print("Enter the id of the driver you want to delete\nid: ");
-                                id = input.nextLine();
-                                if (pool.isUniqueDriver(id)) // the driver doesnt exists
-                                    System.out.println("this driver doesn't exist");
-                                else {
-                                    if (pool.driverIsBusy(id))
-                                        System.out.println("Driver is in a pending transport,therefore - cannot be removed");
-                                    else {
-                                        pool.removeDriver(id);
-                                        System.out.println("Driver removed successfully");
-                                    }
-                                }
-                                break;
-                            default:
-                                System.out.println("Invalid option number!");
-                                break;
-                        }
-                        break;
-                    case 7://add/delete truck
+                    case 6://add/delete truck
                         System.out.println("Please enter option number:\n" +
                                 "1. Add truck\n2. Delete truck");
                         option = input.nextInt();
@@ -429,7 +385,7 @@ public class UserMenu {
                                 break;
                         }
                         break;
-                    case 8:
+                    case 7:
                         return;
                     default:
                         System.out.println("Invalid option number!");

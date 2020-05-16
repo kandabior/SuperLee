@@ -1,6 +1,6 @@
 package BusinessLayer.TransportModule;
 
-import BusinessLayer.TransportModule.DTO.DTO_Supplier;
+import DataAccessLayer.DTO.DTO_Supplier;
 import DataAccessLayer.Transport.SuppliersMapper;
 
 import java.util.Iterator;

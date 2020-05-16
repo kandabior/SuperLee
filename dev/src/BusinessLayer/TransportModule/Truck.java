@@ -57,7 +57,6 @@ public class Truck {
         Calendar calendar = Calendar.getInstance();
         calendar.setTime(date);
         Calendar temp = Calendar.getInstance();
-        int year = calendar.get(Calendar.YEAR);
         for (Date d:dates) {
             temp.setTime(d);
             if((calendar.get(Calendar.YEAR) == temp.get(Calendar.YEAR)) & (calendar.get(Calendar.MONTH) == temp.get(Calendar.MONTH)) & (calendar.get(Calendar.DAY_OF_MONTH) == temp.get(Calendar.DAY_OF_MONTH)))

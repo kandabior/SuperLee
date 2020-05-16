@@ -1,8 +1,7 @@
 package BusinessLayer.TransportModule;
 
-import BusinessLayer.TransportModule.DTO.DTO_TransportDoc;
+import DataAccessLayer.DTO.DTO_TransportDoc;
 import DataAccessLayer.Transport.DocsMapper;
-import DataAccessLayer.Transport.SuppliersMapper;
 
 import java.util.*;
 

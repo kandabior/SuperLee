@@ -1,8 +1,7 @@
-package BusinessLayer.TransportModule.DTO;
+package DataAccessLayer.DTO;
 
 import BusinessLayer.TransportModule.TransportDoc.Status;
 
-import java.util.Date;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;

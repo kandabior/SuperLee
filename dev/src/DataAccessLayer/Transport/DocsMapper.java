@@ -1,7 +1,6 @@
 package DataAccessLayer.Transport;
 
-import BusinessLayer.TransportModule.DTO.DTO_Supplier;
-import BusinessLayer.TransportModule.DTO.DTO_TransportDoc;
+import DataAccessLayer.DTO.DTO_TransportDoc;
 
 import java.sql.*;
 import java.util.HashMap;
