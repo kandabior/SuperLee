@@ -18,11 +18,11 @@ public class ShiftMapper {
         return null;
     }
 
-    public void add(Shift_DTO shiftDTOFromShift) {
+    public void add(List<Shift_DTO> shiftDTOFromShift) {
         //TODO
     }
 
-    public void addRequirements(String dayToString, String sTtoString, Map<String, Integer> roles) {
+    public void addRequirements(String dayToString, String sTtoString,String role, int quantity) {
         //TODO
     }
 
@@ -30,7 +30,7 @@ public class ShiftMapper {
         //TODO
     }
 
-    public void deleteShift(Shift_DTO shiftDTOFromShift) {
+    public void deleteShift(String date, int branch , String shiftType) {
         //TODO
     }
 

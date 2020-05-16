@@ -21,7 +21,9 @@ public class ShiftManager {
         existRequirements(day,shiftType);
         Pair<Day,ShiftType> newShift = new Pair<Day, ShiftType>(day,shiftType);
         requirements.put(newShift,roles);
-        shiftMapper.addRequirements(dayToString(day),stToString(shiftType),roles);
+        for (String rol:roles.keySet()) {
+            shiftMapper.addRequirements(dayToString(day),stToString(shiftType),rol,roles.get(rol));
+        }
     }
 
     public void existRequirements(Day day,ShiftType shiftType){
@@ -62,7 +64,7 @@ public class ShiftManager {
         for (Shift s: Shifts) {
             if(s.getDate().equals(date) && s.getShiftType().equals(shiftType)) {
                 Shifts.remove(s);
-                shiftMapper.deleteShift(shiftDTOfromShift(s));
+                shiftMapper.deleteShift(dateToString(s.getDate()),currentBranch,stToString(s.getShiftType()));
             }
         }
     }
@@ -146,15 +148,15 @@ public class ShiftManager {
     }
 
     public void loadShifts(List<Shift_DTO> shifts){
-        //TODO
+
     }
 
-    private Shift_DTO shiftDTOfromShift(Shift shift) {
+    private List<Shift_DTO> shiftDTOfromShift(Shift shift) {
         //TODO
         return null;
     }
 
-    private Shift ShiftFromShiftDTO(Shift_DTO shift_dto){
+    private Shift ShiftFromShiftDTO(List<Shift_DTO> shift_dto){
         //TODO
         return null;
     }
@@ -190,6 +192,12 @@ public class ShiftManager {
             default:
                     return null;
         }
+    }
+
+    private String dateToString(Date date){
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTime(date);
+        return calendar.get(Calendar.DATE)+"/"+(calendar.get(Calendar.MONTH)+1) +"/" + calendar.get(Calendar.YEAR);
     }
 }
 
