@@ -10,7 +10,7 @@ public class UserMenu {
     private static Pool pool;
 
     public static void main() {
-        pool = Pool.getInstance();
+       pool = Pool.getInstance();
        // start();
         menu();
     }
@@ -53,6 +53,7 @@ public class UserMenu {
 
     private static void menu() {
         Scanner input = new Scanner(System.in);
+
         while (true) {
             System.out.println("Welcome to Transport's system!\n" +
                     "Please enter option number:\n" +
@@ -85,11 +86,11 @@ public class UserMenu {
                         System.out.print("day: ");
                         int day = input.nextInt();
                         input.nextLine();
-                        Calendar cal = Calendar.getInstance();
-                        cal.set(Calendar.YEAR, year);
-                        cal.set(Calendar.MONTH, month - 1);
-                        cal.set(Calendar.DAY_OF_MONTH, day);
-                        Date date = cal.getTime();
+                        Calendar cal1 = Calendar.getInstance();
+                        cal1.set(Calendar.YEAR, year);
+                        cal1.set(Calendar.MONTH, month - 1);
+                        cal1.set(Calendar.DAY_OF_MONTH, day);
+                        Date date = cal1.getTime();
                         Date now = new Date();
                         if (date.before(now)) {
                             System.out.println("Invalid date");

@@ -65,17 +65,18 @@ public class SuppliersPool {
     public List<String> SupplierstoString(){
        return mapper.getSuppliersString();
     }
-    public void Update(int id,String address, String phoneNumber, String contactName){
+    public void Update(int supplierId,String address, String phoneNumber, String contactName){
         Supplier sp = null;
         Iterator<Supplier> itr = suppliers.iterator();
         while (itr.hasNext()){
             sp =  itr.next();
-            if(sp.getId()==id){
+            if(sp.getId()==supplierId){
                 sp.setAddress(address);
                 sp.setPhoneNumber(phoneNumber);
                 sp.setContactName(contactName);
             }
         }
+        mapper.updateSupplier(supplierId);
     }
 
     public boolean isExistsId (int id){

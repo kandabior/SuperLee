@@ -8,7 +8,9 @@ import java.util.LinkedList;
 import java.util.List;
 
     public class TrucksMapper {
+
         private Connection con;
+
         public List<String> getTrucksString() {
             List<String> trucks = new LinkedList<>();
             try {
@@ -31,6 +33,53 @@ import java.util.List;
                 return null;
             }
         }
+
+        public List<DTO_Truck> getTrucks() {
+            List<DTO_Truck> trucks = new LinkedList<>();
+            try {
+                if (tryOpen()) {
+                    Class.forName("org.sqlite.JDBC");
+                    con.setAutoCommit(false);
+                    PreparedStatement statement = con.prepareStatement("SELECT * FROM Trucks;");
+                    ResultSet result = statement.executeQuery();
+                    while (result.next()) {
+                        DTO_Truck t = new DTO_Truck(result.getString(1), result.getString(2),result.getDouble(3), result.getDouble(4));
+                        trucks.add(t);
+                    }
+                    statement.close();
+                    con.close();
+                    return trucks;
+                } else return null;
+            } catch (Exception e) {
+                System.err.println(e.getClass().getName() + ": " + e.getMessage());
+                tryClose();
+                return null;
+            }
+        }
+
+        public List<String> getTruckDates(String id) {
+            List<String> output = new LinkedList<>();
+            try {
+                if (tryOpen()) {
+                    Class.forName("org.sqlite.JDBC");
+                    con.setAutoCommit(false);
+                    PreparedStatement statement = con.prepareStatement("SELECT DATE FROM TrucksDates WHERE TID = ?;");
+                    statement.setString(1, id);
+                    ResultSet result = statement.executeQuery();
+                    while (result.next()) { DTO_Truck t = new DTO_Truck(result.getString(1), result.getString(2),result.getDouble(3), result.getDouble(4));
+                        output.add(result.getString(1));
+                    }
+                    statement.close();
+                    con.close();
+                    return output;
+                } else return null;
+            } catch (Exception e) {
+                System.err.println(e.getClass().getName() + ": " + e.getMessage());
+                tryClose();
+                return null;
+            }
+        }
+
 
         public boolean isUniqueTruck(String TruckId) {
             try {
@@ -128,6 +177,29 @@ import java.util.List;
         }
 
 
+        public void removeTruckDate(String truckId, String date) {
+            try {
+                if (tryOpen()) {
+                    Class.forName("org.sqlite.JDBC");
+                    con.setAutoCommit(false);
+                    PreparedStatement st = con.prepareStatement("DELETE FROM TrucksDates WHERE DATE = (?) AND TID= (?) ;");
+                    st.setString(1, date);
+                    st.setString(2, truckId);
+                    int rowNum = st.executeUpdate();
+                    st.close();
+                    if (rowNum != 0) {
+                        con.commit();
+                        con.close();
+                    } else {
+                        con.rollback();
+                        con.close();
+                    }
+                }
+            } catch (Exception e) {
+                tryClose();
+                System.err.println(e.getClass().getName() + ": " + e.getMessage());
+            }
+            }
     }
 
 

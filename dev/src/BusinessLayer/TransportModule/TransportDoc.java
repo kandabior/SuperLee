@@ -9,7 +9,7 @@ import java.util.List;
 public class TransportDoc {
 
     private static int idCounter = 1;
-    enum Status {PENDING, SUCCESS, FAIL;  }
+    public enum Status {PENDING, SUCCESS, FAIL;  }
     private int id;
     private int area;
     private Date date;

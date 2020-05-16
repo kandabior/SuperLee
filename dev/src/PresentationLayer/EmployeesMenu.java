@@ -19,7 +19,7 @@ public class EmployeesMenu {
 
     private void startSystem(){
         try {
-            createDB();//TODO remove
+            //createDB();//TODO remove
             while (true) {
                 System.out.println("Welcome to the employee department!\n" +
                         "Select a branch:\n" +
@@ -101,14 +101,14 @@ public class EmployeesMenu {
         }
     }
 
-    private void addNewWorker() {
+    private void addNewWorker(){
         Scanner ans = new Scanner(System.in);
         System.out.println("Write the following worker's details:");
         String name = inputNotEmpty("name");
         String ID = inputNotEmpty("ID");
         String hiringConditions =inputNotEmpty("hiring conditions:");
         String bankId = inputNotEmpty("bank Id");
-        int salary = Integer.parseInt(inputNotEmpty("salary"));
+        int salary = inputNumber("salary");
         String date;
         Date startEmployment=new Date();
         boolean correctdate=false;
@@ -122,13 +122,16 @@ public class EmployeesMenu {
             } catch (ParseException e) {
                 System.out.println("\nInvalid date\n");
             }
-        String emplyeeId =service.addWorker(name,ID,hiringConditions,bankId,salary,startEmployment);
-        if(emplyeeId==null)
-        {
-            System.out.println("ID is in use! aborted...");
+        try {
+            String emplyeeId = service.addWorker(name, ID, hiringConditions, bankId, salary, startEmployment);
+            if (emplyeeId == null) {
+                System.out.println("ID is in use! aborted...");
+            } else
+                System.out.println("Success! new worker ID: " + emplyeeId);
         }
-        else
-            System.out.println("Success! new worker ID: "+emplyeeId);
+        catch (Exception e){
+            e.printStackTrace();
+        }
     }
 
     private void handleSingleEmplyee(String ID) {
@@ -175,7 +178,7 @@ public class EmployeesMenu {
                     break;
                 case 7:
                     ask = "enter new salary:";
-                    service.changeSalary(ID,Integer.parseInt(inputNotEmpty(ask)));
+                    service.changeSalary(ID,inputNumber(ask));
                     break;
                 case 8:
                     ask = "enter new name:";
@@ -287,7 +290,7 @@ public class EmployeesMenu {
                 role = roleFromList();
             }
             String ask = "How Many Employees in the role "+role+" needed?";
-            int numOfEmployee = Integer.parseInt(ask);
+            int numOfEmployee = inputNumber(ask);
             roles.put(role,numOfEmployee);
             String ask1 = "Need more roles? Select y/n";
             String needMore = yesOrNo(ask1);
@@ -532,8 +535,6 @@ public class EmployeesMenu {
     private String inputNotEmpty(String in){
         while (true) {
             System.out.println(in);
-            if(in.equals("salary")|| in.equals("enter new salary:")||in.equals("How Many Employees in the role \"+role+\" needed?"))
-                System.out.println("(Please make sure to enter a number..)");
             Scanner ans = new Scanner(System.in);
             String ret = ans.nextLine();
             if(!ret.equals(""))
@@ -543,16 +544,33 @@ public class EmployeesMenu {
         }
     }
 
+    private int inputNumber(String in){
+        while (true) {
+            System.out.println(in);
+            Scanner ans = new Scanner(System.in);
+            int ret;
+            try {
+                 ret = ans.nextInt();
+                 return ret;
+            }
+            catch (Exception e){
+                System.out.println("\nInvalid input\nPlease make sure to enter a number..\n");
+            }
+        }
+    }
+
 
 
     //TODO remove , just for check
     private void createDB() {
+        service.loadBranch(2);
         addHistory();
         addRequirements();
         createEmloyees();
     }
 
     private void createEmloyees() {
+        //LOAD
         Date d1 = null;
         Date d2 = null;
         try {
@@ -562,10 +580,15 @@ public class EmployeesMenu {
         } catch (ParseException e) {
             e.printStackTrace();
         }
-        service.addWorker("Raviv","315","a lot ","555",30000,d1);
-        service.addWorker("Hodaya","257","a few ","777",30000,d2);
-        service.setSupervisor("1",true);
-        service.setSupervisor("2",true);
+        try {
+            service.addWorker("Raviv", "315", "a lot ", "555", 30000, d1);
+            service.addWorker("Hodaya", "257", "a few ", "777", 30000, d2);
+            service.setSupervisor("1", true);
+            service.setSupervisor("2", true);
+        }
+        catch (Exception e){
+
+        }
 
         service.addRole("2","cashier");
         service.addRole("2","storekeeper");

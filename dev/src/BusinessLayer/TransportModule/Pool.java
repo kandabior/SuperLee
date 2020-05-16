@@ -1,5 +1,7 @@
 package BusinessLayer.TransportModule;
 
+import BusinessLayer.TransportModule.DTO.DTO_TransportDoc;
+
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
@@ -133,8 +135,9 @@ public class Pool {
     public boolean validTansport(int docId) {return docsPool.validTransport(docId);    }
 
     public double addWeight(int docId, double total) {
-        double maxWeight = trucksPool.getMaxWeight(docsPool.getTruckId(docId));
-        return docsPool.addWeight(docId, total, maxWeight);
+        DTO_TransportDoc dto_doc = docsPool.getDoc(docId);
+        double maxWeight = trucksPool.getMaxWeight(dto_doc.getTruckId());
+        return docsPool.addWeight(dto_doc, total, maxWeight);
     }
 
     public List<Integer> getStoresFromDoc(int docId) { return docsPool.getStoresFromDoc(docId);   }
@@ -157,7 +160,8 @@ public class Pool {
     public void addDateToTruck(String truckId, Date date) {trucksPool.addDateToTruck(truckId,date);    }
 
     public void freeTruckDate(int docId) {
-        trucksPool.freeTruck(docsPool.getTruckId(docId),docsPool.getDate(docId));
+        DTO_TransportDoc td= docsPool.getDoc(docId);
+        trucksPool.freeTruck(td.getTruckId(),td.getDate());
     }
 
     public void freeDriverDate(int docId) {
