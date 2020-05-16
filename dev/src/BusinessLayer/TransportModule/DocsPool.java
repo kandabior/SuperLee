@@ -1,8 +1,7 @@
 package BusinessLayer.TransportModule;
 
-import BusinessLayer.TransportModule.DTO.DTO_TransportDoc;
+import DataAccessLayer.Transport.DTO.DTO_TransportDoc;
 import DataAccessLayer.Transport.DocsMapper;
-import DataAccessLayer.Transport.SuppliersMapper;
 
 import java.util.*;
 
@@ -48,7 +47,7 @@ public class DocsPool {
     }
 
     public List<Integer> getStoresFromDoc(int docId) {
-        TransportDoc doc = null;
+        /*TransportDoc doc = null;
         for (TransportDoc t : transportDocs) {
             if (t.getId() == docId)
                 doc = t;
@@ -56,18 +55,20 @@ public class DocsPool {
         if(doc != null){
             return doc.getStores();
         }
-        return new LinkedList<>();
+        return new LinkedList<>();*/
+        return mapper.getTransportsSites("Stores",docId);
     }
 
     public void addItems(int docId, List<Map<Integer, Integer>> allItems) {
-        for (TransportDoc t : transportDocs) {
+       /* for (TransportDoc t : transportDocs) {
             if (t.getId() == docId) {
                 t.setItems(allItems);
                 if(t.getFinalWeight() != -1)
                     t.setStatus(TransportDoc.Status.SUCCESS);
             }
 
-        }
+        }*/
+       mapper.addItemsToTransport(docId, allItems);
     }
 
     public List<String> getFailDocs(){

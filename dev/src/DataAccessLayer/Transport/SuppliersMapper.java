@@ -1,6 +1,6 @@
 package DataAccessLayer.Transport;
 
-import BusinessLayer.TransportModule.DTO.DTO_Supplier;
+import DataAccessLayer.Transport.DTO.DTO_Supplier;
 
 import java.sql.*;
 import java.util.LinkedList;
@@ -154,9 +154,33 @@ public class SuppliersMapper {
         }
     }
 
-    public void updateSupplier(int supplierId) {
+    public void updateSupplier(int supplierId, String address, String phoneNumber, String contactName) {
+        try {
+            if (tryOpen()) {
+                Class.forName("org.sqlite.JDBC");
+                con.setAutoCommit(false);
 
-
+                PreparedStatement statement = con.prepareStatement("UPDATE Suppliers SET ID = ?, address = ?, phoneNumber = ?, contactName = ?  WHERE ID = ? ;");
+                statement.setInt(1, supplierId);
+                statement.setString(2, address);
+                statement.setString(3, phoneNumber);
+                statement.setString(4,contactName);
+                statement.setInt(5,supplierId);
+                int rowNum = statement.executeUpdate();
+                if (rowNum != 0) {
+                    statement.close();;
+                    con.commit();
+                    con.close();
+                } else {
+                    con.rollback();
+                    con.close();
+                    statement.close();
+                    System.err.println("Update failed");
+                }
+            }
+        } catch (Exception e) {
+            System.err.println(e.getClass().getName() + ": " + e.getMessage());
+        }
 
     }
 }

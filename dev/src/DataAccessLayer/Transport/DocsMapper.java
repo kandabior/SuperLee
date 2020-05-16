@@ -1,7 +1,6 @@
 package DataAccessLayer.Transport;
 
-import BusinessLayer.TransportModule.DTO.DTO_Supplier;
-import BusinessLayer.TransportModule.DTO.DTO_TransportDoc;
+import DataAccessLayer.Transport.DTO.DTO_TransportDoc;
 
 import java.sql.*;
 import java.util.HashMap;
@@ -159,7 +158,7 @@ public class DocsMapper {
         }
     }
 
-    private List<Integer> getTransportsSites(String tableName, int transportId) {
+    public List<Integer> getTransportsSites(String tableName, int transportId) {
         List<Integer> sites = new LinkedList<>();
         try {
             if (tryOpen()) {
@@ -274,4 +273,33 @@ public class DocsMapper {
         }
 
     }
+
+
+    public void addItemsToTransport(int docId, List<Map<Integer, Integer>> allItems) {
+       /* try {
+            if (tryOpen()) {
+                Class.forName("org.sqlite.JDBC");
+                con.setAutoCommit(false);
+
+                PreparedStatement statement = con.prepareStatement("INSERT INTO Order VALUES (?,?,?,?);");
+                statement.setInt(1, docId);
+                statement.setString(2, s.getAddress());
+                statement.setString(3, s.getPhoneNumber());
+                statement.setString(4, s.getContactName());
+                statement.setInt(5, s.getArea());
+                int rowNum = statement.executeUpdate();
+                if (rowNum != 0) {
+                    con.commit();
+                    con.close();
+                } else {
+                    con.rollback();
+                    con.close();
+                }
+                statement.close();
+            }
+        } catch (Exception e) {
+            System.err.println(e.getClass().getName() + ": " + e.getMessage());
+        }*/
+    }
+
 }

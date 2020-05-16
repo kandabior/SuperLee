@@ -1,6 +1,6 @@
 package BusinessLayer.TransportModule;
 
-import BusinessLayer.TransportModule.DTO.DTO_TransportDoc;
+import DataAccessLayer.Transport.DTO.DTO_TransportDoc;
 
 import java.util.Date;
 import java.util.List;
