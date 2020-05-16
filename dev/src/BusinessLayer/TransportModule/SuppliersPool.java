@@ -1,6 +1,6 @@
 package BusinessLayer.TransportModule;
 
-import DataAccessLayer.Transport.DTO.DTO_Supplier;
+import BusinessLayer.TransportModule.DTO.DTO_Supplier;
 import DataAccessLayer.Transport.SuppliersMapper;
 
 import java.util.Iterator;
@@ -65,9 +65,9 @@ public class SuppliersPool {
     public List<String> SupplierstoString(){
        return mapper.getSuppliersString();
     }
-
     public void Update(int supplierId,String address, String phoneNumber, String contactName){
-/*        Iterator<Supplier> itr = suppliers.iterator();
+        Supplier sp = null;
+        Iterator<Supplier> itr = suppliers.iterator();
         while (itr.hasNext()){
             sp =  itr.next();
             if(sp.getId()==supplierId){
@@ -75,8 +75,8 @@ public class SuppliersPool {
                 sp.setPhoneNumber(phoneNumber);
                 sp.setContactName(contactName);
             }
-        }*/
-        mapper.updateSupplier(supplierId,address,phoneNumber,contactName);
+        }
+        mapper.updateSupplier(supplierId);
     }
 
     public boolean isExistsId (int id){

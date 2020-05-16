@@ -2,7 +2,7 @@ package BusinessLayer.TransportModule;
 
 
 
-import DataAccessLayer.Transport.DTO.DTO_Truck;
+import BusinessLayer.TransportModule.DTO.DTO_Truck;
 import DataAccessLayer.Transport.TrucksMapper;
 
 import java.util.*;
