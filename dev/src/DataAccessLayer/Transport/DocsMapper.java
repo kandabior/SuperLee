@@ -12,6 +12,23 @@ import java.util.Map;
 public class DocsMapper {
     private Connection con;
 
+    private boolean tryOpen() {
+        try {
+            String url = "jdbc:sqlite:transportsAndWorkers.db";
+            con = DriverManager.getConnection(url);
+            return true;
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return false;
+        }
+    }
+    private void tryClose() {
+        try {
+            con.close();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
 
     public boolean truckIsBusy(String truckId) {
         try {
@@ -70,23 +87,6 @@ public class DocsMapper {
         }
         return false;
     }
-    private boolean tryOpen() {
-        try {
-            String url = "jdbc:sqlite:transportsAndWorkers.db";
-            con = DriverManager.getConnection(url);
-            return true;
-        } catch (SQLException e) {
-            e.printStackTrace();
-            return false;
-        }
-    }
-    private void tryClose() {
-        try {
-            con.close();
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-    }
 
     public List<String> getDocs(String docStatus) {
         List<String> pendingDocs = new LinkedList<>();
@@ -108,20 +108,20 @@ public class DocsMapper {
                     for (int i = 0; i < stores.size(); i++) {
                         items.add(getTransportsItems(transportId, stores.get(i)));
                     }
-                    DTO_TransportDoc.Status status ;
+                   /* DTO_TransportDoc.Status status ;
                     switch (result.getString("status")){
                         case "PENDING":
-                            status = DTO_TransportDoc.Status.PENDING;
+                            status = Status.PENDING;
                             break;
                         case "SUCCESS":
                             status = DTO_TransportDoc.Status.SUCCESS;
                             break;
                         default: //FAIL
                             status = DTO_TransportDoc.Status.FAIL;
-                    }
+                    }*/
                     DTO_TransportDoc s = new DTO_TransportDoc(transportId, result.getInt("area"),
                             result.getString("date"),result.getString("truckId"), result.getInt("driverId"),
-                            result.getString("driverName"),stores, suppliers, items ,status, result.getDouble("finalWeight"));
+                            result.getString("driverName"),stores, suppliers, items ,result.getString("status"), result.getDouble("finalWeight"));
                     pendingDocs.add(s.toString());
                 }
                 statement.close();
@@ -181,5 +181,97 @@ public class DocsMapper {
             tryClose();
             return null;
         }
+    }
+
+    public boolean validTransport(int docId) {
+        try {
+            if (tryOpen()) {
+                Class.forName("org.sqlite.JDBC");
+                con.setAutoCommit(false);
+                PreparedStatement statement = con.prepareStatement("SELECT * FROM TransportDocs WHERE id = ?;");
+                statement.setInt(1, docId);
+                ResultSet res = statement.executeQuery();
+                if (res.next()) {
+                    con.commit();
+                    con.close();
+                    statement.close();
+                    return true;
+                } else {
+                    con.rollback();
+                    con.close();
+                    statement.close();
+                    return false;
+                }
+            }
+        } catch (Exception e) {
+            tryClose();
+            System.err.println(e.getClass().getName() + ": " + e.getMessage());
+            return false;
+        }
+        return false;
+    }
+
+    public DTO_TransportDoc getTransportDoc(int docId){
+        List<Integer> stores = new LinkedList<>();
+        List<Integer> suppliers = new LinkedList<>();
+        List<Map<Integer,Integer>> items = new LinkedList<>();
+
+        try {
+            if (tryOpen()) {
+                Class.forName("org.sqlite.JDBC");
+                con.setAutoCommit(false);
+                PreparedStatement statement = con.prepareStatement("SELECT * FROM TransportDocs WHERE docId = ? AND status = ?;");
+                statement.setInt(1,docId);
+                statement.setString(2,"PENDING");
+                ResultSet result = statement.executeQuery();
+                if (result.next()) {
+                    suppliers = getTransportsSites("DocSuppliers", docId);
+                    stores = getTransportsSites("DocStores", docId);
+                    for (int i = 0; i < stores.size(); i++) {
+                        items.add(getTransportsItems(docId, stores.get(i)));
+                    }
+                    DTO_TransportDoc s = new DTO_TransportDoc(docId, result.getInt("area"),
+                            result.getString("date"), result.getString("truckId"), result.getInt("driverId"),
+                            result.getString("driverName"), stores, suppliers, items, "PENDING", result.getDouble("finalWeight"));
+                    statement.close();
+                    con.close();
+                    return s;
+                }
+                else
+                    return null;
+            } else return null;
+        } catch (Exception e) {
+            System.err.println(e.getClass().getName() + ": " + e.getMessage());
+            tryClose();
+            return null;
+        }
+    }
+
+    public void updateTransportDoc(double finalWeight, String status, int docId ) {
+        try {
+            if (tryOpen()) {
+                Class.forName("org.sqlite.JDBC");
+                con.setAutoCommit(false);
+
+                PreparedStatement statement = con.prepareStatement("UPDATE TransportDocs SET finalWeight = ? , status = ? WHERE ID = ? ;");
+                statement.setDouble(1, finalWeight);
+                statement.setString(2, status);
+                statement.setInt(3, docId);
+                int rowNum = statement.executeUpdate();
+                if (rowNum != 0) {
+                    statement.close();;
+                    con.commit();
+                    con.close();
+                } else {
+                    con.rollback();
+                    con.close();
+                    statement.close();
+                    System.err.println("Update failed");
+                }
+            }
+        } catch (Exception e) {
+            System.err.println(e.getClass().getName() + ": " + e.getMessage());
+        }
+
     }
 }

@@ -71,6 +71,14 @@ public class Truck {
     }
 
 
+    public List<Date> getDates() {
+        return dates;
+    }
+
+    public void setDates(List<Date> dates) {
+        this.dates = dates;
+    }
+
     public void addDate(Date date) {dates.add(date);   }
 
     public void removeDate(Date date) {dates.remove(date);        }

@@ -14,13 +14,14 @@ public class EmployeesManagerTest {
     @Before
     public void setEmployee(){
         employeesManager=new EmployeesManager();
+        employeesManager.loadBranch(1);
         Date d2 = null;
         try {
             d2 = new SimpleDateFormat("dd/MM/yyyy").parse("21/04/2020");
         } catch (ParseException e) {
             e.printStackTrace();
         }
-        employeesManager.addWorker("Raviv", "315", "a lot ", "555", 30000, d2);
+        employeesManager.addWorker("Raviv", "315", "a lot ", "555", 30000, d2,null);
     }
     @Test
     public void getEmployeeDetails() {

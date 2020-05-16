@@ -1,5 +1,6 @@
 package BusinessLayer.EmployeeModule;
 
+import DataAccessLayer.Employee.EmployeeDTO;
 import DataAccessLayer.Employee.EmployeesMapper;
 
 import java.util.Date;
@@ -18,13 +19,14 @@ public class EmployeesManager {
 
 
     public  String addWorker(String name, String id, String hiringConditions, String bankId,
-                             int salary, Date startOfEmployment){
+                             int salary, Date startOfEmployment,String license){
         if(currentBranch==-1)
             return null;
         if (idExist(id))
             return null;
         try{
-            Employee e=employeesMapper.addEmployee(name,id,hiringConditions,bankId,salary,startOfEmployment,currentBranch);
+            EmployeeDTO employeeDTO=employeesMapper.addEmployee(name,id,hiringConditions,bankId,salary,startOfEmployment,currentBranch,license);
+            Employee e=new Employee(employeeDTO);
             employees.add(e);
             return e.getEmployeeId();
         }
@@ -33,8 +35,8 @@ public class EmployeesManager {
         }
     }
     private  boolean idExist(String id) {
-        Employee e=employeesMapper.getByID(id);
-        return (e!=null && e.isAvailable());
+        EmployeeDTO employeeDTO=employeesMapper.getByID(id);
+        return (employeeDTO!=null && employeeDTO.isAvailable());
     }
 
     public List<String> getManagers(ShiftType shiftType, Day day){
@@ -206,19 +208,23 @@ public class EmployeesManager {
         }
         return driver.getName();
     }
-
     public List<Integer> getDriversAvailableAtDate(Date date, String license) {
-        List<Employee> drivers=employeesMapper.getAllEmployeesFromBranch(0);
+        List<EmployeeDTO> driversDTO=employeesMapper.getAllEmployeesFromBranch(0);
+        List<Employee> drivers=new LinkedList<>();
+        for (EmployeeDTO driveDTO : driversDTO)
+        {
+            drivers.add(new Employee(driveDTO));
+        }
         List<Integer> drivesOutput=new LinkedList<>();
         for(Employee driver:drivers)
         {
-            if(driver.getConstrain(ShiftType.Morning,getDayFromDate(date))==null)
+            //TODO : DRIVE LICENSE?
+            if((driver.getConstrain(ShiftType.Morning,getDayFromDate(date))==null) && driver.getLicense().equals(license))
                 drivesOutput.add((Integer.parseInt(driver.getEmployeeId())));
 
         }
         return drivesOutput;
     }
-
     private Day getDayFromDate(Date date){
         int day=date.getDay();
         switch (day) {
@@ -243,15 +249,23 @@ public class EmployeesManager {
 
 
     }
-
-
     public void loadBranch(int branch) {
-        employees=employeesMapper.getAllEmployeesFromBranch(branch);
+        List<EmployeeDTO> employeeDTOS = employeesMapper.getAllEmployeesFromBranch(branch);
+        employees = new LinkedList<>();
+        for (EmployeeDTO employeeDTO : employeeDTOS)
+        {
+            employees.add(new Employee(employeeDTO));
+        }
         this.currentBranch=branch;
     }
-
     public void updateEmployee(Employee e)
     {
-        employeesMapper.updateEmployee(e);
+        EmployeeDTO employeeDTO=createDTO(e);
+        employeesMapper.updateEmployee(employeeDTO);
+    }
+
+    private EmployeeDTO createDTO(Employee e) {
+        return new EmployeeDTO(e.isAvailable(),e.getName(),e.getID(),e.isSupervisor(),e.getRoles(),e.getHiringConditions(),
+                e.getBankId(),e.getSalary(),e.getStartOfEmployment(),e.getEmployeeId(),e.getConstrainsForDTO(),e.getBranch(),e.getLicense());
     }
 }
