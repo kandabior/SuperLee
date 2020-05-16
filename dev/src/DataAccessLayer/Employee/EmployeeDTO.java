@@ -35,7 +35,22 @@ public class EmployeeDTO {
         this.branch = branch;
         this.license=license;
     }
-
+    public EmployeeDTO(boolean isAvailable, String name, String ID, boolean isSupervisor, String hiringConditions, String bankId,
+                       int salary, Date startOfEmployment, String employeeId , int branch,String license) {
+        this.isAvailable = isAvailable;
+        this.name = name;
+        this.ID = ID;
+        this.isSupervisor = isSupervisor;
+        this.roles = roles;
+        this.hiringConditions = hiringConditions;
+        this.bankId = bankId;
+        this.salary = salary;
+        this.startOfEmployment = startOfEmployment;
+        this.employeeId = employeeId;
+        this.constrains = constrains;
+        this.branch = branch;
+        this.license=license;
+    }
 
     public boolean isAvailable() {
         return isAvailable;
@@ -87,5 +102,13 @@ public class EmployeeDTO {
 
     public String getLicense() {
         return license;
+    }
+
+    public void addConstrain(String day,String shiftType) {
+        constrains.add(day+":"+shiftType);
+    }
+
+    public void setRoles(List<String> roles) {
+        this.roles=roles;
     }
 }
