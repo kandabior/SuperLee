@@ -1,5 +1,7 @@
 package BusinessLayer.EmployeeModule;
 
+import DataAccessLayer.Employee.EmployeeDTO;
+
 import java.util.Date;
 import java.util.LinkedList;
 import java.util.List;
@@ -33,6 +35,28 @@ public class Employee {
         roles = new LinkedList<>();
         isAvailable=true;
 
+    }
+
+    public Employee(EmployeeDTO employeeDTO) {
+        this.name = employeeDTO.getName();
+        this.ID =employeeDTO.getID();
+        this.isSupervisor = employeeDTO.isSupervisor();
+        this.hiringConditions = employeeDTO.getHiringConditions();
+        this.bankId = employeeDTO.getBankId();
+        this.salary = employeeDTO.getSalary();
+        this.startOfEmployment = employeeDTO.getStartOfEmployment();
+        this.employeeId = employeeDTO.getEmployeeId();
+        this.branch=employeeDTO.getBranch();
+        roles = employeeDTO.getRoles();
+        isAvailable=employeeDTO.isAvailable();
+        constrains=new LinkedList<>();
+        for(String cons : employeeDTO.getConstrains())
+        {
+            Day day=Day.valueOf(cons.substring(0,cons.indexOf(':')));
+            ShiftType shiftType=ShiftType.valueOf(cons.substring(cons.indexOf(':')+1));
+            Constrain c=new Constrain(shiftType,day);
+            constrains.add(c);
+        }
     }
 
     public boolean isAvailable()
@@ -173,4 +197,11 @@ public class Employee {
         return branch;
     }
 
+    public List<String> getConstrainsForDTO() {
+        List<String> constrainsOutput=new LinkedList<>();
+        for(Constrain c : constrains) {
+            constrainsOutput.add(c.getDay()+":"+c.getShiftType());
+        }
+        return constrainsOutput;
+    }
 }

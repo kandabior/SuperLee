@@ -1,5 +1,6 @@
 package BusinessLayer.EmployeeModule;
 
+import DataAccessLayer.Employee.EmployeeDTO;
 import DataAccessLayer.Employee.EmployeesMapper;
 
 import java.util.Date;
@@ -24,7 +25,8 @@ public class EmployeesManager {
         if (idExist(id))
             return null;
         try{
-            Employee e=employeesMapper.addEmployee(name,id,hiringConditions,bankId,salary,startOfEmployment,currentBranch);
+            EmployeeDTO employeeDTO=employeesMapper.addEmployee(name,id,hiringConditions,bankId,salary,startOfEmployment,currentBranch);
+            Employee e=new Employee(employeeDTO);
             employees.add(e);
             return e.getEmployeeId();
         }
@@ -33,8 +35,8 @@ public class EmployeesManager {
         }
     }
     private  boolean idExist(String id) {
-        Employee e=employeesMapper.getByID(id);
-        return (e!=null && e.isAvailable());
+        EmployeeDTO employeeDTO=employeesMapper.getByID(id);
+        return (employeeDTO!=null && employeeDTO.isAvailable());
     }
 
     public List<String> getManagers(ShiftType shiftType, Day day){
@@ -206,7 +208,6 @@ public class EmployeesManager {
         }
         return driver.getName();
     }
-
     public List<Integer> getDriversAvailableAtDate(Date date, String license) {
         List<Employee> drivers=employeesMapper.getAllEmployeesFromBranch(0);
         List<Integer> drivesOutput=new LinkedList<>();
@@ -218,7 +219,6 @@ public class EmployeesManager {
         }
         return drivesOutput;
     }
-
     private Day getDayFromDate(Date date){
         int day=date.getDay();
         switch (day) {
@@ -243,15 +243,18 @@ public class EmployeesManager {
 
 
     }
-
-
     public void loadBranch(int branch) {
         employees=employeesMapper.getAllEmployeesFromBranch(branch);
         this.currentBranch=branch;
     }
-
     public void updateEmployee(Employee e)
     {
-        employeesMapper.updateEmployee(e);
+        EmployeeDTO employeeDTO=createDTO(e);
+        employeesMapper.updateEmployee(employeeDTO);
+    }
+
+    private EmployeeDTO createDTO(Employee e) {
+        return new EmployeeDTO(e.isAvailable(),e.getName(),e.getID(),e.isSupervisor(),e.getRoles(),e.getHiringConditions(),
+                e.getBankId(),e.getSalary(),e.getStartOfEmployment(),e.getEmployeeId(),e.getConstrainsForDTO(),e.getBranch());
     }
 }

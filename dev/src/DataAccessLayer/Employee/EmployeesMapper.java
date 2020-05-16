@@ -2,7 +2,6 @@ package DataAccessLayer.Employee;
 
 import BusinessLayer.EmployeeModule.Employee;
 import sun.reflect.generics.reflectiveObjects.NotImplementedException;
-
 import java.util.Date;
 import java.util.List;
 
@@ -16,17 +15,17 @@ public class EmployeesMapper {
 
     }
 
-    public Employee getByID(String id) {
+    public EmployeeDTO getByID(String id) {
         throw new NotImplementedException();
     }
 
-    public Employee addEmployee(String name, String id, String hiringConditions, String bankId, int salary,
-                                Date startOfEmployment, int currentBranch)
-    {
+    public EmployeeDTO addEmployee(String name, String id, String hiringConditions, String bankId, int salary,
+                                Date startOfEmployment, int currentBranch){
+
         throw new NotImplementedException();
 
     }
 
-    public void updateEmployee(Employee e) {
+    public void updateEmployee(EmployeeDTO e) {
     }
 }
