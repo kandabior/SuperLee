@@ -42,27 +42,27 @@ public class EmployeesMenu {
     }
 
     private void startPersonnelManager(){
-            boolean stop = false;
-            while (!stop) {
-                System.out.println("Where to enter?\n" +
-                        "1. Employees\n" +
-                        "2. Shifts\n" +
-                        "3. Back");
-                int selectedClass = numberFromRange(1,3);
-                switch (selectedClass) {
-                    case 1:
-                        startEmployee();
-                        break;
-                    case 2:
-                        startShift();
-                        break;
-                    case 3:
-                        return;
-                    default:
-                        System.out.println("\nInvalid selection\n");
-                        break;
-                }
+        boolean stop = false;
+        while (!stop) {
+            System.out.println("Where to enter?\n" +
+                    "1. Employees\n" +
+                    "2. Shifts\n" +
+                    "3. Back");
+            int selectedClass = numberFromRange(1,3);
+            switch (selectedClass) {
+                case 1:
+                    startEmployee();
+                    break;
+                case 2:
+                    startShift();
+                    break;
+                case 3:
+                    return;
+                default:
+                    System.out.println("\nInvalid selection\n");
+                    break;
             }
+        }
     }
 
     private void startEmployee(){
@@ -123,7 +123,7 @@ public class EmployeesMenu {
                 System.out.println("\nInvalid date\n");
             }
         try {
-            String emplyeeId = service.addWorker(name, ID, hiringConditions, bankId, salary, startEmployment);
+            String emplyeeId = service.addWorker(name, ID, hiringConditions, bankId, salary, startEmployment,null); // Raviv added this null.
             if (emplyeeId == null) {
                 System.out.println("ID is in use! aborted...");
             } else
@@ -550,8 +550,8 @@ public class EmployeesMenu {
             Scanner ans = new Scanner(System.in);
             int ret;
             try {
-                 ret = ans.nextInt();
-                 return ret;
+                ret = ans.nextInt();
+                return ret;
             }
             catch (Exception e){
                 System.out.println("\nInvalid input\nPlease make sure to enter a number..\n");
@@ -581,8 +581,7 @@ public class EmployeesMenu {
             e.printStackTrace();
         }
         try {
-            service.addWorker("Raviv", "315", "a lot ", "555", 30000, d1);
-            service.addWorker("Hodaya", "257", "a few ", "777", 30000, d2);
+            service.addWorker("Raviv", "315", "a lot ", "555", 30000, d1,null);
             service.setSupervisor("1", true);
             service.setSupervisor("2", true);
         }

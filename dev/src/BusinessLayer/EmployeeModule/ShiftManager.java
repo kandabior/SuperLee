@@ -1,16 +1,19 @@
 package BusinessLayer.EmployeeModule;
 
-import sun.reflect.generics.reflectiveObjects.NotImplementedException;
+import DataAccessLayer.Employee.ShiftMapper;
 
 import java.util.*;
 
 public class ShiftManager {
+    private int currentBranch;
     private List<Shift> Shifts;
     private Map<Pair<Day, ShiftType>,Map<String,Integer>> requirements;
+    private ShiftMapper shiftMapper;
 
     public ShiftManager(){
         Shifts = new LinkedList<Shift>();
         requirements = new HashMap<Pair<Day,ShiftType>, Map<String, Integer>>();
+        shiftMapper = new ShiftMapper();
     }
 
     public void editRequirements(Day day, ShiftType shiftType, Map<String, Integer> roles) {
@@ -39,7 +42,7 @@ public class ShiftManager {
     }
 
     public void addShift(Date date, ShiftType shiftType, String employeeManager, Map<String, List<String>> workers) {
-        Shift shift = new Shift(date,shiftType,employeeManager,workers);
+        Shift shift = new Shift(date,shiftType,employeeManager,workers,currentBranch);
         Shifts.add(shift);
     }
 
@@ -128,7 +131,10 @@ public class ShiftManager {
     }
 
     public List<Integer> getStoresWithStoreKeeperAtDate(Date date) {
-        //TODO
-        throw new NotImplementedException();
+        return shiftMapper.getStoresWithStoreKeeperAtDate(date);
+    }
+
+    public void loadBranch(int branch){
+        List<Shift> = shiftMapper.loadBranch(branch);
     }
 }
