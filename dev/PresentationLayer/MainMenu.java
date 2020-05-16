@@ -1,23 +1,17 @@
 package PresentationLayer;
-import InterfaceLayer.FacadeController;
 import LogicLayer.Items;
-import javafx.util.Pair;
-
 import java.time.LocalDate;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Map;
 import java.util.Scanner;
 
 
-public class MainMenu{
-    public static Scanner scanner=new Scanner(System.in);
-    public static Integer DayOfTheWeek=getCurrentDay();
-    public static int plusDay=0;
+public class MainMenu {
+    public static Scanner scanner = new Scanner(System.in);
+    public static Integer DayOfTheWeek = getCurrentDay();
+    public static int plusDay = 0;
 
     private static Integer getCurrentDay() {
         String day = LocalDate.now().getDayOfWeek().toString();
-        switch (day){
+        switch (day) {
             case "SUNDAY":
                 return 1;
             case "MONDAY":
@@ -36,31 +30,21 @@ public class MainMenu{
         return 1;
     }
 
-    public static void main(String[]args) {
+    public static void main(String[] args) {
         mainLoop();
     }
 
     private static void mainLoop() {
-        /*Printer.Print("Do you Want to initiate the System? Y/N ");
-        String ans = scanner.next();
-        if (ans.equals("Y") || ans.equals("y")) {
-            initiateSystem();
-            InventoryMenu.initiateSystem();
-            SupplierMenu.initiateSystem();
-        }
-        else {
-            Printer.Print("system was not initiate");
-        }*/
         int choose;
         Printer.Print("Welcome To EOED Digital Storage And Suppliers Manager!");
         do {
-            Printer.Print("Day: "+(LocalDate.now().plusDays(plusDay).toString()));
+            Printer.Print("Day: " + (LocalDate.now().plusDays(plusDay).toString()));
             Printer.Print("\n\nPlease choose an action:\n" +
                     "1. Enter Inventory & Reports Menu\n" +
                     "2. Enter Suppliers Menu\n" +
                     "3. Show Global Products\n" +
                     "4. Add Global Product\n" +
-                    "5. Promote Day\n"+
+                    "5. Promote Day\n" +
                     "6. Quit\n");
             choose = scanner.nextInt();
             try {
@@ -79,7 +63,7 @@ public class MainMenu{
                         break;
                     case 5:
                         plusDay++;
-                        InventoryMenu.PromoteDay((DayOfTheWeek+plusDay)%7);
+                        InventoryMenu.PromoteDay((DayOfTheWeek + plusDay) % 7);
                     case 6:
                         break;
                 }
@@ -96,7 +80,7 @@ public class MainMenu{
         String prodId = scanner.next();
         Printer.Print("\nPlease enter product name:\n");
         String amount = scanner.next();
-        if(!Items.addItem(Integer.parseInt(prodId),amount)){
+        if (!Items.addItem(Integer.parseInt(prodId), amount)) {
             System.out.println("product already exist, please enter different product id");
         }
     }
@@ -104,14 +88,4 @@ public class MainMenu{
     private static void ShowGlobalProduct() {
         Items.PrintAllItems();
     }
-
-   /* public static void initiateSystem(){
-        Items.addItem(1,"Milk");
-        Items.addItem(2,"Corn");
-        Items.addItem(3,"Banana");
-        Items.addItem(4,"Tomato");
-        Items.addItem(5,"Carrot");
-        Items.addItem(6,"Chips");
-    }*/
-
 }

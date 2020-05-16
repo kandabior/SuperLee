@@ -1,14 +1,10 @@
 package DataAccessLayer;
 import java.sql.*;
-
-import DTO.SupplierDTO;
-import com.sun.istack.internal.localization.NullLocalizable;
 import javafx.util.Pair;
-
-import java.text.DecimalFormat;
 import java.util.*;
 
 public class AgreementMapper {
+
     private static Connection conn;
 
     public static boolean tryOpen() {

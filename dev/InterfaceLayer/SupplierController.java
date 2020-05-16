@@ -103,10 +103,6 @@ public class SupplierController {
         return supplier.getAgreement().getTerms();*/
     }
 
-    public double getPriceOfItem(int suppId, int index) {
-        return getSuppById(suppId).getPriceOfItem(index);
-    }
-
     public boolean checkBillOfQuantity(int suppId) {
         return this.supplier.checkBillOfQuantity(suppId);
     }
@@ -125,10 +121,6 @@ public class SupplierController {
 
     public String getItemNameByIndex(int suppId, int i) {
         return this.item.getName(getSuppById(suppId).getItemIdByIndex(i));
-    }
-
-    public int getItemIdByIndex(int suppId, int i) {
-        return getSuppById(suppId).getItemIdByIndex(i);
     }
 
     public void addItemToSupplier(int suppId, int itemId) {

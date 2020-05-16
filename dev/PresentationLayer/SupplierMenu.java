@@ -8,7 +8,6 @@ import java.util.*;
 
 public class SupplierMenu {
     static FacadeController fc = FacadeController.getFacadeController();
-    //static int supplierIdCounter = 1;
     static int supplierIdCounter = fc.getSuppliersCounter() + 1;
 
     public static boolean displaySupplierMenu(){
@@ -105,14 +104,13 @@ public class SupplierMenu {
     private static void showPreviousOrders() {
 
         int sizeOfOrders = fc.getOrdersSize();
-        //good
         if (sizeOfOrders == 0)
             System.out.println("No orders were found.");
         else {
             for (int i = 0; i < sizeOfOrders; i++) {
 
                 List<List<Object>> list = fc.getOrdersLineByOrderIndex(i);
-                List<Object> suppList = fc.getSupplierDeatails(i);
+                List<Object> suppList = fc.getSupplierDetails(i);
                 int supplierId = (int)suppList.get(0);
                 String supplierName = (String)suppList.get(1);
                 String supplierAddress = (String)suppList.get(2);
@@ -124,13 +122,11 @@ public class SupplierMenu {
                 System.out.println("------------------------------------------------------------------------------\n");
                 System.out.println("Supplier's name: " + supplierName + "\t" + "Supplier's address: " + supplierAddress + "\t" + "OrderId: " + orderId + "\t" + "Branch Id: " + branchId + "\n");
                 System.out.println("Supplier's id: " + supplierId + "\t" + "Date: " + orderDate + "\t" + "Supplier's phone: " + suppPhone + "\n");
-                //System.out.println("------------------------------------------------------------------------------\n");
                 System.out.println();
                 System.out.println("Item Id  " + "\t" + "Item Name " + "\t" + "Quantity " + "\t" + "    Price " + "\t" + "    Discount " + "\t" + "   Final Cost \n");
                 for (int j = 0; j < list.size(); j++) {
                     System.out.println(list.get(j).get(0) + "\t\t\t" + list.get(j).get(1) + "\t\t\t" + list.get(j).get(2) + "\t\t\t" + list.get(j).get(3) + "\t\t\t" + list.get(j).get(4) + "\t\t\t" + list.get(j).get(5) + "\n");
                 }
-
                 System.out.println("Total amount: " + fc.getTotalOrderMoney(orderId));
                 System.out.println("Status: " + fc.getOrderStatus(orderId));
                 System.out.println();
@@ -436,41 +432,4 @@ public class SupplierMenu {
 
 
     }
-
-   /* private static int addOrder(int orderIdCounter) {
-        System.out.print("\nEnter the id of the supplier from which you want to order: ");
-        Scanner scanner = new Scanner(System.in);
-        int suppId = scanner.nextInt();
-        if(!fc.findSupplier(suppId)){
-            System.out.println("Supplier id does not exist in the system.");
-            return orderIdCounter;
-        }
-        displayItems(suppId);
-        List<Pair<Integer, Integer>> items = new LinkedList<>();
-        String choice;
-        do {
-            System.out.print("Item's id: ");
-            int itemId = scanner.nextInt() ;
-            System.out.print("Amount: ");
-            int itemAmount = scanner.nextInt();
-            items.add(new Pair(itemId, itemAmount));
-            System.out.print("Do you want to add more items to the order? [Y/N] ");
-            Scanner scanner2 = new Scanner(System.in);
-            choice = scanner2.nextLine();
-        } while (choice.equals("y") | choice.equals("Y"));
-        boolean result = fc.addOrder(orderIdCounter, items, suppId);
-
-        if (result) {
-            double totalMoney = fc.getTotalOrderMoney(orderIdCounter);
-            fc.setOrderCost(orderIdCounter, totalMoney);
-            System.out.println("\nOrder was added successfully.\n");
-            System.out.println("\nTotal order's cost: " + totalMoney + "\n");
-            orderIdCounter++;
-            return orderIdCounter;
-        } else {
-            System.out.println("\nOrder failed, please try again.\n");
-            return orderIdCounter;
-        }
-    }*/
-
 }

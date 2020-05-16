@@ -1,23 +1,11 @@
 package DataAccessLayer;
-
 import java.sql.*;
-
 import DTO.SupplierDTO;
 import java.util.*;
 
 public class SupplierMapper {
-    private static Connection conn;
 
-    /*
-    public static void initializeSupplierMapper() {
-        try {
-            Class.forName("org.sqlite.JDBC");
-            conn = DriverManager.getConnection("jdbc:sqlite:EOEDdatabase.db");
-        } catch (Exception e) {
-            System.out.println("DB connection problem.");
-        }
-        System.out.println("DB opened successfully.");
-    }*/
+    private static Connection conn;
 
     public boolean addSupplier(SupplierDTO supp) {
         try {
@@ -451,30 +439,6 @@ public class SupplierMapper {
 
     }
 
-    public Double getPriceOfAmountOfItem(int supplierId, Integer itemId, Integer amount) {
-
-
-
-  /*      if (bill != null && bill.checkItemInBill(itemId, quantity) == true) {
-            double discount = bill.getMoneyAmountofItemInBill(itemId, quantity);
-            double cost = terms.get(itemId);
-            double costMulQuantity = (cost * quantity);
-            double x = costMulQuantity * (1 - discount);
-            DecimalFormat df = new DecimalFormat("#.##");
-            String dx = df.format(x);
-            x = Double.valueOf(dx);
-            return x;
-        } else {
-            double cost = terms.get(itemId);
-            return (cost * quantity);
-        }*/
-
-
-
-
-    return 0.0;
-    }
-
     public boolean checkIfBillExists(int BillId) {
         try {
             if (tryOpen()) {
@@ -611,7 +575,7 @@ public class SupplierMapper {
     }
 
     public List<Object> getSuppDetails(int bestSuppId) {
-        List<Object> supplierDeatails = new LinkedList<>();
+        List<Object> supplierDetails = new LinkedList<>();
         try {
             if (tryOpen()) {
                 Class.forName("org.sqlite.JDBC");
@@ -620,22 +584,20 @@ public class SupplierMapper {
                 st.setInt(1, bestSuppId);
                 ResultSet res = st.executeQuery();
                 if (res.next()) {
-                    supplierDeatails.add(res.getInt("id"));
-                    supplierDeatails.add(res.getString("name"));
-                    supplierDeatails.add(res.getString("phoneNum"));
-                    supplierDeatails.add(res.getString("supplyLocation"));
+                    supplierDetails.add(res.getInt("id"));
+                    supplierDetails.add(res.getString("name"));
+                    supplierDetails.add(res.getString("phoneNum"));
+                    supplierDetails.add(res.getString("supplyLocation"));
                 }
                 st.close();
                 conn.close();
-                return supplierDeatails;
+                return supplierDetails;
             } else return null;
         } catch (Exception e) {
             System.err.println(e.getClass().getName() + ": " + e.getMessage());
             tryClose();
             return null;
         }
-
-
     }
 
     public void createBillOfQuantities(int suppId) {

@@ -26,27 +26,9 @@ public class Agreement {
     public void deleteFromBillOfQuantities(int suppId, Integer itemId) {
         this.agreementMapper.deleteFromBillOfQuantities(suppId, itemId);
     }
-
     public void deleteBillOfQuantities(int suppId) {
         this.agreementMapper.deleteBillOfQuantities(suppId);
     }
-
-    public void insertItem(Integer itemId, Double price) {
-        terms.put(itemId, price);
-    }
-
-    public LinkedHashMap<Integer, Double> getTerms() {
-        return this.terms;
-    }
-
-    public void setPrice(int id, double newPrice) {
-        terms.replace(id, newPrice);
-    }
-
-    public double getPriceOfItem(int index) {
-        return terms.get(index);
-    }
-
 
     public void addItemToBillOfQuantities(int supplierId, int itemId, int itemQuantity, Double itemDiscount) {
         this.agreementMapper.addItemToBillOfQuantities(supplierId, itemId, itemQuantity, itemDiscount);
@@ -60,11 +42,4 @@ public class Agreement {
         return this.agreementMapper.getBillSize(suppId);
     }
 
-    public Double getDiscountOfItem(int itemId, int amount) {
-        if (bill != null && bill.checkItemInBill(itemId, amount) == true) {
-            return bill.getDiscount(itemId);
-        } else {
-            return 0.0;
-        }
-    }
 }

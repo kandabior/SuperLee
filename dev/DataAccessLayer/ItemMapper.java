@@ -1,12 +1,11 @@
 package DataAccessLayer;
-
 import javafx.util.Pair;
-
 import java.sql.*;
 import java.util.LinkedList;
 import java.util.List;
 
 public class ItemMapper {
+
     private static Connection conn;
 
     public boolean checkIfItemExist(int itemId) {
@@ -57,29 +56,6 @@ public class ItemMapper {
             return false;
         }
     }
-
-    /*public static boolean tryOpen()
-    {
-        try {
-            conn = DriverManager.getConnection("jdbc:sqlite:dev\\EOEDdatabase.db");
-            return true;
-        } catch (SQLException e) {
-            e.printStackTrace();
-            return false;
-        }
-
-    }*/
-
-   /* public static void tryClose()
-    {
-        try {
-            conn.close();
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-
-    }*/
-
 
     public static String getName(Integer id) {
         try {

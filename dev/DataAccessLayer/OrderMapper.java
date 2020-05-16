@@ -88,7 +88,7 @@ public class OrderMapper {
     }
 
 
-    public List<Object> getSupplierDeatails(int id) {
+    public List<Object> getSupplierDetails(int id) {
         List<Object> suppList = new LinkedList<>();
         try {
             if (tryOpen()) {
@@ -171,7 +171,6 @@ public class OrderMapper {
     }
 
     public boolean insertOrder(OrderDTO o) {
-        //this.orderMapper.insert(o.getId(),o.getBranchId(),o.getSuppName(),o.getSuppId(),o.getOrderDate(),o.getAddress(),totalCost,o.getPhoneNumber(),o.getStatus());
         try {
             if (tryOpen()) {
                 Class.forName("org.sqlite.JDBC");

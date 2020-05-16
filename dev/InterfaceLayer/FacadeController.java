@@ -67,8 +67,6 @@ public class FacadeController {
         Map<Integer, Pair<Integer, Double>> map = new HashMap();
         Map<Integer, List<List<Object>>> orderMap = new HashMap<>();
         Map<Integer, List<Object>> suppliersMap = new HashMap<>();
-        //List<Integer> ItemsMissing = new LinkedList<>();
-        // List<Object> suppliersList = new LinkedList<>();
         for (int i = 0; i < list.size(); i++) {
             int itemId = list.get(i).getKey();
             int quantity = list.get(i).getValue();
@@ -109,19 +107,11 @@ public class FacadeController {
                 }
             }
         }
-        orderController.makeOrders(branchId, orderMap, suppliersMap,day);
+        orderController.makeOrders(branchId, orderMap, suppliersMap, day);
         return map;
     }
 
-    public int getItemIdByIndex(int suppId, int index) { return supplierController.getItemIdByIndex(suppId, index); }
-
-    public double getPriceOfItem(int suppId, int index) { return supplierController.getPriceOfItem(suppId, index); }
-
     public int getOrdersSize() { return orderController.getOrdersSize(); }
-
-/*    public List<Pair<Integer, Integer>> getItemsInOrderById(int id) { return orderController.getItemsInOrderById(id); }
-
-    public int getSupplierIdOfOrder(int i) { return orderController.getSupplierIdOfOrder(i); }*/
 
     public void addItemToSupplier(int suppId, int itemId) {
         supplierController.addItemToSupplier(suppId, itemId);
@@ -145,14 +135,6 @@ public class FacadeController {
        return orderController.getTotalOrderMoney(orderId);
     }
 
-    public void setOrderCost(int orderIdCounter, double totalMoney) {
-        this.orderController.setOrderCost(orderIdCounter,totalMoney);
-    }
-
-    public int getOrderIdByIndex(int i) {
-       return orderController.getOrderIdByIndex(i);
-    }
-
     public boolean checkIfOrderExists(int orderId) {
        return orderController.checkIfOrderExists(orderId);
     }
@@ -170,28 +152,7 @@ public class FacadeController {
     }
 
     public List<List<Object>> getOrdersLineByOrderIndex(int id) {
-
          return orderController.getOrdersLineByOrderIndex(id);
-    }
-
-    public int getSupplierIdOfOrderByIndex(int index) {
-        return orderController.getSupplierIdOfOrderByIndex(index);
-    }
-
-    public String getSupplierNameOfOrderByIndex(int index) {
-        return orderController.getSupplierNameOfOrderByIndex(index);
-    }
-
-    public String getSupplierAddOfOrderByIndex(int index) {
-        return orderController.getSupplierAddOfOrderByIndex(index);
-    }
-
-    public LocalDate getOrderDateByIndex(int i) {
-        return orderController.getOrderDateByIndex(i);
-    }
-
-    public String getSupplierPhoneOfOrderByIndex(int i) {
-        return orderController.getSupplierPhoneOfOrderByIndex(i);
     }
 
     public List<String> getSupplierItemsNames(int suppId) {
@@ -202,8 +163,8 @@ public class FacadeController {
         return supplierController.getSupplierItemsId(suppId);
     }
 
-    public List<Object> getSupplierDeatails(int id) {
-        return orderController.getSupplierDeatails(id);
+    public List<Object> getSupplierDetails(int id) {
+        return orderController.getSupplierDetails(id);
     }
 
     public int getSuppliersCounter() {

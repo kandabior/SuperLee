@@ -24,7 +24,6 @@ public class Supplier {
     public Supplier() {
     }
 
-
     public Supplier(int id, String name, String phoneNum, int bankAccount, String payment, String supplySchedule, String supplyLocation, String address) {
         this.id = id;
         this.name = name;
@@ -53,12 +52,7 @@ public class Supplier {
         return this.supplierMapper.getItemsListSize(suppId);
     }
 
-    public static List<String> getSupplierItemsNames(int suppId) {
-        return SupplierMapper.getSupplierItemsNames(suppId);
-    }
-
     public List<Integer> getSupplierItemsId(int suppId) {
-
         return this.supplierMapper.getSupplierItemsId(suppId);
     }
 
@@ -68,86 +62,24 @@ public class Supplier {
 
     public int getId() { return this.id; }
 
-    public Agreement getAgreement() { return this.agreement; }
-
-   /* public boolean makeOrder(List<ItemInOrder> items) {
-        int counter = 0;
-        for (int i = 0; i < items.size(); i++) {
-            for (int j = 0; j < this.items.size(); j++) {
-                if (this.items.get(j).getId() == items.get(i).getItemId()) {
-                        counter++;
-                }
-            }
-        }
-        if (counter != items.size()) return false;
-        return true;
-    }*/
-
-    /*public void updateBillOfQuantities( Integer itemId, Pair<Integer, Double> quantity_disc) {
-        this.agreement.updateBillOfQuantities(itemId,quantity_disc);
-    }*/
-
-  /*  public void deleteFromBillOfQuantities(Integer itemId) {
-        this.agreement.deleteFromBillOfQuantities(itemId);
-    }*/
-
-  //  public void deleteBillOfQuantities() { this.agreement.deleteBillOfQuantities(); }
-
-    public void addItemToAgreement(Integer item_id, Double cost) {
-        this.agreement.insertItem(item_id,cost);
-    }
-
-    public double getPriceOfItem(int index) {
-        return  this.agreement.getPriceOfItem(index);
-    }
-
     public Boolean checkBillOfQuantity(int agreementId) {
         return this.supplierMapper.checkIfBillExists(agreementId);
     }
-
-    /*public void addItemToBillOfQuantities(int itemId, int itemQuantity, Double itemDiscount) {
-        this.agreement.addItemToBillOfQuantities(itemId,itemQuantity,itemDiscount);
-    }*/
-
-//    public Map<Integer, Pair<Integer, Double>> getBillOfQuantities() {
-//        return this.agreement.getBillOfQuantities();
-//    }
-
 
 
     public int getItemIdByIndex(int i) {
         return this.items.get(i);
     }
 
-    public void addItemsToSupplier(int itemId) {
-            this.items.add(itemId);
-    }
-
-    public int getItemsListSize() {
-        return this.items.size();
-    }
 
     public void setItemPrice(int suppId, int itemId, double newPrice) { this.supplierMapper.setItemPrice(suppId, itemId, newPrice); }
-
-    public boolean validateItemId(int itemId){
-        if(this.items.contains(itemId)) return true;
-        else return false;
-    }
-
-    public int getBillSize(int suppId) { return this.agreement.getBillSize(suppId); }
-
-   /* public double getOrderCost(int itemId, int quantity) {
-        return this.agreement.getOrderCost(itemId,quantity);
-    }*/
 
 
     public Double getPriceOfAmountOfItem(int supplierId, Integer itemId, Integer amount) {
         if (this.supplierMapper.getSupplierItemsId(supplierId).contains(itemId)) {
             if (this.supplierMapper.checkIfBillExists(supplierId) && this.supplierMapper.checkInBillForDiscount(supplierId, itemId, amount)) {
                 double discount = this.supplierMapper.getDiscount(supplierId, itemId);
-                // double discount = bill.getMoneyAmountofItemInBill(itemId, quantity);
                 double cost = this.supplierMapper.getPriceOfItem(supplierId, itemId);// terms.get(itemId);
-                //double cost = terms.get(itemId);
                 double costMulQuantity = (cost * amount);
                 double x = costMulQuantity * (1 - discount);
                 DecimalFormat df = new DecimalFormat("#.##");
@@ -165,11 +97,6 @@ public class Supplier {
     public Double getPriceOfAmountOfItemBeforeDiscount(int suppId , int itemId , int amount) {
         Double cost = this.supplierMapper.getPriceOfItem(suppId,itemId);
         return cost*amount;
-        //return this.agreement.getPriceOfAmountOfItemBeforeDiscount(itemId,amount);
-    }
-
-    public Double getDiscountOfItem(int itemId , int amount) {
-        return this.agreement.getDiscountOfItem(itemId , amount);
     }
 
     public List<Object> getSuppDetails(int bestSuppId) {

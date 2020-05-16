@@ -34,8 +34,8 @@ public class OrderController {
         return order_sp;
     }
 
-    public List<Object> getSupplierDeatails(int id) {
-       return this.order.getSupplierDeatails(id);
+    public List<Object> getSupplierDetails(int id) {
+       return this.order.getSupplierDetails(id);
     }
 
  /*   public boolean addOrder(int id, List<Pair<Integer, Integer>> items, int supplierId) {
