@@ -123,7 +123,7 @@ public class EmployeesMenu {
                 System.out.println("\nInvalid date\n");
             }
         try {
-            String emplyeeId = service.addWorker(name, ID, hiringConditions, bankId, salary, startEmployment);
+            String emplyeeId = service.addWorker(name, ID, hiringConditions, bankId, salary, startEmployment,null); // Raviv added this null.
             if (emplyeeId == null) {
                 System.out.println("ID is in use! aborted...");
             } else
@@ -581,8 +581,7 @@ public class EmployeesMenu {
             e.printStackTrace();
         }
         try {
-            service.addWorker("Raviv", "315", "a lot ", "555", 30000, d1);
-            service.addWorker("Hodaya", "257", "a few ", "777", 30000, d2);
+            service.addWorker("Raviv", "315", "a lot ", "555", 30000, d1,null);
             service.setSupervisor("1", true);
             service.setSupervisor("2", true);
         }

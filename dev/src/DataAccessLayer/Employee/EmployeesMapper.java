@@ -10,7 +10,7 @@ public class EmployeesMapper {
         throw new NotImplementedException();
     }
 
-    public List<Employee> getAllEmployeesFromBranch(int branch) {
+    public List<EmployeeDTO> getAllEmployeesFromBranch(int branch) {
         throw new NotImplementedException();
 
     }
@@ -20,7 +20,8 @@ public class EmployeesMapper {
     }
 
     public EmployeeDTO addEmployee(String name, String id, String hiringConditions, String bankId, int salary,
-                                Date startOfEmployment, int currentBranch){
+                                   Date startOfEmployment, int currentBranch, String license){
+
 
         throw new NotImplementedException();
 

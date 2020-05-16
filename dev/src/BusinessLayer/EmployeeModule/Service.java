@@ -101,10 +101,11 @@ public class Service {
     public void deleteWorker(String employeeID){
         employeesManager.deleteEmployee(employeeID);
     }
-    public String addWorker(String name, String ID, String hiringConditions, String bankId, int salary, Date startOfEmployment) throws Exception {
-        return employeesManager.addWorker(name,ID,hiringConditions,bankId,salary,startOfEmployment);
+    public String addWorker(String name, String ID, String hiringConditions, String bankId, int salary, Date startOfEmployment,String license) throws Exception {
+        return employeesManager.addWorker(name,ID,hiringConditions,bankId,salary,startOfEmployment,license);
 
     }
+
     public String employeeDetails(String emolyeeID){
         return employeesManager.getEmployeeDetails(emolyeeID);
     }

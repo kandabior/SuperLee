@@ -17,9 +17,10 @@ public class EmployeeDTO {
     private String employeeId;
     private List<String> constrains;
     private int branch;
+    private String license;
 
     public EmployeeDTO(boolean isAvailable, String name, String ID, boolean isSupervisor, List<String> roles, String hiringConditions, String bankId,
-                       int salary, Date startOfEmployment, String employeeId, List<String> constrains, int branch) {
+                       int salary, Date startOfEmployment, String employeeId, List<String> constrains, int branch,String license) {
         this.isAvailable = isAvailable;
         this.name = name;
         this.ID = ID;
@@ -32,6 +33,7 @@ public class EmployeeDTO {
         this.employeeId = employeeId;
         this.constrains = constrains;
         this.branch = branch;
+        this.license=license;
     }
 
 
@@ -81,5 +83,9 @@ public class EmployeeDTO {
 
     public int getBranch() {
         return branch;
+    }
+
+    public String getLicense() {
+        return license;
     }
 }

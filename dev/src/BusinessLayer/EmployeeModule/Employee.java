@@ -19,7 +19,25 @@ public class Employee {
     private String employeeId;
     private List<Constrain> constrains;
     private int branch;
+    private String license;
 
+    public Employee(String name, String ID,
+                    String hiringConditions, String bankId, int salary, Date startOfEmployment, String employeeId,int branch,String license) {
+        this.name = name;
+        this.ID = ID;
+        this.isSupervisor = false;
+        this.hiringConditions = hiringConditions;
+        this.bankId = bankId;
+        this.salary = salary;
+        this.startOfEmployment = startOfEmployment;
+        this.employeeId = employeeId;
+        this.branch=branch;
+        constrains=new LinkedList<>();
+        roles = new LinkedList<>();
+        isAvailable=true;
+        this.license=license;
+
+    }
     public Employee(String name, String ID,
                     String hiringConditions, String bankId, int salary, Date startOfEmployment, String employeeId,int branch) {
         this.name = name;
@@ -34,9 +52,9 @@ public class Employee {
         constrains=new LinkedList<>();
         roles = new LinkedList<>();
         isAvailable=true;
+        this.license=null;
 
     }
-
     public Employee(EmployeeDTO employeeDTO) {
         this.name = employeeDTO.getName();
         this.ID =employeeDTO.getID();
@@ -57,6 +75,7 @@ public class Employee {
             Constrain c=new Constrain(shiftType,day);
             constrains.add(c);
         }
+        this.license=employeeDTO.getLicense();
     }
 
     public boolean isAvailable()
@@ -203,5 +222,13 @@ public class Employee {
             constrainsOutput.add(c.getDay()+":"+c.getShiftType());
         }
         return constrainsOutput;
+    }
+
+    public String getLicense() {
+        return this.license;
+    }
+
+    public void setLicense(String license) {
+        this.license = license;
     }
 }
