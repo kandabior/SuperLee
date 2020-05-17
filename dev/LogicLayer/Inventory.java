@@ -378,7 +378,7 @@ public class Inventory {
     }
 
     //Managers
-    public String addInventoryManager(int branchId,String username, String password){ //TODO remove the , Inventory controller will hold instance of Singletone Inventory.
+    public String addInventoryManager(int branchId,String username, String password){
         if(!inventoryMapper.isInventoryManagerExist(branchId,username) && inventoryMapper.isBranchExist(branchId)) {
             if(inventoryMapper.addInventoryManager(branchId,username,password)) {
                 return "Inventory Manager " + username + " - registered successfully";
@@ -389,7 +389,7 @@ public class Inventory {
             return "can't register to the current branch id - Try again ";
         }
     }
-    public  String addGlobalManager(int branchId,String username, String password){  //TODO remove the , Inventory controller will hold instance of Singletone Inventory.
+    public  String addGlobalManager(int branchId,String username, String password){  
         if(!inventoryMapper.isGlobalMannagerExist(branchId,username) && inventoryMapper.isBranchExist(branchId)) {
             if( inventoryMapper.addGlobalManager(branchId,username, password)){
                 return "Global Manager " + username + " - registered successfully";

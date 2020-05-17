@@ -672,7 +672,6 @@ public class InventoryMapper {
             //System.err.println( e.getClass().getName() + ": " + e.getMessage() );
             return false;
         }
-        //TODO: check
     }
     public  boolean storageToShelf(int branchId, int id, int amount) {
         PreparedStatement stmt=null;
