@@ -26,5 +26,4 @@ public class Shift {
     public Map<String,List<String>> getRoleInlay(){return RoleInlay;}
     public int getBranch() {return branch;}
 
-    //save
 }

@@ -8,12 +8,12 @@ import java.util.Map;
 
 public class ShiftMapper {
 
-    public List<Integer> getStoresWithStoreKeeperAtDate(Date date) {
+    public List<Shift_DTO> loadBranch(int branch) {
         //TODO
         return null;
     }
 
-    public List<Shift_DTO> loadBranch(int branch) {
+    public List<Shift_DTO> loadShiftManager(int branch) {
         //TODO
         return null;
     }
@@ -34,4 +34,8 @@ public class ShiftMapper {
         //TODO
     }
 
+    public List<Integer> getStoresWithStoreKeeperAtDate(Date date) {
+        //TODO
+        return null;
+    }
 }
