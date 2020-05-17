@@ -1,6 +1,8 @@
 package DataAccessLayer;
 import java.sql.*;
 import javafx.util.Pair;
+import org.sqlite.SQLiteConfig;
+
 import java.util.*;
 
 public class AgreementMapper {
@@ -9,7 +11,10 @@ public class AgreementMapper {
 
     public static boolean tryOpen() {
         try {
-            conn = DriverManager.getConnection("jdbc:sqlite:EOEDdatabase.db");
+            SQLiteConfig config = new SQLiteConfig();
+            config.enforceForeignKeys(true);
+            conn = DriverManager.getConnection("jdbc:sqlite:EOEDdatabase.db", config.toProperties());
+
             return true;
         } catch (SQLException e) {
             e.printStackTrace();

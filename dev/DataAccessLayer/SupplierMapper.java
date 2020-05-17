@@ -1,6 +1,8 @@
 package DataAccessLayer;
 import java.sql.*;
 import DTO.SupplierDTO;
+import org.sqlite.SQLiteConfig;
+
 import java.util.*;
 
 public class SupplierMapper {
@@ -9,8 +11,11 @@ public class SupplierMapper {
 
     public static boolean tryOpen() {
         try {
-            conn = DriverManager.getConnection("jdbc:sqlite:EOEDdatabase.db");
+            SQLiteConfig config = new SQLiteConfig();
+            config.enforceForeignKeys(true);
+            conn = DriverManager.getConnection("jdbc:sqlite:EOEDdatabase.db", config.toProperties());
             conn.setAutoCommit(false);
+
             return true;
         } catch (SQLException e) {
             e.printStackTrace();
@@ -52,9 +57,10 @@ public class SupplierMapper {
                     st.setString(2, "suppliers");
                     st.executeUpdate();
                     //add supplier's agreement to "Agreements"
-                    st = conn.prepareStatement("INSERT INTO Agreements VALUES (?,?);");
+                    st = conn.prepareStatement("INSERT INTO Agreements VALUES (?,?,?);");
                     st.setInt(1, supp.getId());
                     st.setInt(2, 0);
+                    st.setInt(3, supp.getId());
                     st.executeUpdate();
                     conn.commit();
                     conn.close();
@@ -68,13 +74,13 @@ public class SupplierMapper {
             } else return false;
         } catch (Exception e) {
             tryClose();
-            //System.err.println(e.getClass().getName() + ": " + e.getMessage());
+            System.err.println(e.getClass().getName() + ": " + e.getMessage());
             return false;
         }
         return false;
     }
 
-    public static boolean deleteSupplier(int suppId) {
+    public boolean deleteSupplier(int suppId) {
         try {
             if (tryOpen()) {
                 PreparedStatement st = conn.prepareStatement("DELETE FROM Suppliers WHERE id= (?);");
@@ -89,60 +95,11 @@ public class SupplierMapper {
                     conn.rollback();
                     conn.close();
                     return false;
-
                 }
             }
         } catch (Exception e) {
             tryClose();
-            //System.err.println(e.getClass().getName() + ": " + e.getMessage());
-            return false;
-        }
-        return false;
-    }
-
-    private static int getBillId(int agreementId) {
-        try {
-            if (tryOpen()) {
-                PreparedStatement st = conn.prepareStatement("SELECT billId  FROM Agreements WHERE suppId = ?  ;");
-                st.setInt(1, agreementId);
-                ResultSet res = st.executeQuery();
-                if (res.next()) {
-                    st.close();
-                    conn.close();
-                    return res.getInt("billId");
-                }
-                st.close();
-                conn.close();
-                return -1;
-            } else return -1;
-        } catch (Exception e) {
-            //System.err.println(e.getClass().getName() + ": " + e.getMessage());
-            return -1;
-        }
-
-    }
-
-    public static boolean deleteBill(int billId) {
-        try {
-            if (tryOpen()) {
-                PreparedStatement st = conn.prepareStatement("DELETE FROM BillsOfQuantities WHERE id= (?);");
-                st.setInt(1, billId);
-                int rowNum = st.executeUpdate();
-                st.close();
-                if (rowNum != 0) {
-                    conn.commit();
-                    conn.close();
-                    return true;
-                } else {
-                    conn.rollback();
-                    conn.close();
-                    return false;
-
-                }
-            }
-        } catch (Exception e) {
-            tryClose();
-            //System.err.println(e.getClass().getName() + ": " + e.getMessage());
+            System.err.println(e.getClass().getName() + ": " + e.getMessage());
             return false;
         }
         return false;
@@ -168,7 +125,7 @@ public class SupplierMapper {
             }
         } catch (Exception e) {
             tryClose();
-            //System.err.println(e.getClass().getName() + ": " + e.getMessage());
+            System.err.println(e.getClass().getName() + ": " + e.getMessage());
             return false;
         }
         return false;
@@ -193,7 +150,7 @@ public class SupplierMapper {
             }
         } catch (Exception e) {
             tryClose();
-            //System.err.println(e.getClass().getName() + ": " + e.getMessage());
+            System.err.println(e.getClass().getName() + ": " + e.getMessage());
         }
     }
 
@@ -214,7 +171,7 @@ public class SupplierMapper {
             } else return 0;
         } catch (Exception e) {
             tryClose();
-            //System.err.println(e.getClass().getName() + ": " + e.getMessage());
+            System.err.println(e.getClass().getName() + ": " + e.getMessage());
             return 0;
         }
     }
@@ -234,7 +191,7 @@ public class SupplierMapper {
                 return supplierItemsId;
             } else return null;
         } catch (Exception e) {
-            //System.err.println(e.getClass().getName() + ": " + e.getMessage());
+            System.err.println(e.getClass().getName() + ": " + e.getMessage());
             tryClose();
             return null;
         }
@@ -256,7 +213,7 @@ public class SupplierMapper {
                 return supplierItemsId;
             } else return null;
         } catch (Exception e) {
-            //System.err.println(e.getClass().getName() + ": " + e.getMessage());
+            System.err.println(e.getClass().getName() + ": " + e.getMessage());
             tryClose();
             return null;
         }
@@ -282,7 +239,7 @@ public class SupplierMapper {
                 return true;
             } else return false;
         } catch (Exception e) {
-            //System.err.println(e.getClass().getName() + ": " + e.getMessage());
+            System.err.println(e.getClass().getName() + ": " + e.getMessage());
             return false;
         }
     }
@@ -308,7 +265,7 @@ public class SupplierMapper {
                 return true;
             } else return false;
         } catch (Exception e) {
-            //System.err.println(e.getClass().getName() + ": " + e.getMessage());
+            System.err.println(e.getClass().getName() + ": " + e.getMessage());
             return false;
         }
     }
@@ -335,7 +292,7 @@ public class SupplierMapper {
                 return false;
             }
         } catch (Exception e) {
-            //System.err.println(e.getClass().getName() + ": " + e.getMessage());
+            System.err.println(e.getClass().getName() + ": " + e.getMessage());
             tryClose();
             return false;
         }
@@ -357,7 +314,7 @@ public class SupplierMapper {
             }
             else return 0;
         } catch(Exception e){
-            //System.err.println(e.getClass().getName() + ": " + e.getMessage());
+            System.err.println(e.getClass().getName() + ": " + e.getMessage());
             return 0;
         }
 
@@ -380,7 +337,7 @@ public class SupplierMapper {
             }
         } catch (Exception e) {
             tryClose();
-            //System.err.println(e.getClass().getName() + ": " + e.getMessage());
+            System.err.println(e.getClass().getName() + ": " + e.getMessage());
             return null;
         }
         return items;
@@ -401,7 +358,7 @@ public class SupplierMapper {
             }
             else return null;
         } catch(Exception e){
-            //System.err.println(e.getClass().getName() + ": " + e.getMessage());
+            System.err.println(e.getClass().getName() + ": " + e.getMessage());
             tryClose();
             return null;
         }
@@ -429,7 +386,7 @@ public class SupplierMapper {
             }
         } catch (Exception e) {
             tryClose();
-            //System.err.println(e.getClass().getName() + ": " + e.getMessage());
+            System.err.println(e.getClass().getName() + ": " + e.getMessage());
             return false;
         }
         return false;
@@ -457,7 +414,7 @@ public class SupplierMapper {
             }
         } catch (Exception e) {
             tryClose();
-            //System.err.println(e.getClass().getName() + ": " + e.getMessage());
+            System.err.println(e.getClass().getName() + ": " + e.getMessage());
             return false;
         }
         return false;
@@ -482,7 +439,7 @@ public class SupplierMapper {
             }
             else return 0.0;
         } catch(Exception e){
-            //System.err.println(e.getClass().getName() + ": " + e.getMessage());
+            System.err.println(e.getClass().getName() + ": " + e.getMessage());
             tryClose();
             return 0.0;
         }
@@ -506,7 +463,7 @@ public class SupplierMapper {
             }
             else return 0.0;
         } catch(Exception e){
-            //System.err.println(e.getClass().getName() + ": " + e.getMessage());
+            System.err.println(e.getClass().getName() + ": " + e.getMessage());
             tryClose();
             return 0.0;
         }
@@ -528,7 +485,7 @@ public class SupplierMapper {
                 return counter;
             }
         } catch (Exception e) {
-            //System.err.println(e.getClass().getName() + ": " + e.getMessage());
+            System.err.println(e.getClass().getName() + ": " + e.getMessage());
             tryClose();
         }
         return counter;
@@ -552,7 +509,7 @@ public class SupplierMapper {
                 return supplierDetails;
             } else return null;
         } catch (Exception e) {
-            //System.err.println(e.getClass().getName() + ": " + e.getMessage());
+            System.err.println(e.getClass().getName() + ": " + e.getMessage());
             tryClose();
             return null;
         }
@@ -561,8 +518,9 @@ public class SupplierMapper {
     public void createBillOfQuantities(int suppId) {
         try{
             if(tryOpen()) {
-                PreparedStatement st = conn.prepareStatement("INSERT INTO BillsOfQuantities VALUES (?);");
+                PreparedStatement st = conn.prepareStatement("INSERT INTO BillsOfQuantities VALUES (?,?);");
                 st.setInt(1, suppId);
+                st.setInt(2, suppId);
                 st.executeUpdate();
 
                 st = conn.prepareStatement("UPDATE Agreements SET billId = ? WHERE suppId = ?;");
@@ -584,7 +542,7 @@ public class SupplierMapper {
 
             else return;
         } catch (Exception e) {
-            //System.err.println(e.getClass().getName() + ": " + e.getMessage());
+            System.err.println(e.getClass().getName() + ": " + e.getMessage());
             tryClose();
         }
     }
@@ -610,7 +568,7 @@ public class SupplierMapper {
             }
         } catch (Exception e) {
             tryClose();
-            //System.err.println(e.getClass().getName() + ": " + e.getMessage());
+            System.err.println(e.getClass().getName() + ": " + e.getMessage());
             return false;
         }
         return false;
@@ -637,7 +595,7 @@ public class SupplierMapper {
                 return suppliers;
             } else return null;
         } catch (Exception e) {
-            //System.err.println(e.getClass().getName() + ": " + e.getMessage());
+            System.err.println(e.getClass().getName() + ": " + e.getMessage());
             tryClose();
             return null;
         }

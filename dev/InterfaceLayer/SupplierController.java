@@ -37,18 +37,7 @@ public class SupplierController {
     }
 
     public boolean deleteSupplier(int id) {
-        return Supplier.deleteSupplier(id);
-
-//
-//
-//
-//        for (int i = 0; i < suppliers.size(); i++) {
-//            if (suppliers.get(i).getId() == id) {
-//                suppliers.remove(i);
-//                return true;
-//            }
-//        }
-//        return false;
+        return this.supplier.deleteSupplier(id);
     }
 
     public Supplier getSuppById(int id) {

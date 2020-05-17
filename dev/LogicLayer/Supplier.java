@@ -34,8 +34,8 @@ public class Supplier {
       //  this.agreement = new Agreement();
     }
 
-    public static boolean deleteSupplier(int id) {
-        return SupplierMapper.deleteSupplier(id);
+    public boolean deleteSupplier(int id) {
+        return this.supplierMapper.deleteSupplier(id);
     }
 
     public boolean validateItemId(int suppId, int itemId) {

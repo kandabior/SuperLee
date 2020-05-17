@@ -389,7 +389,7 @@ public class Inventory {
             return "can't register to the current branch id - Try again ";
         }
     }
-    public  String addGlobalManager(int branchId,String username, String password){  
+    public  String addGlobalManager(int branchId,String username, String password){
         if(!inventoryMapper.isGlobalMannagerExist(branchId,username) && inventoryMapper.isBranchExist(branchId)) {
             if( inventoryMapper.addGlobalManager(branchId,username, password)){
                 return "Global Manager " + username + " - registered successfully";
