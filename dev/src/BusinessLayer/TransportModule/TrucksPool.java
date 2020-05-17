@@ -2,7 +2,7 @@ package BusinessLayer.TransportModule;
 
 
 
-import BusinessLayer.TransportModule.DTO.DTO_Truck;
+import DataAccessLayer.Transport.DTO.DTO_Truck;
 import DataAccessLayer.Transport.TrucksMapper;
 
 import java.util.*;
@@ -110,6 +110,7 @@ public class TrucksPool {
         }
         if(truck != null){
             truck.addDate(date);
+            mapper.addDateToTruck(truckId,dateToString(date));
         }
     }
 

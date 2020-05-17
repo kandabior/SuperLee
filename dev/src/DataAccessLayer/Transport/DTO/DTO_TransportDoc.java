@@ -1,8 +1,7 @@
-package BusinessLayer.TransportModule.DTO;
+package DataAccessLayer.Transport.DTO;
 
 import BusinessLayer.TransportModule.TransportDoc.Status;
 
-import java.util.Date;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
@@ -131,8 +130,17 @@ public class DTO_TransportDoc {
         this.items = items;
     }
 
-    public Status getStatus() {
-        return status;
+    public Status getStatus() {return status;    }
+
+    public  String getStringStatus(){
+        switch (status) {
+            case SUCCESS:
+                return "SUCCESS";
+            case PENDING:
+                return "PENDING";
+            default: //FAIL
+                return "FAIL";
+        }
     }
 
     public void setStatus(Status status) {

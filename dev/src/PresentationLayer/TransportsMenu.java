@@ -2,11 +2,12 @@ package PresentationLayer;
 
 import BusinessLayer.TransportModule.Pool;
 
+import java.sql.Driver;
 import java.util.*;
 import java.util.Date;
 
 
-public class UserMenu {
+public class TransportsMenu {
     private static Pool pool;
 
     public static void main() {
@@ -17,8 +18,8 @@ public class UserMenu {
 
 
     private static void start() {
-        pool.addDriver("100","a","C1");
-        pool.addDriver("101","b","C");
+        //pool.addDriver("100","a","C1");
+        //pool.addDriver("101","b","C");
         pool.addTruck("200","1000",12,20);
         pool.addTruck("201","1000",13,20);
         pool.addStore("ashdod1","111111","a1",1);
@@ -41,11 +42,11 @@ public class UserMenu {
         cal.set(Calendar.MONTH, 11-1);//Calendar.NOVEMBER);
         cal.set(Calendar.DAY_OF_MONTH, 1);
         Date date2 = cal.getTime();
-        pool.addDoc(1,date,"200","100","a",stores,suppliers);
-        pool.addDateToDriver("100",date);
+        pool.addDoc(1,date,"200",100,"a",stores,suppliers);
+        //pool.addDateToDriver("100",date);
         pool.addDateToTruck("200",date);
-        pool.addDoc(1,date2,"201","101","b",stores,suppliers);
-        pool.addDateToDriver("101",date2);
+        pool.addDoc(1,date2,"201",100,"b",stores,suppliers);
+        //pool.addDateToDriver("101",date2);
         pool.addDateToTruck("201",date2);
 
 
@@ -62,9 +63,8 @@ public class UserMenu {
                     "3. Add items to transport\n" +
                     "4. View system data\n"+
                     "5. Add, delete or update a supplier\n" +
-                    "6. Add or delete a driver\n" + /******/
-                    "7. Add or delete a truck\n" +
-                    "8. exit");
+                    "6. Add or delete a truck\n" +
+                    "7. exit");
             try {
                 int option = input.nextInt();
                 input.nextLine();
@@ -97,7 +97,7 @@ public class UserMenu {
                             break;
                         }
                         System.out.println("Now, enter stores id for the transport, one at a time\nStores:");
-                        print(pool.getStores(area));
+                        print(pool.getAvailableStores(area,date));
                         List<Integer> stores = new LinkedList<>();
                         int idNum;
                         boolean addMore = true;
@@ -150,23 +150,28 @@ public class UserMenu {
                             }
                         }
                         System.out.println("Now, choose a driver");
-                        List<String> availbleDrivers = pool.getDrivers(truckId, date);
+                        List<Integer> availableDrivers = pool.getDrivers(truckId, date);
+                        List<String> drivers = pool.getDriversName(availableDrivers);
                         System.out.println("Available drivers");
-                        print(availbleDrivers);//display the drivers that capable of driving this truck
-                        if (availbleDrivers.isEmpty()) {
+                        print(drivers);//display the drivers that capable of driving this truck
+                        if (availableDrivers.isEmpty()) {
                             System.out.println("Sorry, no driver is available at this date\nTry again with a different date.");
                             menu();
                         }
                         System.out.print("Id: ");
-                        String driverId = input.nextLine();
-                        while (!pool.validDriver(driverId, truckId, date)) {
+                        int driverId = input.nextInt();
+                        input.nextLine();
+                        //while (!pool.validDriver(driverId, truckId, date)) {
+                        while (!availableDrivers.contains(driverId)){
                             System.out.println("Invalid id,please enter a correct id");
                             System.out.println("If you want to try again enter 1,else enter somthing else");
                             if (!input.nextLine().equals("1"))
                                 menu();
                             else {
                                 System.out.print("Id: ");
-                                driverId = input.nextLine();
+                                driverId = input.nextInt();
+                                input.nextLine();
+
                             }
                         }
                         String driverName = pool.getDriverName(driverId);
@@ -217,7 +222,6 @@ public class UserMenu {
                         }
                         stores = pool.getStoresFromDoc(docId);
                         print(pool.getStoresStrings(stores));
-                        //System.out.println(pool.getStoresStrings(stores).toString());
                         int i = 0;
                         int itemId;
                         int quantity;
@@ -240,12 +244,12 @@ public class UserMenu {
                             i++;
                             allItems.add(items);
                         }
-                        pool.addItems(docId, allItems);
+                        pool.addItems(docId, stores, allItems);
                         System.out.println("Items was added successfully");
                         break;
-                    case 4://EmployeesMenu system data
+                    case 4://View transport system data
                         System.out.println("Please enter option number:\n" +
-                                "1. View pending transports\n2. View failed transports\n3. View successful transports\n4. View drivers\n5. View trucks\n6. View stores\n7. View suppliers\n");
+                                "1. View pending transports\n2. View failed transports\n3. View successful transports\n4. View trucks\n5. View stores\n6. View suppliers\n");
                         option = input.nextInt();
                         input.nextLine();
                         switch (option) {
@@ -262,20 +266,19 @@ public class UserMenu {
                                 print(pool.printSuccessDoc());
                                 break;
                             case 4:
-                                System.out.println("drivers");
-                                System.out.println(pool.DtoString());
-                                break;
-                            case 5:
                                 System.out.println("trucks");
                                 print(pool.TtoString());
                                 break;
-                            case 6:
+                            case 5:
                                 System.out.println("stores");
-                                System.out.println((pool.StoreToString()));
+                                print(pool.StoreToString());
                                 break;
-                            case 7:
+                            case 6:
                                 System.out.println("suppliers");
-                                System.out.println((pool.SupplierToString()));
+                                print(pool.SupplierToString());
+                                break;
+                            default:
+                                System.out.println("Invalid input");
                                 break;
 
                         }
@@ -320,7 +323,7 @@ public class UserMenu {
                                 }
                                 break;
                             case 3: // update supplier
-                                System.out.println(pool.SupplierToString());
+                                print(pool.SupplierToString());
                                 System.out.println("Enter the id of the supplier you want to update");
                                 idNum = input.nextInt();
                                 input.nextLine();
@@ -343,50 +346,7 @@ public class UserMenu {
                                 break;
                         }
                         break;
-                    case 6:// add/delete driver
-                        System.out.println("Please enter option number:\n" +
-                                "1. Add driver\n2. Delete driver");
-                        option = input.nextInt();
-                        input.nextLine();
-                        switch (option) {
-                            case 1://add driver
-                                System.out.println("Enter id, name and license of the driver");
-                                System.out.print("id: ");
-                                String id = input.nextLine();
-                                System.out.print("name: ");
-                                String name = input.nextLine();
-                                System.out.print("license can be C or C1, license: ");
-                                String license = input.nextLine();
-                                if (pool.isUniqueDriver(id)) {
-                                    if (pool.validLicense(license)) {
-                                        pool.addDriver(id, name, license);
-                                        System.out.println("Driver add successfully");
-                                    } else
-                                        System.out.println("This is not a legal license please try again the next time");
-                                } else
-                                    System.out.println("This id already exist please try again the next time");
-                                break;
-                            case 2://delete driver
-                                System.out.println(pool.DtoString());
-                                System.out.print("Enter the id of the driver you want to delete\nid: ");
-                                id = input.nextLine();
-                                if (pool.isUniqueDriver(id)) // the driver doesnt exists
-                                    System.out.println("this driver doesn't exist");
-                                else {
-                                    if (pool.driverIsBusy(id))
-                                        System.out.println("Driver is in a pending transport,therefore - cannot be removed");
-                                    else {
-                                        pool.removeDriver(id);
-                                        System.out.println("Driver removed successfully");
-                                    }
-                                }
-                                break;
-                            default:
-                                System.out.println("Invalid option number!");
-                                break;
-                        }
-                        break;
-                    case 7://add/delete truck
+                    case 6://add/delete truck
                         System.out.println("Please enter option number:\n" +
                                 "1. Add truck\n2. Delete truck");
                         option = input.nextInt();
@@ -429,7 +389,7 @@ public class UserMenu {
                                 break;
                         }
                         break;
-                    case 8:
+                    case 7:
                         return;
                     default:
                         System.out.println("Invalid option number!");
