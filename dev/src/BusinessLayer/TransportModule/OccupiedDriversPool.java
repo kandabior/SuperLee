@@ -1,7 +1,6 @@
 package BusinessLayer.TransportModule;
 
-import DataAccessLayer.DTO.DTO_OccupiedDriver;
-import DataAccessLayer.DTO.DTO_Truck;
+import DataAccessLayer.Transport.DTO.DTO_OccupiedDriver;
 import DataAccessLayer.Transport.OccupiedDriversMapper;
 
 import java.util.*;
@@ -50,15 +49,27 @@ public class OccupiedDriversPool {
         return calendar.get(Calendar.DATE)+"/"+(calendar.get(Calendar.MONTH)+1) +"/" + calendar.get(Calendar.YEAR);
     }
 
-    public void freeDriver(int driverId, Date date) {
+    public void freeDriver(int driverId, String date) {
         OccupiedDriver driver = null;
         for (OccupiedDriver d:occupiedDrivers){
             if (d.getId() == driverId)
                 driver = d;
         }
         if(driver != null){
-            driver.removeDate(date);
-            mapper.removeDriverAtDate(driverId,dateToString(date));
+            driver.removeDate(stringToDate(date));
+            mapper.removeDriverAtDate(driverId,date);
+        }
+    }
+
+    public void addDateToDriver(int driverId, Date date) {
+        OccupiedDriver driver = null;
+        for (OccupiedDriver d:occupiedDrivers){
+            if (d.getId() == driverId)
+                driver = d;
+        }
+        if(driver != null){
+            driver.addDate(date);
+            mapper.addDateToOccupiedDriver(driverId, dateToString(date));
         }
     }
 
@@ -127,16 +138,7 @@ public class OccupiedDriversPool {
     }
 
 
-    public void addDateToDriver(String driverId, Date date) {
-        OccupiedDriver driver = null;
-        for (OccupiedDriver d:drivers){
-            if (d.getId().equals(driverId))
-                 driver = d;
-        }
-        if(driver != null){
-            driver.addDate(date);
-        }
-    }
+
 
   */
 }

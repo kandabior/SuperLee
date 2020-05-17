@@ -1,6 +1,7 @@
 package BusinessLayer.TransportModule;
 
-import DataAccessLayer.DTO.DTO_Supplier;
+import DataAccessLayer.Transport.DTO.DTO_Store;
+import DataAccessLayer.Transport.DTO.DTO_Supplier;
 import DataAccessLayer.Transport.SuppliersMapper;
 
 import java.util.Iterator;
@@ -46,18 +47,28 @@ public class SuppliersPool {
     }
 
     public List<String> getSuppliers(int area){
+        suppliers = new LinkedList<>();
         List<String> output = new LinkedList<>();
-        for (Supplier s:suppliers) {
-            if (s.getArea() == area)
-                output.add(s.toString());
-        }
+        List<DTO_Supplier> areaSupplier = mapper.getSupplierInArea(area);
+        Iterator itr = areaSupplier.iterator();
+        while (itr.hasNext()){
+            DTO_Supplier s = (DTO_Supplier) itr.next();
+                    output.add(s.toString());
+                    suppliers.add(new Supplier(s.getId(),s.getAddress(),s.getPhoneNumber(),s.getContactName(),s.getArea()));
+            }
         return output;
-    }
+        }
+
 
     public boolean validSupplier(int id,int area) {
+        Supplier sp = null;
         for (Supplier s:suppliers) {
             if(s.getId() == id && s.getArea() == area)
-                return true;
+                sp = s;
+        }
+        if(sp != null){
+            suppliers.remove(sp);
+            return true;
         }
         return false;
     }
@@ -66,17 +77,7 @@ public class SuppliersPool {
        return mapper.getSuppliersString();
     }
     public void Update(int supplierId,String address, String phoneNumber, String contactName){
-        Supplier sp = null;
-        Iterator<Supplier> itr = suppliers.iterator();
-        while (itr.hasNext()){
-            sp =  itr.next();
-            if(sp.getId()==supplierId){
-                sp.setAddress(address);
-                sp.setPhoneNumber(phoneNumber);
-                sp.setContactName(contactName);
-            }
-        }
-        mapper.updateSupplier(supplierId);
+        mapper.updateSupplier(supplierId,address,phoneNumber,contactName);
     }
 
     public boolean isExistsId (int id){
@@ -91,11 +92,12 @@ public class SuppliersPool {
 
 
     public boolean validArea(int area) {
-        for (Supplier s:suppliers){
+       /* for (Supplier s:suppliers){
             if (s.getArea() == area)
                 return true;
         }
-        return false;
+        return false;*/
+        return mapper.validArea(area);
     }
 
    /* public Supplier getSupplier(int suppId) {

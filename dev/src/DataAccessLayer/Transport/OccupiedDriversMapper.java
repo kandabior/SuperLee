@@ -1,7 +1,6 @@
 package DataAccessLayer.Transport;
 
-import DataAccessLayer.DTO.DTO_OccupiedDriver;
-import DataAccessLayer.DTO.DTO_Truck;
+import DataAccessLayer.Transport.DTO.DTO_OccupiedDriver;
 
 import java.sql.*;
 import java.util.LinkedList;

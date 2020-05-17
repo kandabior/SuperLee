@@ -1,6 +1,7 @@
 package BusinessLayer.TransportModule;
 
-import DataAccessLayer.DTO.DTO_TransportDoc;
+import DataAccessLayer.Transport.DTO.DTO_Supplier;
+import DataAccessLayer.Transport.DTO.DTO_TransportDoc;
 import DataAccessLayer.Transport.DocsMapper;
 
 import java.util.*;
@@ -21,8 +22,13 @@ public class DocsPool {
         mapper = new DocsMapper();
     }
 
-    public void addDoc(int area, Date date, String truckId, String driverId, String driverName, List<Integer> stores, List<Integer> suppliers){
-        transportDocs.add(new TransportDoc(area,date,truckId,driverId,driverName,stores,suppliers));
+    public void addDoc(int area, Date date, String truckId, int driverId, String driverName, List<Integer> stores, List<Integer> suppliers){
+        //transportDocs.add(new DTO_TransportDoc( area,date,truckId,driverId,driverName,stores,suppliers));
+        int maxId = mapper.getMaxdocsId();
+        if(maxId >= 0) {
+            DTO_TransportDoc s = new DTO_TransportDoc(maxId + 1, area, dateToString(date), truckId , driverId , driverName, stores, suppliers, new LinkedList<>(), "PENDING", -1 );
+            mapper.addNewDoc(s);
+        }
     }
     public void addDoc(int id,int area, Date date, String truckId, String driverId, String driverName, List<Integer> stores, List<Integer> suppliers){
         transportDocs.add(new TransportDoc(id,area,date,truckId,driverId,driverName,stores,suppliers));
@@ -34,20 +40,20 @@ public class DocsPool {
                 return true;
         }
         return false;*/
-       return mapper.validTransport(docId);
+        return mapper.validTransport(docId);
     }
 
 
     public String getTruckId(int docId) {
         for (TransportDoc t:transportDocs){
             if(t.getId() == docId)
-               return t.getTruckId();
+                return t.getTruckId();
         }
         return "";
     }
 
     public List<Integer> getStoresFromDoc(int docId) {
-        TransportDoc doc = null;
+        /*TransportDoc doc = null;
         for (TransportDoc t : transportDocs) {
             if (t.getId() == docId)
                 doc = t;
@@ -55,18 +61,20 @@ public class DocsPool {
         if(doc != null){
             return doc.getStores();
         }
-        return new LinkedList<>();
+        return new LinkedList<>();*/
+        return mapper.getTransportsSites("Stores",docId);
     }
 
-    public void addItems(int docId, List<Map<Integer, Integer>> allItems) {
-        for (TransportDoc t : transportDocs) {
+    public void addItems(int docId,List<Integer> stores, List<Map<Integer, Integer>> allItems) {
+       /* for (TransportDoc t : transportDocs) {
             if (t.getId() == docId) {
                 t.setItems(allItems);
                 if(t.getFinalWeight() != -1)
                     t.setStatus(TransportDoc.Status.SUCCESS);
             }
 
-        }
+        }*/
+        mapper.addItemsToTransport(docId, stores, allItems);
     }
 
     public List<String> getFailDocs(){
@@ -195,5 +203,19 @@ public class DocsPool {
 
     public DTO_TransportDoc getDoc(int docId) {
         return mapper.getTransportDoc(docId);
+    }
+    private static Date stringToDate(String s){
+        String[] parts = s.split("/");
+        Calendar cal = Calendar.getInstance();
+        cal.set(Calendar.YEAR, Integer.parseInt(parts[2]));
+        cal.set(Calendar.MONTH, Integer.parseInt(parts[1]) - 1);//Calendar.DECEMBER);
+        cal.set(Calendar.DAY_OF_MONTH, Integer.parseInt(parts[0]));
+        return cal.getTime();
+    }
+
+    private static String dateToString(Date date){
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTime(date);
+        return calendar.get(Calendar.DATE)+"/"+(calendar.get(Calendar.MONTH)+1) +"/" + calendar.get(Calendar.YEAR);
     }
 }

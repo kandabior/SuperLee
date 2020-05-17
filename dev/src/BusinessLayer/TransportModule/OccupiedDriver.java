@@ -47,5 +47,15 @@ public class OccupiedDriver {
 
     public void addDate(Date date) {dates.add(date);    }
 
-    public void removeDate(Date date) {dates.remove(date);    }
+    public void removeDate(Date date) {Calendar calendar = Calendar.getInstance();
+        calendar.setTime(date);
+        Calendar temp = Calendar.getInstance();
+        Date toRemove = null;
+        for (Date d:dates) {
+            temp.setTime(d);
+            if((calendar.get(Calendar.YEAR) == temp.get(Calendar.YEAR)) & (calendar.get(Calendar.MONTH) == temp.get(Calendar.MONTH)) & (calendar.get(Calendar.DAY_OF_MONTH) == temp.get(Calendar.DAY_OF_MONTH)))
+                toRemove = d;
+        }
+        if (toRemove != null)
+            dates.remove(toRemove);   }
 }
