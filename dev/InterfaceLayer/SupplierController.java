@@ -9,7 +9,6 @@ import javafx.util.Pair;
 import java.util.*;
 
 public class SupplierController {
-    private List<Supplier> suppliers;
     private static SupplierController sp_instance = null;
     private Supplier supplier;
     private Agreement agreement;
@@ -22,7 +21,6 @@ public class SupplierController {
     }
 
     private SupplierController() {
-      this.suppliers = new LinkedList<>();
       this.supplier = new Supplier();
       this.agreement = new Agreement();
       this.item = new Items();
@@ -38,14 +36,6 @@ public class SupplierController {
 
     public boolean deleteSupplier(int id) {
         return this.supplier.deleteSupplier(id);
-    }
-
-    public Supplier getSuppById(int id) {
-        for(int i= 0; i<suppliers.size(); i++) {
-            if(suppliers.get(i).getId() == id)
-                return suppliers.get(i);
-        }
-        return null;
     }
 
     public boolean findSupplier(int id) {

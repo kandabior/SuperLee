@@ -1,11 +1,7 @@
 package InterfaceLayer;
-
 import DTO.OrderDTO;
 import DTO.OrderLineDTO;
 import LogicLayer.Order;
-import LogicLayer.OrderLine;
-import com.sun.org.apache.xpath.internal.operations.Or;
-import javafx.util.Pair;
 
 import java.time.LocalDate;
 import java.util.LinkedList;
@@ -18,12 +14,9 @@ public class OrderController {
 
 
     private Order order ;
-    List<Order> orders;
     private static OrderController order_sp = null;
 
     private OrderController() {
-
-        this.orders = new LinkedList<>();
         this.order= new Order();
         orderIdCounter = this.order.getOrderIdCounter();
     }
@@ -38,58 +31,17 @@ public class OrderController {
        return this.order.getSupplierDetails(id);
     }
 
- /*   public boolean addOrder(int id, List<Pair<Integer, Integer>> items, int supplierId) {
-        Order order = new Order(id, items, supplierId);
-        boolean result = order.makeOrder();
-        if (result) {
-            orders.add(order);
-            return true;
-        }
-        return false;
-    }*/
 
     public int getOrdersSize() {
         return this.order.getSize();
-        //return this.orders.size();
     }
 
-   /* public List<Pair<Integer, Integer>> getItemsInOrderById(int id) {
-        return this.orders.get(id).getItemsInOrderById();
-    }*/
-
-/*    public int getSupplierIdOfOrder(int i) {
-        return this.orders.get(i).getSupplierIdOfOrder();
-    }
-*/
 
     public double getTotalOrderMoney(int orderId) {
         return this.order.getTotalOrderMoney(orderId);
-
-
-/*
-
-
-        for (int i = 0; i < orders.size(); i++) {
-            if (orders.get(i).getId() == orderId) {
-                return orders.get(i).getTotalOrderMoney();
-            }
-        }
-        return -1;*/
-    }
-
-    public void setOrderCost(int orderId, double totalMoney) {
-        for (int i = 0; i < orders.size(); i++) {
-            if (orders.get(i).getId() == orderId) {
-                orders.get(i).setTotalCost(totalMoney);
-            }
-        }
     }
 
 
-
-    public int getOrderIdByIndex(int i) {
-        return this.orders.get(i).getId();
-    }
 
     public boolean checkIfOrderExists(int orderId) {
        return this.order.checkIfOrderExists(orderId);
@@ -101,14 +53,6 @@ public class OrderController {
 
     public String getOrderStatus(int orderId) {
         return this.order.getStatus(orderId);
-
-//        for (int i = 0; i < orders.size(); i++) {
-//            if (orders.get(i).getId() == orderId) {
-//                return orders.get(i).getStatus();
-//            }
-//        }
-
-//        return "";
     }
 
     public void makeOrders(int branchId, Map<Integer, List<List<Object>>> orderMap , Map<Integer , List<Object>> suppliersList, int day) {
@@ -133,7 +77,6 @@ public class OrderController {
             o.setItems(lines);
             o.setTotalCost(getTotalCost(lines));
             this.order.insertOrder(o);
-           // orders.add(o);
         }
     }
 
@@ -152,25 +95,4 @@ public class OrderController {
         //return this.orders.get(index).getOrdersLineByOrderIndex();
 
     }
-
-    public int getSupplierIdOfOrderByIndex(int index) {
-         return orders.get(index).getSupplierId();
-    }
-
-    public String getSupplierNameOfOrderByIndex(int index) {
-        return orders.get(index).getSupplierName();
-    }
-
-    public String getSupplierAddOfOrderByIndex(int index) {
-        return orders.get(index).getSupplierAdd();
-    }
-
-    public LocalDate getOrderDateByIndex(int index) {
-        return orders.get(index).getOrderDate();
-    }
-
-    public String getSupplierPhoneOfOrderByIndex(int index) {
-        return orders.get(index).getSupplierPhone();
-    }
-
 }
