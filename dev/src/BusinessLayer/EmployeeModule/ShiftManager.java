@@ -143,22 +143,38 @@ public class ShiftManager {
     }
 
     public void loadBranch(int branch){
-       List<Shift_DTO> shifts_of_the_current_branch = shiftMapper.loadBranch(branch);
-       loadShifts(shifts_of_the_current_branch);
+        List<Shift_DTO> shifts_manager = shiftMapper.loadShiftManager(branch);
+        loadShiftsManager(shifts_manager);
+        List<Shift_DTO> shifts_of_the_current_branch = shiftMapper.loadBranch(branch);
+        loadShifts(shifts_of_the_current_branch);
+    }
+
+    private void loadShiftsManager(List<Shift_DTO> shifts_manager) {
+        for (Shift_DTO s: shifts_manager) {
+            Shifts.add(ShiftFromShiftDTO(s));
+        }
     }
 
     public void loadShifts(List<Shift_DTO> shifts){
+        //TODO
 
     }
 
     private List<Shift_DTO> shiftDTOfromShift(Shift shift) {
-        //TODO
-        return null;
+        List<Shift_DTO> sh = new LinkedList<>();
+        for (String role : shift.getRoleInlay().keySet()) {
+            for (String name: shift.getRoleInlay().get(role)) {
+                Shift_DTO curr = new Shift_DTO(dateToString(shift.getDate()),stToString(shift.getShiftType()),Integer.parseInt(shift.getShiftManagerID()),role,name,currentBranch);
+                sh.add(curr);
+            }
+        }
+        return sh;
     }
 
-    private Shift ShiftFromShiftDTO(List<Shift_DTO> shift_dto){
-        //TODO
-        return null;
+    private Shift ShiftFromShiftDTO(Shift_DTO shift_dto){
+        Map<String,List<String>> roleInlay = new HashMap<>();
+        Shift curr = new Shift(stringToDate(shift_dto.getDate()),stringToShiftType(shift_dto.getShiftType()),String.valueOf(shift_dto.getShiftManagerID()),roleInlay,shift_dto.getBranch());
+        return curr;
     }
 
     private String stToString(ShiftType shiftType) {
@@ -198,6 +214,23 @@ public class ShiftManager {
         Calendar calendar = Calendar.getInstance();
         calendar.setTime(date);
         return calendar.get(Calendar.DATE)+"/"+(calendar.get(Calendar.MONTH)+1) +"/" + calendar.get(Calendar.YEAR);
+    }
+
+    private static Date stringToDate(String s){
+        String[] parts = s.split("/");
+        Calendar cal = Calendar.getInstance();
+        cal.set(Calendar.YEAR, Integer.parseInt(parts[2]));
+        cal.set(Calendar.MONTH, Integer.parseInt(parts[1]) - 1);//Calendar.DECEMBER);
+        cal.set(Calendar.DAY_OF_MONTH, Integer.parseInt(parts[0]));
+        return cal.getTime();
+    }
+
+    private ShiftType stringToShiftType(String shiftType) {
+        if (shiftType.equals("Morning"))
+            return ShiftType.Morning;
+        if (shiftType.equals("Evening"))
+            return ShiftType.Evening;
+        return null;
     }
 }
 
