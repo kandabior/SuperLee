@@ -19,7 +19,4 @@ public class BillOfQuantities {
         return false;
     }
 
-    public Double getDiscount(int itemId) {
-        return this.bill.get(itemId).getValue();
-    }
 }
