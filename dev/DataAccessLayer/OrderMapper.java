@@ -12,7 +12,7 @@ public class OrderMapper {
     public int getSize() {
         try {
             if (tryOpen()) {
-                Class.forName("org.sqlite.JDBC");
+                //Class.forName("org.sqlite.JDBC");
                 conn.setAutoCommit(false);
                 PreparedStatement st = conn.prepareStatement("SELECT count(*) as num FROM Orders;");
                 ResultSet res = st.executeQuery();
@@ -28,7 +28,7 @@ public class OrderMapper {
             }
             else return 0;
         } catch(Exception e){
-            System.err.println(e.getClass().getName() + ": " + e.getMessage());
+            //System.err.println(e.getClass().getName() + ": " + e.getMessage());
             tryClose();
             return 0;
         }
@@ -37,7 +37,7 @@ public class OrderMapper {
     public static boolean tryOpen()
     {
         try {
-            conn = DriverManager.getConnection("jdbc:sqlite:dev\\EOEDdatabase.db");
+            conn = DriverManager.getConnection("jdbc:sqlite:EOEDdatabase.db");
             return true;
         } catch (SQLException e) {
             e.printStackTrace();
@@ -60,7 +60,7 @@ public class OrderMapper {
         List<List<Object>> returnList = new LinkedList<>();
         try {
             if (tryOpen()) {
-                Class.forName("org.sqlite.JDBC");
+                //Class.forName("org.sqlite.JDBC");
                 conn.setAutoCommit(false);
                 PreparedStatement st = conn.prepareStatement("SELECT *  FROM  OrderLines WHERE orderId = ?  ;");
                 st.setInt(1, id);
@@ -81,7 +81,7 @@ public class OrderMapper {
             }
             else return null;
         } catch(Exception e){
-            System.err.println(e.getClass().getName() + ": " + e.getMessage());
+            //System.err.println(e.getClass().getName() + ": " + e.getMessage());
             tryClose();
             return null;
         }
@@ -92,7 +92,7 @@ public class OrderMapper {
         List<Object> suppList = new LinkedList<>();
         try {
             if (tryOpen()) {
-                Class.forName("org.sqlite.JDBC");
+                //Class.forName("org.sqlite.JDBC");
                 conn.setAutoCommit(false);
                 PreparedStatement st = conn.prepareStatement("SELECT *  FROM  Orders WHERE id = ?  ;");
                 st.setInt(1, id);
@@ -112,7 +112,7 @@ public class OrderMapper {
             }
             else return null;
         } catch(Exception e){
-            System.err.println(e.getClass().getName() + ": " + e.getMessage());
+            //System.err.println(e.getClass().getName() + ": " + e.getMessage());
             tryClose();
             return null;
         }
@@ -124,7 +124,7 @@ public class OrderMapper {
         Double totalCost =-1.0;
         try {
             if (tryOpen()) {
-                Class.forName("org.sqlite.JDBC");
+                //Class.forName("org.sqlite.JDBC");
                 conn.setAutoCommit(false);
                 PreparedStatement st = conn.prepareStatement("SELECT SUM(finalCost) as total FROM OrderLines WHERE orderId = ?  ;");
                 st.setInt(1, orderId);
@@ -138,17 +138,16 @@ public class OrderMapper {
             }
             else return totalCost;
         } catch(Exception e){
-            System.err.println(e.getClass().getName() + ": " + e.getMessage());
+            //System.err.println(e.getClass().getName() + ": " + e.getMessage());
             tryClose();
             return totalCost;
         }
     }
 
-    public String getStatud(int orderId) {
+    public String getStatus(int orderId) {
         String status ="";
         try {
             if (tryOpen()) {
-                Class.forName("org.sqlite.JDBC");
                 conn.setAutoCommit(false);
                 PreparedStatement st = conn.prepareStatement("SELECT status  FROM Orders WHERE id = ?  ;");
                 st.setInt(1, orderId);
@@ -162,7 +161,7 @@ public class OrderMapper {
             }
             else return status;
         } catch(Exception e){
-            System.err.println(e.getClass().getName() + ": " + e.getMessage());
+            //System.err.println(e.getClass().getName() + ": " + e.getMessage());
             tryClose();
             return status;
         }
@@ -173,7 +172,7 @@ public class OrderMapper {
     public boolean insertOrder(OrderDTO o) {
         try {
             if (tryOpen()) {
-                Class.forName("org.sqlite.JDBC");
+                //Class.forName("org.sqlite.JDBC");
                 conn.setAutoCommit(false);
                 PreparedStatement st = conn.prepareStatement("INSERT INTO Orders VALUES (?,?,?,?,?,?,?,?,?);");
                 st.setInt(1, o.getId());
@@ -205,7 +204,7 @@ public class OrderMapper {
             } else return false;
         } catch (Exception e) {
             tryClose();
-            System.err.println(e.getClass().getName() + ": " + e.getMessage());
+            //System.err.println(e.getClass().getName() + ": " + e.getMessage());
             return false;
         }
         return false;
@@ -215,7 +214,6 @@ public class OrderMapper {
     public boolean insertOrderLines(OrderLineDTO o) {
         try {
             if (tryOpen()) {
-                Class.forName("org.sqlite.JDBC");
                 conn.setAutoCommit(false);
                 PreparedStatement st = conn.prepareStatement("INSERT INTO OrderLines VALUES (?,?,?,?,?,?,?);");
                 st.setInt(1, o.getItemId());
@@ -239,7 +237,7 @@ public class OrderMapper {
             } else return false;
         } catch (Exception e) {
             tryClose();
-            System.err.println(e.getClass().getName() + ": " + e.getMessage());
+            //System.err.println(e.getClass().getName() + ": " + e.getMessage());
             return false;
         }
         return false;
@@ -252,7 +250,6 @@ public class OrderMapper {
         int counter = 0;
         try {
             if (tryOpen()) {
-                Class.forName("org.sqlite.JDBC");
                 conn.setAutoCommit(false);
                 PreparedStatement st = conn.prepareStatement("SELECT counter  FROM Counters WHERE name = ?;");
                 st.setString(1, "orders");
@@ -265,7 +262,7 @@ public class OrderMapper {
                 return counter;
             }
         } catch (Exception e) {
-            System.err.println(e.getClass().getName() + ": " + e.getMessage());
+            //System.err.println(e.getClass().getName() + ": " + e.getMessage());
             tryClose();
         }
         return counter;
@@ -274,7 +271,6 @@ public class OrderMapper {
     public boolean checkIfOrderExists(int orderId) {
         try {
             if (tryOpen()) {
-                Class.forName("org.sqlite.JDBC");
                 conn.setAutoCommit(false);
                 PreparedStatement st = conn.prepareStatement("SELECT * FROM Orders WHERE id = ?;");
                 st.setInt(1, orderId);
@@ -293,7 +289,7 @@ public class OrderMapper {
             }
         } catch (Exception e) {
             tryClose();
-            System.err.println(e.getClass().getName() + ": " + e.getMessage());
+            //System.err.println(e.getClass().getName() + ": " + e.getMessage());
             return false;
         }
         return false;
@@ -302,7 +298,6 @@ public class OrderMapper {
     public boolean updateOrderStatus(int orderId) {
         try {
             if (tryOpen()) {
-                Class.forName("org.sqlite.JDBC");
                 conn.setAutoCommit(false);
                 PreparedStatement st = conn.prepareStatement("UPDATE Orders SET status = ? WHERE id = ?;");
                 st.setString(1, "Complete");
@@ -321,7 +316,7 @@ public class OrderMapper {
                 return true;
             } else return false;
         } catch (Exception e) {
-            System.err.println(e.getClass().getName() + ": " + e.getMessage());
+            //System.err.println(e.getClass().getName() + ": " + e.getMessage());
             return false;
         }
 

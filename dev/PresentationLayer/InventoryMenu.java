@@ -197,7 +197,7 @@ public class InventoryMenu {
                 id_amount.add(new Pair<>(Integer.parseInt(str[0]),Integer.parseInt(str[1])));
             }
         }
-        Printer.Print(inventoryController.MakeCistomiezedOrder(Integer.parseInt(branchId),id_amount));
+        Printer.Print(inventoryController.MakeCostomiezedOrder(Integer.parseInt(branchId),id_amount));
 
 
     }

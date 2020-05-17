@@ -9,7 +9,7 @@ public class AgreementMapper {
 
     public static boolean tryOpen() {
         try {
-            conn = DriverManager.getConnection("jdbc:sqlite:dev\\EOEDdatabase.db");
+            conn = DriverManager.getConnection("jdbc:sqlite:EOEDdatabase.db");
             return true;
         } catch (SQLException e) {
             e.printStackTrace();
@@ -28,7 +28,6 @@ public class AgreementMapper {
     public void addItemToBillOfQuantities(int billId, int itemId, int itemQuantity, Double itemDiscount) {
         try {
             if (tryOpen()) {
-                Class.forName("org.sqlite.JDBC");
                 conn.setAutoCommit(false);
                 PreparedStatement st = conn.prepareStatement("INSERT INTO ItemsInBills VALUES (?,?,?,?);");
                 st.setInt(1, billId);
@@ -48,14 +47,13 @@ public class AgreementMapper {
             }
         } catch (Exception e) {
             tryClose();
-            System.err.println(e.getClass().getName() + ": " + e.getMessage());
+            //System.err.println(e.getClass().getName() + ": " + e.getMessage());
         }
     }
 
     public void changeInBillOfQuantities(int suppId, Integer itemId, Pair<Integer, Double> quantity_disc) {
         try {
             if (tryOpen()) {
-                Class.forName("org.sqlite.JDBC");
                 conn.setAutoCommit(false);
                 PreparedStatement st = conn.prepareStatement("UPDATE ItemsInBills SET quantity = ?, discount = ?" +
                         "WHERE billId = ? AND itemId = ?;");
@@ -76,7 +74,7 @@ public class AgreementMapper {
             }
         } catch (Exception e) {
             tryClose();
-            System.err.println(e.getClass().getName() + ": " + e.getMessage());
+            //System.err.println(e.getClass().getName() + ": " + e.getMessage());
         }
 
     }
@@ -84,7 +82,6 @@ public class AgreementMapper {
     public void deleteFromBillOfQuantities(int suppId, Integer itemId) {
         try {
             if (tryOpen()) {
-                Class.forName("org.sqlite.JDBC");
                 conn.setAutoCommit(false);
                 PreparedStatement st = conn.prepareStatement("DELETE FROM ItemsInBills WHERE billId = ? AND itemId = ?;");
                 st.setInt(1, suppId);
@@ -96,14 +93,13 @@ public class AgreementMapper {
             }
         } catch (Exception e) {
             tryClose();
-            System.err.println(e.getClass().getName() + ": " + e.getMessage());
+            //System.err.println(e.getClass().getName() + ": " + e.getMessage());
         }
     }
 
     public void deleteBillOfQuantities(int suppId) {
         try {
             if (tryOpen()) {
-                Class.forName("org.sqlite.JDBC");
                 conn.setAutoCommit(false);
                 PreparedStatement st = conn.prepareStatement("DELETE FROM ItemsInBills WHERE billId = ?;");
                 st.setInt(1, suppId);
@@ -124,7 +120,7 @@ public class AgreementMapper {
             }
         } catch (Exception e) {
             tryClose();
-            System.err.println(e.getClass().getName() + ": " + e.getMessage());
+            //System.err.println(e.getClass().getName() + ": " + e.getMessage());
         }
     }
 
@@ -132,7 +128,6 @@ public class AgreementMapper {
         Map<Integer, Pair<Integer, Double>> bill = new HashMap<>();
         try {
             if (tryOpen()) {
-                Class.forName("org.sqlite.JDBC");
                 conn.setAutoCommit(false);
                 PreparedStatement st = conn.prepareStatement("SELECT * FROM ItemsInBills WHERE billId = ?;");
                 st.setInt(1, suppId);
@@ -147,7 +142,7 @@ public class AgreementMapper {
             }
         } catch (Exception e) {
             tryClose();
-            System.err.println(e.getClass().getName() + ": " + e.getMessage());
+            //System.err.println(e.getClass().getName() + ": " + e.getMessage());
         }
         return bill;
     }
@@ -155,7 +150,6 @@ public class AgreementMapper {
     public int getBillSize(int suppId) {
         try {
             if (tryOpen()) {
-                Class.forName("org.sqlite.JDBC");
                 conn.setAutoCommit(false);
                 PreparedStatement st = conn.prepareStatement("SELECT count(*) as count FROM ItemsInBills WHERE billId = ?;");
                 st.setInt(1, suppId);
@@ -171,7 +165,7 @@ public class AgreementMapper {
             }
             else return 0;
         } catch(Exception e){
-            System.err.println(e.getClass().getName() + ": " + e.getMessage());
+            //System.err.println(e.getClass().getName() + ": " + e.getMessage());
             tryClose();
             return 0;
         }

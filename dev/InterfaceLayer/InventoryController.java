@@ -62,7 +62,7 @@ public class InventoryController {
 
     public String removeInventoryManager(int branchId,String username, String password , String usernameToRemove, String passwordToRemove){
         try {
-            return inventory.removeInventoryManagar(branchId,username,password,usernameToRemove);
+            return inventory.removeInventoryManager(branchId,username,password,usernameToRemove);
         }
         catch (Exception e){
             return "can't execute the action";
@@ -70,7 +70,7 @@ public class InventoryController {
     }
     public String removeGlobalManager(int branchId,String username, String password){
         try {
-            return inventory.removeGlobalManagar(branchId,username,password);
+            return inventory.removeGlobalManager(branchId,username,password);
 
         }
         catch (Exception e){
@@ -91,7 +91,7 @@ public class InventoryController {
     public String addProduct(int branchId,String username, String password, int prodid, int amount, Double costPrice, Double salePrice, LocalDate expDate, List<String> category, String manufacturer, int minAmount, String place){
         String prodName;
         try {
-            if (inventory.checkGlobalManagar(branchId,username,password)||inventory.checkInventoryManagar(branchId,username,password)) {
+            if (inventory.checkGlobalManager(branchId,username,password)||inventory.checkInventoryManager(branchId,username,password)) {
                 prodName = inventory.getItemName(prodid);
                 if(prodName!=null) {
                     return inventory.addProduct(branchId,prodid, amount, prodName, costPrice, salePrice, expDate, category, manufacturer, minAmount, place);
@@ -101,13 +101,13 @@ public class InventoryController {
             }
             return "can't add product - you are need to be a Manager";
         }catch (Exception e){
-            System.err.println(e.getClass().getName() + ": " + e.getMessage());
+            //System.err.println(e.getClass().getName() + ": " + e.getMessage());
             return "can't execute the action";
         }
     }
     public String removeProduct(int branchId,String username, String password, int prodid){
         try {
-            if (inventory.checkGlobalManagar(branchId,username,password)||inventory.checkInventoryManagar(branchId,username,password)) {
+            if (inventory.checkGlobalManager(branchId,username,password)||inventory.checkInventoryManager(branchId,username,password)) {
                 return inventory.removeProduct(branchId, prodid);
             }
             return "can't remove product - you are need to be a Manager";
@@ -127,7 +127,7 @@ public class InventoryController {
     }
     public String setSalePriceById(int branchId,String username, String password ,int prodid, Double price){
         try{
-            if(inventory.checkGlobalManagar(branchId,username, password)) {
+            if(inventory.checkGlobalManager(branchId,username, password)) {
                 return inventory.setSalePrice(branchId, prodid, price);
             }
             return "can't change price of product - you are need to be a Global Manager";
@@ -138,7 +138,7 @@ public class InventoryController {
     }
     public String setPriceByCategory(int branchId,String username, String password , List<String> category,Double price){
         try {
-            if (inventory.checkGlobalManagar(branchId,username, password)) {
+            if (inventory.checkGlobalManager(branchId,username, password)) {
                 return inventory.setPriceByCategory(branchId, category, price);
             }
             return "can't change price of product - you are need to be a Global Manager";
@@ -149,7 +149,7 @@ public class InventoryController {
     }
     public String setCategory(int branchId,String username, String password, int id, List<String> category){
         try{
-            if(inventory.checkGlobalManagar(branchId,username, password)||inventory.checkInventoryManagar(branchId,username, password)) {
+            if(inventory.checkGlobalManager(branchId,username, password)||inventory.checkInventoryManager(branchId,username, password)) {
                 return inventory.setCategory(branchId, id, category);
             }
             return "can't remove product - you are need to be a Manager";
@@ -187,18 +187,18 @@ public class InventoryController {
         try {
             List<Pair<Integer, Integer>> toBuy= inventory.NeedToBuyProductsForOrder(branchId);
             Map<Integer,Pair<Integer,Double>> orders= FacadeController.getFacadeController().makeOrder(branchId,toBuy, MainMenu.DayOfTheWeek);
-            return inventory.mannageOrders(branchId,orders);
+            return inventory.manageOrders(branchId,orders);
         }
         catch (Exception e){
             return "can't execute the action";
         }
     }
-    public String MakeCistomiezedOrder(int branchId,List<Pair<Integer, Integer>> id_amount) {
+    public String MakeCostomiezedOrder(int branchId, List<Pair<Integer, Integer>> id_amount) {
         try{
             List<Pair<Integer,Integer>> toOrder=new LinkedList<>();
             List<Integer> noOrder=new LinkedList<>();
             for(Pair<Integer,Integer> prod : id_amount){
-                if(inventory.conteinsProduct(branchId,prod.getKey())){
+                if(inventory.containsProduct(branchId,prod.getKey())){
                     toOrder.add(prod);
                 }
                 else{
@@ -210,7 +210,7 @@ public class InventoryController {
                 output="cant Order the Products: "+noOrder+"\n";
             }
             Map<Integer,Pair<Integer,Double>> orders=FacadeController.getFacadeController().makeOrder(branchId,toOrder, MainMenu.DayOfTheWeek);
-            output=output+inventory.mannageOrders(branchId,orders);
+            output=output+inventory.manageOrders(branchId,orders);
             return output;
         }
         catch (Exception e){
@@ -231,7 +231,7 @@ public class InventoryController {
             List<Pair<Integer,Integer>> toOrder= inventory.getWeeklyOrder(branchId,dayOfTheWeek);
             if(!toOrder.isEmpty()) {
                 Map<Integer, Pair<Integer, Double>> orders = FacadeController.getFacadeController().makeOrder(branchId,toOrder,dayOfTheWeek);
-                output = output + inventory.mannageOrders(branchId,orders) + "\n";
+                output = output + inventory.manageOrders(branchId,orders) + "\n";
             }
         }
         return output;

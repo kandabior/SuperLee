@@ -46,7 +46,7 @@ public class Order {
     }
 
     public String getStatus(int orderId) {
-        return this.orderMapper.getStatud(orderId);
+        return this.orderMapper.getStatus(orderId);
         /*if (this.status == Status.Complete)
             return "COMPLETE";
         return "PENDING";*/

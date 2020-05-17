@@ -10,8 +10,7 @@ public class ItemMapper {
 
     public boolean checkIfItemExist(int itemId) {
         try {
-            Class.forName("org.sqlite.JDBC");
-            conn = DriverManager.getConnection("jdbc:sqlite:dev\\EOEDdatabase.db");
+            conn = DriverManager.getConnection("jdbc:sqlite:EOEDdatabase.db");
             conn.setAutoCommit(false);
             PreparedStatement st = conn.prepareStatement("SELECT * FROM Items WHERE itemId = ?;");
             st.setInt(1, itemId);
@@ -26,15 +25,14 @@ public class ItemMapper {
             conn.close();
             return false;
         } catch (Exception e) {
-            System.err.println(e.getClass().getName() + ": " + e.getMessage());
+            //System.err.println(e.getClass().getName() + ": " + e.getMessage());
             return false;
         }
     }
 
     public boolean addItem(int itemId,String name) {
         try {
-            Class.forName("org.sqlite.JDBC");
-            conn = DriverManager.getConnection("jdbc:sqlite:dev\\EOEDdatabase.db");
+            conn = DriverManager.getConnection("jdbc:sqlite:EOEDdatabase.db");
             conn.setAutoCommit(false);
             PreparedStatement st = conn.prepareStatement("INSERT INTO Items VALUES (?,?);");
             st.setInt(1, itemId);
@@ -44,9 +42,8 @@ public class ItemMapper {
             conn.commit();
             conn.close();
             return true;
-
         } catch (Exception e) {
-            System.err.println(e.getClass().getName() + ": " + e.getMessage());
+            //System.err.println(e.getClass().getName() + ": " + e.getMessage());
             try {
                 conn.close();
             }
@@ -59,8 +56,7 @@ public class ItemMapper {
 
     public static String getName(Integer id) {
         try {
-            Class.forName("org.sqlite.JDBC");
-            conn = DriverManager.getConnection("jdbc:sqlite:dev\\EOEDdatabase.db");
+            conn = DriverManager.getConnection("jdbc:sqlite:EOEDdatabase.db");
             conn.setAutoCommit(false);
             PreparedStatement st = conn.prepareStatement("SELECT itemName FROM Items WHERE itemId = ?;");
             st.setInt(1, id);
@@ -74,7 +70,7 @@ public class ItemMapper {
             conn.close();
             return null;
         } catch (Exception e) {
-            System.err.println(e.getClass().getName() + ": " + e.getMessage());
+            //System.err.println(e.getClass().getName() + ": " + e.getMessage());
             return null;
         }
     }
@@ -82,8 +78,7 @@ public class ItemMapper {
     public List<Pair<Integer, String>> getAllItems() {
         try {
             List<Pair<Integer, String>> output= new LinkedList<>();
-            Class.forName("org.sqlite.JDBC");
-            conn = DriverManager.getConnection("jdbc:sqlite:dev\\EOEDdatabase.db");
+            conn = DriverManager.getConnection("jdbc:sqlite:EOEDdatabase.db");
             conn.setAutoCommit(false);
             PreparedStatement st = conn.prepareStatement("SELECT * FROM Items;");
             ResultSet res = st.executeQuery();
@@ -96,13 +91,11 @@ public class ItemMapper {
             return output;
         } catch (Exception e) {
             try {
-
                 conn.close();
             }
-            catch (Exception e2){
-
+            catch (Exception e2) {
             }
-            System.err.println(e.getClass().getName() + ": " + e.getMessage());
+            //System.err.println(e.getClass().getName() + ": " + e.getMessage());
             return null;
         }
 

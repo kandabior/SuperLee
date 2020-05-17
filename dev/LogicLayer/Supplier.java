@@ -16,15 +16,13 @@ public class Supplier {
     private String payment;
     private String supplySchedule;
     private String supplyLocation;
-    private List<Integer> items;
-    private Agreement agreement;
     private SupplierMapper supplierMapper = new SupplierMapper();
 
 
     public Supplier() {
     }
 
-    public Supplier(int id, String name, String phoneNum, int bankAccount, String payment, String supplySchedule, String supplyLocation, String address) {
+    public Supplier(int id, String name, String phoneNum, int bankAccount, String payment, String supplySchedule, String supplyLocation) {
         this.id = id;
         this.name = name;
         this.phoneNum = phoneNum;
@@ -32,8 +30,8 @@ public class Supplier {
         this.payment = payment;
         this.supplySchedule = supplySchedule;
         this.supplyLocation = supplyLocation;
-        this.items = new LinkedList<>();
-        this.agreement = new Agreement();
+      //  this.items = new LinkedList<>();
+      //  this.agreement = new Agreement();
     }
 
     public static boolean deleteSupplier(int id) {
@@ -66,14 +64,7 @@ public class Supplier {
         return this.supplierMapper.checkIfBillExists(agreementId);
     }
 
-
-    public int getItemIdByIndex(int i) {
-        return this.items.get(i);
-    }
-
-
     public void setItemPrice(int suppId, int itemId, double newPrice) { this.supplierMapper.setItemPrice(suppId, itemId, newPrice); }
-
 
     public Double getPriceOfAmountOfItem(int supplierId, Integer itemId, Integer amount) {
         if (this.supplierMapper.getSupplierItemsId(supplierId).contains(itemId)) {

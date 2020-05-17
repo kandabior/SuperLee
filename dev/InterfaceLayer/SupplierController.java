@@ -65,8 +65,8 @@ public class SupplierController {
         //return false;
     }
 
-    public boolean addSupplier(int id, String name, String phoneNum, int bankAccount, String payment, String supplySchedule, String supplyLocation , String address) {
-        Supplier sup = new Supplier(id, name, phoneNum, bankAccount, payment, supplySchedule, supplyLocation, address);
+    public boolean addSupplier(int id, String name, String phoneNum, int bankAccount, String payment, String supplySchedule, String supplyLocation) {
+        Supplier sup = new Supplier(id, name, phoneNum, bankAccount, payment, supplySchedule, supplyLocation);
         return sup.saveMe();
     }
 
@@ -117,10 +117,6 @@ public class SupplierController {
 
     public String getItemName( Integer itemId) {
         return this.item.getName(itemId);
-    }
-
-    public String getItemNameByIndex(int suppId, int i) {
-        return this.item.getName(getSuppById(suppId).getItemIdByIndex(i));
     }
 
     public void addItemToSupplier(int suppId, int itemId) {

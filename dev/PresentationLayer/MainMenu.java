@@ -36,10 +36,10 @@ public class MainMenu {
 
     private static void mainLoop() {
         int choose;
-        Printer.Print("Welcome To EOED Digital Storage And Suppliers Manager!");
+        Printer.Print("Welcome To EOED Digital Storage And Suppliers Manager!\n");
         do {
             Printer.Print("Day: " + (LocalDate.now().plusDays(plusDay).toString()));
-            Printer.Print("\n\nPlease choose an action:\n" +
+            Printer.Print("\nPlease choose an action:\n" +
                     "1. Enter Inventory & Reports Menu\n" +
                     "2. Enter Suppliers Menu\n" +
                     "3. Show Global Products\n" +
@@ -68,20 +68,20 @@ public class MainMenu {
                         break;
                 }
             } catch (Exception e) {
-                Printer.Print("can't execute the action");
+                Printer.Print("Can't execute the action.");
             }
         }
         while (choose != 6);
-        System.out.println("Shutting down the system..");
+        System.out.println("Shutting down the system...");
     }
 
     private static void AddGlobalProduct() {
-        Printer.Print("\nPlease enter Product Id:\n");
+        Printer.Print("\nPlease enter product Id:\n");
         String prodId = scanner.next();
         Printer.Print("\nPlease enter product name:\n");
         String amount = scanner.next();
         if (!Items.addItem(Integer.parseInt(prodId), amount)) {
-            System.out.println("product already exist, please enter different product id");
+            System.out.println("Product already exists, please enter another product id.");
         }
     }
 

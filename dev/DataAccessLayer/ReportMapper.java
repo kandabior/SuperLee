@@ -13,8 +13,7 @@ public class ReportMapper {
     public int getReportId() {
         PreparedStatement stmt = null;
         try {
-            Class.forName("org.sqlite.JDBC");
-            c = DriverManager.getConnection("jdbc:sqlite:dev\\EOEDdatabase.db");
+            c = DriverManager.getConnection("jdbc:sqlite:EOEDdatabase.db");
             c.setAutoCommit(false);
             stmt = c.prepareStatement("SELECT counter FROM Counters WHERE name=?;");
             stmt.setString(1,"reports");
@@ -44,12 +43,12 @@ public class ReportMapper {
         } catch (Exception e) {
             if (c != null) {
                 try {
-                    System.err.print("Transaction is being rolled back");
+                    //System.err.print("Transaction is being rolled back");
                     c.rollback();
                 } catch (SQLException excep) {
                 }
             }
-            System.err.println(e.getClass().getName() + ": " + e.getMessage());
+            //System.err.println(e.getClass().getName() + ": " + e.getMessage());
         }
         return 0;
 
@@ -59,9 +58,7 @@ public class ReportMapper {
     public void addReport(ReportDTO reportDTO) {
         PreparedStatement stmt = null;
         try {
-            Class.forName("org.sqlite.JDBC");
-
-            c = DriverManager.getConnection("jdbc:sqlite:dev\\EOEDdatabase.db");
+            c = DriverManager.getConnection("jdbc:sqlite:EOEDdatabase.db");
             c.setAutoCommit(false);
             stmt = c.prepareStatement("INSERT INTO Reports VALUES (?,?);");
             stmt.setInt(1, reportDTO.getReportId());
@@ -93,12 +90,12 @@ public class ReportMapper {
             e.printStackTrace();
             if (c != null) {
                 try {
-                    System.err.println("Transaction is being rolled back");
+                    //System.err.println("Transaction is being rolled back");
                     c.rollback();
                 } catch (SQLException excep) {
                 }
             }
-            System.err.println(e.getClass().getName() + ": " + e.getMessage());
+            //System.err.println(e.getClass().getName() + ": " + e.getMessage());
         }
     }
 

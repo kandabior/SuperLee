@@ -67,13 +67,14 @@ public class SupplierMenu {
 
     private static void showSuppliers() {
         List<List<Object>> suppliers = fc.getAllSuppliers();
-        if(suppliers.size()==0)
-        {
-            System.out.print("No Suppliers in the system\n");
+        if(suppliers.size()==0) {
+            System.out.print("There are no suppliers in the system.\n");
         }
         else {
             for (List<Object> list : suppliers) {
-                System.out.println("ID: " + list.get(0).toString() + "     Supplier Name : " + list.get(1) + "      Phone Number: " + list.get(2) + "     Supplier Location: " + list.get(3) + "\n");
+                System.out.println("ID: " + list.get(0).toString() + "\tSupplier Name: " + list.get(1) +
+                        "\tPhone Number: " + list.get(2) + "\tPayment: " + list.get(3) + "\tSupply Schedule: " + list.get(4) +
+                        "\tSupply Location: " + list.get(5) + "\n");
             }
         }
     }
@@ -120,12 +121,12 @@ public class SupplierMenu {
                 int branchId= (int)suppList.get(6);
 
                 System.out.println("------------------------------------------------------------------------------\n");
-                System.out.println("Supplier's name: " + supplierName + "\t" + "Supplier's address: " + supplierAddress + "\t" + "OrderId: " + orderId + "\t" + "Branch Id: " + branchId + "\n");
+                System.out.println("Supplier's name: " + supplierName + "\t" + "Supplier's address: " + supplierAddress + "\tOrderId: " + orderId + "\tBranch Id: " + branchId + "\n");
                 System.out.println("Supplier's id: " + supplierId + "\t" + "Date: " + orderDate + "\t" + "Supplier's phone: " + suppPhone + "\n");
                 System.out.println();
-                System.out.println("Item Id  " + "\t" + "Item Name " + "\t" + "Quantity " + "\t" + "    Price " + "\t" + "    Discount " + "\t" + "   Final Cost \n");
+                System.out.println("Item Id\t\tItem Name\tQuantity\tPrice\t\tDiscount\tFinal Cost\n");
                 for (int j = 0; j < list.size(); j++) {
-                    System.out.println(list.get(j).get(0) + "\t\t\t" + list.get(j).get(1) + "\t\t\t" + list.get(j).get(2) + "\t\t\t" + list.get(j).get(3) + "\t\t\t" + list.get(j).get(4) + "\t\t\t" + list.get(j).get(5) + "\n");
+                    System.out.println(list.get(j).get(0) + "\t\t" + list.get(j).get(1) + "\t\t" + list.get(j).get(2) + "\t\t" + list.get(j).get(3) + "\t\t" + list.get(j).get(4) + "\t\t" + list.get(j).get(5) + "\n");
                 }
                 System.out.println("Total amount: " + fc.getTotalOrderMoney(orderId));
                 System.out.println("Status: " + fc.getOrderStatus(orderId));
@@ -167,8 +168,6 @@ public class SupplierMenu {
         String suppName = scanner.nextLine();
         System.out.print("Phone number: ");
         String suppPhone = scanner.nextLine();
-        System.out.print("Address: ");
-        String suppAddress = scanner.nextLine();
         System.out.print("Bank account number: ");
         int suppBankAccount = scanner.nextInt();
         System.out.print("Payment method (Cash, Credit etc.): ");
@@ -178,12 +177,12 @@ public class SupplierMenu {
         String suppSchedule = scanner.nextLine();
         System.out.print("Supply location: ");
         String suppLocation = scanner.nextLine();
-        if(suppName.isEmpty() | suppPhone.isEmpty() | suppAddress.isEmpty() | suppPayment.isEmpty() | suppSchedule.isEmpty() | suppLocation.isEmpty()) {
+        if(suppName.isEmpty() | suppPhone.isEmpty() | suppPayment.isEmpty() | suppSchedule.isEmpty() | suppLocation.isEmpty()) {
             System.out.println("One or more of supplier's details is empty. Please try again.");
         }
         else {
             if (fc.addSupplier(supplierIdCounter, suppName, suppPhone, suppBankAccount, suppPayment,
-                    suppSchedule, suppLocation, suppAddress)) {
+                    suppSchedule, suppLocation)) {
                 System.out.println("Supplier added successfully. Id is: " + supplierIdCounter);
                 System.out.print("Insert supplier's items? [Y/N] ");
                 String toAdd = scanner.nextLine();
@@ -347,9 +346,13 @@ public class SupplierMenu {
             System.out.print("Choose the id of the item you want to add to this bill: ");
             int itemId = scanner.nextInt();
             while (!fc.validateItemId(suppId, itemId)) {
-                System.out.print("This supplier Does not have this item, please enter another one.\n");
+                System.out.print("This supplier does not have this item, please enter another one. To exit enter -1.\n");
                 System.out.print("Item's identifier: ");
                 itemId = scanner.nextInt();
+                if(itemId == -1) {
+                    displayManageSupplierMenu(suppId);
+                    return;
+                }
             }
             System.out.print("Enter item's amount: ");
             int itemQuantity = scanner.nextInt();
@@ -391,9 +394,13 @@ public class SupplierMenu {
         System.out.print("Item's id: ");
         int itemId = scanner.nextInt();
         while (!fc.validateItemId(suppId, itemId)) {
-            System.out.println("This supplier does not have this item, enter another one.");
+            System.out.println("This supplier does not have this item, enter another one. To exit enter -1.");
             System.out.print("Item's identifier: ");
             itemId = scanner.nextInt();
+            if(itemId == -1){
+                displayManageSupplierMenu(suppId);
+                return "n";
+            }
         }
         Iterator<Integer> iter = terms.keySet().iterator();
         for(int i = 0; i < terms.size(); i++){
@@ -405,14 +412,14 @@ public class SupplierMenu {
         }
         System.out.print("Price changed successfully. More items to update? [Y/N] ");
         Scanner scanner2 = new Scanner(System.in);
-        return  scanner2.nextLine();
+        return scanner2.nextLine();
     }
 
     public static void initiateSystem() {
         FacadeController.getFacadeController().addSupplier(supplierIdCounter++,"itay","05550004",
-                23423,"cash","Sunday","Beer-Sheva","Tveria");
+                23423,"cash","Sunday","Beer-Sheva");
         FacadeController.getFacadeController().addSupplier(supplierIdCounter++,"moshe","2342352425",
-                23333423,"cash","Saturday","Tel Aviv","Tveria");
+                23333423,"cash","Saturday","Tel Aviv");
         FacadeController.getFacadeController().addItemToAgreement(1,1,2.0);
         FacadeController.getFacadeController().addItemToSupplier(1,1);
         FacadeController.getFacadeController().addItemToAgreement(1,2,5.0);

@@ -21,8 +21,8 @@ public class FacadeController {
         return fc_instance;
     }
 
-    public boolean addSupplier(int id, String name, String phoneNum, int bankAccount, String payment, String supplySchedule, String supplyLocation , String address) {
-        return supplierController.addSupplier(id, name, phoneNum, bankAccount, payment, supplySchedule, supplyLocation , address);
+    public boolean addSupplier(int id, String name, String phoneNum, int bankAccount, String payment, String supplySchedule, String supplyLocation) {
+        return supplierController.addSupplier(id, name, phoneNum, bankAccount, payment, supplySchedule, supplyLocation);
     }
 
     public boolean deleteSupplier(int suppId) { return supplierController.deleteSupplier(suppId); }
@@ -57,10 +57,6 @@ public class FacadeController {
         this.supplierController.addItemToBillOfQuantities(suppId, itemId, itemQuantity, itemDiscount);
     }
 
-
-    public String getItemNameByIndex(int suppId, int index) {
-        return this.supplierController.getItemNameByIndex(suppId, index);
-    }
 
     public Map<Integer,Pair<Integer,Double>> makeOrder(int branchId, List<Pair<Integer,Integer>> list , int day)//return itemId , <Quantity , FinalCost>
     {

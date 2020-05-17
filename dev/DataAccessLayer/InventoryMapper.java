@@ -19,8 +19,8 @@ public class InventoryMapper {
     public boolean addInventoryManager(int branchId,String username, String password) {
         PreparedStatement stmt = null;
         try {
-            Class.forName("org.sqlite.JDBC");
-            c = DriverManager.getConnection("jdbc:sqlite:dev\\EOEDdatabase.db");
+            
+            c = DriverManager.getConnection("jdbc:sqlite:EOEDdatabase.db");
             c.setAutoCommit(false);
             stmt = c.prepareStatement("INSERT INTO InventoryManagers VALUES (?,?,?);");
             stmt.setInt(1, branchId);
@@ -33,20 +33,20 @@ public class InventoryMapper {
         } catch (Exception e) {
             if (c != null) {
                 try {
-                    System.err.print("Transaction is being rolled back");
+                    //System.err.print("Transaction is being rolled back");
                     c.rollback();
                 } catch (SQLException excep) {
                 }
             }
-            System.err.println(e.getClass().getName() + ": " + e.getMessage());
+            //System.err.println(e.getClass().getName() + ": " + e.getMessage());
             return false;
         }
     }
     public boolean addGlobalManager(int branchId,String username, String password){
         PreparedStatement stmt = null;
         try {
-            Class.forName("org.sqlite.JDBC");
-            c = DriverManager.getConnection("jdbc:sqlite:dev\\EOEDdatabase.db");
+            
+            c = DriverManager.getConnection("jdbc:sqlite:EOEDdatabase.db");
             c.setAutoCommit(false);
             stmt = c.prepareStatement("INSERT INTO GlobalManagers VALUES (?,?,?);");
             stmt.setInt(1, branchId);
@@ -59,20 +59,20 @@ public class InventoryMapper {
         } catch (Exception e) {
             if (c != null) {
                 try {
-                    System.err.print("Transaction is being rolled back");
+                    //System.err.print("Transaction is being rolled back");
                     c.rollback();
                 } catch (SQLException excep) {
                 }
             }
-            System.err.println(e.getClass().getName() + ": " + e.getMessage());
+            //System.err.println(e.getClass().getName() + ": " + e.getMessage());
             return false;
         }
     }
     public boolean isInventoryManagerExist(int branchId,String username) {
         PreparedStatement stmt = null;
         try {
-            Class.forName("org.sqlite.JDBC");
-            c = DriverManager.getConnection("jdbc:sqlite:dev\\EOEDdatabase.db");
+            
+            c = DriverManager.getConnection("jdbc:sqlite:EOEDdatabase.db");
             c.setAutoCommit(false);
             stmt = c.prepareStatement("SELECT * FROM InventoryManagers WHERE branchId=? AND userName=?;");
             stmt.setInt(1, branchId);
@@ -91,7 +91,7 @@ public class InventoryMapper {
             }
         } catch (Exception e) {
             tryClose(c);
-            System.err.println(e.getClass().getName() + ": " + e.getMessage());
+            //System.err.println(e.getClass().getName() + ": " + e.getMessage());
             return false;
         }
 
@@ -99,8 +99,8 @@ public class InventoryMapper {
     public boolean isGlobalMannagerExist(int branchId,String username) {
         PreparedStatement stmt = null;
         try {
-            Class.forName("org.sqlite.JDBC");
-            c = DriverManager.getConnection("jdbc:sqlite:dev\\EOEDdatabase.db");
+            
+            c = DriverManager.getConnection("jdbc:sqlite:EOEDdatabase.db");
             c.setAutoCommit(false);
             stmt = c.prepareStatement("SELECT * FROM GlobalManagers WHERE branchId=? AND userName=?;");
             stmt.setInt(1, branchId);
@@ -119,16 +119,16 @@ public class InventoryMapper {
             }
         } catch (Exception e) {
             tryClose(c);
-            System.err.println(e.getClass().getName() + ": " + e.getMessage());
+            //System.err.println(e.getClass().getName() + ": " + e.getMessage());
             return false;
         }
 
     }
-    public boolean checkGlobalManagar(int branchId,String username, String password) {
+    public boolean checkGlobalManager(int branchId,String username, String password) {
         PreparedStatement stmt = null;
         try {
-            Class.forName("org.sqlite.JDBC");
-            c = DriverManager.getConnection("jdbc:sqlite:dev\\EOEDdatabase.db");
+            
+            c = DriverManager.getConnection("jdbc:sqlite:EOEDdatabase.db");
             c.setAutoCommit(false);
             stmt = c.prepareStatement("SELECT password FROM GlobalManagers WHERE branchId=? AND userName=?;");
             stmt.setInt(1, branchId);
@@ -148,16 +148,16 @@ public class InventoryMapper {
             }
         } catch (Exception e) {
             tryClose(c);
-            System.err.println(e.getClass().getName() + ": " + e.getMessage());
+            //System.err.println(e.getClass().getName() + ": " + e.getMessage());
             return false;
         }
 
     }
-    public boolean checkInventoryManagar(int branchId,String username, String password) {
+    public boolean checkInventoryManager(int branchId,String username, String password) {
         PreparedStatement stmt = null;
         try {
-            Class.forName("org.sqlite.JDBC");
-            c = DriverManager.getConnection("jdbc:sqlite:dev\\EOEDdatabase.db");
+            
+            c = DriverManager.getConnection("jdbc:sqlite:EOEDdatabase.db");
             c.setAutoCommit(false);
             stmt = c.prepareStatement("SELECT password FROM InventoryManagers WHERE branchId=? AND userName=?;");
             stmt.setInt(1, branchId);
@@ -175,15 +175,15 @@ public class InventoryMapper {
             }
         } catch (Exception e) {
             tryClose(c);
-            System.err.println(e.getClass().getName() + ": " + e.getMessage());
+            //System.err.println(e.getClass().getName() + ": " + e.getMessage());
             return false;
         }
     }
-    public boolean removeInventoryManagar(int branchId,String usernameToRemove) {
+    public boolean removeInventoryManager(int branchId,String usernameToRemove) {
         PreparedStatement stmt = null;
         try {
-            Class.forName("org.sqlite.JDBC");
-            c = DriverManager.getConnection("jdbc:sqlite:dev\\EOEDdatabase.db");
+            
+            c = DriverManager.getConnection("jdbc:sqlite:EOEDdatabase.db");
             c.setAutoCommit(false);
             stmt = c.prepareStatement("DELETE FROM InventoryManagers WHERE branchId=? AND userName=?;");
             stmt.setInt(1, branchId);
@@ -198,17 +198,17 @@ public class InventoryMapper {
             } catch (SQLException ex) {
                 ex.printStackTrace();
             }
-            System.out.println(e.getClass().getName() + ": " + e.getMessage());
+            ////System.out.println(e.getClass().getName() + ": " + e.getMessage());
         }
         return false;
 
 
     }
-    public boolean removeGlobalManagar(int branchId,String username, String password) {
+    public boolean removeGlobalManager(int branchId,String username, String password) {
         PreparedStatement stmt = null;
         try {
-            Class.forName("org.sqlite.JDBC");
-            c = DriverManager.getConnection("jdbc:sqlite:dev\\EOEDdatabase.db");
+            
+            c = DriverManager.getConnection("jdbc:sqlite:EOEDdatabase.db");
             c.setAutoCommit(false);
             stmt = c.prepareStatement("DELETE FROM GlobalManagers WHERE branchId=? AND userName=? AND password=?;");
             stmt.setInt(1, branchId);
@@ -224,7 +224,7 @@ public class InventoryMapper {
             } catch (SQLException ex) {
                 ex.printStackTrace();
             }
-            System.out.println(e.getClass().getName() + ": " + e.getMessage());
+            //System.out.println(e.getClass().getName() + ": " + e.getMessage());
         }
         return false;
 
@@ -236,8 +236,8 @@ public class InventoryMapper {
     public  boolean CreateNewInventory(Integer branchId) {
         PreparedStatement stmt = null;
         try {
-            Class.forName("org.sqlite.JDBC");
-            c = DriverManager.getConnection("jdbc:sqlite:dev\\EOEDdatabase.db");
+            
+            c = DriverManager.getConnection("jdbc:sqlite:EOEDdatabase.db");
             c.setAutoCommit(false);
             stmt = c.prepareStatement("INSERT INTO Inventory VALUES (?,1);");
             stmt.setString(1, String.valueOf(branchId));
@@ -248,11 +248,11 @@ public class InventoryMapper {
         } catch (Exception e) {
             if (c != null) {
                 try {
-                    System.err.print("Transaction is being rolled back");
+                    //System.err.print("Transaction is being rolled back");
                     c.rollback();
                 } catch (SQLException excep) {
                 }
-                System.out.println(e.getClass().getName() + ": " + e.getMessage());
+                //System.out.println(e.getClass().getName() + ": " + e.getMessage());
             }
             return false;
         }
@@ -260,8 +260,8 @@ public class InventoryMapper {
     public  boolean addProduct(int branchId, int id, String name, Double costPrice, Double salePrice, LocalDate expDate, List<String> category, String manufacturer, int minAmount, String place) {
         PreparedStatement stmt=null;
         try{
-            Class.forName("org.sqlite.JDBC");
-            c = DriverManager.getConnection("jdbc:sqlite:dev\\EOEDdatabase.db");
+            
+            c = DriverManager.getConnection("jdbc:sqlite:EOEDdatabase.db");
             c.setAutoCommit(false);
             stmt = c.prepareStatement("INSERT INTO Products VALUES (?,?,?,?,?,?,?,?,?);");
             stmt.setInt(1, branchId);
@@ -275,6 +275,7 @@ public class InventoryMapper {
             stmt.setString(9, place);
             stmt.executeUpdate();
             for(String cat : category) {
+                //System.out.println(cat);
                 stmt = c.prepareStatement("INSERT INTO Categories VALUES (?,?,?);");
                 stmt.setInt(1, branchId);
                 stmt.setInt(2, id);
@@ -302,15 +303,15 @@ public class InventoryMapper {
             } catch (SQLException ex) {
                 ex.printStackTrace();
             }
-            System.out.println(e.getClass().getName() + ": " + e.getMessage());
+            //System.out.println(e.getClass().getName() + ": " + e.getMessage());
         }
         return false;
     }
     public  String getProductName(int branchId, int prodId) {
         PreparedStatement stmt=null;
         try{
-            Class.forName("org.sqlite.JDBC");
-            c = DriverManager.getConnection("jdbc:sqlite:dev\\EOEDdatabase.db");
+            
+            c = DriverManager.getConnection("jdbc:sqlite:EOEDdatabase.db");
             c.setAutoCommit(false);
             stmt = c.prepareStatement("SELECT name FROM Products WHERE branchId=? AND productId=?;");
             stmt.setInt(1, branchId);
@@ -324,15 +325,15 @@ public class InventoryMapper {
                 return output;
             }
         } catch ( Exception e ) {
-            System.err.println( e.getClass().getName() + ": " + e.getMessage() );
+            //System.err.println( e.getClass().getName() + ": " + e.getMessage() );
         }
         return "Product Id :" + prodId + " Does not exist in inventory number " + branchId;
     }
     public  String removeProduct(int branchId, int id) {
         PreparedStatement stmt=null;
         try{
-            Class.forName("org.sqlite.JDBC");
-            c = DriverManager.getConnection("jdbc:sqlite:dev\\EOEDdatabase.db");
+            
+            c = DriverManager.getConnection("jdbc:sqlite:EOEDdatabase.db");
             c.setAutoCommit(false);
             stmt = c.prepareStatement("DELETE FROM Products WHERE branchId=? AND productId=?;");
             stmt.setInt(1, branchId);
@@ -367,15 +368,15 @@ public class InventoryMapper {
             } catch (SQLException ex) {
                 ex.printStackTrace();
             }
-            System.out.println(e.getClass().getName() + ": " + e.getMessage());
+            //System.out.println(e.getClass().getName() + ": " + e.getMessage());
         }
         return "cant removed this product";
     }
     public  boolean addNewAmountProductToQuantities(int branchId, int id, int amount) {
         PreparedStatement stmt=null;
         try{
-            Class.forName("org.sqlite.JDBC");
-            c = DriverManager.getConnection("jdbc:sqlite:dev\\EOEDdatabase.db");
+            
+            c = DriverManager.getConnection("jdbc:sqlite:EOEDdatabase.db");
             c.setAutoCommit(false);
             stmt = c.prepareStatement("INSERT INTO Quantities VALUES (?,?,?,?);");
             stmt.setInt(1, branchId);
@@ -392,15 +393,15 @@ public class InventoryMapper {
             } catch (SQLException ex) {
                 ex.printStackTrace();
             }
-            System.out.println(e.getClass().getName() + ": " + e.getMessage());
+            //System.out.println(e.getClass().getName() + ": " + e.getMessage());
         }
         return false;
     }
     public  boolean addAmountToProduct(int branchId, int id, int currentAmount,int toAddAmount) { //adding half to storage half to shelf
         PreparedStatement stmt = null;
         try{
-            Class.forName("org.sqlite.JDBC");
-            c = DriverManager.getConnection("jdbc:sqlite:dev\\EOEDdatabase.db");
+            
+            c = DriverManager.getConnection("jdbc:sqlite:EOEDdatabase.db");
             c.setAutoCommit(false);
             stmt = c.prepareStatement("UPDATE Quantities SET storageQuantity=? WHERE branchId=? AND productId=?;");
             stmt.setInt(1, toAddAmount+currentAmount);
@@ -417,15 +418,15 @@ public class InventoryMapper {
             } catch (SQLException ex) {
                 ex.printStackTrace();
             }
-            System.out.println(e.getClass().getName() + ": " + e.getMessage());
+            //System.out.println(e.getClass().getName() + ": " + e.getMessage());
         }
         return false;
     }
     public  String removeAmountFromProductShelf(int branchId, int id, int amount) {
         PreparedStatement stmt=null;
         try{
-            Class.forName("org.sqlite.JDBC");
-            c = DriverManager.getConnection("jdbc:sqlite:dev\\EOEDdatabase.db");
+            
+            c = DriverManager.getConnection("jdbc:sqlite:EOEDdatabase.db");
             c.setAutoCommit(false);
             stmt = c.prepareStatement("UPDATE Quantities SET shelfQuantity = shelfQuantity-? WHERE branchId=? AND productId=? ;");
             stmt.setInt(1, amount);
@@ -441,15 +442,15 @@ public class InventoryMapper {
             } catch (SQLException ex) {
                 ex.printStackTrace();
             }
-            System.out.println(e.getClass().getName() + ": " + e.getMessage());
+            //System.out.println(e.getClass().getName() + ": " + e.getMessage());
         }
         return "cant removed this amount of product";
     }
     public  String removeAmountFromProductStorage(int branchId, int id, int amount) {
         PreparedStatement stmt=null;
         try{
-            Class.forName("org.sqlite.JDBC");
-            c = DriverManager.getConnection("jdbc:sqlite:dev\\EOEDdatabase.db");
+            
+            c = DriverManager.getConnection("jdbc:sqlite:EOEDdatabase.db");
             c.setAutoCommit(false);
             stmt = c.prepareStatement("UPDATE Quantities SET storageQuantity = storageQuantity-? WHERE branchId=? AND productId=? ;");
             stmt.setInt(1, amount);
@@ -465,15 +466,15 @@ public class InventoryMapper {
             } catch (SQLException ex) {
                 ex.printStackTrace();
             }
-            System.out.println(e.getClass().getName() + ": " + e.getMessage());
+            //System.out.println(e.getClass().getName() + ": " + e.getMessage());
         }
         return "cant removed this amount of product";
     }
     public  boolean setSalePrice(int branchId, int id, Double price) {
         PreparedStatement stmt=null;
         try{
-            Class.forName("org.sqlite.JDBC");
-            c = DriverManager.getConnection("jdbc:sqlite:dev\\EOEDdatabase.db");
+            
+            c = DriverManager.getConnection("jdbc:sqlite:EOEDdatabase.db");
             c.setAutoCommit(false);
             stmt = c.prepareStatement("UPDATE Products SET salePrice = ? WHERE branchId=? AND productId=?;");
             stmt.setDouble(1, price);
@@ -495,15 +496,14 @@ public class InventoryMapper {
             } catch (SQLException ex) {
                 ex.printStackTrace();
             }
-            System.err.println(e.getClass().getName() + ": " + e.getMessage());
+            //System.err.println(e.getClass().getName() + ": " + e.getMessage());
         }
         return false;
     }
     public  int getProductMin(int branchId, int prodId) {
         PreparedStatement stmt=null;
         try{
-            Class.forName("org.sqlite.JDBC");
-            c = DriverManager.getConnection("jdbc:sqlite:dev\\EOEDdatabase.db");
+            c = DriverManager.getConnection("jdbc:sqlite:EOEDdatabase.db");
             c.setAutoCommit(false);
             stmt = c.prepareStatement("SELECT minAmount FROM Products WHERE branchId=? AND productId=?;");
             stmt.setInt(1,branchId);
@@ -517,7 +517,7 @@ public class InventoryMapper {
                 return ans;
             }
         } catch ( Exception e ) {
-            System.err.println( e.getClass().getName() + ": " + e.getMessage() );
+            //System.err.println( e.getClass().getName() + ": " + e.getMessage() );
             tryClose(c);
         }
         return -1;
@@ -525,8 +525,8 @@ public class InventoryMapper {
     public  String setCategory(int branchId, int id, List<String> category) {
         PreparedStatement stmt=null;
         try{
-            Class.forName("org.sqlite.JDBC");
-            c = DriverManager.getConnection("jdbc:sqlite:dev\\EOEDdatabase.db");
+            
+            c = DriverManager.getConnection("jdbc:sqlite:EOEDdatabase.db");
             c.setAutoCommit(false);
             //remove previous categories
             for(String cat: category) {
@@ -553,7 +553,7 @@ public class InventoryMapper {
             return "Categories updated successfully for product: "+id+" in branch: "+branchId;
 
         } catch ( Exception e ) {
-            System.err.println( e.getClass().getName() + ": " + e.getMessage() );
+            //System.err.println( e.getClass().getName() + ": " + e.getMessage() );
             tryClose(c);
             return "Failed to update categories for product: "+id+" in branch: "+branchId;
         }
@@ -561,8 +561,8 @@ public class InventoryMapper {
     public  boolean updateExpired(Integer branchId, Integer prodId, Integer amount) {
         PreparedStatement stmt=null;
         try{
-            Class.forName("org.sqlite.JDBC");
-            c = DriverManager.getConnection("jdbc:sqlite:dev\\EOEDdatabase.db");
+            
+            c = DriverManager.getConnection("jdbc:sqlite:EOEDdatabase.db");
             c.setAutoCommit(false);
             stmt = c.prepareStatement("SELECT amount FROM Expireds WHERE branchId=? AND productId=?;");
             stmt.setString(1, String.valueOf(branchId));
@@ -594,16 +594,15 @@ public class InventoryMapper {
             }
         } catch ( Exception e ) {
             tryClose(c);
-            System.err.println( e.getClass().getName() + ": " + e.getMessage() );
+            //System.err.println( e.getClass().getName() + ": " + e.getMessage() );
             return false;
         }
-        //"TODO//check";
     }
     public  boolean addExpired(Integer branchId, Integer prodId, Integer amount) {
         PreparedStatement stmt=null;
         try{
-            Class.forName("org.sqlite.JDBC");
-            c = DriverManager.getConnection("jdbc:sqlite:dev\\EOEDdatabase.db");
+            
+            c = DriverManager.getConnection("jdbc:sqlite:EOEDdatabase.db");
             c.setAutoCommit(false);
             stmt=c.prepareStatement("INSERT INTO Expireds values (?,?,?)");
             stmt.setInt(1,branchId);
@@ -621,16 +620,15 @@ public class InventoryMapper {
 
         } catch ( Exception e ) {
             tryClose(c);
-            System.err.println( e.getClass().getName() + ": " + e.getMessage() );
+            //System.err.println( e.getClass().getName() + ": " + e.getMessage() );
             return false;
         }
-        //TODO//IMPlEMENT";
     }
     public  boolean shelfToStorage(int branchId, int id, int amount) {
         PreparedStatement stmt=null;
         try{
-            Class.forName("org.sqlite.JDBC");
-            c = DriverManager.getConnection("jdbc:sqlite:dev\\EOEDdatabase.db");
+            
+            c = DriverManager.getConnection("jdbc:sqlite:EOEDdatabase.db");
             c.setAutoCommit(false);
             stmt = c.prepareStatement("SELECT shelfQuantity, storageQuantity FROM Quantities WHERE branchId=? AND productId=?;");
             stmt.setString(1, String.valueOf(branchId));
@@ -671,7 +669,7 @@ public class InventoryMapper {
             }
         } catch ( Exception e ) {
             tryClose(c);
-            System.err.println( e.getClass().getName() + ": " + e.getMessage() );
+            //System.err.println( e.getClass().getName() + ": " + e.getMessage() );
             return false;
         }
         //TODO: check
@@ -679,8 +677,8 @@ public class InventoryMapper {
     public  boolean storageToShelf(int branchId, int id, int amount) {
         PreparedStatement stmt=null;
         try{
-            Class.forName("org.sqlite.JDBC");
-            c = DriverManager.getConnection("jdbc:sqlite:dev\\EOEDdatabase.db");
+            
+            c = DriverManager.getConnection("jdbc:sqlite:EOEDdatabase.db");
             c.setAutoCommit(false);
             stmt = c.prepareStatement("SELECT shelfQuantity, storageQuantity FROM Quantities WHERE branchId=? AND productId=?;");
             stmt.setString(1, String.valueOf(branchId));
@@ -721,20 +719,15 @@ public class InventoryMapper {
             }
         } catch ( Exception e ) {
             tryClose(c);
-            System.err.println( e.getClass().getName() + ": " + e.getMessage() );
+            //System.err.println( e.getClass().getName() + ": " + e.getMessage() );
             return false;
         }
-        //TODO: check
+
     }
-//    public static List<Pair<Integer,Integer>> getProductQuantity(int branchId) {
-//        //"TODO//IMPlEMENT";
-//        return -1;
-//    }
     public  int getProductQuantity(int branchId, Integer id) {
         PreparedStatement stmt=null;
         try{
-            Class.forName("org.sqlite.JDBC");
-            c = DriverManager.getConnection("jdbc:sqlite:dev\\EOEDdatabase.db");
+                        c = DriverManager.getConnection("jdbc:sqlite:EOEDdatabase.db");
             c.setAutoCommit(false);
             stmt = c.prepareStatement("SELECT shelfQuantity, storageQuantity FROM Quantities WHERE branchId=? AND productId=?;");
             stmt.setInt(1, branchId);
@@ -757,17 +750,14 @@ public class InventoryMapper {
         } catch ( Exception e ) {
 
             tryClose(c);
-            System.err.println( e.getClass().getName() + ": " + e.getMessage() );
+            //System.err.println( e.getClass().getName() + ": " + e.getMessage() );
             return 0;
         }
-        //TODO: check
-
     }
     public  int getShelfQunatity(int branchId, Integer id) {
         PreparedStatement stmt=null;
         try{
-            Class.forName("org.sqlite.JDBC");
-            c = DriverManager.getConnection("jdbc:sqlite:dev\\EOEDdatabase.db");
+                        c = DriverManager.getConnection("jdbc:sqlite:EOEDdatabase.db");
             c.setAutoCommit(false);
             stmt = c.prepareStatement("SELECT shelfQuantity FROM Quantities WHERE branchId=? AND productId=?;");
             stmt.setInt(1, branchId);
@@ -787,7 +777,7 @@ public class InventoryMapper {
             }
         } catch ( Exception e ) {
             tryClose(c);
-            System.err.println( e.getClass().getName() + ": " + e.getMessage() );
+            //System.err.println( e.getClass().getName() + ": " + e.getMessage() );
             return 0;
         }
 
@@ -795,8 +785,7 @@ public class InventoryMapper {
     public  int getStorageQunatity(int branchId, Integer id) {
         PreparedStatement stmt=null;
         try{
-            Class.forName("org.sqlite.JDBC");
-            c = DriverManager.getConnection("jdbc:sqlite:dev\\EOEDdatabase.db");
+            c = DriverManager.getConnection("jdbc:sqlite:EOEDdatabase.db");
             c.setAutoCommit(false);
             stmt = c.prepareStatement("SELECT storageQuantity FROM Quantities WHERE branchId=? AND productId=?;");
             stmt.setInt(1, branchId);
@@ -816,15 +805,14 @@ public class InventoryMapper {
             }
         } catch ( Exception e ) {
             tryClose(c);
-            System.err.println( e.getClass().getName() + ": " + e.getMessage() );
+            //System.err.println( e.getClass().getName() + ": " + e.getMessage() );
             return 0;
         }
     }
     public  int getExpiredQuantity(int branchId, Integer id) {
         PreparedStatement stmt=null;
         try{
-            Class.forName("org.sqlite.JDBC");
-            c = DriverManager.getConnection("jdbc:sqlite:dev\\EOEDdatabase.db");
+            c = DriverManager.getConnection("jdbc:sqlite:EOEDdatabase.db");
             c.setAutoCommit(false);
             stmt = c.prepareStatement("SELECT amount FROM Expireds WHERE branchId=? AND productId=?;");
             stmt.setInt(1, branchId);
@@ -844,7 +832,7 @@ public class InventoryMapper {
             }
         } catch ( Exception e ) {
             tryClose(c);
-            System.err.println( e.getClass().getName() + ": " + e.getMessage() );
+            //System.err.println( e.getClass().getName() + ": " + e.getMessage() );
             return 0;
         }
     }
@@ -852,8 +840,7 @@ public class InventoryMapper {
         PreparedStatement stmt=null;
         try{
             List<Double> output=new LinkedList<>();
-            Class.forName("org.sqlite.JDBC");
-            c = DriverManager.getConnection("jdbc:sqlite:dev\\EOEDdatabase.db");
+            c = DriverManager.getConnection("jdbc:sqlite:EOEDdatabase.db");
             c.setAutoCommit(false);
             stmt = c.prepareStatement("SELECT lastSalePrice FROM LastSalePrices WHERE branchId=? AND productId=?;");
             stmt.setInt(1, branchId);
@@ -867,67 +854,57 @@ public class InventoryMapper {
             return output;
         } catch ( Exception e ) {
             tryClose(c);
-            System.err.println( e.getClass().getName() + ": " + e.getMessage() );
+            //System.err.println( e.getClass().getName() + ": " + e.getMessage() );
             return new LinkedList<>();
         }
     }
     public  List<Double> getCostPrices(int branchId, int id) {
         PreparedStatement stmt=null;
-        try{
-            List<Double> output=new LinkedList<>();
-            Class.forName("org.sqlite.JDBC");
-            c = DriverManager.getConnection("jdbc:sqlite:dev\\EOEDdatabase.db");
+        try {
+            List<Double> output = new LinkedList<>();
+            c = DriverManager.getConnection("jdbc:sqlite:EOEDdatabase.db");
             c.setAutoCommit(false);
             stmt = c.prepareStatement("SELECT lastCostPrice FROM LastCostPrices WHERE branchId=? AND productId=?;");
             stmt.setInt(1, branchId);
             stmt.setInt(2, id);
             ResultSet rs = stmt.executeQuery();
-            if(rs.next()) {
+            while (rs.next()) {
                 output.add(rs.getDouble("lastCostPrice"));
             }
-            else {
-                rs.close();
-                stmt.close();
-                c.close();
-                return output;
-            }
+
+            rs.close();
             stmt.close();
             c.close();
             return output;
         } catch ( Exception e ) {
             tryClose(c);
-            System.err.println( e.getClass().getName() + ": " + e.getMessage() );
+            //System.err.println( e.getClass().getName() + ": " + e.getMessage() );
             return new LinkedList<>();
         }
 
     }
     public  List<Integer> getBranchIdsToWeeklyOrders(int dayOfTheWeek) {
         PreparedStatement stmt=null;
-        try{
-            List<Integer> output=new LinkedList<>();
-            Class.forName("org.sqlite.JDBC");
-            c = DriverManager.getConnection("jdbc:sqlite:dev\\EOEDdatabase.db");
+        try {
+            List<Integer> output = new LinkedList<>();
+            c = DriverManager.getConnection("jdbc:sqlite:EOEDdatabase.db");
             c.setAutoCommit(false);
             stmt = c.prepareStatement("SELECT branchId FROM Inventory WHERE dayForWeeklyOrder=?;");
             stmt.setInt(1, dayOfTheWeek);
             ResultSet rs = stmt.executeQuery();
-            if(rs.next()) {
-                if(!output.contains(rs.getInt("branchId"))) {
+            while (rs.next()) {
+                if (!output.contains(rs.getInt("branchId"))) {
                     output.add(rs.getInt("branchId"));
                 }
             }
-            else {
-                rs.close();
-                stmt.close();
-                c.close();
-                return output;
-            }
+
+            rs.close();
             stmt.close();
             c.close();
             return output;
         } catch ( Exception e ) {
             tryClose(c);
-            System.err.println( e.getClass().getName() + ": " + e.getMessage() );
+            //System.err.println( e.getClass().getName() + ": " + e.getMessage() );
             return new LinkedList<>();
         }
     }
@@ -943,8 +920,7 @@ public class InventoryMapper {
     public  boolean isBranchExist(int branchId) {
         PreparedStatement stmt=null;
         try{
-            Class.forName("org.sqlite.JDBC");
-            c = DriverManager.getConnection("jdbc:sqlite:dev\\EOEDdatabase.db");
+            c = DriverManager.getConnection("jdbc:sqlite:EOEDdatabase.db");
             c.setAutoCommit(false);
             stmt = c.prepareStatement("SELECT branchId FROM Inventory WHERE branchId=?;");
             stmt.setInt(1, branchId);
@@ -963,7 +939,7 @@ public class InventoryMapper {
             }
         } catch ( Exception e ) {
             tryClose(c);
-            System.err.println( e.getClass().getName() + ": " + e.getMessage() );
+            //System.err.println( e.getClass().getName() + ": " + e.getMessage() );
             return false;
         }
 
@@ -971,8 +947,7 @@ public class InventoryMapper {
     public  boolean isInventoryConteinsProd(int branchId, int prodId) {
         PreparedStatement stmt=null;
         try{
-            Class.forName("org.sqlite.JDBC");
-            c = DriverManager.getConnection("jdbc:sqlite:dev\\EOEDdatabase.db");
+            c = DriverManager.getConnection("jdbc:sqlite:EOEDdatabase.db");
             c.setAutoCommit(false);
             stmt = c.prepareStatement("SELECT * FROM Products WHERE branchId=? AND productId=?;");
             stmt.setInt(1, branchId);
@@ -992,15 +967,14 @@ public class InventoryMapper {
             }
         } catch ( Exception e ) {
             tryClose(c);
-            System.err.println( e.getClass().getName() + ": " + e.getMessage() );
+            //System.err.println( e.getClass().getName() + ": " + e.getMessage() );
             return false;
         }
     }
     public  double getCurrentCostPrices(int branchId, Integer prodId) {
         PreparedStatement stmt=null;
         try{
-            Class.forName("org.sqlite.JDBC");
-            c = DriverManager.getConnection("jdbc:sqlite:dev\\EOEDdatabase.db");
+            c = DriverManager.getConnection("jdbc:sqlite:EOEDdatabase.db");
             c.setAutoCommit(false);
             stmt = c.prepareStatement("SELECT costPrice FROM Products WHERE branchId=? AND productId=?;");
             stmt.setInt(1, branchId);
@@ -1021,7 +995,7 @@ public class InventoryMapper {
             }
         } catch ( Exception e ) {
             tryClose(c);
-            System.err.println( e.getClass().getName() + ": " + e.getMessage() );
+            //System.err.println( e.getClass().getName() + ": " + e.getMessage() );
             return 0;
         }
 
@@ -1030,8 +1004,7 @@ public class InventoryMapper {
     public  void setCostPrice(int branchId, Integer prodId, double newPrice) {
         PreparedStatement stmt=null;
         try{
-            Class.forName("org.sqlite.JDBC");
-            c = DriverManager.getConnection("jdbc:sqlite:dev\\EOEDdatabase.db");
+            c = DriverManager.getConnection("jdbc:sqlite:EOEDdatabase.db");
             c.setAutoCommit(false);
             stmt = c.prepareStatement("UPDATE Products SET costPrice= ? WHERE branchId=? AND productId=?;");
             stmt.setDouble(1, newPrice);
@@ -1059,7 +1032,7 @@ public class InventoryMapper {
             }
         } catch ( Exception e ) {
             tryClose(c);
-            System.err.println( e.getClass().getName() + ": " + e.getMessage() );
+            //System.err.println( e.getClass().getName() + ": " + e.getMessage() );
         }
     }
 
@@ -1067,8 +1040,7 @@ public class InventoryMapper {
         PreparedStatement stmt=null;
         try{
             List<Integer> output=new LinkedList<>();
-            Class.forName("org.sqlite.JDBC");
-            c = DriverManager.getConnection("jdbc:sqlite:dev\\EOEDdatabase.db");
+            c = DriverManager.getConnection("jdbc:sqlite:EOEDdatabase.db");
             c.setAutoCommit(false);
             stmt = c.prepareStatement("SELECT productId FROM Products WHERE branchId=?;");
             stmt.setInt(1, branchId);
@@ -1082,7 +1054,7 @@ public class InventoryMapper {
             return output;
         } catch ( Exception e ) {
             tryClose(c);
-            System.err.println( e.getClass().getName() + ": " + e.getMessage() );
+            //System.err.println( e.getClass().getName() + ": " + e.getMessage() );
             return new LinkedList<>();
         }
 
@@ -1092,8 +1064,7 @@ public class InventoryMapper {
         PreparedStatement stmt=null;
         try{
             List<String> output=new LinkedList<>();
-            Class.forName("org.sqlite.JDBC");
-            c = DriverManager.getConnection("jdbc:sqlite:dev\\EOEDdatabase.db");
+            c = DriverManager.getConnection("jdbc:sqlite:EOEDdatabase.db");
             c.setAutoCommit(false);
             stmt = c.prepareStatement("SELECT category FROM Categories WHERE branchId=? AND productId=?;");
             stmt.setInt(1, branchId);
@@ -1108,7 +1079,7 @@ public class InventoryMapper {
             return output;
         } catch ( Exception e ) {
             tryClose(c);
-            System.err.println( e.getClass().getName() + ": " + e.getMessage() );
+            //System.err.println( e.getClass().getName() + ": " + e.getMessage() );
             return new LinkedList<>();
         }
     }
@@ -1117,8 +1088,7 @@ public class InventoryMapper {
         PreparedStatement stmt=null;
         try{
             List<Integer> output=new LinkedList<>();
-            Class.forName("org.sqlite.JDBC");
-            c = DriverManager.getConnection("jdbc:sqlite:dev\\EOEDdatabase.db");
+            c = DriverManager.getConnection("jdbc:sqlite:EOEDdatabase.db");
             c.setAutoCommit(false);
             stmt = c.prepareStatement("SELECT productId FROM Expireds WHERE branchId=?;");
             stmt.setInt(1, branchId);
@@ -1131,7 +1101,7 @@ public class InventoryMapper {
             return output;
         } catch ( Exception e ) {
             tryClose(c);
-            System.err.println( e.getClass().getName() + ": " + e.getMessage() );
+            //System.err.println( e.getClass().getName() + ": " + e.getMessage() );
             return new LinkedList<>();
         }
 
@@ -1140,8 +1110,7 @@ public class InventoryMapper {
     public  boolean isExpiredContainProduct(int branchId, int productId) {
         PreparedStatement stmt=null;
         try{
-            Class.forName("org.sqlite.JDBC");
-            c = DriverManager.getConnection("jdbc:sqlite:dev\\EOEDdatabase.db");
+            c = DriverManager.getConnection("jdbc:sqlite:EOEDdatabase.db");
             c.setAutoCommit(false);
             stmt = c.prepareStatement("SELECT * FROM Expireds WHERE branchId=? AND productId=?;");
             stmt.setInt(1, branchId);
@@ -1161,7 +1130,7 @@ public class InventoryMapper {
             }
         } catch ( Exception e ) {
             tryClose(c);
-            System.err.println( e.getClass().getName() + ": " + e.getMessage() );
+            //System.err.println( e.getClass().getName() + ": " + e.getMessage() );
             return false;
         }
 
@@ -1170,8 +1139,7 @@ public class InventoryMapper {
     public  boolean setWeeklyOrder(int branchId, int day) {
         PreparedStatement stmt=null;
         try{
-            Class.forName("org.sqlite.JDBC");
-            c = DriverManager.getConnection("jdbc:sqlite:dev\\EOEDdatabase.db");
+            c = DriverManager.getConnection("jdbc:sqlite:EOEDdatabase.db");
             c.setAutoCommit(false);
             stmt = c.prepareStatement("INSERT INTO Inventory VALUES (?,?)");
             stmt.setInt(1, branchId);
@@ -1187,7 +1155,7 @@ public class InventoryMapper {
             return output1;
         } catch ( Exception e ) {
             tryClose(c);
-            System.err.println( e.getClass().getName() + ": " + e.getMessage() );
+            //System.err.println( e.getClass().getName() + ": " + e.getMessage() );
             return false;
         }
     }
@@ -1195,8 +1163,7 @@ public class InventoryMapper {
     public  boolean AddToWeeklyOrder(int branchId, Integer key, Integer value, int day) {
         PreparedStatement stmt=null;
         try{
-            Class.forName("org.sqlite.JDBC");
-            c = DriverManager.getConnection("jdbc:sqlite:dev\\EOEDdatabase.db");
+            c = DriverManager.getConnection("jdbc:sqlite:EOEDdatabase.db");
             c.setAutoCommit(false);
             stmt=c.prepareStatement("INSERT INTO WeeklyOrders values (?,?,?,?)");
             stmt.setInt(1,branchId);
@@ -1215,7 +1182,7 @@ public class InventoryMapper {
 
         } catch ( Exception e ) {
             tryClose(c);
-            System.err.println( e.getClass().getName() + ": " + e.getMessage() );
+            //System.err.println( e.getClass().getName() + ": " + e.getMessage() );
 
         }
         return false;
@@ -1224,8 +1191,7 @@ public class InventoryMapper {
     public  boolean isWeeklyContainProd(int branchId,Integer ids,int day) {
         PreparedStatement stmt=null;
         try{
-            Class.forName("org.sqlite.JDBC");
-            c = DriverManager.getConnection("jdbc:sqlite:dev\\EOEDdatabase.db");
+            c = DriverManager.getConnection("jdbc:sqlite:EOEDdatabase.db");
             c.setAutoCommit(false);
             stmt = c.prepareStatement("SELECT * FROM WeeklyOrders WHERE branchId=? AND dayOfTheWeek=?;");
             stmt.setInt(1, branchId);
@@ -1245,7 +1211,7 @@ public class InventoryMapper {
             }
         } catch ( Exception e ) {
             tryClose(c);
-            System.err.println( e.getClass().getName() + ": " + e.getMessage() );
+            //System.err.println( e.getClass().getName() + ": " + e.getMessage() );
             return false;
         }
 
@@ -1254,8 +1220,7 @@ public class InventoryMapper {
     public  void removeFromWeeklyOrder(int branchId, Integer id, int day) {
         PreparedStatement stmt=null;
         try{
-            Class.forName("org.sqlite.JDBC");
-            c = DriverManager.getConnection("jdbc:sqlite:dev\\EOEDdatabase.db");
+            c = DriverManager.getConnection("jdbc:sqlite:EOEDdatabase.db");
             c.setAutoCommit(false);
             stmt=c.prepareStatement("DELETE FROM WeeklyOrders WHERE branchId=? AND productId=? AND dayOfTheWeek=?");
             stmt.setInt(1,branchId);
@@ -1273,7 +1238,7 @@ public class InventoryMapper {
 
         } catch ( Exception e ) {
             tryClose(c);
-            System.err.println( e.getClass().getName() + ": " + e.getMessage() );
+            //System.err.println( e.getClass().getName() + ": " + e.getMessage() );
 
         }
     }
@@ -1282,8 +1247,7 @@ public class InventoryMapper {
         PreparedStatement stmt=null;
         try{
             List<Pair<Integer,Integer>> output=new LinkedList<>();
-            Class.forName("org.sqlite.JDBC");
-            c = DriverManager.getConnection("jdbc:sqlite:dev\\EOEDdatabase.db");
+            c = DriverManager.getConnection("jdbc:sqlite:EOEDdatabase.db");
             c.setAutoCommit(false);
             stmt = c.prepareStatement("SELECT productId, amount FROM WeeklyOrders WHERE branchId=? AND dayOfTheWeek=?;");
             stmt.setInt(1, branchId);
@@ -1298,7 +1262,7 @@ public class InventoryMapper {
             return output;
         } catch ( Exception e ) {
             tryClose(c);
-            System.err.println( e.getClass().getName() + ": " + e.getMessage() );
+            //System.err.println( e.getClass().getName() + ": " + e.getMessage() );
             return new LinkedList<>();
         }
 
@@ -1309,8 +1273,7 @@ public class InventoryMapper {
     public boolean weeklyOrderDayExist(int branchId, int day) {
         PreparedStatement stmt=null;
         try{
-            Class.forName("org.sqlite.JDBC");
-            c = DriverManager.getConnection("jdbc:sqlite:dev\\EOEDdatabase.db");
+            c = DriverManager.getConnection("jdbc:sqlite:EOEDdatabase.db");
             c.setAutoCommit(false);
             stmt = c.prepareStatement("SELECT * FROM Inventory WHERE branchId=? AND dayForWeeklyOrder=?;");
             stmt.setInt(1, branchId);
@@ -1330,10 +1293,8 @@ public class InventoryMapper {
             }
         } catch ( Exception e ) {
             tryClose(c);
-            System.err.println( e.getClass().getName() + ": " + e.getMessage() );
+            //System.err.println( e.getClass().getName() + ": " + e.getMessage() );
             return false;
         }
-
-
     }
 }
