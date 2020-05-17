@@ -1,9 +1,6 @@
 package BusinessLayer.TransportModule;
 
 
-import DataAccessLayer.Transport.DTO.DTO_Store;
-import DataAccessLayer.Transport.StoresMapper;
-
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
@@ -11,7 +8,6 @@ import java.util.List;
 public class StoresPool {
 
     private LinkedList<Store> stores;
-    private StoresMapper mapper;
 
     private static StoresPool ourInstance = new StoresPool();
 
@@ -22,7 +18,6 @@ public class StoresPool {
     private StoresPool() {
 
         stores = new LinkedList<Store>();
-        mapper = new StoresMapper();
     }
 
     public void addStore(String address, String phoneNumber, String contactName, int area){
@@ -71,21 +66,10 @@ public class StoresPool {
     }
 
     public List<String> getStoresStrings(List<Integer> docStores) {
-        /*List<String> output = new LinkedList<>();
+        List<String> output = new LinkedList<>();
         Iterator itr = docStores.iterator();
         while (itr.hasNext()){
             output.add(getStore((Integer)itr.next()).toString());
-        }
-        return output;*/
-        List<String> output = new LinkedList<>();
-        List<DTO_Store> allStores = mapper.getAllStores();
-        Iterator itr = docStores.iterator();
-        while (itr.hasNext()){
-            int storeId = (Integer) itr.next();
-            for (DTO_Store s: allStores) {
-                if(storeId == s.getId())
-                    output.add(s.toString());
-            }
         }
         return output;
     }

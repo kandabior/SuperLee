@@ -1,4 +1,4 @@
-package DataAccessLayer.Transport.DTO;
+package BusinessLayer.TransportModule.DTO;
 
 public class DTO_Site {
     private int id;

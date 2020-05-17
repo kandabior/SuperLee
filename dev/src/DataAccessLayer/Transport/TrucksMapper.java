@@ -1,7 +1,7 @@
 package DataAccessLayer.Transport;
 
 
-import DataAccessLayer.Transport.DTO.DTO_Truck;
+import BusinessLayer.TransportModule.DTO.DTO_Truck;
 
 import java.sql.*;
 import java.util.LinkedList;
