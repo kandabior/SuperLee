@@ -10,7 +10,7 @@ import java.util.*;
 
 public class EmployeesMenu {
 
-    Service service = new Service();
+    Service service = Service.getInstance();
     int currentBranch;
 
     public static void main() {
@@ -20,7 +20,6 @@ public class EmployeesMenu {
 
     private void startSystem(){
         try {
-            //createDB();//TODO remove
             while (true) {
                 System.out.println("Welcome to the employee department!\n" +
                         "Select a branch:\n" +
@@ -84,7 +83,7 @@ public class EmployeesMenu {
                 case 2:
                     System.out.println("enter employee ID:");
                     String ID=ans.nextLine();
-                    if(!service.employeeExist(ID)|| service.employeeAvailable(ID))
+                    if(!(service.employeeExist(ID)|| service.employeeAvailable(ID)))
                         System.out.println("not exist/available ID!");
                     else{
                         handleSingleEmplyee(ID);
@@ -570,118 +569,5 @@ public class EmployeesMenu {
         shiftTypes.add("C1");
         System.out.println("Select the employee's license:");
         return chooseFromList(shiftTypes);
-    }
-
-
-
-    //TODO remove , just for check
-    private void createDB() {
-        service.loadBranch(2);
-        addHistory();
-        addRequirements();
-        createEmloyees();
-    }
-
-    private void createEmloyees() {
-        //LOAD
-        Date d1 = null;
-        Date d2 = null;
-        try {
-            d1 = new SimpleDateFormat("dd/MM/yyyy").parse("20/04/2020");
-            d2 = new SimpleDateFormat("dd/MM/yyyy").parse("21/04/2020");
-
-        } catch (ParseException e) {
-            e.printStackTrace();
-        }
-        try {
-            service.addWorker("Raviv", "315", "a lot ", "555", 30000, d1,null);
-            service.setSupervisor("1", true);
-            service.setSupervisor("2", true);
-        }
-        catch (Exception e){
-
-        }
-
-        service.addRole("2","cashier");
-        service.addRole("2","storekeeper");
-
-    }
-
-    private void addHistory() {
-        Date d1 = null;
-        Date d2 = null;
-        try {
-            d1 = new SimpleDateFormat("dd/MM/yyyy").parse("20/04/2020");
-            d2 = new SimpleDateFormat("dd/MM/yyyy").parse("21/04/2020");
-
-        } catch (ParseException e) {
-            e.printStackTrace();
-        }
-
-        String m = "Morning";
-        String e = "Evening";
-
-        String empMan1 = "m1";
-        String empMan2 = "m2";
-
-        Map<String,List<String>> wo1 = new HashMap<String, List<String>>();
-        List<String> names1 = new LinkedList<String>();
-        names1.add("yossi");
-        List<String> names2 = new LinkedList<String>();
-        names2.add("Moshe");
-        names2.add("Dani");
-        wo1.put("cashier",names1);
-        wo1.put("storekeeper",names2);
-
-        Map<String,List<String>> wo2 = new HashMap<String, List<String>>();
-        List<String> names3 = new LinkedList<String>();
-        names3.add("Ran");
-        List<String> names4 = new LinkedList<String>();
-        names4.add("Dani");
-        wo2.put("cashier",names3);
-        wo2.put("storekeeper",names4);
-
-        service.addShift(d1,m,empMan1,wo1);
-        service.addShift(d2,e,empMan2,wo2);
-    }
-
-    private void addRequirements() {
-        String sun = "Sunday";
-        String mon = "Monday";
-        String thu = "Thursday";
-        String wen = "Wednesday";
-        String tue = "Tuesday";
-        String fri = "Friday";
-        String sat = "Saturday";
-
-        String m = "Morning";
-        String e = "Evening";
-
-        Map<String, Integer> r1 = new HashMap<String, Integer>();
-        r1.put("cashier",1);
-        Map<String, Integer> r2 = new HashMap<String, Integer>();
-        r2.put("cashier",1);
-        r2.put("storekeeper",2);
-        Map<String, Integer> r3 = new HashMap<String, Integer>();
-        r3.put("cashier",1);
-        r3.put("storekeeper",1);
-        Map<String, Integer> r4 = new HashMap<String, Integer>();
-        r4.put("storekeeper",1);
-        Map<String, Integer> r5 = new HashMap<String, Integer>();
-        r5.put("cashier",1);
-        r5.put("storekeeper",3);
-        Map<String, Integer> r6 = new HashMap<String, Integer>();
-        r6.put("cashier",2);
-        Map<String, Integer> r7 = new HashMap<String, Integer>();
-        r7.put("cashier",1);
-        r7.put("storekeeper",4);
-
-        service.editRequirements(sun,m,r1);
-        service.editRequirements(mon,m,r2);
-        service.editRequirements(thu,e,r3);
-        service.editRequirements(wen,m,r4);
-        service.editRequirements(tue,e,r5);
-        service.editRequirements(fri,m,r6);
-        service.editRequirements(sat,m,r7);
     }
 }

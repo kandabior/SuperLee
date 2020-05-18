@@ -32,6 +32,10 @@ public class EmployeeDTO {
         this.startOfEmployment = startOfEmployment;
         this.employeeId = employeeId;
         this.constrains = constrains;
+        if(this.constrains==null)
+        {
+            this.constrains=new LinkedList<>();
+        }
         this.branch = branch;
         this.license=license;
     }
@@ -48,6 +52,10 @@ public class EmployeeDTO {
         this.startOfEmployment = startOfEmployment;
         this.employeeId = employeeId;
         this.constrains = constrains;
+        if(this.constrains==null)
+        {
+            this.constrains=new LinkedList<>();
+        }
         this.branch = branch;
         this.license=license;
     }

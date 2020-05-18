@@ -144,7 +144,7 @@ public class Employee {
                 ", salary=" + salary +
                 ", startOfEmployment=" + startOfEmployment + "\'\n\t" +
                 ", employeeId='" + employeeId + '\'' +
-                ", constrains=" + constrains +
+                ", constrains=" + constrains.toString() +
                 "\n";
     }
 

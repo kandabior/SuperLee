@@ -17,4 +17,11 @@ public class Constrain {
         return day;
     }
 
+    @Override
+    public String toString() {
+        return "Constrain{" +
+                "shiftType=" + shiftType +
+                ", day=" + day +
+                '}';
+    }
 }

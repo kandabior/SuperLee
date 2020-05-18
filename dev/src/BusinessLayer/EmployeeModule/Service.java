@@ -6,11 +6,17 @@ import java.util.Map;
 
 
 public class Service {
-
+    private static Service service;
     private ShiftManager shiftManager;
     private EmployeesManager employeesManager;
 
-    public Service(){
+    public  static Service getInstance()
+    {
+        if(service==null)
+            service=new Service();
+        return service;
+    }
+    private Service(){
         shiftManager = new ShiftManager();
         employeesManager=new EmployeesManager();
     }
