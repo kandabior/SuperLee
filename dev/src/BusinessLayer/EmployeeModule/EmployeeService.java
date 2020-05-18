@@ -6,7 +6,7 @@ import java.util.List;
 public class EmployeeService {
     Service service;
     public EmployeeService(){
-        service=new Service();
+        service=Service.getInstance();  
     }
     public List<Integer> getStores  (Date date){
         return service.getStoresWithStoreKeeper(date);
