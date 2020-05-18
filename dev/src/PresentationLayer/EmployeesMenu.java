@@ -10,7 +10,7 @@ import java.util.*;
 
 public class EmployeesMenu {
 
-    Service service = new Service();
+    Service service = Service.getInstance();
     int currentBranch;
 
     public static void main() {
