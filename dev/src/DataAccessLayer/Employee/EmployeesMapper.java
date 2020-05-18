@@ -40,7 +40,7 @@ public class EmployeesMapper {
             if (tryOpen()) {
                 Class.forName("org.sqlite.JDBC");
                 con.setAutoCommit(false);
-                PreparedStatement statement = con.prepareStatement("SELECT * FROM Employees WHERE branch = ?;");
+                PreparedStatement statement = con.prepareStatement("SELECT * FROM Employees WHERE branch =?;");
                 statement.setInt(1, branch);
                 ResultSet res = statement.executeQuery();
                 while (res.next()) {
@@ -84,7 +84,9 @@ public class EmployeesMapper {
                 statement.setInt(7,employeeDTO.getSalary());
                 statement.setString(8,unParseDate(employeeDTO.getStartOfEmployment()));
                 statement.setInt(9,employeeDTO.getBranch());
-                statement.setString(6,employeeDTO.getLicense());
+                statement.setString(10,employeeDTO.getLicense());
+                statement.setString(11,employeeDTO.getEmployeeId());
+
                 int rowNum = statement.executeUpdate();
                 deleteOldConstrainsAddNew(employeeDTO);
                 deleteOldRolesAddNew(employeeDTO);
@@ -217,7 +219,7 @@ public class EmployeesMapper {
         List<String> newRoles=employeeDTO.getRoles();
         if(newRoles!=null) {
             for (String role : newRoles) {
-                PreparedStatement insertStatement = con.prepareStatement("INSERT INTO EmployeeRoles (EID,Role   ) VALUES (?,?) ;");
+                PreparedStatement insertStatement = con.prepareStatement("INSERT INTO EmployeeRoles (EID,Role) VALUES (?,?) ;");
                 insertStatement.setInt(1, Integer.parseInt(employeeDTO.getEmployeeId()));
                 insertStatement.setString(2, role);
                 insertStatement.execute();
@@ -243,7 +245,7 @@ public class EmployeesMapper {
         }
     }
     private Date parseDate(String startOfEmployment) {
-        String woDay=startOfEmployment.substring(startOfEmployment.indexOf("/"));
+        String woDay=startOfEmployment.substring(startOfEmployment.indexOf("/")+1);
 
         int day=Integer.parseInt(startOfEmployment.substring(0,startOfEmployment.indexOf("/")));
         int month=Integer.parseInt(woDay.substring(0,startOfEmployment.indexOf("/")));

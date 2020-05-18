@@ -84,7 +84,7 @@ public class EmployeesMenu {
                 case 2:
                     System.out.println("enter employee ID:");
                     String ID=ans.nextLine();
-                    if(!service.employeeExist(ID)|| service.employeeAvailable(ID))
+                    if(!(service.employeeExist(ID)|| service.employeeAvailable(ID)))
                         System.out.println("not exist/available ID!");
                     else{
                         handleSingleEmplyee(ID);
