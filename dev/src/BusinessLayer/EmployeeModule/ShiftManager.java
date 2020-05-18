@@ -145,6 +145,7 @@ public class ShiftManager {
     }
 
     public void loadBranch(int branch){
+        Shifts = new LinkedList<>();
         List<String[]> shifts_manager = shiftMapper.loadShiftManager(branch);
         if(shifts_manager != null) {
             loadShiftsManager(shifts_manager);
@@ -162,8 +163,17 @@ public class ShiftManager {
 
     public void loadShifts(List<Shift_DTO> shiftsDTO){
         for (Shift_DTO shDTO: shiftsDTO) {
-            int index = Shifts.indexOf(stringToDate(shDTO.getDate()));
-            Shifts.get(index).getRoleInlay().get(shDTO.getRole()).add(shDTO.getName());
+            for (Shift s: Shifts){
+                if(dateToString(s.getDate()).equals(shDTO.getDate())&& stToString(s.getShiftType()).equals(shDTO.getShiftType())){
+                    if(s.getRoleInlay().get(shDTO.getRole())!= null)
+                        s.getRoleInlay().get(shDTO.getRole()).add(shDTO.getName());
+                    else {
+                        List<String> names = new LinkedList<>();
+                        names.add(shDTO.getName());
+                        s.getRoleInlay().put(shDTO.getRole(),names);
+                    }
+                }
+            }
         }
     }
 

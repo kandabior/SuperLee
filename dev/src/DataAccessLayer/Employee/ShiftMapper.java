@@ -16,7 +16,7 @@ public class ShiftMapper {
             if (tryOpen()) {
                 Class.forName("org.sqlite.JDBC");
                 con.setAutoCommit(false);
-                PreparedStatement statement = con.prepareStatement("SELECT * FROM Shifts where Shifts.branch =(?);");
+                PreparedStatement statement = con.prepareStatement("SELECT * FROM Shifts where branch =(?);");
                 statement.setInt(1, branch);
                 ResultSet result = statement.executeQuery();
                 while (result.next()) {
@@ -40,7 +40,7 @@ public class ShiftMapper {
             if (tryOpen()) {
                 Class.forName("org.sqlite.JDBC");
                 con.setAutoCommit(false);
-                PreparedStatement statement = con.prepareStatement("SELECT * FROM ShiftsManager where Shifts.branch =(?);");
+                PreparedStatement statement = con.prepareStatement("SELECT * FROM ShiftsManager where branch =(?);");
                 statement.setInt(1, branch);
                 ResultSet result = statement.executeQuery();
                 while (result.next()) {
@@ -59,22 +59,38 @@ public class ShiftMapper {
     }
 
     public void deleteShift(String date , String shiftType, int branch) {
-        deleteShift("Shifts",date,shiftType,branch);
-    }
-
-    public void deleteSM(String date, String shiftType , int branch) {
-        deleteShift("ShiftsManager",date,shiftType,branch);
-    }
-
-    void deleteShift(String table, String date, String shiftType, int branch){
         try {
             if (tryOpen()) {
                 Class.forName("org.sqlite.JDBC");
                 con.setAutoCommit(false);
-                PreparedStatement st = con.prepareStatement("DELETE FROM (?) WHERE date = (?) AND shiftType= (?) AND branch = (?);");
-                st.setString(1, table);
-                st.setString(2, date);
-                st.setString(3, shiftType);
+                PreparedStatement st = con.prepareStatement("DELETE FROM Shifts WHERE date = (?) AND shiftType= (?) AND branch = (?);");
+                st.setString(1, date);
+                st.setString(2, shiftType);
+                st.setInt(3, branch);
+                int rowNum = st.executeUpdate();
+                st.close();
+                if (rowNum != 0) {
+                    con.commit();
+                    con.close();
+                } else {
+                    con.rollback();
+                    con.close();
+                }
+            }
+        } catch (Exception e) {
+            tryClose();
+            System.err.println(e.getClass().getName() + ": " + e.getMessage());
+        }
+    }
+
+    public void deleteSM(String date, String shiftType , int branch) {
+        try {
+            if (tryOpen()) {
+                Class.forName("org.sqlite.JDBC");
+                con.setAutoCommit(false);
+                PreparedStatement st = con.prepareStatement("DELETE FROM ShiftsMandaer WHERE date = (?) AND shiftType= (?) AND branch = (?);");
+                st.setString(1, date);
+                st.setString(2, shiftType);
                 st.setInt(3, branch);
                 int rowNum = st.executeUpdate();
                 st.close();
@@ -93,31 +109,33 @@ public class ShiftMapper {
     }
 
     public void add(List<Shift_DTO> shift) {
-        for (Shift_DTO s:shift) {
+
             try {
                 if (tryOpen()) {
                     Class.forName("org.sqlite.JDBC");
                     con.setAutoCommit(false);
-                    PreparedStatement statement = con.prepareStatement("INSERT INTO Shifts VALUES (?,?,?,?,?);");
-                    statement.setString(1,s.getDate() );
-                    statement.setString(2, s.getShiftType());
-                    statement.setString(3, s.getRole());
-                    statement.setString(4, s.getName());
-                    statement.setInt(4, s.getBranch());
-                    int rowNum = statement.executeUpdate();
-                    if (rowNum != 0) {
-                        con.commit();
-                        con.close();
-                    } else {
-                        con.rollback();
-                        con.close();
+                    for (Shift_DTO s : shift) {
+                        PreparedStatement statement = con.prepareStatement("INSERT INTO Shifts VALUES (?,?,?,?,?);");
+                        statement.setString(1, s.getDate());
+                        statement.setString(2, s.getShiftType());
+                        statement.setString(3, s.getRole());
+                        statement.setString(4, s.getName());
+                        statement.setInt(5, s.getBranch());
+                        int rowNum = statement.executeUpdate();
+                        if (rowNum != 0) {
+                            con.commit();
+                            statement.close();
+                        } else {
+                            con.rollback();
+                            con.close();
+                        }
                     }
-                    statement.close();
+                    con.close();
                 }
             } catch (Exception e) {
                 System.err.println(e.getClass().getName() + ": " + e.getMessage());
             }
-        }
+
     }
 
     public void addSM(String date, String shiftType, String employeeManager, int currentBranch) {
@@ -155,7 +173,7 @@ public class ShiftMapper {
                 statement.setString(2, shiftType);
                 statement.setString(3, role);
                 statement.setInt(4, quantity);
-                statement.setInt(4, branch);
+                statement.setInt(5, branch);
                 int rowNum = statement.executeUpdate();
                 if (rowNum != 0) {
                     con.commit();
@@ -202,8 +220,9 @@ public class ShiftMapper {
             if (tryOpen()) {
                 Class.forName("org.sqlite.JDBC");
                 con.setAutoCommit(false);
-                PreparedStatement statement = con.prepareStatement("SELECT distinct branch FROM Shifts where Shifts.role =(?);");
+                PreparedStatement statement = con.prepareStatement("SELECT distinct branch FROM Shifts where role =(?) and shiftType =(?);");
                 statement.setString(1, "storekeeper");
+                statement.setString(1, "Morning");
                 ResultSet result = statement.executeQuery();
                 while (result.next()) {
                     Stores.add(result.getInt(1));

@@ -8,6 +8,7 @@ import java.util.List;
 
 import static org.junit.Assert.*;
 
+/*
 public class PoolTest {
     String truckId = "12-234-45";
 
@@ -22,38 +23,38 @@ public class PoolTest {
 
     @org.junit.Before
     public void setUp() throws Exception {
-            pool.addDriver("100", "Moshe", "C1");
-            pool.addDriver("101", "Yossi", "C");
-            pool.addTruck("13-113-13", "2015", 13, 20);
-            pool.addTruck("14-114-14", "2018", 10, 20);
-            pool.addStore(100,"ashdod1", "0988888", "a1", 1);
-            pool.addStore(101,"ashdod2", "0977777", "a2", 1);
-            pool.addStore(102,"ashdod3", "0966666", "a3", 2);
-            pool.addSupplier(200,"ashdod4", "0955555", "s1", 1);
-            pool.addSupplier(201,"ashdod5", "0944444", "s2", 1);
-            stores = new LinkedList<>();
-            stores.add(1);
-            stores.add(2);
-            suppliers = new LinkedList<>();
-            suppliers.add(4);
-            Calendar cal = Calendar.getInstance();
-            cal.set(Calendar.YEAR, 2020);
-            cal.set(Calendar.MONTH, 12 - 1);//Calendar.DECEMBER);
-            cal.set(Calendar.DAY_OF_MONTH, 1);
-            date = cal.getTime();
-            cal.set(Calendar.YEAR, 2020);
-            cal.set(Calendar.MONTH, 11 - 1);//Calendar.NOVEMBER);
-            cal.set(Calendar.DAY_OF_MONTH, 1);
-            date2 = cal.getTime();
-            pool.addDoc(300,1, date2, "13-113-13", "101", "Yossi", stores, suppliers);
-            pool.addDateToTruck("13-113-13", date2);
-            pool.addDateToDriver("101", date2);
-            pool.addDoc(302,1, date2, "14-114-14", "100", "Moshe", stores, suppliers);
-            pool.addDateToTruck("14-114-14", date2);
-            pool.addDateToDriver("100", date2);
-            pool.addDoc(303,1, date, "14-114-14", "101", "Yossi", stores, suppliers);
-            pool.addDateToTruck("14-114-14", date);
-            pool.addDateToDriver("101", date);
+        pool.addDriver("100", "Moshe", "C1");
+        pool.addDriver("101", "Yossi", "C");
+        pool.addTruck("13-113-13", "2015", 13, 20);
+        pool.addTruck("14-114-14", "2018", 10, 20);
+        pool.addStore(100,"ashdod1", "0988888", "a1", 1);
+        pool.addStore(101,"ashdod2", "0977777", "a2", 1);
+        pool.addStore(102,"ashdod3", "0966666", "a3", 2);
+        pool.addSupplier(200,"ashdod4", "0955555", "s1", 1);
+        pool.addSupplier(201,"ashdod5", "0944444", "s2", 1);
+        stores = new LinkedList<>();
+        stores.add(1);
+        stores.add(2);
+        suppliers = new LinkedList<>();
+        suppliers.add(4);
+        Calendar cal = Calendar.getInstance();
+        cal.set(Calendar.YEAR, 2020);
+        cal.set(Calendar.MONTH, 12 - 1);//Calendar.DECEMBER);
+        cal.set(Calendar.DAY_OF_MONTH, 1);
+        date = cal.getTime();
+        cal.set(Calendar.YEAR, 2020);
+        cal.set(Calendar.MONTH, 11 - 1);//Calendar.NOVEMBER);
+        cal.set(Calendar.DAY_OF_MONTH, 1);
+        date2 = cal.getTime();
+        pool.addDoc(300,1, date2, "13-113-13", "101", "Yossi", stores, suppliers);
+        pool.addDateToTruck("13-113-13", date2);
+        pool.addDateToDriver("101", date2);
+        pool.addDoc(302,1, date2, "14-114-14", "100", "Moshe", stores, suppliers);
+        pool.addDateToTruck("14-114-14", date2);
+        pool.addDateToDriver("100", date2);
+        pool.addDoc(303,1, date, "14-114-14", "101", "Yossi", stores, suppliers);
+        pool.addDateToTruck("14-114-14", date);
+        pool.addDateToDriver("101", date);
     }
 
     @org.junit.After
@@ -139,9 +140,9 @@ public class PoolTest {
 
     @org.junit.Test
     public void validLicense() {
-       assertFalse(pool.validLicense("C8"));
-       assertTrue(pool.validLicense("C"));
-       assertTrue(pool.validLicense("C1"));
+        assertFalse(pool.validLicense("C8"));
+        assertTrue(pool.validLicense("C"));
+        assertTrue(pool.validLicense("C1"));
 
     }
 
@@ -152,4 +153,4 @@ public class PoolTest {
         assertTrue(pool.validTruck("14-114-14",date2));
 
     }
-}
+}*/
