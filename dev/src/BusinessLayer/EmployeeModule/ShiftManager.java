@@ -145,6 +145,7 @@ public class ShiftManager {
     }
 
     public void loadBranch(int branch){
+        currentBranch = branch;
         Shifts = new LinkedList<>();
         List<String[]> shifts_manager = shiftMapper.loadShiftManager(branch);
         if(shifts_manager != null) {
