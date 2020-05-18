@@ -22,7 +22,7 @@ public class ShiftManager {
         Pair<Day,ShiftType> newShift = new Pair<Day, ShiftType>(day,shiftType);
         requirements.put(newShift,roles);
         for (String rol:roles.keySet()) {
-            shiftMapper.addRequirements(dayToString(day),stToString(shiftType),rol,roles.get(rol));
+            shiftMapper.addRequirements(dayToString(day),stToString(shiftType),rol,roles.get(rol),currentBranch);
         }
     }
 
@@ -31,7 +31,7 @@ public class ShiftManager {
         for (Pair<Day,ShiftType> curr : requirements.keySet()) {
             if (curr.newEquals(check)) {
                 requirements.remove(curr);
-                shiftMapper.deleteReq(dayToString(day),stToString(shiftType));
+                shiftMapper.deleteReq(dayToString(day),stToString(shiftType),currentBranch);
                 break;
             }
         }
@@ -50,6 +50,7 @@ public class ShiftManager {
         Shift shift = new Shift(date,shiftType,employeeManager,workers,currentBranch);
         Shifts.add(shift);
         shiftMapper.add(shiftDTOfromShift(shift));
+        shiftMapper.addSM(dateToString(date),stToString(shiftType),employeeManager,currentBranch);
     }
 
     public boolean ShiftExists(Date date, ShiftType shiftType) {
@@ -64,7 +65,8 @@ public class ShiftManager {
         for (Shift s: Shifts) {
             if(s.getDate().equals(date) && s.getShiftType().equals(shiftType)) {
                 Shifts.remove(s);
-                shiftMapper.deleteShift(dateToString(s.getDate()),currentBranch,stToString(s.getShiftType()));
+                shiftMapper.deleteShift(dateToString(s.getDate()),stToString(s.getShiftType()),currentBranch);
+                shiftMapper.deleteSM(dateToString(date),stToString(shiftType),currentBranch);
             }
         }
     }
@@ -143,37 +145,42 @@ public class ShiftManager {
     }
 
     public void loadBranch(int branch){
-        List<Shift_DTO> shifts_manager = shiftMapper.loadShiftManager(branch);
-        loadShiftsManager(shifts_manager);
-        List<Shift_DTO> shifts_of_the_current_branch = shiftMapper.loadBranch(branch);
-        loadShifts(shifts_of_the_current_branch);
-    }
-
-    private void loadShiftsManager(List<Shift_DTO> shifts_manager) {
-        for (Shift_DTO s: shifts_manager) {
-            Shifts.add(ShiftFromShiftDTO(s));
+        List<String[]> shifts_manager = shiftMapper.loadShiftManager(branch);
+        if(shifts_manager != null) {
+            loadShiftsManager(shifts_manager);
+            List<Shift_DTO> shifts_of_the_current_branch = shiftMapper.loadBranch(branch);
+            if(shifts_of_the_current_branch != null)
+                loadShifts(shifts_of_the_current_branch);
         }
     }
 
-    public void loadShifts(List<Shift_DTO> shifts){
-        //TODO
+    private void loadShiftsManager(List<String[]> shifts_manager) {
+        for (String[] s: shifts_manager) {
+            Shifts.add(ShiftFromDTO(s));
+        }
+    }
 
+    public void loadShifts(List<Shift_DTO> shiftsDTO){
+        for (Shift_DTO shDTO: shiftsDTO) {
+            int index = Shifts.indexOf(stringToDate(shDTO.getDate()));
+            Shifts.get(index).getRoleInlay().get(shDTO.getRole()).add(shDTO.getName());
+        }
     }
 
     private List<Shift_DTO> shiftDTOfromShift(Shift shift) {
         List<Shift_DTO> sh = new LinkedList<>();
         for (String role : shift.getRoleInlay().keySet()) {
             for (String name: shift.getRoleInlay().get(role)) {
-                Shift_DTO curr = new Shift_DTO(dateToString(shift.getDate()),stToString(shift.getShiftType()),Integer.parseInt(shift.getShiftManagerID()),role,name,currentBranch);
+                Shift_DTO curr = new Shift_DTO(dateToString(shift.getDate()),stToString(shift.getShiftType()),role,name,currentBranch);
                 sh.add(curr);
             }
         }
         return sh;
     }
 
-    private Shift ShiftFromShiftDTO(Shift_DTO shift_dto){
+    private Shift ShiftFromDTO(String[] shiftsTDO){
         Map<String,List<String>> roleInlay = new HashMap<>();
-        Shift curr = new Shift(stringToDate(shift_dto.getDate()),stringToShiftType(shift_dto.getShiftType()),String.valueOf(shift_dto.getShiftManagerID()),roleInlay,shift_dto.getBranch());
+        Shift curr = new Shift(stringToDate(shiftsTDO[0]),stringToShiftType(shiftsTDO[1]),shiftsTDO[2],roleInlay,Integer.parseInt(shiftsTDO[3]));
         return curr;
     }
 

@@ -28,7 +28,7 @@ public class TrnasAndEmpView {
                 }
                 switch (role) {
                     case 1:
-                        UserMenu.main();
+                        TransportsMenu.main();
                         break;
                     case 2:
                         EmployeesMenu.main();

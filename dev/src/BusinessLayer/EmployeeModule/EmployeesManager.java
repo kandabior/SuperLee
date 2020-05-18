@@ -209,6 +209,8 @@ public class EmployeesManager {
         return driver.getName();
     }
     public List<Integer> getDriversAvailableAtDate(Date date, String license) {
+        List<String> licensesRelevant=relevantLicensesForJob(license);
+
         List<EmployeeDTO> driversDTO=employeesMapper.getAllEmployeesFromBranch(0);
         List<Employee> drivers=new LinkedList<>();
         for (EmployeeDTO driveDTO : driversDTO)
@@ -218,13 +220,15 @@ public class EmployeesManager {
         List<Integer> drivesOutput=new LinkedList<>();
         for(Employee driver:drivers)
         {
-            //TODO : DRIVE LICENSE?
-            if((driver.getConstrain(ShiftType.Morning,getDayFromDate(date))==null) && driver.getLicense().equals(license))
+            if((driver.getConstrain(ShiftType.Morning,getDayFromDate(date))==null) &&
+                    licensesRelevant.indexOf(driver.getLicense())!=1)
                 drivesOutput.add((Integer.parseInt(driver.getEmployeeId())));
 
         }
         return drivesOutput;
     }
+
+
     private Day getDayFromDate(Date date){
         int day=date.getDay();
         switch (day) {
@@ -268,4 +272,17 @@ public class EmployeesManager {
         return new EmployeeDTO(e.isAvailable(),e.getName(),e.getID(),e.isSupervisor(),e.getRoles(),e.getHiringConditions(),
                 e.getBankId(),e.getSalary(),e.getStartOfEmployment(),e.getEmployeeId(),e.getConstrainsForDTO(),e.getBranch(),e.getLicense());
     }
+
+    private List<String> relevantLicensesForJob(String license) {
+        List<String> output=new LinkedList<>();
+        if(license.equals("C")){
+            output.add("C");
+        }
+        else if(license.equals("C1")) {
+            output.add("C");
+            output.add("C1");
+        }
+        return output;
+    }
+
 }

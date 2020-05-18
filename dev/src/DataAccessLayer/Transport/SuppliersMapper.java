@@ -1,6 +1,7 @@
 package DataAccessLayer.Transport;
 
-import BusinessLayer.TransportModule.DTO.DTO_Supplier;
+import DataAccessLayer.Transport.DTO.DTO_Store;
+import DataAccessLayer.Transport.DTO.DTO_Supplier;
 
 import java.sql.*;
 import java.util.LinkedList;
@@ -154,9 +155,88 @@ public class SuppliersMapper {
         }
     }
 
-    public void updateSupplier(int supplierId) {
+    public void updateSupplier(int supplierId, String address, String phoneNumber, String contactName) {
+        try {
+            if (tryOpen()) {
+                Class.forName("org.sqlite.JDBC");
+                con.setAutoCommit(false);
 
+                PreparedStatement statement = con.prepareStatement("UPDATE Suppliers SET ID = ?, address = ?, phoneNumber = ?, contactName = ?  WHERE ID = ? ;");
+                statement.setInt(1, supplierId);
+                statement.setString(2, address);
+                statement.setString(3, phoneNumber);
+                statement.setString(4, contactName);
+                statement.setInt(5, supplierId);
+                int rowNum = statement.executeUpdate();
+                if (rowNum != 0) {
+                    statement.close();
+                    ;
+                    con.commit();
+                    con.close();
+                } else {
+                    con.rollback();
+                    con.close();
+                    statement.close();
+                    System.err.println("Update failed");
+                }
+            }
+        } catch (Exception e) {
+            System.err.println(e.getClass().getName() + ": " + e.getMessage());
+        }
 
+    }
 
+    public boolean validArea(int area) {
+        try {
+            if (tryOpen()) {
+                Class.forName("org.sqlite.JDBC");
+                con.setAutoCommit(false);
+                PreparedStatement statement = con.prepareStatement("SELECT * FROM Suppliers WHERE area = ?;");
+                statement.setInt(1, area);
+                ResultSet res = statement.executeQuery();
+                if (res.next()) {
+                    con.commit();
+                    con.close();
+                    statement.close();
+                    return true;
+                } else {
+                    con.rollback();
+                    con.close();
+                    statement.close();
+                    return false;
+                }
+            }
+        } catch (Exception e) {
+            tryClose();
+            System.err.println(e.getClass().getName() + ": " + e.getMessage());
+            return false;
+        }
+        return false;
+    }
+
+    public List<DTO_Supplier> getSupplierInArea(int area) {
+        List<DTO_Supplier> SuppliersInArea = new LinkedList<>();
+        try {
+            if (tryOpen()) {
+                Class.forName("org.sqlite.JDBC");
+                con.setAutoCommit(false);
+                PreparedStatement statement = con.prepareStatement("SELECT * FROM Suppliers WHERE area = ?;");
+                statement.setInt(1,area);
+                ResultSet result = statement.executeQuery();
+                while (result.next()) {
+                    DTO_Supplier s = new DTO_Supplier(result.getInt("ID"), result.getString("address"),
+                            result.getString("phoneNumber"), result.getString("contactName"), result.getInt("area"));
+                    SuppliersInArea.add(s);
+                }
+                statement.close();
+                con.close();
+                return SuppliersInArea;
+
+            } else return null;
+        } catch (Exception e) {
+            System.err.println(e.getClass().getName() + ": " + e.getMessage());
+            tryClose();
+            return null;
+        }
     }
 }
