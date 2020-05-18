@@ -196,7 +196,7 @@ public class EmployeesManager {
 
         // Requires database access
     public String getDriverName(int employeeID) throws Exception {
-        Employee driver=employeesMapper.getByEID(employeeID);
+        Employee driver=new Employee(employeesMapper.getByEID(employeeID));
         if(driver==null)
         {
             throw new Exception("No such Drive in system!");

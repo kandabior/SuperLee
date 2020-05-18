@@ -173,7 +173,7 @@ public class EmployeesMapper {
 
     }
 
-    
+
     private boolean tryOpen() {
         try {
             String url = "jdbc:sqlite:transportsAndWorkers.db";
@@ -309,6 +309,7 @@ public class EmployeesMapper {
         } catch (Exception e) {
             tryClose();
             System.err.println(e.getClass().getName() + ": " + e.getMessage());
+            tryClose();
         }
         return output;
     }
