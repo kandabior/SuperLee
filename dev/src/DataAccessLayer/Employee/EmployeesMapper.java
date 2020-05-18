@@ -61,23 +61,6 @@ public class EmployeesMapper {
 
         return employeeDTOS;
     }
-    private EmployeeDTO getEmployeeFromResultWOConstrainsAndRoles(ResultSet res) throws Exception {
-        String ID=res.getString("ID");
-        String name=res.getString("name");
-        boolean isAvailable=res.getInt("isAvailable")==1;
-        Integer EID=res.getInt("EmployeeID");
-        boolean isSupervisor=res.getInt("isSupervisor")==1;
-        String hiringConditions=res.getString("HiringConditions");
-        String bankID=res.getString("bankID");
-        int salary=res.getInt("salary");
-        Date startOfEmployment= parseDate(res.getString("StartOfEmployment"));
-        int branch=res.getInt("branch");
-        String license=res.getString("License");
-
-        return new EmployeeDTO(isAvailable,name,ID,isSupervisor,hiringConditions,bankID,salary,startOfEmployment
-                ,EID.toString(),branch,license);
-
-    }
 
     public void updateEmployee(EmployeeDTO employeeDTO) {
         try {
@@ -121,42 +104,6 @@ public class EmployeesMapper {
         }
 
     }
-
-    private void deleteOldRolesAddNew(EmployeeDTO employeeDTO) throws Exception {
-        PreparedStatement deleteStatement = con.prepareStatement("Delete FROM EmployeeRoles WHERE EID = ? ;");
-        deleteStatement.setInt(1,Integer.parseInt(employeeDTO.getEmployeeId()));
-        deleteStatement.execute();
-
-        List<String> newRoles=employeeDTO.getRoles();
-        if(newRoles!=null) {
-            for (String role : newRoles) {
-                PreparedStatement insertStatement = con.prepareStatement("INSERT INTO EmployeeRoles (EID,Role   ) VALUES (?,?) ;");
-                insertStatement.setInt(1, Integer.parseInt(employeeDTO.getEmployeeId()));
-                insertStatement.setString(2, role);
-                insertStatement.execute();
-            }
-        }
-    }
-
-    private void deleteOldConstrainsAddNew(EmployeeDTO employeeDTO) throws Exception {
-
-
-        PreparedStatement deleteStatement = con.prepareStatement("Delete FROM EmployeeConstrains WHERE EID = ? ;");
-        deleteStatement.setInt(1,Integer.parseInt(employeeDTO.getEmployeeId()));
-        deleteStatement.execute();
-
-        List<String> newConstrains=employeeDTO.getConstrains();
-        if(newConstrains!=null) {
-            for (String constrain : newConstrains) {
-                PreparedStatement insertStatement = con.prepareStatement("INSERT INTO EmployeeConstrains (EID,Day,typeOfShift) VALUES (?,?,?) ;");
-                insertStatement.setInt(1, Integer.parseInt(employeeDTO.getEmployeeId()));
-                insertStatement.setString(2, constrain.substring(0,constrain.indexOf(":")));
-                insertStatement.setString(3,constrain.substring(constrain.indexOf(":")+1));
-                insertStatement.execute();
-                }
-        }
-    }
-
 
     public EmployeeDTO getByID(String ID){
         EmployeeDTO employeeDTO=null;
@@ -226,6 +173,7 @@ public class EmployeesMapper {
 
     }
 
+    
     private boolean tryOpen() {
         try {
             String url = "jdbc:sqlite:transportsAndWorkers.db";
@@ -236,7 +184,6 @@ public class EmployeesMapper {
             return false;
         }
     }
-
     private void tryClose() {
         try {
             con.close();
@@ -245,7 +192,56 @@ public class EmployeesMapper {
         }
     }
 
+    private EmployeeDTO getEmployeeFromResultWOConstrainsAndRoles(ResultSet res) throws Exception {
+        String ID=res.getString("ID");
+        String name=res.getString("name");
+        boolean isAvailable=res.getInt("isAvailable")==1;
+        Integer EID=res.getInt("EmployeeID");
+        boolean isSupervisor=res.getInt("isSupervisor")==1;
+        String hiringConditions=res.getString("HiringConditions");
+        String bankID=res.getString("bankID");
+        int salary=res.getInt("salary");
+        Date startOfEmployment= parseDate(res.getString("StartOfEmployment"));
+        int branch=res.getInt("branch");
+        String license=res.getString("License");
 
+        return new EmployeeDTO(isAvailable,name,ID,isSupervisor,hiringConditions,bankID,salary,startOfEmployment
+                ,EID.toString(),branch,license);
+
+    }
+    private void deleteOldRolesAddNew(EmployeeDTO employeeDTO) throws Exception {
+        PreparedStatement deleteStatement = con.prepareStatement("Delete FROM EmployeeRoles WHERE EID = ? ;");
+        deleteStatement.setInt(1,Integer.parseInt(employeeDTO.getEmployeeId()));
+        deleteStatement.execute();
+
+        List<String> newRoles=employeeDTO.getRoles();
+        if(newRoles!=null) {
+            for (String role : newRoles) {
+                PreparedStatement insertStatement = con.prepareStatement("INSERT INTO EmployeeRoles (EID,Role   ) VALUES (?,?) ;");
+                insertStatement.setInt(1, Integer.parseInt(employeeDTO.getEmployeeId()));
+                insertStatement.setString(2, role);
+                insertStatement.execute();
+            }
+        }
+    }
+    private void deleteOldConstrainsAddNew(EmployeeDTO employeeDTO) throws Exception {
+
+
+        PreparedStatement deleteStatement = con.prepareStatement("Delete FROM EmployeeConstrains WHERE EID = ? ;");
+        deleteStatement.setInt(1,Integer.parseInt(employeeDTO.getEmployeeId()));
+        deleteStatement.execute();
+
+        List<String> newConstrains=employeeDTO.getConstrains();
+        if(newConstrains!=null) {
+            for (String constrain : newConstrains) {
+                PreparedStatement insertStatement = con.prepareStatement("INSERT INTO EmployeeConstrains (EID,Day,typeOfShift) VALUES (?,?,?) ;");
+                insertStatement.setInt(1, Integer.parseInt(employeeDTO.getEmployeeId()));
+                insertStatement.setString(2, constrain.substring(0,constrain.indexOf(":")));
+                insertStatement.setString(3,constrain.substring(constrain.indexOf(":")+1));
+                insertStatement.execute();
+            }
+        }
+    }
     private Date parseDate(String startOfEmployment) {
         String woDay=startOfEmployment.substring(startOfEmployment.indexOf("/"));
 
