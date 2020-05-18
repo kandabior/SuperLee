@@ -3,6 +3,7 @@ package DataAccessLayer.Employee;
 import sun.security.pkcs11.wrapper.CK_ATTRIBUTE;
 
 import java.sql.*;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.LinkedList;
 import java.util.List;
@@ -23,8 +24,12 @@ public class EmployeesMapper {
                 ResultSet res = statement.executeQuery();
                 if (res.next()) {
                     employeeDTO=getEmployeeFromResultWOConstrainsAndRoles(res);
+                    con.close();
                     addConstrainForSingle(employeeDTO);
                     addRolesForSingle(employeeDTO);
+                }
+                else{
+                    con.close();
                 }
             }
         } catch (Exception e) {
@@ -46,8 +51,9 @@ public class EmployeesMapper {
                 while (res.next()) {
                   employeeDTOS.add(getEmployeeFromResultWOConstrainsAndRoles(res));
                 }
+                con.close();
+
             }
-            con.close();
         } catch (Exception e) {
             tryClose();
             System.err.println(e.getClass().getName() + ": " + e.getMessage());
@@ -122,6 +128,9 @@ public class EmployeesMapper {
                     addConstrainForSingle(employeeDTO);
                     addRolesForSingle(employeeDTO);
                 }
+                else{
+                    con.close();
+                }
             }
         } catch (Exception e) {
             tryClose();
@@ -139,9 +148,8 @@ public class EmployeesMapper {
                 Class.forName("org.sqlite.JDBC");
                 con.setAutoCommit(false);
                 PreparedStatement statement = con.prepareStatement
-                        ("INSERT INTO Employees" +
-                                " (ID,name,isAvailable,EmployeeID,isSupervisor,HiringConditions,bankID,salary,StartOfEmployment,branch,license" +
-                        " (VALUES (?,?,?,?,?,?,?,?,?,?,?);");
+                        ("INSERT INTO Employees (ID,name,isAvailable,EmployeeID,isSupervisor,HiringConditions,bankID,salary,StartOfEmployment,branch,license)" +
+                        " VALUES (?,?,?,?,?,?,?,?,?,?,?);");
 
                 statement.setString(1, id);
                 statement.setString(2,name );
@@ -170,6 +178,8 @@ public class EmployeesMapper {
 
         }
         catch (Exception e){
+            tryClose();
+            e.printStackTrace();
             return null;
         }
 
@@ -264,8 +274,9 @@ public class EmployeesMapper {
                 while (res.next()) {
                     employeeDTO.addConstrain(res.getString("Day"),res.getString("typeOfShift") );
                 }
+                con.close();
+
             }
-            con.close();
         } catch (Exception e) {
             tryClose();
             System.err.println(e.getClass().getName() + ": " + e.getMessage());
@@ -303,7 +314,7 @@ public class EmployeesMapper {
                 PreparedStatement statement = con.prepareStatement("SELECT COUNT(ID) FROM Employees");
                 ResultSet res = statement.executeQuery();
                 if (res.next()) {
-                    output=res.getInt(0);
+                    output=res.getInt(1);
                 }
             }
             con.close();
@@ -316,6 +327,6 @@ public class EmployeesMapper {
         return output;
     }
     private String unParseDate(Date startOfEmployment) {
-        return ""+startOfEmployment.getDay()+"/" +startOfEmployment.getMonth()+"/"+startOfEmployment.getYear();
+        return new SimpleDateFormat("dd/MM/yyyy").format(startOfEmployment);
     }
 }
