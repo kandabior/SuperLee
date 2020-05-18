@@ -56,7 +56,7 @@ public class PoolTest {
             pool.addDoc(303,1, date, "14-114-14", "101", "Yossi", stores, suppliers);
             pool.addDateToTruck("14-114-14", date);
             pool.addDateToDriver("101", date); */
-=======
+/*
         pool.addDriver("100", "Moshe", "C1");
         pool.addDriver("101", "Yossi", "C");
         pool.addTruck("13-113-13", "2015", 13, 20);
@@ -189,8 +189,4 @@ public class PoolTest {
 
 <<<<<<< HEAD
     }*/
-}
-=======
-    }
-}*/
->>>>>>> e69ef687f634e26f1f2ada2a39897e97e24d7167
+
