@@ -18,7 +18,7 @@ public class OccupiedDriversPool {
 
     private OccupiedDriversPool() {
         mapper = new OccupiedDriversMapper();
-        occupiedDrivers = new LinkedList<OccupiedDriver>();
+        occupiedDrivers = new LinkedList<>();
         List<DTO_OccupiedDriver> DTOoccupiedD= mapper.getOccupiedDriver();
         for (DTO_OccupiedDriver dod : DTOoccupiedD) {
             OccupiedDriver od = new OccupiedDriver(dod.getId());
@@ -27,8 +27,14 @@ public class OccupiedDriversPool {
         for (OccupiedDriver od: occupiedDrivers){
             List<String> datesFromDB = mapper.getOccupiedDriverDates(od.getId());
             List<Date> dates = new LinkedList<>();
+          /*  Date d;
             for (String s: datesFromDB){
+                d = stringToDate(s);
                 dates.add(stringToDate(s));
+            }*/
+            Iterator itr = datesFromDB.iterator();
+            while (itr.hasNext()){
+                dates.add(stringToDate((String) itr.next()));
             }
             od.setDates(dates);
         }
@@ -37,7 +43,7 @@ public class OccupiedDriversPool {
     private static Date stringToDate(String s){
         String[] parts = s.split("/");
         Calendar cal = Calendar.getInstance();
-        cal.set(Calendar.YEAR, Integer.parseInt(parts[2]));
+        cal.set(Calendar.YEAR, Integer.parseInt(parts[2].substring(0,4)));
         cal.set(Calendar.MONTH, Integer.parseInt(parts[1]) - 1);//Calendar.DECEMBER);
         cal.set(Calendar.DAY_OF_MONTH, Integer.parseInt(parts[0]));
         return cal.getTime();
@@ -59,6 +65,7 @@ public class OccupiedDriversPool {
             driver.removeDate(stringToDate(date));
             mapper.removeDriverAtDate(driverId,date);
         }
+
     }
 
     public void addDateToDriver(int driverId, Date date) {
@@ -69,8 +76,13 @@ public class OccupiedDriversPool {
         }
         if(driver != null){
             driver.addDate(date);
-            mapper.addDateToOccupiedDriver(driverId, dateToString(date));
         }
+        else{
+            driver = new OccupiedDriver(driverId);
+            driver.addDate(date);
+            occupiedDrivers.add(driver);
+        }
+        mapper.addDateToOccupiedDriver(driverId, dateToString(date));
     }
 
     /*public void addDriver(String id, String name , String license){

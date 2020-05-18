@@ -182,18 +182,17 @@ import java.util.List;
                 if (tryOpen()) {
                     Class.forName("org.sqlite.JDBC");
                     con.setAutoCommit(false);
-                    PreparedStatement st = con.prepareStatement("DELETE FROM TrucksDates WHERE DATE = (?) AND TID= (?) ;");
+                    PreparedStatement st = con.prepareStatement("DELETE FROM TrucksDates WHERE Date = (?) AND TID= (?) ;");
                     st.setString(1, date);
                     st.setString(2, truckId);
                     int rowNum = st.executeUpdate();
-                    st.close();
                     if (rowNum != 0) {
                         con.commit();
-                        con.close();
                     } else {
                         con.rollback();
-                        con.close();
                     }
+                    st.close();
+                    con.close();
                 }
             } catch (Exception e) {
                 tryClose();
@@ -207,8 +206,8 @@ import java.util.List;
                     Class.forName("org.sqlite.JDBC");
                     con.setAutoCommit(false);
                     PreparedStatement statement = con.prepareStatement("INSERT INTO TrucksDates VALUES (?,?);");
-                    statement.setString(1, id);
-                    statement.setString(2, date);
+                    statement.setString(1, date);
+                    statement.setString(2, id);
                     int rowNum = statement.executeUpdate();
                     if (rowNum != 0) {
                         con.commit();

@@ -2,6 +2,7 @@ package PresentationLayer;
 
 import BusinessLayer.TransportModule.Pool;
 
+import javax.swing.text.html.parser.DTDConstants;
 import java.sql.Driver;
 import java.util.*;
 import java.util.Date;
@@ -9,10 +10,12 @@ import java.util.Date;
 
 public class TransportsMenu {
     private static Pool pool;
-
+    private static Scanner input;
     public static void main() {
        pool = Pool.getInstance();
        // start();
+        input = new Scanner(System.in);
+
         menu();
     }
 
@@ -53,7 +56,6 @@ public class TransportsMenu {
     }
 
     private static void menu() {
-        Scanner input = new Scanner(System.in);
 
         while (true) {
             System.out.println("Welcome to Transport's system!\n" +
@@ -184,7 +186,7 @@ public class TransportsMenu {
                         System.out.print("Enter transport id\nId: ");
                         int docId = input.nextInt();
                         input.nextLine();
-                        while (!pool.validTansport(docId)) {
+                        while (!pool.validTransport(docId)) {
                             System.out.println("Invalid id,please enter a correct id");
                             System.out.println("If you want to try again enter 1,else enter somthing else");
                             if (!input.nextLine().equals("1"))
@@ -211,7 +213,7 @@ public class TransportsMenu {
                         System.out.print("Enter transport id\nId: ");
                         docId = input.nextInt();
                         input.nextLine();
-                        while (!pool.validTansport(docId)) {
+                        while (!pool.validTransport(docId)) {
                             System.out.println("Invalid id,please enter a correct id");
                             System.out.println("If you want to try again enter 1,else enter somthing else");
                             if (!input.nextLine().equals("1"))
@@ -220,6 +222,7 @@ public class TransportsMenu {
                             docId = input.nextInt();
                             input.nextLine();
                         }
+                        System.out.println("Transport's stores:");
                         stores = pool.getStoresFromDoc(docId);
                         print(pool.getStoresStrings(stores));
                         int i = 0;
@@ -399,7 +402,7 @@ public class TransportsMenu {
             }
             catch (Exception e){
                 System.out.println("Invalid input!");
-                menu();
+                input.nextLine();
             }
         }
     }

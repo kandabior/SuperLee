@@ -19,6 +19,7 @@ public class DocsMapper {
             return false;
         }
     }
+
     private void tryClose() {
         try {
             con.close();
@@ -34,7 +35,7 @@ public class DocsMapper {
                 con.setAutoCommit(false);
                 PreparedStatement statement = con.prepareStatement("SELECT * FROM TransportDocs WHERE truckID = ? AND status = ?;");
                 statement.setString(1, truckId);
-                statement.setString(2,"PENDING");
+                statement.setString(2, "PENDING");
                 ResultSet res = statement.executeQuery();
                 if (res.next()) {
                     con.commit();
@@ -63,7 +64,7 @@ public class DocsMapper {
                 con.setAutoCommit(false);
                 PreparedStatement statement = con.prepareStatement("SELECT * FROM DocSuppliers join TransportDocs on DocId = ID WHERE SID = ? AND status = ?;");
                 statement.setInt(1, supplierId);
-                statement.setString(2,"PENDING");
+                statement.setString(2, "PENDING");
                 ResultSet res = statement.executeQuery();
                 if (res.next()) {
                     con.commit();
@@ -89,36 +90,26 @@ public class DocsMapper {
         List<String> pendingDocs = new LinkedList<>();
         List<Integer> stores = new LinkedList<>();
         List<Integer> suppliers = new LinkedList<>();
-        List<Map<Integer,Integer>> items = new LinkedList<>();
+        List<Map<Integer, Integer>> items = new LinkedList<>();
 
         try {
             if (tryOpen()) {
                 Class.forName("org.sqlite.JDBC");
                 con.setAutoCommit(false);
                 PreparedStatement statement = con.prepareStatement("SELECT * FROM TransportDocs WHERE status = ?;");
-                statement.setString(1,docStatus);
+                statement.setString(1, docStatus);
                 ResultSet result = statement.executeQuery();
                 while (result.next()) {
                     int transportId = result.getInt("ID");
-                    suppliers = getTransportsSites("DocSuppliers",transportId);
-                    stores = getTransportsSites("DocStores", transportId);
+                    suppliers = getTransportsSuppliers(transportId);
+                    stores = getTransportsStores(transportId);
+                    items = new LinkedList<>();
                     for (int i = 0; i < stores.size(); i++) {
                         items.add(getTransportsItems(transportId, stores.get(i)));
                     }
-                   /* DTO_TransportDoc.Status status ;
-                    switch (result.getString("status")){
-                        case "PENDING":
-                            status = Status.PENDING;
-                            break;
-                        case "SUCCESS":
-                            status = DTO_TransportDoc.Status.SUCCESS;
-                            break;
-                        default: //FAIL
-                            status = DTO_TransportDoc.Status.FAIL;
-                    }*/
                     DTO_TransportDoc s = new DTO_TransportDoc(transportId, result.getInt("area"),
-                            result.getString("date"),result.getString("truckId"), result.getInt("driverId"),
-                            result.getString("driverName"),stores, suppliers, items ,result.getString("status"), result.getDouble("finalWeight"));
+                            result.getString("date"), result.getString("truckId"), result.getInt("driverId"),
+                            result.getString("driverName"), stores, suppliers, items, result.getString("status"), result.getDouble("finalWeight"));
                     pendingDocs.add(s.toString());
                 }
                 statement.close();
@@ -133,49 +124,81 @@ public class DocsMapper {
     }
 
     private Map<Integer, Integer> getTransportsItems(int transportId, int storeId) {
-        Map<Integer,Integer> storeItems = new HashMap<>();
+        Map<Integer, Integer> storeItems = new HashMap<>();
         try {
-            if (tryOpen()) {
-                Class.forName("org.sqlite.JDBC");
-                con.setAutoCommit(false);
-                PreparedStatement statement = con.prepareStatement("SELECT item,quantity FROM Order WHERE DocID = ? AND SID = ?;");
-                statement.setInt(1,transportId);
-                statement.setInt(2,storeId);
+                PreparedStatement statement = con.prepareStatement("SELECT * FROM Items WHERE DocId = ? AND SID = ?;");
+                statement.setInt(1, transportId);
+                statement.setInt(2, storeId);
                 ResultSet result = statement.executeQuery();
                 while (result.next()) {
-                    storeItems.put(result.getInt("item"),result.getInt("quantity"));
+                    storeItems.put(result.getInt("item"), result.getInt("quantity"));
                 }
                 statement.close();
-                con.close();
                 return storeItems;
-            } else return null;
         } catch (Exception e) {
             System.err.println(e.getClass().getName() + ": " + e.getMessage());
-            tryClose();
             return null;
         }
     }
 
-    public List<Integer> getTransportsSites(String tableName, int transportId) {
+
+    /* public List<Integer> getTransportsStores( int transportId) {
+         List<Integer> sites = new LinkedList<>();
+         try {
+             if (tryOpen()) {
+                 Class.forName("org.sqlite.JDBC");
+                 con.setAutoCommit(false);
+                 PreparedStatement statement = con.prepareStatement("SELECT SID FROM DocStores WHERE DocID = ?;");
+                 statement.setInt(1,transportId);
+                 ResultSet result = statement.executeQuery();
+                 while (result.next()) {
+                     sites.add(result.getInt("SID"));
+                 }
+                 statement.close();
+                 con.close();
+                 return sites;
+             } else return null;
+         } catch (Exception e) {
+             System.err.println(e.getClass().getName() + ": " + e.getMessage());
+             tryClose();
+             return null;
+         }
+     }*/
+    public List<Integer> getTransportsStores(int transportId) {
         List<Integer> sites = new LinkedList<>();
         try {
-            if (tryOpen()) {
-                Class.forName("org.sqlite.JDBC");
-                con.setAutoCommit(false);
-                PreparedStatement statement = con.prepareStatement("SELECT SID FROM ? WHERE DocID = ?;");
-                statement.setString(1,tableName);
-                statement.setInt(2,transportId);
-                ResultSet result = statement.executeQuery();
-                while (result.next()) {
-                    sites.add(result.getInt("SID"));
-                }
-                statement.close();
-                con.close();
-                return sites;
-            } else return null;
+            Class.forName("org.sqlite.JDBC");
+            con.setAutoCommit(false);
+            PreparedStatement statement = con.prepareStatement("SELECT SID FROM DocStores WHERE DocID = ?;");
+            statement.setInt(1, transportId);
+            ResultSet result = statement.executeQuery();
+            while (result.next()) {
+                sites.add(result.getInt("SID"));
+            }
+            statement.close();
+            return sites;
         } catch (Exception e) {
             System.err.println(e.getClass().getName() + ": " + e.getMessage());
-            tryClose();
+            return null;
+        }
+    }
+
+    public List<Integer> getTransportsSuppliers(int transportId) {
+        List<Integer> sites = new LinkedList<>();
+        try {
+           /* if (tryOpen()) {
+                Class.forName("org.sqlite.JDBC");
+                con.setAutoCommit(false);*/
+            PreparedStatement statement = con.prepareStatement("SELECT SID FROM DocSuppliers WHERE DocID = ?;");
+            statement.setInt(1, transportId);
+            ResultSet result = statement.executeQuery();
+            while (result.next()) {
+                sites.add(result.getInt("SID"));
+            }
+            statement.close();
+            return sites;
+        } catch (Exception e) {
+            System.err.println(e.getClass().getName() + ": " + e.getMessage());
             return null;
         }
     }
@@ -185,8 +208,9 @@ public class DocsMapper {
             if (tryOpen()) {
                 Class.forName("org.sqlite.JDBC");
                 con.setAutoCommit(false);
-                PreparedStatement statement = con.prepareStatement("SELECT * FROM TransportDocs WHERE id = ?;");
+                PreparedStatement statement = con.prepareStatement("SELECT * FROM TransportDocs WHERE id = ? AND status = ? ");
                 statement.setInt(1, docId);
+                statement.setString(2,"PENDING");
                 ResultSet res = statement.executeQuery();
                 if (res.next()) {
                     con.commit();
@@ -208,22 +232,22 @@ public class DocsMapper {
         return false;
     }
 
-    public DTO_TransportDoc getTransportDoc(int docId){
+    public DTO_TransportDoc getTransportDoc(int docId) {
         List<Integer> stores = new LinkedList<>();
         List<Integer> suppliers = new LinkedList<>();
-        List<Map<Integer,Integer>> items = new LinkedList<>();
+        List<Map<Integer, Integer>> items = new LinkedList<>();
 
         try {
             if (tryOpen()) {
                 Class.forName("org.sqlite.JDBC");
                 con.setAutoCommit(false);
-                PreparedStatement statement = con.prepareStatement("SELECT * FROM TransportDocs WHERE docId = ? AND status = ?;");
-                statement.setInt(1,docId);
-                statement.setString(2,"PENDING");
+                PreparedStatement statement = con.prepareStatement("SELECT * FROM TransportDocs WHERE ID = ? AND status = ?;");
+                statement.setInt(1, docId);
+                statement.setString(2, "PENDING");
                 ResultSet result = statement.executeQuery();
                 if (result.next()) {
-                    suppliers = getTransportsSites("DocSuppliers", docId);
-                    stores = getTransportsSites("DocStores", docId);
+                    suppliers = getTransportsSuppliers(docId);
+                    stores = getTransportsStores(docId);
                     for (int i = 0; i < stores.size(); i++) {
                         items.add(getTransportsItems(docId, stores.get(i)));
                     }
@@ -233,8 +257,7 @@ public class DocsMapper {
                     statement.close();
                     con.close();
                     return s;
-                }
-                else
+                } else
                     return null;
             } else return null;
         } catch (Exception e) {
@@ -244,7 +267,7 @@ public class DocsMapper {
         }
     }
 
-    public void updateTransportDoc(double finalWeight, String status, int docId ) {
+    public void updateTransportDoc(double finalWeight, String status, int docId) {
         try {
             if (tryOpen()) {
                 Class.forName("org.sqlite.JDBC");
@@ -256,7 +279,8 @@ public class DocsMapper {
                 statement.setInt(3, docId);
                 int rowNum = statement.executeUpdate();
                 if (rowNum != 0) {
-                    statement.close();;
+                    statement.close();
+                    ;
                     con.commit();
                     con.close();
                 } else {
@@ -279,7 +303,7 @@ public class DocsMapper {
                 Class.forName("org.sqlite.JDBC");
                 con.setAutoCommit(false);
                 Iterator<Integer> itr1 = stores.iterator();
-                Iterator<Map<Integer,Integer>> itr2 = allItems.iterator();
+                Iterator<Map<Integer, Integer>> itr2 = allItems.iterator();
                 int i = 0;
                 while (itr1.hasNext()) {
                     int storeId = itr1.next();
@@ -287,7 +311,7 @@ public class DocsMapper {
                     for (Map.Entry<Integer, Integer> entry : storesItems.entrySet()) {
                         /*System.out.println("Key = " + entry.getKey() +
                                 ", Value = " + entry.getValue());*/
-                        PreparedStatement statement1 = con.prepareStatement("INSERT INTO Order VALUES (?,?,?,?);");
+                        PreparedStatement statement1 = con.prepareStatement("INSERT INTO Items VALUES (?,?,?,?);");
                         statement1.setInt(1, docId);
                         statement1.setInt(2, entry.getKey());
                         statement1.setInt(3, entry.getValue());
@@ -296,8 +320,7 @@ public class DocsMapper {
                         if (rowNum != 0) {
                             con.commit();
                             statement1.close();
-                        }
-                        else {
+                        } else {
                             con.rollback();
                             con.close();
                             System.err.println("Problem in inserting items");
@@ -315,39 +338,31 @@ public class DocsMapper {
 
     private void setNewStatus(int docId) {
         try {
-            if (tryOpen()) {
-                Class.forName("org.sqlite.JDBC");
-                con.setAutoCommit(false);
-                PreparedStatement statement1 = con.prepareStatement("SELECT maxWeight FROM TransportDocs WHERE ID = ?;");
+                PreparedStatement statement1 = con.prepareStatement("SELECT finalWeight FROM TransportDocs WHERE ID = ?;");
                 statement1.setInt(1, docId);
                 ResultSet res = statement1.executeQuery();
                 if (res.next()) {
-                    con.commit();
+                    double finalWeight = res.getDouble("finalWeight");
                     statement1.close();
-                    double maxWeight = res.getDouble("maxWeight");
-                    if(maxWeight != -1){
+                    if (finalWeight != -1) {
                         PreparedStatement statement2 = con.prepareStatement("UPDATE TransportDocs SET status = ? WHERE ID = ? ;");
-                        statement2.setString(1,"SUCCESS");
-                        statement2.setInt(2,docId);
+                        statement2.setString(1, "SUCCESS");
+                        statement2.setInt(2, docId);
                         int rowNum = statement2.executeUpdate();
                         if (rowNum != 0) {
-                            statement2.close();;
                             con.commit();
-                            con.close();
+                            statement2.close();
                         } else {
                             con.rollback();
                             statement2.close();
-                            con.close();
                             System.err.println("Update failed");
                         }
                     }
-                    con.close();
                 } else {
                     con.rollback();
                     statement1.close();
-                    con.close();
                 }
-            }
+
         } catch (Exception e) {
             tryClose();
             System.err.println(e.getClass().getName() + ": " + e.getMessage());
@@ -359,7 +374,7 @@ public class DocsMapper {
             if (tryOpen()) {
                 Class.forName("org.sqlite.JDBC");
                 con.setAutoCommit(false);
-                PreparedStatement statement = con.prepareStatement("SELECT max(ID)  FROM TransportDoc");
+                PreparedStatement statement = con.prepareStatement("SELECT max(ID)  FROM TransportDocs");
                 ResultSet result = statement.executeQuery();
                 if (result.next()) {
                     int maxId = result.getInt(1);
@@ -388,9 +403,10 @@ public class DocsMapper {
                 statement.setString(2, d.getDate());
                 statement.setString(3, d.getTruckId());
                 statement.setInt(4, d.getDriverId());
-                statement.setString(5, d.getStringStatus());
-                statement.setDouble(6, d.getFinalWeight());
-                statement.setInt(7, d.getArea());
+                statement.setString(5, d.getDriverName());
+                statement.setString(6, d.getStringStatus());
+                statement.setDouble(7, d.getFinalWeight());
+                statement.setInt(8, d.getArea());
                 int rowNum = statement.executeUpdate();
                 if (rowNum != 0) {
                     con.commit();
@@ -401,16 +417,15 @@ public class DocsMapper {
                 }
                 statement.close();
             }
-        } 
-        catch (Exception e) {
+        } catch (Exception e) {
             System.err.println(e.getClass().getName() + ": " + e.getMessage());
         }
-        addDocSite(d.getId(), d.getStores(), "DocStores");
-        addDocSite(d.getId(),d.getSuppliers(),"DocSuppliers");
+        addDocStore(d.getId(), d.getStores());
+        addDocSuppliers(d.getId(), d.getSuppliers());
     }
 
 
-    private void addDocSite(int docId, List<Integer> sites, String tableName) {
+    private void addDocStore(int docId, List<Integer> sites) {
         try {
             if (tryOpen()) {
                 Class.forName("org.sqlite.JDBC");
@@ -418,26 +433,105 @@ public class DocsMapper {
                 Iterator<Integer> itr1 = sites.iterator();
                 while (itr1.hasNext()) {
                     int siteId = itr1.next();
-                        PreparedStatement statement = con.prepareStatement("INSERT INTO ? VALUES (?,?);");
-                        statement.setString(1, tableName);
-                        statement.setInt(2,siteId);
-                        statement.setInt(3, docId);
-                        int rowNum = statement.executeUpdate();
-                        if (rowNum != 0) {
-                            con.commit();
-                            statement.close();
-                        }
-                        else {
-                            con.rollback();
-                            con.close();
-                            System.err.println("Problem in inserting items");
-                            break;
-                        }
+                    PreparedStatement statement = con.prepareStatement("INSERT INTO DocStores VALUES (?,?);");
+                    statement.setInt(1, siteId);
+                    statement.setInt(2, docId);
+                    int rowNum = statement.executeUpdate();
+                    if (rowNum != 0) {
+                        con.commit();
+                        statement.close();
+                    } else {
+                        con.rollback();
+                        con.close();
+                        System.err.println("Problem in inserting items");
+                        break;
                     }
+                }
                 con.close();
             }
         } catch (Exception e) {
             System.err.println(e.getClass().getName() + ": " + e.getMessage());
+        }
+    }
+
+    private void addDocSuppliers(int docId, List<Integer> sites) {
+        try {
+            if (tryOpen()) {
+                Class.forName("org.sqlite.JDBC");
+                con.setAutoCommit(false);
+                Iterator<Integer> itr1 = sites.iterator();
+                while (itr1.hasNext()) {
+                    int siteId = itr1.next();
+                    PreparedStatement statement = con.prepareStatement("INSERT INTO DocSuppliers VALUES (?,?);");
+                    statement.setInt(1, siteId);
+                    statement.setInt(2, docId);
+                    int rowNum = statement.executeUpdate();
+                    if (rowNum != 0) {
+                        con.commit();
+                        statement.close();
+                    } else {
+                        con.rollback();
+                        con.close();
+                        System.err.println("Problem in inserting items");
+                        break;
+                    }
+                }
+                con.close();
+            }
+        } catch (Exception e) {
+            System.err.println(e.getClass().getName() + ": " + e.getMessage());
+        }
+    }
+
+    public List<Integer> getTStores(int docId) {
+        List<Integer> sites = new LinkedList<>();
+        try {
+            if (tryOpen()) {
+                Class.forName("org.sqlite.JDBC");
+                con.setAutoCommit(false);
+                sites = getTransportsStores(docId);
+                con.close();
+                return sites;
+            } else return null;
+        } catch (Exception e) {
+            System.err.println(e.getClass().getName() + ": " + e.getMessage());
+            tryClose();
+            return null;
+        }
+    }
+
+    public DTO_TransportDoc getFailDoc(int docId) {
+        List<Integer> stores = new LinkedList<>();
+        List<Integer> suppliers = new LinkedList<>();
+        List<Map<Integer, Integer>> items = new LinkedList<>();
+
+        try {
+            if (tryOpen()) {
+                Class.forName("org.sqlite.JDBC");
+                con.setAutoCommit(false);
+                PreparedStatement statement = con.prepareStatement("SELECT * FROM TransportDocs WHERE ID = ? AND status = ?;");
+                statement.setInt(1, docId);
+                statement.setString(2, "FAIL");
+                ResultSet result = statement.executeQuery();
+                if (result.next()) {
+                    suppliers = getTransportsSuppliers(docId);
+                    stores = getTransportsStores(docId);
+                    for (int i = 0; i < stores.size(); i++) {
+                        items.add(getTransportsItems(docId, stores.get(i)));
+                    }
+                    DTO_TransportDoc s = new DTO_TransportDoc(docId, result.getInt("area"),
+                            result.getString("date"), result.getString("truckId"), result.getInt("driverId"),
+                            result.getString("driverName"), stores, suppliers, items, "PENDING", result.getDouble("finalWeight"));
+                    statement.close();
+                    con.close();
+                    return s;
+                } else
+                    return null;
+            } else return null;
+        } catch (Exception e) {
+            System.err.println(e.getClass().getName() + ": " + e.getMessage());
+            tryClose();
+            return null;
         }
     }
 }

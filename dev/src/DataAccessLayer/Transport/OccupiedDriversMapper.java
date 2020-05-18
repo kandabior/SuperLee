@@ -106,7 +106,7 @@ public class OccupiedDriversMapper {
                 st.setString(1, date);
                 st.setInt(2, driverId);
                 int rowNum = st.executeUpdate();
-                st.close();
+
                 if (rowNum != 0) {
                     con.commit();
                     con.close();
@@ -114,6 +114,7 @@ public class OccupiedDriversMapper {
                     con.rollback();
                     con.close();
                 }
+                st.close();
             }
         } catch (Exception e) {
             tryClose();

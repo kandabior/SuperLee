@@ -92,7 +92,10 @@ public class Pool {
     }
 
     public List<String> getAvailableStores(int area, Date date) {
-        List<Integer> availableStores = employeeService.getStores(date);
+        List<Integer> availableStores =new LinkedList<>(); //employeeService.getStores(date);
+        availableStores.add(1);
+        availableStores.add(2);
+        availableStores.add(9);
         return storesPool.getStores(area,availableStores);
 
     }
@@ -121,7 +124,12 @@ public class Pool {
             license = "C";
         else
             license = "C1";
-        return employeeService.getDrivers(date,license);
+        List<Integer> list = new LinkedList<>();
+        list.add(1);
+        list.add(2);
+        return list;
+
+        //employeeService.getDrivers(date,license);
     }
 
     public List<String> getTrucks(Date date) {
@@ -129,7 +137,7 @@ public class Pool {
     }
 
     public String getDriverName(int driverId) throws Exception {
-        return employeeService.getDriverName(driverId);
+        return "driver1";//employeeService.getDriverName(driverId);
     }
 
     public void addDoc(int area, Date date, String truckId, int driverId, String driverName, List<Integer> stores, List<Integer> suppliers) {
@@ -143,12 +151,15 @@ public class Pool {
     public boolean isUniqueTruck(String id) {return trucksPool.isUniqueId(id);  }
 
 
-    public boolean validTansport(int docId) {return docsPool.validTransport(docId);    }
+    public boolean validTransport(int docId) {return docsPool.validTransport(docId);    }
 
     public double addWeight(int docId, double total) {
         DTO_TransportDoc dto_doc = docsPool.getDoc(docId);
-        double maxWeight = trucksPool.getMaxWeight(dto_doc.getTruckId());
-        return docsPool.addWeight(dto_doc, total, maxWeight);
+        if(dto_doc != null) {
+            double maxWeight = trucksPool.getMaxWeight(dto_doc.getTruckId());
+            return docsPool.addWeight(dto_doc, total, maxWeight);
+        }
+        return -1;
     }
 
     public List<Integer> getStoresFromDoc(int docId) { return docsPool.getStoresFromDoc(docId);   }
@@ -171,12 +182,12 @@ public class Pool {
     public void addDateToTruck(String truckId, Date date) {trucksPool.addDateToTruck(truckId,date);    }
 
     public void freeTruckDate(int docId) {
-        DTO_TransportDoc td= docsPool.getDoc(docId);
+        DTO_TransportDoc td= docsPool.getFailDoc(docId);
         trucksPool.freeTruck(td.getTruckId(),td.getDate());
     }
 
     public void freeDriverDate(int docId) {
-        DTO_TransportDoc td= docsPool.getDoc(docId);
+        DTO_TransportDoc td= docsPool.getFailDoc(docId);
         occupiedDriversPool.freeDriver(td.getDriverId(),td.getDate());
     }
 
@@ -194,10 +205,17 @@ public class Pool {
 
 
     public List<String> getDriversName(List<Integer> availableDrivers) throws Exception {
-        List<String> output = new LinkedList<>();
+      /*  List<String> output = new LinkedList<>();
             for (int i = 0; i < availableDrivers.size(); i++) {
                 output.add("Id: " + availableDrivers.get(i) + " Name: " + employeeService.getDriverName(availableDrivers.get(i)));
             }
-        return output;
+        return output;*/
+        List<String> list = new LinkedList<>();
+        ;
+        for (int i = 0; i <availableDrivers.size() ; i++) {
+            list.add("id: " + availableDrivers.get(i) + " name: " +"dreiver" + i );
+        }
+        return list;
+
     }
 }
