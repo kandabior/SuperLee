@@ -58,7 +58,32 @@ public class ShiftMapper {
         }
     }
 
-    public void deleteShift(String date , String shiftType, int branch) {
+
+    public List<String[]> loadReq(int branch) {
+        List<String[]> req = new LinkedList<>();
+        try {
+            if (tryOpen()) {
+                Class.forName("org.sqlite.JDBC");
+                con.setAutoCommit(false);
+                PreparedStatement statement = con.prepareStatement("SELECT * FROM Requirments where branch =(?);");
+                statement.setInt(1, branch);
+                ResultSet result = statement.executeQuery();
+                while (result.next()) {
+                    String[] s = {result.getString(1), result.getString(2),result.getString(3), String.valueOf(result.getInt(4)),String.valueOf(result.getInt(5))};
+                    req.add(s);
+                }
+                statement.close();
+                con.close();
+                return req;
+            } else return null;
+        } catch (Exception e) {
+            System.err.println(e.getClass().getName() + ": " + e.getMessage());
+            tryClose();
+            return null;
+        }
+    }
+
+        public void deleteShift(String date , String shiftType, int branch) {
         try {
             if (tryOpen()) {
                 Class.forName("org.sqlite.JDBC");
@@ -313,3 +338,4 @@ public class ShiftMapper {
         }
     }
 }
+
