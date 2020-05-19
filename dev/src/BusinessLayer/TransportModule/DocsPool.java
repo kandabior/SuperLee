@@ -118,12 +118,13 @@ public class DocsPool {
     }
 
     public void removeDoc(int id) {
-        TransportDoc doc = null;
+        /*TransportDoc doc = null;
         for (TransportDoc t:transportDocs){
             if(t.getId() == id)
                 doc = t;
         }
-        transportDocs.remove(doc);
+        transportDocs.remove(doc);*/
+        mapper.removeDoc(id);
     }
 
     public List<String> getSuccessDoc() {
