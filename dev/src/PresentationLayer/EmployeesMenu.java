@@ -418,7 +418,7 @@ public class EmployeesMenu {
 
     private String chooseEmployeeManager(String day, String shiftType) {
         List<String> relevant_personnel_manager = service.relevantPersonnelManager(day, shiftType);
-        if (relevant_personnel_manager == null)
+        if (relevant_personnel_manager == null || relevant_personnel_manager.size()==0)
             return null;
         else {
             System.out.println("Select the Shift manager:");

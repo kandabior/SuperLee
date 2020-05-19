@@ -247,7 +247,7 @@ public class ShiftMapper {
                 con.setAutoCommit(false);
                 PreparedStatement statement = con.prepareStatement("SELECT distinct branch FROM Shifts where role =(?) and shiftType =(?);");
                 statement.setString(1, "storekeeper");
-                statement.setString(1, "Morning");
+                statement.setString(2, "Morning");
                 ResultSet result = statement.executeQuery();
                 while (result.next()) {
                     Stores.add(result.getInt(1));
@@ -270,8 +270,9 @@ public class ShiftMapper {
             if (tryOpen()) {
                 Class.forName("org.sqlite.JDBC");
                 con.setAutoCommit(false);
-                PreparedStatement statement = con.prepareStatement("SELECT * FROM Shifts where date =(?);");
+                PreparedStatement statement = con.prepareStatement("SELECT EID FROM Shifts where date =(?) and branch = (?) ;");
                 statement.setString(1, date);
+                statement.setInt(2,0);
                 ResultSet result = statement.executeQuery();
                 while (result.next()) {
                     drivers.add(result.getString(1));
@@ -294,8 +295,9 @@ public class ShiftMapper {
             if (tryOpen()) {
                 Class.forName("org.sqlite.JDBC");
                 con.setAutoCommit(false);
-                PreparedStatement statement = con.prepareStatement("SELECT * FROM ShiftsManager where date =(?);");
+                PreparedStatement statement = con.prepareStatement("SELECT managerEID FROM ShiftsManager where date =(?) and branch = (?) ;");
                 statement.setString(1, date);
+                statement.setInt(2,0);
                 ResultSet result = statement.executeQuery();
                 while (result.next()) {
                     drMa.add(result.getString(1));
