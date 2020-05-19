@@ -238,6 +238,62 @@ public class ShiftMapper {
         }
     }
 
+    public List<String> getDriversAvailableAtDate(String date) {
+        List <String> drM = getDriversMaAvailableAtDate(date);
+        List<String> drivers = new LinkedList<>();
+        try {
+            if (tryOpen()) {
+                Class.forName("org.sqlite.JDBC");
+                con.setAutoCommit(false);
+                PreparedStatement statement = con.prepareStatement("SELECT * FROM Shifts where date =(?);");
+                statement.setString(1, date);
+                ResultSet result = statement.executeQuery();
+                while (result.next()) {
+                    drivers.add(result.getString(1));
+                }
+                statement.close();
+                con.close();
+                return distDriver(drM,drivers);
+            } else return null;
+        } catch (Exception e) {
+            System.err.println(e.getClass().getName() + ": " + e.getMessage());
+            tryClose();
+            return null;
+        }
+
+    }
+
+    private List<String> getDriversMaAvailableAtDate(String date) {
+        List<String> drMa = new LinkedList<>();
+        try {
+            if (tryOpen()) {
+                Class.forName("org.sqlite.JDBC");
+                con.setAutoCommit(false);
+                PreparedStatement statement = con.prepareStatement("SELECT * FROM ShiftsManager where date =(?);");
+                statement.setString(1, date);
+                ResultSet result = statement.executeQuery();
+                while (result.next()) {
+                    drMa.add(result.getString(1));
+                }
+                statement.close();
+                con.close();
+                return drMa;
+            } else return null;
+        } catch (Exception e) {
+            System.err.println(e.getClass().getName() + ": " + e.getMessage());
+            tryClose();
+            return null;
+        }
+    }
+
+    private List<String> distDriver(List<String> drM, List<String> drivers) {
+        for (String d: drM) {
+            if(!drivers.contains(d))
+                drivers.add(d);
+        }
+        return drivers;
+    }
+
     private boolean tryOpen() {
         try {
             String url = "jdbc:sqlite:transportsAndWorkers.db";
@@ -256,5 +312,4 @@ public class ShiftMapper {
             e.printStackTrace();
         }
     }
-
 }

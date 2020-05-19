@@ -168,12 +168,24 @@ public class EmployeesMenu {
                     removeConstrain(ID);
                     break;
                 case 4:
-                    ask = "enter new role:";
-                    service.addRole(ID,inputNotEmpty(ask));
+                    if(currentBranch == 0)
+                        System.out.println("This is a drivers branch\n" +
+                                "There are no additional roles to add.");
+                    else {
+                        //ask = "enter new role:";
+                        String role = roleFromList();
+                        service.addRole(ID, role);
+                    }
                     break;
                 case 5:
-                    ask = "enter role to delete:";
-                    service.deletRole(ID,inputNotEmpty(ask));
+                    if(currentBranch == 0)
+                        System.out.println("This is a drivers branch\n" +
+                                "There are no roles to delete.");
+                    else {
+                        //ask = "enter role to delete:";
+                        String role1 = roleFromList();
+                        service.deletRole(ID, role1);
+                    }
                     break;
                 case 6:
                     service.deleteWorker(ID);
@@ -316,9 +328,14 @@ public class EmployeesMenu {
         int dayOfWeek = c.get(Calendar.DAY_OF_WEEK);
         String day = dayByNumber(dayOfWeek);
 
-        String shiftType = chooseShiftType();
-        while (shiftType == null){
+        String shiftType = null;
+        if(currentBranch == 0)
+            shiftType = "Morning";
+        else {
             shiftType = chooseShiftType();
+            while (shiftType == null) {
+                shiftType = chooseShiftType();
+            }
         }
 
         boolean Exists = service.ShiftExists(date, shiftType);
