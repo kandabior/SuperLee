@@ -17,11 +17,11 @@ public class TestsRunner {
         }
         System.out.println("Successful tests in ShiftManagerTest?: " +result2.wasSuccessful());
 
-//        Result result3= JUnitCore.runClasses(Tests.EmployeeTest.class);
-//        for(Failure failure : result3.getFailures()){
-//            System.out.println(failure.toString());
-//        }
-//        System.out.println("Successful tests in EmployeeTest?: " +result3.wasSuccessful());
+        Result result3= JUnitCore.runClasses(Tests.EmployeeTest.class);
+        for(Failure failure : result3.getFailures()){
+            System.out.println(failure.toString());
+        }
+        System.out.println("Successful tests in EmployeeTest?: " +result3.wasSuccessful());
 
 
 //        Result r4 = JUnitCore.runClasses(Tests.PoolTest.class);
