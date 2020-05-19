@@ -155,6 +155,16 @@ public class DTO_TransportDoc {
         this.finalWeight = finalWeight;
     }
 
+    public String toString(){
+        String weight;
+        if(finalWeight == -1)
+            weight = "-";
+        else
+            weight = finalWeight + "";
 
+        return "id: " + id + "\nstatus: " + status + "\narea: " + area + "\ndate: " + date + "\ntruck id: " + truckId +
+                "\ndriver id: " + driverId + "\nsuppliers: " + suppliers.toString() + "\nstores: " + stores.toString() +"\nitems: " + items.toString()
+                +"\nfinal weight: " + weight;
+    }
 
 }

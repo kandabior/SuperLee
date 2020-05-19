@@ -35,7 +35,7 @@ public class EmployeeTest {
     }
     @Before
     public void setService() {
-        service =Service.getInstance();
+        service = Service.getInstance();
         Date d2 = null;
         try {
             d2 = new SimpleDateFormat("dd/MM/yyyy").parse("21/04/2020");

@@ -130,7 +130,7 @@ public class TrucksPool {
     private static Date stringToDate(String s){
         String[] parts = s.split("/");
         Calendar cal = Calendar.getInstance();
-        cal.set(Calendar.YEAR, Integer.parseInt(parts[2]));
+        cal.set(Calendar.YEAR, Integer.parseInt(parts[2].substring(0,4)));
         cal.set(Calendar.MONTH, Integer.parseInt(parts[1]) - 1);//Calendar.DECEMBER);
         cal.set(Calendar.DAY_OF_MONTH, Integer.parseInt(parts[0]));
         return cal.getTime();

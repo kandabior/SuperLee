@@ -62,7 +62,7 @@ public class DocsPool {
             return doc.getStores();
         }
         return new LinkedList<>();*/
-        return mapper.getTransportsSites("Stores",docId);
+        return mapper.getTStores(docId);
     }
 
     public void addItems(int docId,List<Integer> stores, List<Map<Integer, Integer>> allItems) {
@@ -175,7 +175,7 @@ public class DocsPool {
         if (total <= maxWeight) {
             if (dto_doc != null) {
                 dto_doc.setFinalWeight(total);
-                if(!dto_doc.getItems().isEmpty())//if the doc contain all the detail,including the items list.
+                if(!dto_doc.getItems().get(0).isEmpty())//if the doc contain all the detail,including the items list.
                     dto_doc.setStatus(TransportDoc.Status.SUCCESS);
             }
             output = 0;
@@ -189,7 +189,7 @@ public class DocsPool {
         String status;
         switch (dto_doc.getStatus()) {
             case SUCCESS:
-                status = "SUCCES";
+                status = "SUCCESS";
                 break;
             case PENDING:
                 status = "PENDING";
@@ -204,10 +204,13 @@ public class DocsPool {
     public DTO_TransportDoc getDoc(int docId) {
         return mapper.getTransportDoc(docId);
     }
+    public DTO_TransportDoc getFailDoc(int docId) {
+        return mapper.getFailDoc(docId);
+    }
     private static Date stringToDate(String s){
         String[] parts = s.split("/");
         Calendar cal = Calendar.getInstance();
-        cal.set(Calendar.YEAR, Integer.parseInt(parts[2]));
+        cal.set(Calendar.YEAR, Integer.parseInt(parts[2].substring(0,4)));
         cal.set(Calendar.MONTH, Integer.parseInt(parts[1]) - 1);//Calendar.DECEMBER);
         cal.set(Calendar.DAY_OF_MONTH, Integer.parseInt(parts[0]));
         return cal.getTime();
