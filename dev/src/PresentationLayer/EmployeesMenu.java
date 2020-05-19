@@ -398,7 +398,7 @@ public class EmployeesMenu {
                                         numOfEmployee + " more left to choose for this role");
                                 String Employee = null;
                                 while (Employee == null) {
-                                    chooseFromList(relevantEmployees);
+                                    Employee = chooseFromList(relevantEmployees);
                                 }
                                 relevantEmployees.remove(Employee);
                                 employees.add(Employee);

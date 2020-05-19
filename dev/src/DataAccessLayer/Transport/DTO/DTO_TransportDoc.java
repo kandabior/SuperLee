@@ -163,7 +163,7 @@ public class DTO_TransportDoc {
             weight = finalWeight + "";
 
         return "id: " + id + "\nstatus: " + status + "\narea: " + area + "\ndate: " + date + "\ntruck id: " + truckId +
-                "\ndriver id: " + driverId + "\nsuppliers: " + suppliers.toString() + "\nstores: " + stores.toString() +"\nitems: " + items.toString()
+                "\ndriver id: " + driverId + "\ndriver name: "+ driverName + "\nsuppliers: " + suppliers.toString() + "\nstores: " + stores.toString() +"\nitems: " + items.toString()
                 +"\nfinal weight: " + weight;
     }
 
