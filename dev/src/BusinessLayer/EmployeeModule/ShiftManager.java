@@ -55,7 +55,7 @@ public class ShiftManager {
 
     public boolean ShiftExists(Date date, ShiftType shiftType) {
         for (Shift s: Shifts) {
-            if(s.getDate().equals(date) && s.getShiftType().equals(shiftType))
+            if(dateToString(s.getDate()).equals(dateToString(date)) && stToString(s.getShiftType()).equals(stToString(shiftType)))
                 return true;
         }
         return false;
