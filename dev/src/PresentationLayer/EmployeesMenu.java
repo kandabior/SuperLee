@@ -130,8 +130,10 @@ public class EmployeesMenu {
             String emplyeeId = service.addWorker(name, ID, hiringConditions, bankId, salary, startEmployment,licence);
             if (emplyeeId == null) {
                 System.out.println("ID is in use! aborted...");
-            } else
+            } else {
+                service.addRole(emplyeeId,"driver");
                 System.out.println("Success! new worker ID: " + emplyeeId);
+            }
         }
         catch (Exception e){
             e.printStackTrace();
@@ -294,24 +296,35 @@ public class EmployeesMenu {
         while (day == null){
             day = chooseDay();
         }
-        String shiftType = chooseShiftType();
-        while (shiftType == null){
+        String shiftType = null;
+        if(currentBranch == 0)
+            shiftType = "Morning";
+        else {
             shiftType = chooseShiftType();
+            while (shiftType == null) {
+                shiftType = chooseShiftType();
+            }
         }
         Map<String,Integer> roles = new HashMap<String, Integer>();
-        boolean stop = false;
-        while (!stop){
-            String role = roleFromList();
-            while (role == null){
-                role = roleFromList();
+        if(currentBranch == 0) {
+            int num = inputNumber("This is a drivers branch\n" + "How many drivers would you want to shift (other than a shift manager)?");
+            roles.put("driver",num);
+        }
+        else {
+            boolean stop = false;
+            while (!stop) {
+                String role = roleFromList();
+                while (role == null) {
+                    role = roleFromList();
+                }
+                String ask = "How Many Employees in the role " + role + " needed?";
+                int numOfEmployee = inputNumber(ask);
+                roles.put(role, numOfEmployee);
+                String ask1 = "Need more roles? Select y/n";
+                String needMore = yesOrNo(ask1);
+                if (needMore.equals("n"))
+                    stop = true;
             }
-            String ask = "How Many Employees in the role "+role+" needed?";
-            int numOfEmployee = inputNumber(ask);
-            roles.put(role,numOfEmployee);
-            String ask1 = "Need more roles? Select y/n";
-            String needMore = yesOrNo(ask1);
-            if(needMore.equals("n"))
-                stop = true;
         }
         service.editRequirements(day,shiftType,roles);
         System.out.println("Done\n\n");
