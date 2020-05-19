@@ -534,4 +534,27 @@ public class DocsMapper {
             return null;
         }
     }
+
+    public void removeDoc(int id) {
+        try {
+            if (tryOpen()) {
+                Class.forName("org.sqlite.JDBC");
+                con.setAutoCommit(false);
+                PreparedStatement st = con.prepareStatement("DELETE FROM TransportDocs WHERE ID= (?);");
+                st.setInt(1, id);
+                int rowNum = st.executeUpdate();
+                st.close();
+                if (rowNum != 0) {
+                    con.commit();
+                    con.close();
+                } else {
+                    con.rollback();
+                    con.close();
+                }
+            }
+        } catch (Exception e) {
+            tryClose();
+            System.err.println(e.getClass().getName() + ": " + e.getMessage());
+        }
+    }
 }

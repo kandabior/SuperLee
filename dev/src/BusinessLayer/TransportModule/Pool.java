@@ -5,10 +5,7 @@ import BusinessLayer.EmployeeModule.EmployeeService;
 import DataAccessLayer.Transport.DTO.DTO_TransportDoc;
 import org.omg.PortableInterceptor.SYSTEM_EXCEPTION;
 
-import java.util.Date;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 
 public class Pool {
@@ -92,10 +89,7 @@ public class Pool {
     }
 
     public List<String> getAvailableStores(int area, Date date) {
-        List<Integer> availableStores =new LinkedList<>(); //employeeService.getStores(date);
-        availableStores.add(1);
-        availableStores.add(2);
-        availableStores.add(9);
+        List<Integer> availableStores = employeeService.getStores(date);
         return storesPool.getStores(area,availableStores);
 
     }
@@ -124,12 +118,12 @@ public class Pool {
             license = "C";
         else
             license = "C1";
-        List<Integer> list = new LinkedList<>();
-        list.add(1);
-        list.add(2);
-        return list;
+       List<Integer> output = employeeService.getDrivers(date,license);
+        return occupiedDriversPool.validDrivers(output, date);
+    }
 
-        //employeeService.getDrivers(date,license);
+    public List<Integer> validDriver(List<Integer> drivers, Date date){
+        return occupiedDriversPool.validDrivers(drivers, date);
     }
 
     public List<String> getTrucks(Date date) {
@@ -137,7 +131,7 @@ public class Pool {
     }
 
     public String getDriverName(int driverId) throws Exception {
-        return "driver1";//employeeService.getDriverName(driverId);
+        return employeeService.getDriverName(driverId);
     }
 
     public void addDoc(int area, Date date, String truckId, int driverId, String driverName, List<Integer> stores, List<Integer> suppliers) {
@@ -205,17 +199,25 @@ public class Pool {
 
 
     public List<String> getDriversName(List<Integer> availableDrivers) throws Exception {
-      /*  List<String> output = new LinkedList<>();
+            List<String> output = new LinkedList<>();
             for (int i = 0; i < availableDrivers.size(); i++) {
                 output.add("Id: " + availableDrivers.get(i) + " Name: " + employeeService.getDriverName(availableDrivers.get(i)));
             }
-        return output;*/
-        List<String> list = new LinkedList<>();
-        ;
-        for (int i = 0; i <availableDrivers.size() ; i++) {
-            list.add("id: " + availableDrivers.get(i) + " name: " +"dreiver" + i );
-        }
-        return list;
+        return output;
 
+
+    }
+    private static String dateToString(Date date){
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTime(date);
+        return calendar.get(Calendar.DATE)+"/"+(calendar.get(Calendar.MONTH)+1) +"/" + calendar.get(Calendar.YEAR);
+    }
+
+    public void freeTruckDate(String truckId, Date date) {
+        trucksPool.freeTruck(truckId,dateToString(date));
+    }
+
+    public void freeDriverDate(int driverId, Date date) {
+        occupiedDriversPool.freeDriver(driverId,dateToString(date));
     }
 }

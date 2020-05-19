@@ -58,7 +58,32 @@ public class ShiftMapper {
         }
     }
 
-    public void deleteShift(String date , String shiftType, int branch) {
+
+    public List<String[]> loadReq(int branch) {
+        List<String[]> req = new LinkedList<>();
+        try {
+            if (tryOpen()) {
+                Class.forName("org.sqlite.JDBC");
+                con.setAutoCommit(false);
+                PreparedStatement statement = con.prepareStatement("SELECT * FROM Requirments where branch =(?);");
+                statement.setInt(1, branch);
+                ResultSet result = statement.executeQuery();
+                while (result.next()) {
+                    String[] s = {result.getString(1), result.getString(2),result.getString(3), String.valueOf(result.getInt(4)),String.valueOf(result.getInt(5))};
+                    req.add(s);
+                }
+                statement.close();
+                con.close();
+                return req;
+            } else return null;
+        } catch (Exception e) {
+            System.err.println(e.getClass().getName() + ": " + e.getMessage());
+            tryClose();
+            return null;
+        }
+    }
+
+        public void deleteShift(String date , String shiftType, int branch) {
         try {
             if (tryOpen()) {
                 Class.forName("org.sqlite.JDBC");
@@ -222,7 +247,7 @@ public class ShiftMapper {
                 con.setAutoCommit(false);
                 PreparedStatement statement = con.prepareStatement("SELECT distinct branch FROM Shifts where role =(?) and shiftType =(?);");
                 statement.setString(1, "storekeeper");
-                statement.setString(1, "Morning");
+                statement.setString(2, "Morning");
                 ResultSet result = statement.executeQuery();
                 while (result.next()) {
                     Stores.add(result.getInt(1));
@@ -236,6 +261,64 @@ public class ShiftMapper {
             tryClose();
             return null;
         }
+    }
+
+    public List<String> getDriversAvailableAtDate(String date) {
+        List <String> drM = getDriversMaAvailableAtDate(date);
+        List<String> drivers = new LinkedList<>();
+        try {
+            if (tryOpen()) {
+                Class.forName("org.sqlite.JDBC");
+                con.setAutoCommit(false);
+                PreparedStatement statement = con.prepareStatement("SELECT EID FROM Shifts where date =(?) and branch = (?) ;");
+                statement.setString(1, date);
+                statement.setInt(2,0);
+                ResultSet result = statement.executeQuery();
+                while (result.next()) {
+                    drivers.add(result.getString(1));
+                }
+                statement.close();
+                con.close();
+                return distDriver(drM,drivers);
+            } else return null;
+        } catch (Exception e) {
+            System.err.println(e.getClass().getName() + ": " + e.getMessage());
+            tryClose();
+            return null;
+        }
+
+    }
+
+    private List<String> getDriversMaAvailableAtDate(String date) {
+        List<String> drMa = new LinkedList<>();
+        try {
+            if (tryOpen()) {
+                Class.forName("org.sqlite.JDBC");
+                con.setAutoCommit(false);
+                PreparedStatement statement = con.prepareStatement("SELECT managerEID FROM ShiftsManager where date =(?) and branch = (?) ;");
+                statement.setString(1, date);
+                statement.setInt(2,0);
+                ResultSet result = statement.executeQuery();
+                while (result.next()) {
+                    drMa.add(result.getString(1));
+                }
+                statement.close();
+                con.close();
+                return drMa;
+            } else return null;
+        } catch (Exception e) {
+            System.err.println(e.getClass().getName() + ": " + e.getMessage());
+            tryClose();
+            return null;
+        }
+    }
+
+    private List<String> distDriver(List<String> drM, List<String> drivers) {
+        for (String d: drM) {
+            if(!drivers.contains(d))
+                drivers.add(d);
+        }
+        return drivers;
     }
 
     private boolean tryOpen() {
@@ -256,5 +339,5 @@ public class ShiftMapper {
             e.printStackTrace();
         }
     }
-
 }
+

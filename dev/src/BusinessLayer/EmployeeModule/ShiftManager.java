@@ -6,7 +6,7 @@ import DataAccessLayer.Employee.Shift_DTO;
 import java.util.*;
 
 public class ShiftManager {
-    private int currentBranch;
+    private int currentBranch = -1;
     private List<Shift> Shifts;
     private Map<Pair<Day, ShiftType>,Map<String,Integer>> requirements;
     private ShiftMapper shiftMapper;
@@ -55,7 +55,7 @@ public class ShiftManager {
 
     public boolean ShiftExists(Date date, ShiftType shiftType) {
         for (Shift s: Shifts) {
-            if(s.getDate().equals(date) && s.getShiftType().equals(shiftType))
+            if(dateToString(s.getDate()).equals(dateToString(date)) && stToString(s.getShiftType()).equals(stToString(shiftType)))
                 return true;
         }
         return false;
@@ -120,7 +120,7 @@ public class ShiftManager {
             }
         }
         if(details.equals(""))
-            return "There is no BusinessLayer.EmployeeModule.Shift inlay at this date";
+            return "There is no ShiftType inlay at this date";
         return details;
     }
 
@@ -131,12 +131,12 @@ public class ShiftManager {
             if (curr.newEquals(check)){
                 Map<String,Integer> det = requirements.get(curr);
                 for (String s : det.keySet()) {
-                    req = req + s + " : " + det.get(s).toString() + "\n";
+                    req = req + s + " : " + det.get(s) + "\n";
                 }
             }
         }
         if (req.equals(""))
-            return "No requirements for this day and BusinessLayer.EmployeeModule.Shift type";
+            return "No requirements for this day and Shift type";
         return req;
     }
 
@@ -154,7 +154,47 @@ public class ShiftManager {
             if(shifts_of_the_current_branch != null)
                 loadShifts(shifts_of_the_current_branch);
         }
+        List<String[]> req = shiftMapper.loadReq(branch);
+        loadReq(req);
     }
+
+    private void loadReq(List<String[]> req) {
+        requirements = new HashMap<>();
+        if (req != null){
+            for(String [] s : req) {
+                Pair<Day,ShiftType> curr = new Pair<>(stringToDay(s[0]),stringToShiftType(s[1]));
+                if(requirements.get(curr) != null)
+                    /*if(requirements.get(curr).get(s[2])!= null)
+                                requirements.get(p).put(s[2],new Integer(requirements.get(p).get(s[2]).intValue()+Integer.parseInt(s[3])));
+                            else*/
+                    requirements.get(curr).put(s[2],Integer.parseInt(s[3]));
+                else {
+                    Map<String,Integer> map = new HashMap<>();
+                    map.put(s[2],Integer.parseInt(s[3]));
+                    requirements.put(curr,map);
+                }
+            }
+        }
+    }
+
+    private Day stringToDay(String day) {
+        if (day.equals("Sunday"))
+            return Day.Sunday;
+        if (day.equals("Monday"))
+            return Day.Monday;
+        if (day.equals("Thursday"))
+            return Day.Thursday;
+        if (day.equals("Wednesday"))
+            return Day.Wednesday;
+        if (day.equals("Tuesday"))
+            return Day.Tuesday;
+        if (day.equals("Friday"))
+            return Day.Friday;
+        if (day.equals("Saturday"))
+            return Day.Saturday;
+        return null;
+    }
+
 
     private void loadShiftsManager(List<String[]> shifts_manager) {
         for (String[] s: shifts_manager) {
@@ -224,7 +264,7 @@ public class ShiftManager {
             case Saturday:
                 return "Saturday";
             default:
-                    return null;
+                return null;
         }
     }
 
@@ -249,6 +289,15 @@ public class ShiftManager {
         if (shiftType.equals("Evening"))
             return ShiftType.Evening;
         return null;
+    }
+
+    public List<Integer> getDriversAvailableAtDate(Date date) {
+        List <String> dri = shiftMapper. getDriversAvailableAtDate(dateToString(date));
+        List<Integer> drivers = new LinkedList<>();
+        for (String s: dri) {
+            drivers.add(Integer.parseInt(s.substring(0,s.indexOf(";"))));
+        }
+        return drivers;
     }
 }
 
