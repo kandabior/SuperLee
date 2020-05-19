@@ -1,6 +1,7 @@
 package BusinessLayer.TransportModule;
 
 import DataAccessLayer.Transport.DTO.DTO_OccupiedDriver;
+import DataAccessLayer.Transport.DTO.DTO_Store;
 import DataAccessLayer.Transport.OccupiedDriversMapper;
 
 import java.util.*;
@@ -83,6 +84,24 @@ public class OccupiedDriversPool {
             occupiedDrivers.add(driver);
         }
         mapper.addDateToOccupiedDriver(driverId, dateToString(date));
+    }
+
+    public List<Integer> validDrivers(List<Integer> workingDrivers,Date date) {
+        List<Integer> output = new LinkedList<>();
+        Iterator itr = workingDrivers.iterator();
+        while (itr.hasNext()) {
+            boolean isOccupied = false;
+            int driver = (Integer) itr.next();
+            for (OccupiedDriver d : occupiedDrivers) {
+                if(d.getId() == driver)
+                    isOccupied = true;
+                if (d.getId() == driver && d.isFree(date))
+                    output.add(d.getId());
+            }
+            if (!isOccupied)
+                output.add(driver);
+        }
+        return output;
     }
 
     /*public void addDriver(String id, String name , String license){

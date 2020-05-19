@@ -5,10 +5,7 @@ import BusinessLayer.EmployeeModule.EmployeeService;
 import DataAccessLayer.Transport.DTO.DTO_TransportDoc;
 import org.omg.PortableInterceptor.SYSTEM_EXCEPTION;
 
-import java.util.Date;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 
 public class Pool {
@@ -121,7 +118,12 @@ public class Pool {
             license = "C";
         else
             license = "C1";
-       return employeeService.getDrivers(date,license);
+       List<Integer> output = employeeService.getDrivers(date,license);
+        return occupiedDriversPool.validDrivers(output, date);
+    }
+
+    public List<Integer> validDriver(List<Integer> drivers, Date date){
+        return occupiedDriversPool.validDrivers(drivers, date);
     }
 
     public List<String> getTrucks(Date date) {
@@ -204,5 +206,18 @@ public class Pool {
         return output;
 
 
+    }
+    private static String dateToString(Date date){
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTime(date);
+        return calendar.get(Calendar.DATE)+"/"+(calendar.get(Calendar.MONTH)+1) +"/" + calendar.get(Calendar.YEAR);
+    }
+
+    public void freeTruckDate(String truckId, Date date) {
+        trucksPool.freeTruck(truckId,dateToString(date));
+    }
+
+    public void freeDriverDate(int driverId, Date date) {
+        occupiedDriversPool.freeDriver(driverId,dateToString(date));
     }
 }
