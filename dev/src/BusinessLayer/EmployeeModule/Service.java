@@ -1,6 +1,7 @@
 package BusinessLayer.EmployeeModule;
 
 import java.util.Date;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
@@ -153,7 +154,14 @@ public class Service {
     }
 
     public List<Integer> getDriversAvailableAtDate(Date date, String license) {
-        return employeesManager.getDriversAvailableAtDate(date,license);
+        List<Integer> dr = new LinkedList<>();
+        List<Integer> de =  employeesManager.getDriversAvailableAtDate(date,license);
+        List<Integer> dS = shiftManager.getDriversAvailableAtDate(date);
+        for (Integer dCurr :de){
+            if(dS.contains(dCurr))
+                dr.add(dCurr);
+        }
+        return dr;
 
     }
 

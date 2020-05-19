@@ -120,7 +120,7 @@ public class ShiftManager {
             }
         }
         if(details.equals(""))
-            return "There is no BusinessLayer.EmployeeModule.Shift inlay at this date";
+            return "There is no ShiftType inlay at this date";
         return details;
     }
 
@@ -131,12 +131,12 @@ public class ShiftManager {
             if (curr.newEquals(check)){
                 Map<String,Integer> det = requirements.get(curr);
                 for (String s : det.keySet()) {
-                    req = req + s + " : " + det.get(s).toString() + "\n";
+                    req = req + s + " : " + det.get(s) + "\n";
                 }
             }
         }
         if (req.equals(""))
-            return "No requirements for this day and BusinessLayer.EmployeeModule.Shift type";
+            return "No requirements for this day and Shift type";
         return req;
     }
 
@@ -249,6 +249,15 @@ public class ShiftManager {
         if (shiftType.equals("Evening"))
             return ShiftType.Evening;
         return null;
+    }
+
+    public List<Integer> getDriversAvailableAtDate(Date date) {
+        List <String> dri = shiftMapper. getDriversAvailableAtDate(dateToString(date));
+        List<Integer> drivers = new LinkedList<>();
+        for (String s: dri) {
+            drivers.add(Integer.parseInt(s.substring(0,s.indexOf(";"))));
+        }
+        return drivers;
     }
 }
 

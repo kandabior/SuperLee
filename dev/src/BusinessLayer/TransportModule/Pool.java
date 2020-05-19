@@ -92,10 +92,7 @@ public class Pool {
     }
 
     public List<String> getAvailableStores(int area, Date date) {
-        List<Integer> availableStores =new LinkedList<>(); //employeeService.getStores(date);
-        availableStores.add(1);
-        availableStores.add(2);
-        availableStores.add(9);
+        List<Integer> availableStores = employeeService.getStores(date);
         return storesPool.getStores(area,availableStores);
 
     }
@@ -124,12 +121,7 @@ public class Pool {
             license = "C";
         else
             license = "C1";
-        List<Integer> list = new LinkedList<>();
-        list.add(1);
-        list.add(2);
-        return list;
-
-        //employeeService.getDrivers(date,license);
+       return employeeService.getDrivers(date,license);
     }
 
     public List<String> getTrucks(Date date) {
@@ -137,7 +129,7 @@ public class Pool {
     }
 
     public String getDriverName(int driverId) throws Exception {
-        return "driver1";//employeeService.getDriverName(driverId);
+        return employeeService.getDriverName(driverId);
     }
 
     public void addDoc(int area, Date date, String truckId, int driverId, String driverName, List<Integer> stores, List<Integer> suppliers) {
@@ -205,17 +197,12 @@ public class Pool {
 
 
     public List<String> getDriversName(List<Integer> availableDrivers) throws Exception {
-      /*  List<String> output = new LinkedList<>();
+            List<String> output = new LinkedList<>();
             for (int i = 0; i < availableDrivers.size(); i++) {
                 output.add("Id: " + availableDrivers.get(i) + " Name: " + employeeService.getDriverName(availableDrivers.get(i)));
             }
-        return output;*/
-        List<String> list = new LinkedList<>();
-        ;
-        for (int i = 0; i <availableDrivers.size() ; i++) {
-            list.add("id: " + availableDrivers.get(i) + " name: " +"dreiver" + i );
-        }
-        return list;
+        return output;
+
 
     }
 }

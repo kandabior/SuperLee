@@ -10,7 +10,7 @@ public class TrnasAndEmpView {
         while (true) {
                 System.out.println("Welcome to the \"Super-Lee\" system!\n" +
                         "Which system would you like to enter to?:\n" +
-                        "1. Transport management\n" +
+                        "1. Transport manager\n" +
                         "2. Personal manager\n" +
                         "3. Exit");
                 int role;
