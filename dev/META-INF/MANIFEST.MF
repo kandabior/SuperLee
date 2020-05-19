@@ -1,3 +1,4 @@
 Manifest-Version: 1.0
-Main-Class: PresentationLayer.EmployeesMenu
+Class-Path: sqlite-jdbc-3.30.1.jar
+Main-Class: PresentationLayer.TrnasAndEmpView
 
