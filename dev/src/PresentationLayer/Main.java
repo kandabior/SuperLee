@@ -23,6 +23,7 @@ public class Main {
                     "1. Enter Inventory & Reports Menu\n" +
                     "2. Enter Suppliers Menu\n" +
                     "3. Show Global Products\n" +
+                    //לרביעייה הפחות מוצלחת תוסיפו לפה את הקריאה לתפריטים שלכם
                     "4. Add Global Product\n" +
                     "5. Promote Day\n" +
                     "6. Quit\n");
