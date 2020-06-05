@@ -123,15 +123,13 @@ public class SupplierMenu {
                 System.out.println("------------------------------------------------------------------------------\n");
                 System.out.println("Supplier's name: " + supplierName + "\t" + "Supplier's address: " + supplierAddress + "\tOrderId: " + orderId + "\tBranch Id: " + branchId + "\n");
                 System.out.println("Supplier's id: " + supplierId + "\t" + "Date: " + orderDate + "\t" + "Supplier's phone: " + suppPhone + "\n");
-                System.out.println();
-                System.out.println("Item Id\t\tItem Name\tQuantity\tPrice\t\tDiscount\tFinal Cost\n");
+                System.out.println("\nItem Id\t\tItem Name\tQuantity\tPrice\t\tDiscount\tFinal Cost\n");
                 for (int j = 0; j < list.size(); j++) {
                     System.out.println(list.get(j).get(0) + "\t\t" + list.get(j).get(1) + "\t\t" + list.get(j).get(2) + "\t\t" + list.get(j).get(3) + "\t\t" + list.get(j).get(4) + "\t\t" + list.get(j).get(5) + "\n");
                 }
                 System.out.println("Total amount: " + fc.getTotalOrderMoney(orderId));
                 System.out.println("Status: " + fc.getOrderStatus(orderId));
-                System.out.println();
-                System.out.println("------------------------------------------------------------------------------\n");
+                System.out.println("\n------------------------------------------------------------------------------\n");
             }
         }
     }
@@ -139,7 +137,7 @@ public class SupplierMenu {
     private static int addItems(int suppId) {
         int newItems = 0;
         Scanner scanner = new Scanner(System.in);
-        System.out.print("Item's identifier: ");
+        System.out.print("Item's Global identifier: ");
         int itemId = scanner.nextInt();
         while (fc.validateItemId(suppId, itemId)) {
             System.out.println("This supplier already has this item, Please enter another one.");
@@ -148,9 +146,12 @@ public class SupplierMenu {
         }
         if(fc.checkIfItemExist(itemId))
         {
+            scanner = new Scanner(System.in);
+            System.out.print("Enter local identifier ");
+            int itemLocalId = scanner.nextInt();
             String name = fc.getItemNameById(itemId);
             System.out.print("Name: " + name);
-            fc.addItemToSupplier(suppId, itemId);
+            fc.addItemToSupplier(suppId, itemId,itemLocalId);
             newItems++;
             System.out.print("\nInsert more items? [Y/N] ");
         }
@@ -415,28 +416,28 @@ public class SupplierMenu {
         return scanner2.nextLine();
     }
 
-    public static void initiateSystem() {
-        FacadeController.getFacadeController().addSupplier(supplierIdCounter++,"itay","05550004",
-                23423,"cash","Sunday","Beer-Sheva");
-        FacadeController.getFacadeController().addSupplier(supplierIdCounter++,"moshe","2342352425",
-                23333423,"cash","Saturday","Tel Aviv");
-        FacadeController.getFacadeController().addItemToAgreement(1,1,2.0);
-        FacadeController.getFacadeController().addItemToSupplier(1,1);
-        FacadeController.getFacadeController().addItemToAgreement(1,2,5.0);
-        FacadeController.getFacadeController().addItemToSupplier(1,2);
-        FacadeController.getFacadeController().addItemToAgreement(1,3,10.0);
-        FacadeController.getFacadeController().addItemToSupplier(1,3);
-        Map<Integer, Pair<Integer,Double>> map = new HashMap<>();
-        Pair<Integer,Double> p = new Pair<>(10, 0.7);
-        map.put(2,p);
-        FacadeController.getFacadeController().createBillOfQuantities(1,map);
-        FacadeController.getFacadeController().addItemToAgreement(2,1,6.0);
-        FacadeController.getFacadeController().addItemToSupplier(2,1);
-        FacadeController.getFacadeController().addItemToAgreement(2,2,7.0);
-        FacadeController.getFacadeController().addItemToSupplier(2,2);
-        FacadeController.getFacadeController().addItemToAgreement(2,3,5.0);
-        FacadeController.getFacadeController().addItemToSupplier(2,3);
-
-
-    }
+//    public static void initiateSystem() {
+//        FacadeController.getFacadeController().addSupplier(supplierIdCounter++,"itay","05550004",
+//                23423,"cash","Sunday","Beer-Sheva");
+//        FacadeController.getFacadeController().addSupplier(supplierIdCounter++,"moshe","2342352425",
+//                23333423,"cash","Saturday","Tel Aviv");
+//        FacadeController.getFacadeController().addItemToAgreement(1,1,2.0);
+//        FacadeController.getFacadeController().addItemToSupplier(1,1);
+//        FacadeController.getFacadeController().addItemToAgreement(1,2,5.0);
+//        FacadeController.getFacadeController().addItemToSupplier(1,2);
+//        FacadeController.getFacadeController().addItemToAgreement(1,3,10.0);
+//        FacadeController.getFacadeController().addItemToSupplier(1,3);
+//        Map<Integer, Pair<Integer,Double>> map = new HashMap<>();
+//        Pair<Integer,Double> p = new Pair<>(10, 0.7);
+//        map.put(2,p);
+//        FacadeController.getFacadeController().createBillOfQuantities(1,map);
+//        FacadeController.getFacadeController().addItemToAgreement(2,1,6.0);
+//        FacadeController.getFacadeController().addItemToSupplier(2,1);
+//        FacadeController.getFacadeController().addItemToAgreement(2,2,7.0);
+//        FacadeController.getFacadeController().addItemToSupplier(2,2);
+//        FacadeController.getFacadeController().addItemToAgreement(2,3,5.0);
+//        FacadeController.getFacadeController().addItemToSupplier(2,3);
+//
+//
+//    }
 }

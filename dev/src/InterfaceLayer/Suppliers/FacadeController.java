@@ -69,11 +69,12 @@ public class FacadeController {
             if (bestSuppForItem > 0) {
                 Double costForItem = supplierController.getPriceOfAmountOfItem(bestSuppForItem, itemId, quantity);
                 Pair<Integer, Double> p = new Pair(quantity, costForItem);
-                map.put(itemId, p);
+                int localItemId = getLocalItemId(itemId);
+                map.put(localItemId, p);
                 //add orders
                 if (orderMap.containsKey(bestSuppForItem)) {
                     List<Object> orderList = new LinkedList<>();
-                    orderList.add(itemId);// Item Id
+                    orderList.add(localItemId);// Item Id
                     orderList.add(supplierController.getItemName(itemId));//Item Name
                     orderList.add(quantity);// Item quantity
                     Double firstCost = supplierController.getPriceOfAmountOfItemBeforeDiscount(bestSuppForItem, itemId, quantity);
@@ -85,7 +86,7 @@ public class FacadeController {
                 } else {
                     List<List<Object>> bigList = new LinkedList<>();
                     List<Object> orderList = new LinkedList<>();
-                    orderList.add(itemId);// Item Id
+                    orderList.add(localItemId);// Item Id
                     orderList.add(supplierController.getItemName(itemId));//Item Name
                     orderList.add(quantity);// Item quantity
                     Double firstCost = supplierController.getPriceOfAmountOfItemBeforeDiscount(bestSuppForItem, itemId, quantity);
@@ -106,10 +107,14 @@ public class FacadeController {
         return map;
     }
 
+    private int getLocalItemId(int itemId) {
+      return  supplierController.getLocalItemId(itemId);
+    }
+
     public int getOrdersSize() { return orderController.getOrdersSize(); }
 
-    public void addItemToSupplier(int suppId, int itemId) {
-        supplierController.addItemToSupplier(suppId, itemId);
+    public void addItemToSupplier(int suppId, int itemId, int itemLocalId) {
+        supplierController.addItemToSupplier(suppId, itemId,itemLocalId);
     }
 
     public int getItemsListSize(int suppId) { return supplierController.getItemsListSize(suppId); }

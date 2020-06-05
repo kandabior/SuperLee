@@ -131,12 +131,13 @@ public class SupplierMapper {
         return false;
     }
 
-    public void addItemToSupplier(int suppId, int itemId) {
+    public void addItemToSupplier(int suppId, int itemId, int itemLocalId) {
         try {
             if (tryOpen()) {
-                PreparedStatement st = conn.prepareStatement("INSERT INTO SupplierItems VALUES (?,?);");
+                PreparedStatement st = conn.prepareStatement("INSERT INTO SupplierItems VALUES (?,?,?);");
                 st.setInt(1, suppId);
                 st.setInt(2, itemId);
+                st.setInt(2, itemLocalId);
                 int rowNum = st.executeUpdate();
                 if (rowNum != 0) {
                     conn.commit();
@@ -602,5 +603,26 @@ public class SupplierMapper {
 
 
 
+    }
+
+    public int getLocalItemId(int itemId) {
+        int localItemId=-1;
+        try {
+            if (tryOpen()) {
+                PreparedStatement st = conn.prepareStatement("SELECT localItemId FROM SupplierItems WHERE itemId = ?;");
+                st.setString(1, "suppliers");
+                ResultSet res = st.executeQuery();
+                if (res.next()) {
+                    localItemId = res.getInt("counter");
+                }
+                st.close();
+                conn.close();
+                return localItemId;
+            }
+        } catch (Exception e) {
+            System.err.println(e.getClass().getName() + ": " + e.getMessage());
+            tryClose();
+        }
+        return localItemId;
     }
 }

@@ -41,8 +41,6 @@ public class SupplierController {
 
     public boolean findSupplier(int id) {
         return SupplierMapper.findSupplier(id);
-        //if(getSuppById(id) != null) return true;
-        //return false;
     }
 
     public boolean addSupplier(int id, String name, String phoneNum, int bankAccount, String payment, String supplySchedule, String supplyLocation) {
@@ -79,8 +77,7 @@ public class SupplierController {
 
     public LinkedHashMap<Integer, Double> showSuppItems(int suppId){
         return this.supplier.showSuppItems(suppId);
-        /*Supplier supplier = getSuppById(suppId);
-        return supplier.getAgreement().getTerms();*/
+
     }
 
     public boolean checkBillOfQuantity(int suppId) {
@@ -99,24 +96,20 @@ public class SupplierController {
         return this.item.getName(itemId);
     }
 
-    public void addItemToSupplier(int suppId, int itemId) {
-        this.supplier.addItemToSupplier(suppId,itemId);
-        //this.getSuppById(suppId).addItemsToSupplier(itemId);
+    public void addItemToSupplier(int suppId, int itemId, int itemLocalId) {
+        this.supplier.addItemToSupplier(suppId,itemId,itemLocalId);
     }
 
     public int getItemsListSize(int suppId) {
         return this.supplier.getItemsListSize(suppId);
-        //return this.getSuppById(suppId).getItemsListSize();
     }
 
     public void setItemPrice(int suppId, int itemId, double newPrice) {
         this.supplier.setItemPrice(suppId, itemId, newPrice);
-        //getSuppById(suppId).setItemPrice(itemId, newPrice);
     }
 
     public boolean validateItemId(int suppId, int itemId) {
         return this.supplier.validateItemId(suppId,itemId);
-        //return getSuppById(suppId).validateItemId(itemId);
     }
 
     public int bestSuppForItem(Integer itemId, Integer quantity) {
@@ -137,41 +130,22 @@ public class SupplierController {
 
         return bestSuppId;
 
-
-
-      /*  List<Integer> suppId = this.supplier.getSupplierId();
-        for(int i=0 ; i<size;i++)
-        {
-             Double temp =suppliers.get(i).getPriceOfAmountOfItem(itemId,quantity);
-             if(temp<min) {
-                 min = temp;
-                 bestSuppId=i;
-             }
-        }
-
-        return bestSuppId+1;*/
     }
 
     public Double getPriceOfAmountOfItem(int bestSuppForItem,Integer itemId, Integer amount) {
          return this.supplier.getPriceOfAmountOfItem(bestSuppForItem,itemId,amount);
-       /* return getSuppById(bestSuppForItem).getPriceOfAmountOfItem(itemId,amount);*/
     }
 
     public boolean checkIfItemExist(int itemId) {
         return this.item.checkIfItemExist(itemId);
-
-        //return (Items.getName(itemId)!=null);
     }
 
     public Double getPriceOfAmountOfItemBeforeDiscount(int suppId , int itemId , int amount) {
-
         return this.supplier.getPriceOfAmountOfItemBeforeDiscount(suppId,itemId,amount);
-        //return getSuppById(suppId).getPriceOfAmountOfItemBeforeDiscount(itemId, amount);
     }
 
     public Double getDiscountOfItem(int bestSuppForItem, int itemId , int amount) {
         return this.supplier.getDiscount(bestSuppForItem,itemId,amount);
-        //return getSuppById(bestSuppForItem).getDiscountOfItem(itemId, amount);
     }
 
     public List<Object> getSuppDetails(int bestSuppForItem) {
@@ -188,5 +162,9 @@ public class SupplierController {
 
     public List<List<Object>> getAllSuppliers() {
         return this.supplier.getAllSuppliers();
+    }
+
+    public int getLocalItemId(int itemId) {
+        return this.supplier.getLocalItemId(itemId);
     }
 }

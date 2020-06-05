@@ -40,8 +40,8 @@ public class Supplier {
        return this.supplierMapper.validateItemId(suppId,itemId);
     }
 
-    public void addItemToSupplier(int suppId, int itemId) {
-        this.supplierMapper.addItemToSupplier(suppId,itemId);
+    public void addItemToSupplier(int suppId, int itemId, int itemLocalId) {
+        this.supplierMapper.addItemToSupplier(suppId,itemId,itemLocalId);
     }
 
     public int getItemsListSize(int suppId) {
@@ -127,5 +127,9 @@ public class Supplier {
 
     public List<List<Object>> getAllSuppliers() {
         return this.supplierMapper.getAllSuppliers();
+    }
+
+    public int getLocalItemId(int itemId) {
+        return this.supplierMapper.getLocalItemId(itemId) ;
     }
 }
