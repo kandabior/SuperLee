@@ -1,7 +1,7 @@
-package DataAccessLayer.Transport;
+package src.DataAccessLayer.Transport;
 
-import BusinessLayer.TransportModule.Store;
-import DataAccessLayer.Transport.DTO.DTO_TransportDoc;
+import src.BusinessLayer.TransportModule.Store;
+import src.DataAccessLayer.Transport.DTO.DTO_TransportDoc;
 
 import java.sql.*;
 import java.util.*;

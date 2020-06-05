@@ -179,4 +179,8 @@ public class FacadeController {
     public List<List<Object>> getAllSuppliers() {
         return this.supplierController.getAllSuppliers();
     }
+
+    public boolean addSupplierDays(int suppId,int[] daysInt) {
+        return supplierController.addSupplierDays(suppId, daysInt);
+    }
 }

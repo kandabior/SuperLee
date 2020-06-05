@@ -1,4 +1,4 @@
-package BusinessLayer.TransportModule;
+package src.BusinessLayer.TransportModule;
 
 public class Store extends Site {
 

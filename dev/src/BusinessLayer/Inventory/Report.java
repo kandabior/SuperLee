@@ -1,8 +1,8 @@
-package BusinessLayer.Inventory;
+package src.BusinessLayer.Inventory;
 
-import DataAccessLayer.Inventory.DTO.ReportDTO;
-import DataAccessLayer.Inventory.DTO.ReportLineDTO;
-import DataAccessLayer.Inventory.ReportMapper;
+import src.DataAccessLayer.Inventory.DTO.ReportDTO;
+import src.DataAccessLayer.Inventory.DTO.ReportLineDTO;
+import src.DataAccessLayer.Inventory.ReportMapper;
 import javafx.util.Pair;
 
 import java.util.LinkedList;

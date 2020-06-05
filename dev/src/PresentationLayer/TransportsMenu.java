@@ -1,6 +1,6 @@
-package PresentationLayer;
+package src.PresentationLayer;
 
-import BusinessLayer.TransportModule.Pool;
+import src.BusinessLayer.TransportModule.Pool;
 
 import javax.swing.text.html.parser.DTDConstants;
 import java.sql.Driver;

@@ -1,4 +1,4 @@
-package BusinessLayer.Inventory;
+package src.BusinessLayer.Inventory;
 
 import javafx.util.Pair;
 

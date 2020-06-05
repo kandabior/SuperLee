@@ -1,6 +1,6 @@
-package DataAccessLayer.Transport.DTO;
+package src.DataAccessLayer.Transport.DTO;
 
-import BusinessLayer.TransportModule.TransportDoc.Status;
+import src.BusinessLayer.TransportModule.TransportDoc.Status;
 
 import java.util.LinkedList;
 import java.util.List;

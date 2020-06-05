@@ -1,6 +1,6 @@
-package BusinessLayer.EmployeeModule;
+package src.BusinessLayer.EmployeeModule;
 
-import DataAccessLayer.Employee.EmployeeDTO;
+import src.DataAccessLayer.Employee.EmployeeDTO;
 
 import java.util.Date;
 import java.util.LinkedList;

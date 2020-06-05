@@ -1,8 +1,8 @@
-package BusinessLayer.Inventory;
+package src.BusinessLayer.Inventory;
 
-import DataAccessLayer.Inventory.InventoryMapper;
+import src.DataAccessLayer.Inventory.InventoryMapper;
 
-import DataAccessLayer.Inventory.ItemMapper;
+import src.DataAccessLayer.Inventory.ItemMapper;
 import javafx.util.Pair;
 import java.time.LocalDate;
 import java.util.*;

@@ -1,3 +1,3 @@
-package BusinessLayer.EmployeeModule;
+package src.BusinessLayer.EmployeeModule;
 
 public enum ShiftType{Morning,Evening};

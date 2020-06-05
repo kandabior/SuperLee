@@ -164,6 +164,7 @@ public class SupplierMenu {
     }
 
     private static int addSupplier(int supplierIdCounter) {
+        int[] daysInt = {};
         Scanner scanner = new Scanner(System.in);
         System.out.print("Supplier's name: ");
         String suppName = scanner.nextLine();
@@ -174,41 +175,57 @@ public class SupplierMenu {
         System.out.print("Payment method (Cash, Credit etc.): ");
         scanner = new Scanner(System.in);
         String suppPayment = scanner.nextLine();
-        System.out.print("Supply schedule: ");
-        String suppSchedule = scanner.nextLine();
+        System.out.println("Supplier's schedule & transportation: \nA - Fixed days, transports solo\nB - Fixed days, Super's transportation\n" +
+                "C - When there's an order, transports solo\nD - When there's an order, Super's transportation\n");
+        String suppType = scanner.nextLine();
+        if (!(suppType.equals("A") | suppType.equals("B") | suppType.equals("C") | suppType.equals("D"))) {
+            System.out.println("Invalid input. Please try again.");
+            return supplierIdCounter;
+        }
+        if (suppType.equals("A") | suppType.equals("B")) {// TODO check failed scenario
+            System.out.print("Supply days: (insert 1-7, with spaces) ");
+            String suppSchedule = scanner.nextLine();
+            String[] days = suppSchedule.split(" ");
+            daysInt = new int[days.length];
+            for (int i = 0; i < days.length; i++) {
+                daysInt[i] = Integer.parseInt(days[i]);
+            }
+        }
         System.out.print("Supply location: ");
         String suppLocation = scanner.nextLine();
-        if(suppName.isEmpty() | suppPhone.isEmpty() | suppPayment.isEmpty() | suppSchedule.isEmpty() | suppLocation.isEmpty()) {
+        if (suppName.isEmpty() | suppPhone.isEmpty() | suppPayment.isEmpty() | suppType.isEmpty() | suppLocation.isEmpty()) {
             System.out.println("One or more of supplier's details is empty. Please try again.");
-        }
-        else {
-            if (fc.addSupplier(supplierIdCounter, suppName, suppPhone, suppBankAccount, suppPayment,
-                    suppSchedule, suppLocation)) {
-                System.out.println("Supplier added successfully. Id is: " + supplierIdCounter);
-                System.out.print("Insert supplier's items? [Y/N] ");
-                String toAdd = scanner.nextLine();
-                while (toAdd.equals("Y") | toAdd.equals("y")) {
-                    addItems(supplierIdCounter);
-                    toAdd = scanner.nextLine();
-                }
-                int size = fc.getItemsListSize(supplierIdCounter);
-                if (size > 0) {
-                    List<String> supplierItemsName = fc.getSupplierItemsNames(supplierIdCounter);
-                    List<Integer> supplierItemsId = fc.getSupplierItemsId(supplierIdCounter);
-                    System.out.println("Please insert supplier's agreement (for each item insert it's cost).");
-                    for (int i = 0; i < size; i++) {
-                        System.out.print(supplierItemsName.get(i) + ": ");
-                        double itemPrice = scanner.nextInt();
-                        if (!fc.addItemToAgreement(supplierIdCounter, supplierItemsId.get(i), itemPrice))
-                            System.out.println("Error: Item '" + supplierItemsName.get(i) + "' does not belong to the agreement.");
+        } else {
+            if (fc.addSupplier(supplierIdCounter, suppName, suppPhone, suppBankAccount, suppPayment, suppType, suppLocation)) {
+                if (((suppType.equals("A") | suppType.equals("B")) && fc.addSupplierDays(supplierIdCounter, daysInt)) |
+                        ((suppType.equals("C") | suppType.equals("D")))) {
+                    System.out.println("Supplier added successfully. Id is: " + supplierIdCounter);
+                    System.out.print("Insert supplier's items? [Y/N] ");
+                    String toAdd = scanner.nextLine();
+                    while (toAdd.equals("Y") | toAdd.equals("y")) {
+                        addItems(supplierIdCounter);
+                        toAdd = scanner.nextLine();
                     }
-                }
-                supplierIdCounter++;
-            } else
-                System.out.println("Supplier cannot be added to the system.");
+                    int size = fc.getItemsListSize(supplierIdCounter);
+                    if (size > 0) {
+                        List<String> supplierItemsName = fc.getSupplierItemsNames(supplierIdCounter);
+                        List<Integer> supplierItemsId = fc.getSupplierItemsId(supplierIdCounter);
+                        System.out.println("Please insert supplier's agreement (for each item insert it's cost).");
+                        for (int i = 0; i < size; i++) {
+                            System.out.print(supplierItemsName.get(i) + ": ");
+                            double itemPrice = scanner.nextInt();
+                            if (!fc.addItemToAgreement(supplierIdCounter, supplierItemsId.get(i), itemPrice))
+                                System.out.println("Error: Item '" + supplierItemsName.get(i) + "' does not belong to the agreement.");
+                        }
+                    }
+                    supplierIdCounter++;
+                } else
+                    System.out.println("Supplier cannot be added to the system.");
+            }
         }
         return supplierIdCounter;
     }
+
 
     private static void manageSupplier(int suppId){
         boolean backToManageSupplierMenu;
@@ -440,4 +457,5 @@ public class SupplierMenu {
 //
 //
 //    }
+
 }

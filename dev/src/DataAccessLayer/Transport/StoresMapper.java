@@ -1,7 +1,7 @@
-package DataAccessLayer.Transport;
+package src.DataAccessLayer.Transport;
 
-import DataAccessLayer.Transport.DTO.DTO_Store;
-import DataAccessLayer.Transport.DTO.DTO_Supplier;
+import src.DataAccessLayer.Transport.DTO.DTO_Store;
+import src.DataAccessLayer.Transport.DTO.DTO_Supplier;
 
 import java.sql.*;
 import java.util.LinkedList;

@@ -1,4 +1,4 @@
-package BusinessLayer.Inventory;
+package src.BusinessLayer.Inventory;
 
 import java.util.LinkedList;
 import java.util.List;

@@ -1,4 +1,4 @@
-package DataAccessLayer.Inventory.DTO;
+package src.DataAccessLayer.Inventory.DTO;
 
 import java.util.List;
 

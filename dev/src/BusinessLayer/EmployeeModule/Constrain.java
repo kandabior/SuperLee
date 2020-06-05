@@ -1,4 +1,4 @@
-package BusinessLayer.EmployeeModule;
+package src.BusinessLayer.EmployeeModule;
 
 public class Constrain {
     private ShiftType shiftType;

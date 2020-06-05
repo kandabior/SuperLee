@@ -1,4 +1,4 @@
-package DataAccessLayer.Inventory;
+package src.DataAccessLayer.Inventory;
 
 import javafx.util.Pair;
 

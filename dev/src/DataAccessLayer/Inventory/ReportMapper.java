@@ -1,8 +1,8 @@
-package DataAccessLayer.Inventory;
+package src.DataAccessLayer.Inventory;
 
 
-import DataAccessLayer.Inventory.DTO.ReportDTO;
-import DataAccessLayer.Inventory.DTO.ReportLineDTO;
+import src.DataAccessLayer.Inventory.DTO.ReportDTO;
+import src.DataAccessLayer.Inventory.DTO.ReportLineDTO;
 
 import java.sql.*;
 

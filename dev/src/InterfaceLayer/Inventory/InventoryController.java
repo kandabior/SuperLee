@@ -1,11 +1,11 @@
-package InterfaceLayer.Inventory;
+package src.InterfaceLayer.Inventory;
 
-import BusinessLayer.Inventory.Inventory;
-import BusinessLayer.Inventory.ReportMaker;
+import src.BusinessLayer.Inventory.Inventory;
+import src.BusinessLayer.Inventory.ReportMaker;
 
-import InterfaceLayer.Suppliers.FacadeController;
-import PresentationLayer.MainMenu;
+import src.InterfaceLayer.Suppliers.FacadeController;
 import javafx.util.Pair;
+import src.PresentationLayer.Main;
 
 import java.time.LocalDate;
 import java.util.LinkedList;
@@ -188,7 +188,7 @@ public class InventoryController {
     public String MakeMissingOrder(int branchId) {
         try {
             List<Pair<Integer, Integer>> toBuy= inventory.NeedToBuyProductsForOrder(branchId);
-            Map<Integer,Pair<Integer,Double>> orders= FacadeController.getFacadeController().makeOrder(branchId,toBuy, MainMenu.DayOfTheWeek);
+            Map<Integer,Pair<Integer,Double>> orders= FacadeController.getFacadeController().makeOrder(branchId,toBuy, Main.DayOfTheWeek);
             return inventory.manageOrders(branchId,orders);
         }
         catch (Exception e){
@@ -211,7 +211,7 @@ public class InventoryController {
             if (!noOrder.isEmpty()){
                 output="cant Order the Products: "+noOrder+"\n";
             }
-            Map<Integer,Pair<Integer,Double>> orders= FacadeController.getFacadeController().makeOrder(branchId,toOrder, MainMenu.DayOfTheWeek);
+            Map<Integer,Pair<Integer,Double>> orders= FacadeController.getFacadeController().makeOrder(branchId,toOrder, Main.DayOfTheWeek);
             output=output+inventory.manageOrders(branchId,orders);
             return output;
         }

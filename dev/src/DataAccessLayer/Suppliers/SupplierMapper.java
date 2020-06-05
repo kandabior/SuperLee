@@ -87,7 +87,7 @@ public class SupplierMapper {
                 st.setInt(1, suppId);
                 int rowNum = st.executeUpdate();
                 st.close();
-                if (rowNum != 0 ) {
+                if (rowNum != 0) {
                     conn.commit();
                     conn.close();
                     return true;
@@ -282,8 +282,7 @@ public class SupplierMapper {
                     conn.close();
                     st.close();
                     return true;
-                }
-                else {
+                } else {
                     conn.close();
                     st.close();
                     return false;
@@ -312,9 +311,8 @@ public class SupplierMapper {
                 }
                 conn.close();
                 return 0;
-            }
-            else return 0;
-        } catch(Exception e){
+            } else return 0;
+        } catch (Exception e) {
             System.err.println(e.getClass().getName() + ": " + e.getMessage());
             return 0;
         }
@@ -356,9 +354,8 @@ public class SupplierMapper {
                 st.close();
                 conn.close();
                 return supplierId;
-            }
-            else return null;
-        } catch(Exception e){
+            } else return null;
+        } catch (Exception e) {
             System.err.println(e.getClass().getName() + ": " + e.getMessage());
             tryClose();
             return null;
@@ -437,9 +434,8 @@ public class SupplierMapper {
                 st.close();
                 conn.close();
                 return discount;
-            }
-            else return 0.0;
-        } catch(Exception e){
+            } else return 0.0;
+        } catch (Exception e) {
             System.err.println(e.getClass().getName() + ": " + e.getMessage());
             tryClose();
             return 0.0;
@@ -461,9 +457,8 @@ public class SupplierMapper {
                 st.close();
                 conn.close();
                 return cost;
-            }
-            else return 0.0;
-        } catch(Exception e){
+            } else return 0.0;
+        } catch (Exception e) {
             System.err.println(e.getClass().getName() + ": " + e.getMessage());
             tryClose();
             return 0.0;
@@ -517,8 +512,8 @@ public class SupplierMapper {
     }
 
     public void createBillOfQuantities(int suppId) {
-        try{
-            if(tryOpen()) {
+        try {
+            if (tryOpen()) {
                 PreparedStatement st = conn.prepareStatement("INSERT INTO BillsOfQuantities VALUES (?,?);");
                 st.setInt(1, suppId);
                 st.setInt(2, suppId);
@@ -529,19 +524,16 @@ public class SupplierMapper {
                 st.setInt(2, suppId);
                 st.executeUpdate();
 
-                if(st.executeUpdate() != 0) {
+                if (st.executeUpdate() != 0) {
                     conn.commit();
                     conn.close();
                     st.close();
                     return;
-                }
-                else {
+                } else {
                     conn.close();
                     st.close();
                 }
-            }
-
-            else return;
+            } else return;
         } catch (Exception e) {
             System.err.println(e.getClass().getName() + ": " + e.getMessage());
             tryClose();
@@ -582,7 +574,7 @@ public class SupplierMapper {
                 PreparedStatement st = conn.prepareStatement("SELECT *  FROM Suppliers ;");
                 ResultSet res = st.executeQuery();
                 while (res.next()) {
-                    List<Object> temp= new LinkedList<>();
+                    List<Object> temp = new LinkedList<>();
                     temp.add(res.getInt("id"));
                     temp.add(res.getString("name"));
                     temp.add(res.getString("phoneNum"));
@@ -602,11 +594,10 @@ public class SupplierMapper {
         }
 
 
-
     }
 
     public int getLocalItemId(int itemId) {
-        int localItemId=-1;
+        int localItemId = -1;
         try {
             if (tryOpen()) {
                 PreparedStatement st = conn.prepareStatement("SELECT localItemId FROM SupplierItems WHERE itemId = ?;");
@@ -624,5 +615,40 @@ public class SupplierMapper {
             tryClose();
         }
         return localItemId;
+    }
+
+    public boolean addSupplierDays(int suppId, int[] daysInt) {
+        int counter = 0;
+        try {
+            if (tryOpen()) {
+                for (int i = 0; i < daysInt.length; i++) {
+                    PreparedStatement st = conn.prepareStatement("INSERT INTO SupplierDays VALUES (?,?);");
+                    st.setInt(1, suppId);
+                    st.setInt(2, daysInt[i]);
+                    int rowNum = st.executeUpdate();
+                    if (rowNum != 0) {
+                        st.close();
+                        counter++;
+                    } else {
+                        conn.rollback();
+                        conn.close();
+                        st.close();
+                    }
+                }
+                if (counter == daysInt.length) {
+                    conn.commit();
+                    conn.close();
+                    return true;
+                } else {
+                    conn.rollback();
+                    conn.close();
+                    return false;
+                }
+            } else return false;
+        } catch (Exception e) {
+            tryClose();
+            System.err.println(e.getClass().getName() + ": " + e.getMessage());
+            return false;
+        }
     }
 }

@@ -1,7 +1,7 @@
-package BusinessLayer.EmployeeModule;
+package src.BusinessLayer.EmployeeModule;
 
-import DataAccessLayer.Employee.ShiftMapper;
-import DataAccessLayer.Employee.Shift_DTO;
+import src.DataAccessLayer.Employee.ShiftMapper;
+import src.DataAccessLayer.Employee.Shift_DTO;
 
 import java.util.*;
 

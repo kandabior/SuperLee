@@ -1,6 +1,6 @@
 package src.PresentationLayer;
 
-import InterfaceLayer.Inventory.InventoryController;
+import src.InterfaceLayer.Inventory.InventoryController;
 import javafx.util.Pair;
 
 import java.time.LocalDate;

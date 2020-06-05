@@ -1,4 +1,4 @@
-package DataAccessLayer.Transport.DTO;
+package src.DataAccessLayer.Transport.DTO;
 import java.util.Date;
 import java.util.LinkedList;
 import java.util.List;

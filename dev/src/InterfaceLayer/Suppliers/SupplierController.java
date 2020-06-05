@@ -167,4 +167,8 @@ public class SupplierController {
     public int getLocalItemId(int itemId) {
         return this.supplier.getLocalItemId(itemId);
     }
+
+    public boolean addSupplierDays(int suppId, int[] daysInt) {
+        return this.supplier.addSupplierDays(suppId, daysInt);
+    }
 }
