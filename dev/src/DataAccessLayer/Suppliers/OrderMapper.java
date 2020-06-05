@@ -46,8 +46,7 @@ public class OrderMapper {
         }
 
     }
-    public static void tryClose()
-    {
+    public static void tryClose()    {
         try {
             conn.close();
         } catch (SQLException e) {
