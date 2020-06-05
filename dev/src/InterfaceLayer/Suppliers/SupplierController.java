@@ -1,9 +1,9 @@
-package InterfaceLayer.Suppliers;
+package src.InterfaceLayer.Suppliers;
 
-import BusinessLayer.Suppliers.Agreement;
-import BusinessLayer.Suppliers.Items;
-import BusinessLayer.Suppliers.Supplier;
-import DataAccessLayer.Suppliers.SupplierMapper;
+import src.BusinessLayer.Suppliers.Agreement;
+import src.BusinessLayer.Suppliers.Items;
+import src.BusinessLayer.Suppliers.Supplier;
+import src.DataAccessLayer.Suppliers.SupplierMapper;
 
 import javafx.util.Pair;
 

@@ -1,6 +1,6 @@
-package InterfaceLayer.Suppliers;
-import BusinessLayer.Suppliers.Order;
-import DataAccessLayer.Suppliers.DTO.OrderDTO;
+package src.InterfaceLayer.Suppliers;
+import src.BusinessLayer.Suppliers.Order;
+import src.DataAccessLayer.Suppliers.DTO.OrderDTO;
 import DataAccessLayer.Suppliers.DTO.OrderLineDTO;
 
 import java.time.LocalDate;

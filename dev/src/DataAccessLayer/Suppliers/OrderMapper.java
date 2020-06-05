@@ -1,7 +1,7 @@
-package DataAccessLayer.Suppliers;
+package src.DataAccessLayer.Suppliers;
 
 
-import DataAccessLayer.Suppliers.DTO.OrderDTO;
+import src.DataAccessLayer.Suppliers.DTO.OrderDTO;
 import DataAccessLayer.Suppliers.DTO.OrderLineDTO;
 
 import java.sql.*;

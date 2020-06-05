@@ -1,7 +1,7 @@
-package BusinessLayer.Suppliers;
+package src.BusinessLayer.Suppliers;
 
-import DataAccessLayer.Suppliers.SupplierMapper;
-import DataAccessLayer.Suppliers.AgreementMapper;
+import src.DataAccessLayer.Suppliers.SupplierMapper;
+import src.DataAccessLayer.Suppliers.AgreementMapper;
 import javafx.util.Pair;
 
 import java.text.DecimalFormat;

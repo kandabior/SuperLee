@@ -1,4 +1,4 @@
-package BusinessLayer.Suppliers;
+package src.BusinessLayer.Suppliers;
 import javafx.util.Pair;
 import java.util.Map;
 

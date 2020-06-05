@@ -1,4 +1,4 @@
-package DataAccessLayer.Suppliers;
+package src.DataAccessLayer.Suppliers;
 import java.sql.*;
 import javafx.util.Pair;
 import org.sqlite.SQLiteConfig;

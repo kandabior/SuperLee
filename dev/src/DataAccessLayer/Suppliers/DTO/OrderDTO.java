@@ -1,11 +1,11 @@
-package DataAccessLayer.Suppliers.DTO;
+package src.DataAccessLayer.Suppliers.DTO;
 
-import DataAccessLayer.Suppliers.OrderMapper;
+import src.DataAccessLayer.Suppliers.OrderMapper;
 
 import java.time.LocalDate;
 import java.util.List;
 
-enum Status{Pending,Complete}
+enum Status{Pending,Complete,Cancel}
 
 public class OrderDTO {
     private int id;
@@ -15,7 +15,7 @@ public class OrderDTO {
     private String address ;
     private LocalDate orderDate;
     private String phoneNumber;
-    private List<OrderLineDTO> orderLines;
+    private List<DataAccessLayer.Suppliers.DTO.OrderLineDTO> orderLines;
     double totalCost;
     Status status;
     private OrderMapper orderMapper;
@@ -36,7 +36,7 @@ public class OrderDTO {
         status = Status.Pending;
     }
 
-    public void setItems(List<OrderLineDTO> lines) {
+    public void setItems(List<DataAccessLayer.Suppliers.DTO.OrderLineDTO> lines) {
         this.orderLines = lines;
     }
 
@@ -76,7 +76,7 @@ public class OrderDTO {
         return orderMapper;
     }
 
-    public List<OrderLineDTO> getOrderLines() {
+    public List<DataAccessLayer.Suppliers.DTO.OrderLineDTO> getOrderLines() {
         return orderLines;
     }
 

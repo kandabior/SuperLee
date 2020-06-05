@@ -1,4 +1,4 @@
-package DataAccessLayer.Suppliers;
+package src.DataAccessLayer.Suppliers;
 import java.sql.*;
 import DataAccessLayer.Suppliers.DTO.SupplierDTO;
 import org.sqlite.SQLiteConfig;

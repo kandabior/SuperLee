@@ -1,11 +1,11 @@
-package BusinessLayer.Suppliers;
+package src.BusinessLayer.Suppliers;
 
 import java.sql.SQLException;
 import java.text.DecimalFormat;
 import java.util.*;
 
 import DataAccessLayer.Suppliers.DTO.SupplierDTO;
-import DataAccessLayer.Suppliers.SupplierMapper;
+import src.DataAccessLayer.Suppliers.SupplierMapper;
 import javafx.util.Pair;
 
 public class Supplier {

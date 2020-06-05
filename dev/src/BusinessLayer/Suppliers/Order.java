@@ -1,9 +1,9 @@
-package BusinessLayer.Suppliers;
+package src.BusinessLayer.Suppliers;
 
 
-import DataAccessLayer.Suppliers.DTO.OrderDTO;
+import src.DataAccessLayer.Suppliers.DTO.OrderDTO;
 import DataAccessLayer.Suppliers.DTO.OrderLineDTO;
-import DataAccessLayer.Suppliers.OrderMapper;
+import src.DataAccessLayer.Suppliers.OrderMapper;
 
 import java.util.List;
 
@@ -20,21 +20,11 @@ public class Order {
 
     public String getStatus(int orderId) {
         return this.orderMapper.getStatus(orderId);
-        /*if (this.status == Status.Complete)
-            return "COMPLETE";
-        return "PENDING";*/
     }
 
     public double getTotalOrderMoney(int orderId) {
         return this.orderMapper.getTotalOrderMoney(orderId);
 
-
-      /*
-        double totalAmount = 0;
-        for (int i = 0; i < orderLines.size(); i++) {
-            totalAmount += (orderLines.get(i).getFinalCost());
-        }
-        return totalAmount;*/
     }
 
     public int getSize() {

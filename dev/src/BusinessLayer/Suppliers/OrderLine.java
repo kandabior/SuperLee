@@ -1,4 +1,4 @@
-package BusinessLayer.Suppliers;
+package src.BusinessLayer.Suppliers;
 
 public class OrderLine {
 

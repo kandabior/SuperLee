@@ -1,4 +1,4 @@
-package BusinessLayer.Suppliers;
+package src.BusinessLayer.Suppliers;
 
 import DataAccessLayer.Inventory.ItemMapper;
 import javafx.util.Pair;

@@ -1,4 +1,4 @@
-package PresentationLayer;
+package src.PresentationLayer;
 
 import InterfaceLayer.Inventory.InventoryController;
 import javafx.util.Pair;

@@ -1,5 +1,5 @@
-package PresentationLayer;
-import BusinessLayer.Suppliers.Items;
+package src.PresentationLayer;
+import src.BusinessLayer.Suppliers.Items;
 
 import java.time.LocalDate;
 import java.util.Scanner;
