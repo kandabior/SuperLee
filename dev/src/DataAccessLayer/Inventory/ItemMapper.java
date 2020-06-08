@@ -10,7 +10,7 @@ public class ItemMapper {
 
     public boolean checkIfItemExist(int itemId) {
         try {
-            conn = DriverManager.getConnection("jdbc:sqlite:EOEDdatabase.db");
+            conn = DriverManager.getConnection("jdbc:sqlite:dev\\EOEDdatabase.db");
             conn.setAutoCommit(false);
             PreparedStatement st = conn.prepareStatement("SELECT * FROM Items WHERE itemId = ?;");
             st.setInt(1, itemId);
@@ -32,7 +32,7 @@ public class ItemMapper {
 
     public boolean addItem(int itemId,String name) {
         try {
-            conn = DriverManager.getConnection("jdbc:sqlite:EOEDdatabase.db");
+            conn = DriverManager.getConnection("jdbc:sqlite:dev\\EOEDdatabase.db");
             conn.setAutoCommit(false);
             PreparedStatement st = conn.prepareStatement("INSERT INTO Items VALUES (?,?);");
             st.setInt(1, itemId);
@@ -56,7 +56,7 @@ public class ItemMapper {
 
     public static String getName(Integer id) {
         try {
-            conn = DriverManager.getConnection("jdbc:sqlite:EOEDdatabase.db");
+            conn = DriverManager.getConnection("jdbc:sqlite:dev\\EOEDdatabase.db");
             conn.setAutoCommit(false);
             PreparedStatement st = conn.prepareStatement("SELECT itemName FROM Items WHERE itemId = ?;");
             st.setInt(1, id);
@@ -78,7 +78,7 @@ public class ItemMapper {
     public List<Pair<Integer, String>> getAllItems() {
         try {
             List<Pair<Integer, String>> output= new LinkedList<>();
-            conn = DriverManager.getConnection("jdbc:sqlite:EOEDdatabase.db");
+            conn = DriverManager.getConnection("jdbc:sqlite:dev\\EOEDdatabase.db");
             conn.setAutoCommit(false);
             PreparedStatement st = conn.prepareStatement("SELECT * FROM Items;");
             ResultSet res = st.executeQuery();

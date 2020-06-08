@@ -13,7 +13,7 @@ public class SupplierMapper {
         try {
             SQLiteConfig config = new SQLiteConfig();
             config.enforceForeignKeys(true);
-            conn = DriverManager.getConnection("jdbc:sqlite:EOEDdatabase.db", config.toProperties());
+            conn = DriverManager.getConnection("jdbc:sqlite:dev\\EOEDdatabase.db", config.toProperties());
             conn.setAutoCommit(false);
 
             return true;
@@ -137,7 +137,7 @@ public class SupplierMapper {
                 PreparedStatement st = conn.prepareStatement("INSERT INTO SupplierItems VALUES (?,?,?);");
                 st.setInt(1, suppId);
                 st.setInt(2, itemId);
-                st.setInt(2, itemLocalId);
+                st.setInt(3, itemLocalId);
                 int rowNum = st.executeUpdate();
                 if (rowNum != 0) {
                     conn.commit();

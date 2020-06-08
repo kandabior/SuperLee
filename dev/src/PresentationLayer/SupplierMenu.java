@@ -16,7 +16,7 @@ public class SupplierMenu {
             int suppId;
             String choice;
             do {
-                System.out.println("\n\nPlease choose an action:\n");
+                System.out.println("\nPlease choose an action:");
                 System.out.println("1. Add supplier");
                 System.out.println("2. Delete supplier");
                 System.out.println("3. Manage supplier");
@@ -147,7 +147,7 @@ public class SupplierMenu {
         if(fc.checkIfItemExist(itemId))
         {
             scanner = new Scanner(System.in);
-            System.out.print("Enter local identifier ");
+            System.out.print("Enter local identifier: ");
             int itemLocalId = scanner.nextInt();
             String name = fc.getItemNameById(itemId);
             System.out.print("Name: " + name);
@@ -157,8 +157,7 @@ public class SupplierMenu {
         }
         else
         {
-            System.out.print("Item was not found.");
-            System.out.print("Insert more items? [Y/N] ");
+            System.out.print("Item was not found. Insert more items? [Y/N] ");
         }
         return newItems;
     }
@@ -175,8 +174,8 @@ public class SupplierMenu {
         System.out.print("Payment method (Cash, Credit etc.): ");
         scanner = new Scanner(System.in);
         String suppPayment = scanner.nextLine();
-        System.out.println("Supplier's schedule & transportation: \nA - Fixed days, transports solo\nB - Fixed days, Super's transportation\n" +
-                "C - When there's an order, transports solo\nD - When there's an order, Super's transportation\n");
+        System.out.println("Supplier's schedule & transportation: \nA - Fixed days, transports solo\nB - Fixed days, super's transportation\n" +
+                "C - When there's an order, transports solo\nD - When there's an order, super's transportation");
         String suppType = scanner.nextLine();
         if (!(suppType.equals("A") | suppType.equals("B") | suppType.equals("C") | suppType.equals("D"))) {
             System.out.println("Invalid input. Please try again.");
@@ -225,7 +224,6 @@ public class SupplierMenu {
         }
         return supplierIdCounter;
     }
-
 
     private static void manageSupplier(int suppId){
         boolean backToManageSupplierMenu;

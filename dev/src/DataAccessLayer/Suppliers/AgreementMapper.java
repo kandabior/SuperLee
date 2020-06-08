@@ -13,7 +13,7 @@ public class AgreementMapper {
         try {
             SQLiteConfig config = new SQLiteConfig();
             config.enforceForeignKeys(true);
-            conn = DriverManager.getConnection("jdbc:sqlite:EOEDdatabase.db", config.toProperties());
+            conn = DriverManager.getConnection("jdbc:sqlite:dev\\EOEDdatabase.db", config.toProperties());
 
             return true;
         } catch (SQLException e) {

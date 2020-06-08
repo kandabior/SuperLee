@@ -20,7 +20,7 @@ public class Main {
         int choose;
         Printer.Print("Welcome To EOEDHRES !\n");
         do {
-            Printer.Print("Day: " + (LocalDate.now().plusDays(plusDay).toString()));
+            Printer.Print("\nDay: " + (LocalDate.now().plusDays(plusDay).toString()));
             Printer.Print("\nPlease choose an action:\n" +
                     "1. Enter Inventory & Reports Menu\n" +
                     "2. Enter Suppliers Menu\n" +

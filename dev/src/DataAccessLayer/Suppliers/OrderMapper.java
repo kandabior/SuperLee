@@ -38,7 +38,7 @@ public class OrderMapper {
     public static boolean tryOpen()
     {
         try {
-            conn = DriverManager.getConnection("jdbc:sqlite:EOEDdatabase.db");
+            conn = DriverManager.getConnection("jdbc:sqlite:dev\\EOEDdatabase.db");
             return true;
         } catch (SQLException e) {
             e.printStackTrace();
