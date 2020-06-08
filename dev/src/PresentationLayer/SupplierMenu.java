@@ -433,6 +433,10 @@ public class SupplierMenu {
         return scanner2.nextLine();
     }
 
+    public static void PromoteDay(int day) {
+        fc.PromoteDay(day);
+    }
+
 //    public static void initiateSystem() {
 //        FacadeController.getFacadeController().addSupplier(supplierIdCounter++,"itay","05550004",
 //                23423,"cash","Sunday","Beer-Sheva");

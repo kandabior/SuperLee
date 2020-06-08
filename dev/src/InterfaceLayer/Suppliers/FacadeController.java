@@ -83,14 +83,14 @@ public class FacadeController {
                         if (pendingOrders.containsKey(bestSuppForItem)) {
                             orderMap.get(bestSuppForItem).add(addToOrder(localItemId,itemId,quantity,bestSuppForItem,costForItem));
                         } else {
-                            orderMap.put(bestSuppForItem,addToOrderiFnOTeXIST( localItemId, itemId, quantity, bestSuppForItem, costForItem));
+                            orderMap.put(bestSuppForItem, addNewSuppOrder(localItemId, itemId, quantity, bestSuppForItem, costForItem));
                             //add supplier details
                             List<Object> suppList = supplierController.getSuppDetails(bestSuppForItem);
+                            suppList.add(supplierController.getSupplyDays(bestSuppForItem));
                             suppliersMap.put(bestSuppForItem, suppList);
                         }
-
                     } break;
-                    case "B": {//fixed day , supply with transport
+                    case "B": {//fixed days, supply with transport
                         boolean found = false;
                         int currentOrder =-1;
                         for(List<Object> o : transportOrders) {
@@ -119,15 +119,13 @@ public class FacadeController {
                         if (orderMap.containsKey(bestSuppForItem)) {
                             orderMap.get(bestSuppForItem).add(addToOrder(localItemId,itemId,quantity,bestSuppForItem,costForItem));
                         } else {
-                            orderMap.put(bestSuppForItem,addToOrderiFnOTeXIST( localItemId, itemId, quantity, bestSuppForItem, costForItem));
+                            orderMap.put(bestSuppForItem, addNewSuppOrder(localItemId, itemId, quantity, bestSuppForItem, costForItem));
                             //add supplier details
                             List<Object> suppList = supplierController.getSuppDetails(bestSuppForItem);
                             suppList.add(orderIdCounter);
                             suppliersMap.put(bestSuppForItem, suppList );
                             orderIdCounter++;
                         }
-
-
                     } break;
                     case "C": { //when needed , supply alone
                         Double costForItem = supplierController.getPriceOfAmountOfItem(bestSuppForItem, itemId, quantity);
@@ -138,7 +136,7 @@ public class FacadeController {
                         if (orderMap.containsKey(bestSuppForItem)) {
                             orderMap.get(bestSuppForItem).add(addToOrder(localItemId,itemId,quantity,bestSuppForItem,costForItem));
                         } else {
-                            orderMap.put(bestSuppForItem,addToOrderiFnOTeXIST( localItemId, itemId, quantity, bestSuppForItem, costForItem));
+                            orderMap.put(bestSuppForItem, addNewSuppOrder(localItemId, itemId, quantity, bestSuppForItem, costForItem));
                             //add supplier details
                             List<Object> suppList = supplierController.getSuppDetails(bestSuppForItem);
                             suppList.add(orderIdCounter);
@@ -175,7 +173,7 @@ public class FacadeController {
                         if (orderMap.containsKey(bestSuppForItem)) {
                             orderMap.get(bestSuppForItem).add(addToOrder(localItemId,itemId,quantity,bestSuppForItem,costForItem));
                         } else {
-                            orderMap.put(bestSuppForItem,addToOrderiFnOTeXIST( localItemId, itemId, quantity, bestSuppForItem, costForItem));
+                            orderMap.put(bestSuppForItem, addNewSuppOrder(localItemId, itemId, quantity, bestSuppForItem, costForItem));
                             //add supplier details
                             List<Object> suppList = supplierController.getSuppDetails(bestSuppForItem);
                             suppList.add(orderIdCounter);
@@ -209,13 +207,10 @@ public class FacadeController {
         orderList.add(discount);// Item discount
         orderList.add(costForItem);// Item finalCost
         return orderList;
-
     }
 
-
-    private  List<List<Object>> addToOrderiFnOTeXIST(int localItemId,int itemId,int quantity,int bestSuppForItem,double costForItem)
-    {
-        List<List<Object>> bigList = new LinkedList<>();
+    private List<List<Object>> addNewSuppOrder(int localItemId,int itemId,int quantity,int bestSuppForItem,double costForItem) {
+        List<List<Object>> outOrders = new LinkedList<>();
         List<Object> orderList = new LinkedList<>();
         orderList.add(localItemId);// Item Id
         orderList.add(supplierController.getItemName(itemId));//Item Name
@@ -225,14 +220,9 @@ public class FacadeController {
         Double discount = supplierController.getDiscountOfItem(bestSuppForItem, itemId, quantity);
         orderList.add(discount);// Item discount
         orderList.add(costForItem);// Item finalCost
-        bigList.add(orderList);
-        return bigList;
+        outOrders.add(orderList);
+        return outOrders;
     }
-
-
-
-
-
 
     public int getOrdersSize() { return orderController.getOrdersSize(); }
 
@@ -305,5 +295,9 @@ public class FacadeController {
 
     public boolean addSupplierDays(int suppId,int[] daysInt) {
         return supplierController.addSupplierDays(suppId, daysInt);
+    }
+
+    public void PromoteDay(int day) {
+         this.orderController.PromoteDay(day);
     }
 }

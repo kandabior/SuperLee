@@ -14,6 +14,7 @@ public class OrderDTO {
     private int suppId;
     private String address ;
     private LocalDate orderDate;
+    private List<Integer> orderDays;
     private String phoneNumber;
     private List<DataAccessLayer.Suppliers.DTO.OrderLineDTO> orderLines;
     double totalCost;
@@ -21,16 +22,25 @@ public class OrderDTO {
     private OrderMapper orderMapper;
 
 
-
-
-    public OrderDTO(int branchId , int id, int supplierId , String suppName, String phoneNumber , String address , LocalDate date ) {
+    public OrderDTO(int branchId , int id, int supplierId, String suppName, String phoneNumber, String address, LocalDate date) {
         this.branchId = branchId;
         this.id = id;
-        // this.items = makeOrderLines(items);
         this.suppName = suppName;
         this.suppId = supplierId;
         this.address = address;
         this.orderDate = date;
+        this.phoneNumber = phoneNumber;
+        totalCost = 0;
+        status = Status.Pending;
+    }
+
+    public OrderDTO(int branchId , int id, int supplierId , String suppName, String phoneNumber , String address , List<Integer> days) {
+        this.branchId = branchId;
+        this.id = id;
+        this.suppName = suppName;
+        this.suppId = supplierId;
+        this.address = address;
+        this.orderDays = days;
         this.phoneNumber = phoneNumber;
         totalCost = 0;
         status = Status.Pending;
@@ -47,6 +57,8 @@ public class OrderDTO {
     public int getBranchId() {
         return branchId;
     }
+
+    public List<Integer> getOrderDays() { return orderDays; }
 
     public String getSuppName() {
         return suppName;
