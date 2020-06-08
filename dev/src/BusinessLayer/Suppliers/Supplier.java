@@ -136,4 +136,12 @@ public class Supplier {
     public boolean addSupplierDays(int suppId, int[] daysInt) {
         return this.supplierMapper.addSupplierDays(suppId, daysInt);
     }
+
+    public String getSupplierType(int suppId) {
+        return this.supplierMapper.getSupplierType(suppId);
+    }
+
+    public List<Integer> getSupplyDays(int suppId) {
+        return this.supplierMapper.getSupplyDays(suppId);
+    }
 }

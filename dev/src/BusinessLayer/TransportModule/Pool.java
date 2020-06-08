@@ -220,4 +220,11 @@ public class Pool {
     public void freeDriverDate(int driverId, Date date) {
         occupiedDriversPool.freeDriver(driverId,dateToString(date));
     }
+
+    public void makeOrders(List<List<Object>> transportOrders) {
+        //TODO THE BEST FUNCTION EVER
+        //אלה השדות:
+        //SUPPLIER ID ,BRANCH ID, ITEM ID , QUANTITY ,ORDER ID, DATE
+        //לשאלות מוזמנים להתקשר לדורין החלאה
+    }
 }

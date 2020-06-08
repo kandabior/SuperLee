@@ -1,5 +1,6 @@
 package src.InterfaceLayer.Suppliers;
 
+import org.omg.CORBA.INTERNAL;
 import src.BusinessLayer.Suppliers.Agreement;
 import src.BusinessLayer.Suppliers.Items;
 import src.BusinessLayer.Suppliers.Supplier;
@@ -170,5 +171,13 @@ public class SupplierController {
 
     public boolean addSupplierDays(int suppId, int[] daysInt) {
         return this.supplier.addSupplierDays(suppId, daysInt);
+    }
+
+    public String getSupplierType(int suppId) {
+        return this.supplier.getSupplierType(suppId);
+    }
+
+    public List<Integer> getSupplyDays(int suppId) {
+        return this.supplier.getSupplyDays(suppId);
     }
 }

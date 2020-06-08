@@ -601,7 +601,7 @@ public class SupplierMapper {
         try {
             if (tryOpen()) {
                 PreparedStatement st = conn.prepareStatement("SELECT localItemId FROM SupplierItems WHERE itemId = ?;");
-                st.setString(1, "suppliers");
+                st.setInt(1, itemId);
                 ResultSet res = st.executeQuery();
                 if (res.next()) {
                     localItemId = res.getInt("counter");
@@ -650,5 +650,47 @@ public class SupplierMapper {
             System.err.println(e.getClass().getName() + ": " + e.getMessage());
             return false;
         }
+    }
+
+    public String getSupplierType(int suppId) {
+            String type ="";
+        try {
+            if (tryOpen()) {
+                PreparedStatement st = conn.prepareStatement("SELECT supplySchedule FROM Suppliers WHERE id = ?;");
+                st.setInt(1, suppId);
+                ResultSet res = st.executeQuery();
+                if (res.next()) {
+                    type = res.getString("supplySchedule");
+                }
+                st.close();
+                conn.close();
+                return type;
+            }
+        } catch (Exception e) {
+            System.err.println(e.getClass().getName() + ": " + e.getMessage());
+            tryClose();
+        }
+        return type;
+    }
+
+    public List<Integer> getSupplyDays(int suppId) {
+        List<Integer> days = new LinkedList();
+        try {
+            if (tryOpen()) {
+                PreparedStatement st = conn.prepareStatement("SELECT day FROM SuppliersDays WHERE suppId = ?;");
+                st.setInt(1, suppId);
+                ResultSet res = st.executeQuery();
+                while (res.next()) {
+                    days.add(res.getInt("day"));
+                }
+                st.close();
+                conn.close();
+                return days;
+            }
+        } catch (Exception e) {
+            System.err.println(e.getClass().getName() + ": " + e.getMessage());
+            tryClose();
+        }
+        return days;
     }
 }

@@ -1,6 +1,7 @@
 package src.InterfaceLayer.Suppliers;
 
 import javafx.util.Pair;
+import src.BusinessLayer.TransportModule.Pool;
 
 import java.util.*;
 
@@ -9,10 +10,12 @@ public class FacadeController {
     private static FacadeController fc_instance=null;
     SupplierController supplierController;
     OrderController orderController;
+    static int orderIdCounter ;
 
     private FacadeController() {
         this.supplierController = SupplierController.getSupplierController();
         this.orderController = OrderController.getOrderController();
+        orderIdCounter = this.orderController.getOrderIdCounter();
     }
 
     public static FacadeController getFacadeController() {
@@ -61,49 +64,212 @@ public class FacadeController {
     {
         Map<Integer, Pair<Integer, Double>> map = new HashMap();
         Map<Integer, List<List<Object>>> orderMap = new HashMap<>();
+        Map<Integer, List<List<Object>>> pendingOrders = new HashMap<>();
         Map<Integer, List<Object>> suppliersMap = new HashMap<>();
+        List<List<Object>> transportOrders = new LinkedList<>();
+
+
         for (int i = 0; i < list.size(); i++) {
             int itemId = list.get(i).getKey();
             int quantity = list.get(i).getValue();
             int bestSuppForItem = supplierController.bestSuppForItem(itemId, quantity);
             if (bestSuppForItem > 0) {
-                Double costForItem = supplierController.getPriceOfAmountOfItem(bestSuppForItem, itemId, quantity);
-                Pair<Integer, Double> p = new Pair(quantity, costForItem);
-                int localItemId = getLocalItemId(itemId);
-                map.put(localItemId, p);
-                //add orders
-                if (orderMap.containsKey(bestSuppForItem)) {
-                    List<Object> orderList = new LinkedList<>();
-                    orderList.add(localItemId);// Item Id
-                    orderList.add(supplierController.getItemName(itemId));//Item Name
-                    orderList.add(quantity);// Item quantity
-                    Double firstCost = supplierController.getPriceOfAmountOfItemBeforeDiscount(bestSuppForItem, itemId, quantity);
-                    orderList.add(firstCost);// Item cost
-                    Double discount = supplierController.getDiscountOfItem(bestSuppForItem, itemId, quantity);
-                    orderList.add(discount);// Item discount
-                    orderList.add(costForItem);// Item finalCost
-                    orderMap.get(bestSuppForItem).add(orderList);
-                } else {
-                    List<List<Object>> bigList = new LinkedList<>();
-                    List<Object> orderList = new LinkedList<>();
-                    orderList.add(localItemId);// Item Id
-                    orderList.add(supplierController.getItemName(itemId));//Item Name
-                    orderList.add(quantity);// Item quantity
-                    Double firstCost = supplierController.getPriceOfAmountOfItemBeforeDiscount(bestSuppForItem, itemId, quantity);
-                    orderList.add(firstCost);// Item cost
-                    Double discount = supplierController.getDiscountOfItem(bestSuppForItem, itemId, quantity);
-                    orderList.add(discount);// Item discount
-                    orderList.add(costForItem);// Item finalCost
-                    bigList.add(orderList);
-                    orderMap.put(bestSuppForItem, bigList);
+                String type = supplierController.getSupplierType(bestSuppForItem);
+                switch (type){
+                    case "A": { //fixed day , supply solo
+                        Double costForItem = supplierController.getPriceOfAmountOfItem(bestSuppForItem, itemId, quantity);
+                        Pair<Integer, Double> p = new Pair(quantity, costForItem);
+                        int localItemId = getLocalItemId(itemId);
+                        //add orders
+                        if (pendingOrders.containsKey(bestSuppForItem)) {
+                            List<Object> orderList = new LinkedList<>();
+                            orderList.add(localItemId);// Item Id
+                            orderList.add(supplierController.getItemName(itemId));//Item Name
+                            orderList.add(quantity);// Item quantity
+                            Double firstCost = supplierController.getPriceOfAmountOfItemBeforeDiscount(bestSuppForItem, itemId, quantity);
+                            orderList.add(firstCost);// Item cost
+                            Double discount = supplierController.getDiscountOfItem(bestSuppForItem, itemId, quantity);
+                            orderList.add(discount);// Item discount
+                            orderList.add(costForItem);// Item finalCost
+                            pendingOrders.get(bestSuppForItem).add(orderList);
+                        } else {
+                            List<List<Object>> bigList = new LinkedList<>();
+                            List<Object> orderList = new LinkedList<>();
+                            orderList.add(localItemId);// Item Id
+                            orderList.add(supplierController.getItemName(itemId));//Item Name
+                            orderList.add(quantity);// Item quantity
+                            Double firstCost = supplierController.getPriceOfAmountOfItemBeforeDiscount(bestSuppForItem, itemId, quantity);
+                            orderList.add(firstCost);// Item cost
+                            Double discount = supplierController.getDiscountOfItem(bestSuppForItem, itemId, quantity);
+                            orderList.add(discount);// Item discount
+                            orderList.add(costForItem);// Item finalCost
+                            bigList.add(orderList);
+                            pendingOrders.put(bestSuppForItem, bigList);
+                            //add supplier details
+                            List<Object> suppList = supplierController.getSuppDetails(bestSuppForItem);
+                            suppliersMap.put(bestSuppForItem, suppList);
+                        }
 
-                    //add supplier details
-                    List<Object> suppList = supplierController.getSuppDetails(bestSuppForItem);
-                    suppliersMap.put(bestSuppForItem, suppList);
+                    } break;
+                    case "B": {//fixed day , supply with transport
+                        boolean found = false;
+                        int currentOrder =-1;
+                        for(List<Object> o : transportOrders) {
+                            if ((int) o.get(0) == bestSuppForItem) {
+                                found = true;
+                                currentOrder = (int) o.get(4);
+                            }
+                        }
+                        List<Object> order = new LinkedList<>();
+                        Double costForItem = supplierController.getPriceOfAmountOfItem(bestSuppForItem, itemId, quantity);
+                        Pair<Integer, Double> p = new Pair(quantity, costForItem);
+                        int localItemId = getLocalItemId(itemId);
+                        order.add(bestSuppForItem);
+                        order.add(branchId);
+                        order.add(itemId);
+                        order.add(quantity);
+                        if(!found) {
+                            order.add(orderIdCounter);
+                            orderIdCounter++;
+                        }
+                        if(found)
+                            order.add(currentOrder);
+                        order.add(supplierController.getSupplyDays(bestSuppForItem));//no date
+                        transportOrders.add(order);
+                        //add orders
+                        if (orderMap.containsKey(bestSuppForItem)) {
+                            List<Object> orderList = new LinkedList<>();
+                            orderList.add(localItemId);// Item Id
+                            orderList.add(supplierController.getItemName(itemId));//Item Name
+                            orderList.add(quantity);// Item quantity
+                            Double firstCost = supplierController.getPriceOfAmountOfItemBeforeDiscount(bestSuppForItem, itemId, quantity);
+                            orderList.add(firstCost);// Item cost
+                            Double discount = supplierController.getDiscountOfItem(bestSuppForItem, itemId, quantity);
+                            orderList.add(discount);// Item discount
+                            orderList.add(costForItem);// Item finalCost
+                            orderMap.get(bestSuppForItem).add(orderList);
+                        } else {
+                            List<List<Object>> bigList = new LinkedList<>();
+                            List<Object> orderList = new LinkedList<>();
+                            orderList.add(localItemId);// Item Id
+                            orderList.add(supplierController.getItemName(itemId));//Item Name
+                            orderList.add(quantity);// Item quantity
+                            Double firstCost = supplierController.getPriceOfAmountOfItemBeforeDiscount(bestSuppForItem, itemId, quantity);
+                            orderList.add(firstCost);// Item cost
+                            Double discount = supplierController.getDiscountOfItem(bestSuppForItem, itemId, quantity);
+                            orderList.add(discount);// Item discount
+                            orderList.add(costForItem);// Item finalCost
+                            bigList.add(orderList);
+                            orderMap.put(bestSuppForItem, bigList);
+                            //add supplier details
+                            List<Object> suppList = supplierController.getSuppDetails(bestSuppForItem);
+                            suppList.add(orderIdCounter);
+                            suppliersMap.put(bestSuppForItem, suppList );
+                            orderIdCounter++;
+                        }
+
+
+                    } break;
+                    case "C": { //when needed , supply alone
+                        Double costForItem = supplierController.getPriceOfAmountOfItem(bestSuppForItem, itemId, quantity);
+                        Pair<Integer, Double> p = new Pair(quantity, costForItem);
+                        int localItemId = getLocalItemId(itemId);
+                        map.put(localItemId, p);
+                        //add orders
+                        if (orderMap.containsKey(bestSuppForItem)) {
+                            List<Object> orderList = new LinkedList<>();
+                            orderList.add(localItemId);// Item Id
+                            orderList.add(supplierController.getItemName(itemId));//Item Name
+                            orderList.add(quantity);// Item quantity
+                            Double firstCost = supplierController.getPriceOfAmountOfItemBeforeDiscount(bestSuppForItem, itemId, quantity);
+                            orderList.add(firstCost);// Item cost
+                            Double discount = supplierController.getDiscountOfItem(bestSuppForItem, itemId, quantity);
+                            orderList.add(discount);// Item discount
+                            orderList.add(costForItem);// Item finalCost
+                            orderMap.get(bestSuppForItem).add(orderList);
+                        } else {
+                            List<List<Object>> bigList = new LinkedList<>();
+                            List<Object> orderList = new LinkedList<>();
+                            orderList.add(localItemId);// Item Id
+                            orderList.add(supplierController.getItemName(itemId));//Item Name
+                            orderList.add(quantity);// Item quantity
+                            Double firstCost = supplierController.getPriceOfAmountOfItemBeforeDiscount(bestSuppForItem, itemId, quantity);
+                            orderList.add(firstCost);// Item cost
+                            Double discount = supplierController.getDiscountOfItem(bestSuppForItem, itemId, quantity);
+                            orderList.add(discount);// Item discount
+                            orderList.add(costForItem);// Item finalCost
+                            bigList.add(orderList);
+                            orderMap.put(bestSuppForItem, bigList);
+                            //add supplier details
+                            List<Object> suppList = supplierController.getSuppDetails(bestSuppForItem);
+                            suppList.add(orderIdCounter);
+                            suppliersMap.put(bestSuppForItem, suppList );
+                            orderIdCounter++;
+                        }
+                    } break;
+                    case "D": {//when needed , supply  with transport
+                        boolean found = false;
+                        int currentOrder =-1;
+                        for(List<Object> o : transportOrders) {
+                            if ((int) o.get(0) == bestSuppForItem) {
+                                found = true;
+                                currentOrder = (int) o.get(4);
+                            }
+                        }
+                        List<Object> order = new LinkedList<>();
+                        Double costForItem = supplierController.getPriceOfAmountOfItem(bestSuppForItem, itemId, quantity);
+                        Pair<Integer, Double> p = new Pair(quantity, costForItem);
+                        int localItemId = getLocalItemId(itemId);
+                        order.add(bestSuppForItem);
+                        order.add(branchId);
+                        order.add(itemId);
+                        order.add(quantity);
+                        if(!found) {
+                            order.add(orderIdCounter);
+                            orderIdCounter++;
+                        }
+                        if(found)
+                            order.add(currentOrder);
+                        order.add(null);//no date
+                        transportOrders.add(order);
+                        //add orders
+                        if (orderMap.containsKey(bestSuppForItem)) {
+                            List<Object> orderList = new LinkedList<>();
+                            orderList.add(localItemId);// Item Id
+                            orderList.add(supplierController.getItemName(itemId));//Item Name
+                            orderList.add(quantity);// Item quantity
+                            Double firstCost = supplierController.getPriceOfAmountOfItemBeforeDiscount(bestSuppForItem, itemId, quantity);
+                            orderList.add(firstCost);// Item cost
+                            Double discount = supplierController.getDiscountOfItem(bestSuppForItem, itemId, quantity);
+                            orderList.add(discount);// Item discount
+                            orderList.add(costForItem);// Item finalCost
+                            orderMap.get(bestSuppForItem).add(orderList);
+                        } else {
+                            List<List<Object>> bigList = new LinkedList<>();
+                            List<Object> orderList = new LinkedList<>();
+                            orderList.add(localItemId);// Item Id
+                            orderList.add(supplierController.getItemName(itemId));//Item Name
+                            orderList.add(quantity);// Item quantity
+                            Double firstCost = supplierController.getPriceOfAmountOfItemBeforeDiscount(bestSuppForItem, itemId, quantity);
+                            orderList.add(firstCost);// Item cost
+                            Double discount = supplierController.getDiscountOfItem(bestSuppForItem, itemId, quantity);
+                            orderList.add(discount);// Item discount
+                            orderList.add(costForItem);// Item finalCost
+                            bigList.add(orderList);
+                            orderMap.put(bestSuppForItem, bigList);
+                            //add supplier details
+                            List<Object> suppList = supplierController.getSuppDetails(bestSuppForItem);
+                            suppList.add(orderIdCounter);
+                            suppliersMap.put(bestSuppForItem, suppList );
+                            orderIdCounter++;
+                        }
+                    } break;
                 }
             }
         }
+        orderController.addToPendingOrders(branchId, pendingOrders, suppliersMap, day);
         orderController.makeOrders(branchId, orderMap, suppliersMap, day);
+        Pool.getInstance().makeOrders(transportOrders);
         return map;
     }
 
