@@ -67,7 +67,6 @@ public class FacadeController {
         Map<Integer, List<List<Object>>> pendingOrders = new HashMap<>();
         Map<Integer, List<Object>> suppliersMap = new HashMap<>();
         List<List<Object>> transportOrders = new LinkedList<>();
-
         for (int i = 0; i < list.size(); i++) {
             int itemId = list.get(i).getKey();
             int quantity = list.get(i).getValue();
@@ -112,15 +111,13 @@ public class FacadeController {
                             tempMap.put(itemId,quantity);
                             order.add(tempMap);
                         }
-                        if(found)
-                        {
+                        else {
                             for(List<Object> o : transportOrders) {
                                 if ((int) o.get(0) == bestSuppForItem) {
                                     Map<Integer,Integer> ot = (Map<Integer,Integer>)o.get(3);
                                     ot.put(itemId,quantity);
                                     o.remove(3);
                                     o.add(ot);
-
                                 }
                             }
                             order.add(currentOrder);
@@ -168,7 +165,6 @@ public class FacadeController {
                         List<Object> order = new LinkedList<>();
                         Double costForItem = supplierController.getPriceOfAmountOfItem(bestSuppForItem, itemId, quantity);
                         int localItemId = getLocalItemId(itemId);
-
                         if(!found) {
                             order.add(orderIdCounter);
                             order.add(bestSuppForItem);
@@ -178,15 +174,13 @@ public class FacadeController {
                             tempMap.put(itemId,quantity);
                             order.add(tempMap);
                         }
-                        if(found)
-                        {
+                        else {
                             for(List<Object> o : transportOrders) {
                                 if ((int) o.get(0) == bestSuppForItem) {
                                      Map<Integer,Integer> ot = (Map<Integer,Integer>)o.get(3);
                                      ot.put(itemId,quantity);
                                      o.remove(3);
                                      o.add(ot);
-
                                 }
                             }
                             order.add(currentOrder);
