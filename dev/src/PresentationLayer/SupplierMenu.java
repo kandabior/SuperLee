@@ -159,7 +159,7 @@ public class SupplierMenu {
         {
             System.out.print("Item was not found. Insert more items? [Y/N] ");
         }
-        return newItems;
+        return itemId;
     }
 
     private static int addSupplier(int supplierIdCounter) {
@@ -254,24 +254,23 @@ public class SupplierMenu {
                     String toAdd= "Y";
                     int counter = fc.getItemsListSize(suppId);
                     int newItems = counter;
+                    List<Integer> newItemsIds = new LinkedList<>();
                     while (toAdd.equals("Y") | toAdd.equals("y")) {
-                        newItems += addItems(suppId);
+                        newItemsIds.add(addItems(suppId));
+                        newItems+=newItemsIds.size();
                         toAdd = scanner.nextLine();
                     }
                     if(fc.getItemsListSize(suppId) == 0) {
                         System.out.println("Supplier has no items.");
                         break;
                     }
-                    List<String> supplierItemsName = fc.getSupplierItemsNames(suppId);
-                    List<Integer> supplierItemsId = fc.getSupplierItemsId(suppId);
-
                     if (newItems > counter) { //add items to agreement
                         System.out.println("Please insert supplier's agreement (for each item insert it's cost).");
-                        for (int i = newItems-1; i > counter-1; i--) {
-                            System.out.print(supplierItemsName.get(i) + ": ");
+                        for (int i = 0; i < newItemsIds.size(); i++) {
+                            System.out.print(fc.getItemNameById((newItemsIds.get(i))) + ": ");
                             double itemPrice = scanner.nextDouble();
-                            if (!fc.addItemToAgreement(suppId, supplierItemsId.get(i), itemPrice))
-                                System.out.println("Error: Item '" + supplierItemsName.get(i) + "' does not belong to the agreement.");
+                            if (!fc.addItemToAgreement(suppId, newItemsIds.get(i), itemPrice))
+                                System.out.println("Error: Item '" + fc.getItemNameById((newItemsIds.get(i))) + "' does not belong to the agreement.");
                         }
                     }
                     break;

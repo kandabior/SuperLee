@@ -14,7 +14,7 @@ public class ReportMapper {
     public int getReportId() {
         PreparedStatement stmt = null;
         try {
-            c = DriverManager.getConnection("jdbc:sqlite:EOEDdatabase.db");
+            c = DriverManager.getConnection("jdbc:sqlite:dev\\EOEDdatabase.db");
             c.setAutoCommit(false);
             stmt = c.prepareStatement("SELECT counter FROM Counters WHERE name=?;");
             stmt.setString(1,"reports");
@@ -59,7 +59,7 @@ public class ReportMapper {
     public void addReport(ReportDTO reportDTO) {
         PreparedStatement stmt = null;
         try {
-            c = DriverManager.getConnection("jdbc:sqlite:EOEDdatabase.db");
+            c = DriverManager.getConnection("jdbc:sqlite:dev\\EOEDdatabase.db");
             c.setAutoCommit(false);
             stmt = c.prepareStatement("INSERT INTO Reports VALUES (?,?);");
             stmt.setInt(1, reportDTO.getReportId());

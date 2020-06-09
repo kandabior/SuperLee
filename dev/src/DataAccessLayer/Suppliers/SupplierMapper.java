@@ -596,15 +596,16 @@ public class SupplierMapper {
 
     }
 
-    public int getLocalItemId(int itemId) {
+    public int getLocalItemId(int itemId,int suppId) {
         int localItemId = -1;
         try {
             if (tryOpen()) {
-                PreparedStatement st = conn.prepareStatement("SELECT localItemId FROM SupplierItems WHERE itemId = ?;");
+                PreparedStatement st = conn.prepareStatement("SELECT localItemId FROM SupplierItems WHERE itemId = ? AND SupplierId = ?;");
                 st.setInt(1, itemId);
+                st.setInt(2, suppId);
                 ResultSet res = st.executeQuery();
                 if (res.next()) {
-                    localItemId = res.getInt("counter");
+                    localItemId = res.getInt("localItemId");
                 }
                 st.close();
                 conn.close();
@@ -677,7 +678,7 @@ public class SupplierMapper {
         List<Integer> days = new LinkedList();
         try {
             if (tryOpen()) {
-                PreparedStatement st = conn.prepareStatement("SELECT day FROM SuppliersDays WHERE suppId = ?;");
+                PreparedStatement st = conn.prepareStatement("SELECT day FROM SupplierDays WHERE suppId = ?;");
                 st.setInt(1, suppId);
                 ResultSet res = st.executeQuery();
                 while (res.next()) {

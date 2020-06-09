@@ -129,8 +129,8 @@ public class Supplier {
         return this.supplierMapper.getAllSuppliers();
     }
 
-    public int getLocalItemId(int itemId) {
-        return this.supplierMapper.getLocalItemId(itemId) ;
+    public int getLocalItemId(int itemId,int suppId) {
+        return this.supplierMapper.getLocalItemId(itemId,suppId) ;
     }
 
     public boolean addSupplierDays(int suppId, int[] daysInt) {

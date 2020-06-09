@@ -60,7 +60,7 @@ public class FacadeController {
     }
 
 
-    public Map<Integer,Pair<Integer,Double>> makeOrder(int branchId, List<Pair<Integer,Integer>> list , int day)//return itemId , <Quantity , FinalCost>
+    public Map<Integer,Pair<Integer,Double>> makeOrder(int branchId, List<Pair<Integer,Integer>> list , int day)//return <itemId,local Item Id> , <Quantity , FinalCost>
     {
         Map<Integer, Pair<Integer, Double>> map = new HashMap();
         Map<Integer, List<List<Object>>> orderMap = new HashMap<>();
@@ -77,12 +77,14 @@ public class FacadeController {
                     case "A": { //fixed day , supply solo
                         Double costForItem = supplierController.getPriceOfAmountOfItem(bestSuppForItem, itemId, quantity);
                         Pair<Integer, Double> p = new Pair(quantity, costForItem);
-                        int localItemId = getLocalItemId(itemId);
+                        int localItemId = getLocalItemId(itemId,bestSuppForItem);
                         //add orders
                         if (pendingOrders.containsKey(bestSuppForItem)) {
                             orderMap.get(bestSuppForItem).add(addToOrder(localItemId,itemId,quantity,bestSuppForItem,costForItem));
+                            pendingOrders.get(bestSuppForItem).add(addToOrder(localItemId,itemId,quantity,bestSuppForItem,costForItem));
                         } else {
                             orderMap.put(bestSuppForItem, addNewSuppOrder(localItemId, itemId, quantity, bestSuppForItem, costForItem));
+                            pendingOrders.put(bestSuppForItem, addNewSuppOrder(localItemId, itemId, quantity, bestSuppForItem, costForItem));
                             //add supplier details
                             List<Object> suppList = supplierController.getSuppDetails(bestSuppForItem);
                             suppList.add(supplierController.getSupplyDays(bestSuppForItem));
@@ -100,7 +102,7 @@ public class FacadeController {
                         }
                         List<Object> order = new LinkedList<>();
                         Double costForItem = supplierController.getPriceOfAmountOfItem(bestSuppForItem, itemId, quantity);
-                        int localItemId = getLocalItemId(itemId);
+                        int localItemId = getLocalItemId(itemId,bestSuppForItem);
 
                         if(!found) {
                             order.add(orderIdCounter);
@@ -139,7 +141,7 @@ public class FacadeController {
                     case "C": { //when needed , supply alone
                         Double costForItem = supplierController.getPriceOfAmountOfItem(bestSuppForItem, itemId, quantity);
                         Pair<Integer, Double> p = new Pair(quantity, costForItem);
-                        int localItemId = getLocalItemId(itemId);
+                        int localItemId = getLocalItemId(itemId,bestSuppForItem);
                         map.put(localItemId, p);
                         //add orders
                         if (orderMap.containsKey(bestSuppForItem)) {
@@ -164,7 +166,7 @@ public class FacadeController {
                         }
                         List<Object> order = new LinkedList<>();
                         Double costForItem = supplierController.getPriceOfAmountOfItem(bestSuppForItem, itemId, quantity);
-                        int localItemId = getLocalItemId(itemId);
+                        int localItemId = getLocalItemId(itemId,bestSuppForItem);
                         if(!found) {
                             order.add(orderIdCounter);
                             order.add(bestSuppForItem);
@@ -208,8 +210,8 @@ public class FacadeController {
     }
 
 
-    private int getLocalItemId(int itemId) {
-      return  supplierController.getLocalItemId(itemId);
+    private int getLocalItemId(int itemId,int suppId) {
+      return  supplierController.getLocalItemId(itemId,suppId);
     }
 
     private List<Object> addToOrder(int localItemId,int itemId,int quantity,int bestSuppForItem,double costForItem)
