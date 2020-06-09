@@ -221,7 +221,7 @@ public class Pool {
         occupiedDriversPool.freeDriver(driverId,dateToString(date));
     }
 
-    public void makeOrders(List<List<Object>> transportOrders) {
+    public void makeOrders(int branchId,List<List<Object>> transportOrders) {
         //TODO THE BEST FUNCTION EVER
         //אלה השדות:
         //SUPPLIER ID ,BRANCH ID, ITEM ID , QUANTITY ,ORDER ID, DATE

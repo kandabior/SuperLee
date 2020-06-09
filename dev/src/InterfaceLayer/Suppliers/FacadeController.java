@@ -101,20 +101,32 @@ public class FacadeController {
                         }
                         List<Object> order = new LinkedList<>();
                         Double costForItem = supplierController.getPriceOfAmountOfItem(bestSuppForItem, itemId, quantity);
-                        Pair<Integer, Double> p = new Pair(quantity, costForItem);
                         int localItemId = getLocalItemId(itemId);
-                        order.add(bestSuppForItem);
-                        order.add(branchId);
-                        order.add(itemId);
-                        order.add(quantity);
+
                         if(!found) {
                             order.add(orderIdCounter);
+                            order.add(bestSuppForItem);
                             orderIdCounter++;
+                            order.add(supplierController.getSupplyDays(bestSuppForItem));//no date);
+                            Map<Integer,Integer> tempMap = new HashMap();
+                            tempMap.put(itemId,quantity);
+                            order.add(tempMap);
                         }
                         if(found)
+                        {
+                            for(List<Object> o : transportOrders) {
+                                if ((int) o.get(0) == bestSuppForItem) {
+                                    Map<Integer,Integer> ot = (Map<Integer,Integer>)o.get(3);
+                                    ot.put(itemId,quantity);
+                                    o.remove(3);
+                                    o.add(ot);
+
+                                }
+                            }
                             order.add(currentOrder);
-                        order.add(supplierController.getSupplyDays(bestSuppForItem));//no date
+                        }
                         transportOrders.add(order);
+
                         //add orders
                         if (orderMap.containsKey(bestSuppForItem)) {
                             orderMap.get(bestSuppForItem).add(addToOrder(localItemId,itemId,quantity,bestSuppForItem,costForItem));
@@ -155,19 +167,30 @@ public class FacadeController {
                         }
                         List<Object> order = new LinkedList<>();
                         Double costForItem = supplierController.getPriceOfAmountOfItem(bestSuppForItem, itemId, quantity);
-                        Pair<Integer, Double> p = new Pair(quantity, costForItem);
                         int localItemId = getLocalItemId(itemId);
-                        order.add(bestSuppForItem);
-                        order.add(branchId);
-                        order.add(itemId);
-                        order.add(quantity);
+
                         if(!found) {
                             order.add(orderIdCounter);
+                            order.add(bestSuppForItem);
                             orderIdCounter++;
+                            order.add(null);
+                            Map<Integer,Integer> tempMap = new HashMap();
+                            tempMap.put(itemId,quantity);
+                            order.add(tempMap);
                         }
                         if(found)
+                        {
+                            for(List<Object> o : transportOrders) {
+                                if ((int) o.get(0) == bestSuppForItem) {
+                                     Map<Integer,Integer> ot = (Map<Integer,Integer>)o.get(3);
+                                     ot.put(itemId,quantity);
+                                     o.remove(3);
+                                     o.add(ot);
+
+                                }
+                            }
                             order.add(currentOrder);
-                        order.add(null);//no date
+                        }
                         transportOrders.add(order);
                         //add orders
                         if (orderMap.containsKey(bestSuppForItem)) {
@@ -186,7 +209,7 @@ public class FacadeController {
         }
         orderController.addToPendingOrders(branchId, pendingOrders, suppliersMap, day);
         orderController.makeOrders(branchId, orderMap, suppliersMap, day);
-        Pool.getInstance().makeOrders(transportOrders);
+        Pool.getInstance().makeOrders(branchId,transportOrders);
         return map;
     }
 
