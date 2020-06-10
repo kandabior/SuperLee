@@ -1,10 +1,12 @@
 package src.DataAccessLayer.Suppliers;
 
 
+import javafx.util.Pair;
 import src.DataAccessLayer.Suppliers.DTO.OrderDTO;
 import DataAccessLayer.Suppliers.DTO.OrderLineDTO;
 
 import java.sql.*;
+import java.time.LocalDate;
 import java.util.*;
 
 public class OrderMapper {
@@ -321,5 +323,86 @@ public class OrderMapper {
         }
 
     }
+
+    public Map<Pair<Integer,Integer>, Pair<Integer, Double>> getOrdersByDat(LocalDate day) {
+        Map<Pair<Integer,Integer>, Pair<Integer, Double>> map = new HashMap<>();
+        String date = day.toString();
+        List<Pair<Integer,Integer>> ordersId = getOrdersIdByDate(date);
+        try {
+            if (tryOpen()) {
+                for(int i=0 ; i<ordersId.size();i++)
+                {
+                    conn.setAutoCommit(false);
+                    PreparedStatement st = conn.prepareStatement("SELECT itemId,itemQuantity,finalCost  FROM  OrderLines WHERE orderId = ?  ;");
+                    st.setInt(1, ordersId.get(i).getKey());
+                    ResultSet res = st.executeQuery();
+                    while (res.next()) {
+                        Pair<Integer,Integer> GidLid = new Pair(res.getInt("itemId"),getLocalItemId(res.getInt("itemId"), ordersId.get(i).getValue()));
+                        Pair<Integer,Double> QuantityCost =new Pair(res.getInt("itemQuantity"),res.getDouble("finalCost"));
+                        map.put(GidLid,QuantityCost);
+                    }
+                    st.close();
+                }
+                conn.close();
+                return map;
+            }
+            else return null;
+        } catch(Exception e){
+            //System.err.println(e.getClass().getName() + ": " + e.getMessage());
+            tryClose();
+            return null;
+        }
+    }
+
+    private List<Pair<Integer,Integer>> getOrdersIdByDate(String date) {
+        //TODO check date and if its waiting
+        List<Pair<Integer,Integer>> ordersIds = new LinkedList<>();
+        try {
+            if (tryOpen()) {
+                //Class.forName("org.sqlite.JDBC");
+                conn.setAutoCommit(false);
+                PreparedStatement st = conn.prepareStatement("SELECT id,suppId  FROM  Orders WHERE orderDate = ? AND status = ?  ;");
+                st.setString(1, date);
+                st.setString(2, "Waiting");
+                ResultSet res = st.executeQuery();
+                while (res.next()) {
+                    Pair<Integer,Integer> p = new Pair(res.getInt("id"),res.getInt("suppId"));
+                    ordersIds.add(p);
+                }
+                st.close();
+                conn.close();
+                return ordersIds;
+            }
+            else return ordersIds;
+        } catch(Exception e){
+            //System.err.println(e.getClass().getName() + ": " + e.getMessage());
+            tryClose();
+            return ordersIds;
+        }
+    }
+
+    public int getLocalItemId(int itemId,int suppId) {
+        int localItemId = -1;
+        try {
+            if (tryOpen()) {
+                PreparedStatement st = conn.prepareStatement("SELECT localItemId FROM SupplierItems WHERE itemId = ? AND SupplierId = ?;");
+                st.setInt(1, itemId);
+                st.setInt(2, suppId);
+                ResultSet res = st.executeQuery();
+                if (res.next()) {
+                    localItemId = res.getInt("localItemId");
+                }
+                st.close();
+                conn.close();
+                return localItemId;
+            }
+        } catch (Exception e) {
+            System.err.println(e.getClass().getName() + ": " + e.getMessage());
+            tryClose();
+        }
+        return localItemId;
+    }
+
+
 }
 

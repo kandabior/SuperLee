@@ -3,6 +3,7 @@ package src.InterfaceLayer.Suppliers;
 import javafx.util.Pair;
 import src.BusinessLayer.TransportModule.Pool;
 
+import java.time.LocalDate;
 import java.util.*;
 
 public class FacadeController {
@@ -322,8 +323,10 @@ public class FacadeController {
         return supplierController.addSupplierDays(suppId, daysInt);
     }
 
-    public void PromoteDay(int day) {
-         this.orderController.PromoteDay(day);
+    public void PromoteDay(LocalDate day) {
+        Map<Pair<Integer,Integer>, Pair<Integer, Double>> map = new HashMap();
+        map=this.orderController.getOrdersByDat(day);
+
     }
 
     public List<Integer> getLocalItemsIds(int suppId,List<Integer> temp) {
