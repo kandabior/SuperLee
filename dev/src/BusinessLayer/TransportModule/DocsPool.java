@@ -22,13 +22,15 @@ public class DocsPool {
         mapper = new DocsMapper();
     }
 
-    public void addDoc(int area, Date date, String truckId, int driverId, String driverName, List<Integer> stores, List<Integer> suppliers){
+    public int addDoc(int area, Date date, String truckId, int driverId, String driverName, List<Integer> stores, List<Integer> suppliers, List<Integer> ordersId){
         //transportDocs.add(new DTO_TransportDoc( area,date,truckId,driverId,driverName,stores,suppliers));
         int maxId = mapper.getMaxdocsId();
         if(maxId >= 0) {
             DTO_TransportDoc s = new DTO_TransportDoc(maxId + 1, area, dateToString(date), truckId , driverId , driverName, stores, suppliers, new LinkedList<>(), "PENDING", -1 );
             mapper.addNewDoc(s);
         }
+        mapper.addTransportOrders(maxId + 1, ordersId);
+        return maxId + 1;
     }
     public void addDoc(int id,int area, Date date, String truckId, String driverId, String driverName, List<Integer> stores, List<Integer> suppliers){
         transportDocs.add(new TransportDoc(id,area,date,truckId,driverId,driverName,stores,suppliers));
@@ -40,7 +42,7 @@ public class DocsPool {
                 return true;
         }
         return false;*/
-        return mapper.validTransport(docId);
+        return mapper.validTransport(docId) && mapper.notMissing(docId);
     }
 
 
@@ -221,5 +223,33 @@ public class DocsPool {
         Calendar calendar = Calendar.getInstance();
         calendar.setTime(date);
         return calendar.get(Calendar.DATE)+"/"+(calendar.get(Calendar.MONTH)+1) +"/" + calendar.get(Calendar.YEAR);
+    }
+
+    public void addMissingEmployees(int docId, int hasStoreKeeper, int hasDriver) {
+        mapper.addMissingEmployees(docId, hasStoreKeeper, hasDriver);
+    }
+
+    public void addMissingMsg(int docId, int hasStoreKeeper, int hasDriver, Date date) {
+        String storeKeeper = "";
+        String driver = "";
+        if(hasStoreKeeper == 0)
+            storeKeeper = "storeKeeper";
+        if(hasDriver == 0)
+            driver = "driver";
+        String msg = "Dear Employees Manager, On " + dateToString(date) + " missing " + storeKeeper +  " " + driver;
+        mapper.addMissingMsg(docId, msg);
+    }
+
+    public List<Integer> getOrdersId(int docId) {
+        return mapper.getOrdersId(docId);
+    }
+
+    public List<Integer> getWaitingTransportIds() {
+        return mapper.getWaitingTransportIds();
+    }
+
+    public void removeWaitingTransport(int id) {
+        mapper.updateTransportDoc(-1 ,"FAIL", id);
+        mapper.removeWaitingTransport(id);
     }
 }
