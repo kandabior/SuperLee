@@ -58,7 +58,7 @@
 //    @After
 //    public void deleteAdded(){
 //        try {
-//            String url = "jdbc:sqlite:transportsAndWorkers.db";
+//            String url = "jdbc:sqlite:EOEDdatabase.db";
 //            con = DriverManager.getConnection(url);
 //            Class.forName("org.sqlite.JDBC");
 //            con.setAutoCommit(false);

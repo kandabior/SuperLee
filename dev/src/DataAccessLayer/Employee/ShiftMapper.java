@@ -323,7 +323,7 @@ public class ShiftMapper {
 
     private boolean tryOpen() {
         try {
-            String url = "jdbc:sqlite:transportsAndWorkers.db";
+            String url = "jdbc:sqlite:EOEDdatabase.db";
             con = DriverManager.getConnection(url);
             return true;
         } catch (SQLException e) {
