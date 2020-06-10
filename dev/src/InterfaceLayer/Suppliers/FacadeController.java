@@ -60,9 +60,10 @@ public class FacadeController {
     }
 
 
-    public Map<Pair<Integer,Integer>,Pair<Integer,Double>> makeOrder(int branchId, List<Pair<Integer,Integer>> list , int day)//return <itemId,local Item Id> , <Quantity , FinalCost>
+    public Map<Integer,Pair<Integer,Double>> makeOrder(int branchId, List<Pair<Integer,Integer>> list , int day)//return <itemId,local Item Id> , <Quantity , FinalCost>
     {
-        Map<Pair<Integer,Integer>, Pair<Integer, Double>> map = new HashMap();
+        //Map<Pair<Integer,Integer>, Pair<Integer, Double>> map = new HashMap();
+        Map<Integer, Pair<Integer, Double>> map = new HashMap();
         Map<Integer, List<List<Object>>> orderMap = new HashMap<>();
         //Map<Integer, List<List<Object>>> pendingOrders = new HashMap<>();
         Map<Integer, List<Object>> suppliersMap = new HashMap<>();
@@ -144,7 +145,7 @@ public class FacadeController {
                         Pair<Integer, Double> p = new Pair(quantity, costForItem);
                         int localItemId = getLocalItemId(itemId,bestSuppForItem);
                         Pair<Integer,Integer> pair = new Pair<>(itemId,localItemId);
-                        map.put(pair, p);
+                        //map.put(pair, p); //TODO NO COOMENT
                         //add orders
                         if (orderMap.containsKey(bestSuppForItem)) {
                             orderMap.get(bestSuppForItem).add(addToOrder(localItemId,itemId,quantity,bestSuppForItem,costForItem,"Pending"));
