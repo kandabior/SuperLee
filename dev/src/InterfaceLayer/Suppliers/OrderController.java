@@ -58,8 +58,7 @@ public class OrderController {
         for (Integer key : orderMap.keySet())//go over suppliers
         {
 
-            OrderDTO o = new OrderDTO(branchId, orderIdCounter, (Integer) suppliersList.get(key).get(0), (String) suppliersList.get(key).get(1), (String) suppliersList.get(key).get(2), (String) suppliersList.get(key).get(3), LocalDate.now().plusDays(day));
-            orderIdCounter++;
+            OrderDTO o = new OrderDTO(branchId, (Integer) suppliersList.get(key).get(4), (Integer) suppliersList.get(key).get(0), (String) suppliersList.get(key).get(1), (String) suppliersList.get(key).get(2), (String) suppliersList.get(key).get(3), LocalDate.now().plusDays(day), "Pending" );
             List<OrderLineDTO> lines = new LinkedList<>();
             for (int j = 0; j < orderMap.get(key).size(); j++)//go over the orders line
             {
@@ -99,7 +98,7 @@ public class OrderController {
     public void addToPendingOrders(int branchId, Map<Integer, List<List<Object>>> pendingOrders, Map<Integer, List<Object>> suppliersList, int day) {
         for (Integer key : pendingOrders.keySet())//go over suppliers
         {
-            OrderDTO o = new OrderDTO(branchId, orderIdCounter, (Integer) suppliersList.get(key).get(0), (String) suppliersList.get(key).get(1), (String) suppliersList.get(key).get(2), (String) suppliersList.get(key).get(3),(List<Integer>) suppliersList.get(key).get(4) );
+            OrderDTO o = new OrderDTO(branchId, orderIdCounter, (Integer) suppliersList.get(key).get(0), (String) suppliersList.get(key).get(1), (String) suppliersList.get(key).get(2), (String) suppliersList.get(key).get(3),(List<Integer>) suppliersList.get(key).get(4) ,"Pending");
             orderIdCounter++;
             List<OrderLineDTO> lines = new LinkedList<>();
             for (int j = 0; j < pendingOrders.get(key).size(); j++)//go over the orders line
