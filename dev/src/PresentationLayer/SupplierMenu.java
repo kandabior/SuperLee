@@ -149,10 +149,16 @@ public class SupplierMenu {
             scanner = new Scanner(System.in);
             System.out.print("Enter local identifier: ");
             int itemLocalId = scanner.nextInt();
+
+            while(!fc.addItemToSupplier(suppId, itemId,itemLocalId))
+            {
+                System.out.print("\nThis supplier already has this Local Item ID, Please try again ");
+                System.out.print("\nEnter local identifier: ");
+                itemLocalId = scanner.nextInt();
+            }
+            newItems++;
             String name = fc.getItemNameById(itemId);
             System.out.print("Name: " + name);
-            fc.addItemToSupplier(suppId, itemId,itemLocalId);
-            newItems++;
             System.out.print("\nInsert more items? [Y/N] ");
         }
         else
@@ -389,16 +395,28 @@ public class SupplierMenu {
 
     private static void displayItems(int suppId) {
         LinkedHashMap<Integer, Double> terms = fc.showSuppItems(suppId);
+        List<Integer> listLocalId = getLocalItemsIds(suppId,terms);
         Iterator<Integer> iter = terms.keySet().iterator();
         for (int i = 0; i < terms.size(); i++) {
             if (iter.hasNext()) {
                 int itemId = iter.next();
                 String itemName = fc.getItemNameById(itemId);
                 double itemPrice = terms.get(itemId);
-                System.out.println(itemId + ". " + itemName + ", " + itemPrice + " NIS");
+                System.out.println("Global Id: "+itemId+"Local Item Id: "+listLocalId.get(i)  + ". " + itemName + ", " + itemPrice + " NIS");
             }
         }
     }
+
+    private static List<Integer> getLocalItemsIds(int suppId,  LinkedHashMap<Integer, Double> terms) {
+        List<Integer> temp = new LinkedList<>();
+        Iterator<Integer> iter = terms.keySet().iterator();
+        for (int i = 0; i < terms.size(); i++) {
+            if (iter.hasNext())
+                temp.add(iter.next());
+        }
+        return fc.getLocalItemsIds(suppId,temp);
+    }
+
 
     private static String editAgreement(int suppId){
         Scanner scanner = new Scanner(System.in);
