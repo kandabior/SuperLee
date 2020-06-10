@@ -4,6 +4,7 @@ import src.BusinessLayer.Suppliers.Items;
 import src.InterfaceLayer.Suppliers.FacadeController;
 
 import java.time.LocalDate;
+import java.util.Calendar;
 import java.util.Scanner;
 
 public class Main {
@@ -54,7 +55,7 @@ public class Main {
                         break;
                     case 7:
                         plusDay++;
-                        SupplierMenu.PromoteDay((DayOfTheWeek + plusDay) % 7);
+                        SupplierMenu.PromoteDay(LocalDate.now().plusDays(plusDay));
                         InventoryMenu.PromoteDay((DayOfTheWeek + plusDay) % 7);
                     case 8:
                         break;

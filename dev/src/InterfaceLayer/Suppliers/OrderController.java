@@ -1,4 +1,5 @@
 package src.InterfaceLayer.Suppliers;
+import javafx.util.Pair;
 import src.BusinessLayer.Suppliers.Order;
 import src.BusinessLayer.TransportModule.Pool;
 import src.DataAccessLayer.Suppliers.DTO.OrderDTO;
@@ -118,31 +119,40 @@ public class OrderController {
         }
     }
 
-    public void PromoteDay(int day) {
-        List<List<Object>> orders = new LinkedList<>();
-        Map<Integer, List<List<Object>>> orderMap = new HashMap<>();
-        Map<Integer, List<Object>> suppliersMap = new HashMap<>();
-        for(Integer suppID : pendingOrders.keySet()) {
-            for(Integer o_day : pendingOrders.get(suppID).getOrderDays()) {
-                if(o_day == day) {
-                    for(OrderLineDTO ol : pendingOrders.get(suppID).getOrderLines()) {
-                        List<Object> order = new LinkedList<>();
-                        order.add(suppID);
-                        order.add(pendingOrders.get(suppID).getBranchId());
-                        order.add(ol.getItemId());
-                        order.add(ol.getItemQuantity());
-                        order.add(pendingOrders.get(suppID).getId());
-                        order.add(null);
-                        List<List<Object>> out = new LinkedList<>();
-                        out.add(order);
-                        orderMap.put(pendingOrders.get(suppID).getSuppId(), out);
-                    }
-                    makeOrders(pendingOrders.get(suppID).getBranchId(), orderMap, suppliersMap, day);
-                    pendingOrders.remove(suppID);
-                }
-            }
-        }
-        Pool.getInstance().makeOrders(1,orders);//todo change all the unction!
+    public void PromoteDay(int day) {//get day of the week
+
+
     }
+
+    public Map<Pair<Integer,Integer>, Pair<Integer, Double>> getOrdersByDat(LocalDate day) {
+        return this.order.getOrdersByDat(day);
+    }
+
+//    public void PromoteDay(int day) {
+//        List<List<Object>> orders = new LinkedList<>();
+//        Map<Integer, List<List<Object>>> orderMap = new HashMap<>();
+//        Map<Integer, List<Object>> suppliersMap = new HashMap<>();
+//        for(Integer suppID : pendingOrders.keySet()) {
+//            for(Integer o_day : pendingOrders.get(suppID).getOrderDays()) {
+//                if(o_day == day) {
+//                    for(OrderLineDTO ol : pendingOrders.get(suppID).getOrderLines()) {
+//                        List<Object> order = new LinkedList<>();
+//                        order.add(suppID);
+//                        order.add(pendingOrders.get(suppID).getBranchId());
+//                        order.add(ol.getItemId());
+//                        order.add(ol.getItemQuantity());
+//                        order.add(pendingOrders.get(suppID).getId());
+//                        order.add(null);
+//                        List<List<Object>> out = new LinkedList<>();
+//                        out.add(order);
+//                        orderMap.put(pendingOrders.get(suppID).getSuppId(), out);
+//                    }
+//                    makeOrders(pendingOrders.get(suppID).getBranchId(), orderMap, suppliersMap, day);
+//                    pendingOrders.remove(suppID);
+//                }
+//            }
+//        }
+//        Pool.getInstance().makeOrders(1,orders);//todo change all the unction!
+//    }
 }
 

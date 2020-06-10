@@ -1,11 +1,14 @@
 package src.BusinessLayer.Suppliers;
 
 
+import javafx.util.Pair;
 import src.DataAccessLayer.Suppliers.DTO.OrderDTO;
 import DataAccessLayer.Suppliers.DTO.OrderLineDTO;
 import src.DataAccessLayer.Suppliers.OrderMapper;
 
+import java.time.LocalDate;
 import java.util.List;
+import java.util.Map;
 
 
 public class Order {
@@ -60,5 +63,9 @@ public class Order {
 
     public boolean updateOrderStatus(int orderId) {
         return this.orderMapper.updateOrderStatus(orderId);
+    }
+
+    public Map<Pair<Integer,Integer>, Pair<Integer, Double>> getOrdersByDat(LocalDate day) {
+        return this.orderMapper.getOrdersByDat(day);
     }
 }

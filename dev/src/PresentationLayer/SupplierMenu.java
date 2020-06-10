@@ -402,7 +402,7 @@ public class SupplierMenu {
                 int itemId = iter.next();
                 String itemName = fc.getItemNameById(itemId);
                 double itemPrice = terms.get(itemId);
-                System.out.println("Global Id: "+itemId+"Local Item Id: "+listLocalId.get(i)  + ". " + itemName + ", " + itemPrice + " NIS");
+                System.out.println("Global Id: "+itemId+" Local Item Id: "+listLocalId.get(i) + itemName + ", " + itemPrice + " NIS");
             }
         }
     }
@@ -424,7 +424,7 @@ public class SupplierMenu {
         LinkedHashMap<Integer, Double> terms = fc.showSuppItems(suppId);
         displayItems(suppId);
 
-        System.out.print("Item's id: ");
+        System.out.print("Enter global item's id: ");
         int itemId = scanner.nextInt();
         while (!fc.validateItemId(suppId, itemId)) {
             System.out.println("This supplier does not have this item, enter another one. To exit enter -1.");
@@ -448,7 +448,7 @@ public class SupplierMenu {
         return scanner2.nextLine();
     }
 
-    public static void PromoteDay(int day) {
+    public static void PromoteDay(LocalDate day) {
         fc.PromoteDay(day);
     }
 

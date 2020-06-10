@@ -133,4 +133,28 @@ public class StoresMapper {
       }
 
    }
+
+    public int getArea(int storeId) {
+       try {
+          if (tryOpen()) {
+             Class.forName("org.sqlite.JDBC");
+             con.setAutoCommit(false);
+             PreparedStatement statement = con.prepareStatement("SELECT area FROM Stores WHERE ID = ?");
+             statement.setInt(1,storeId);
+             ResultSet result = statement.executeQuery();
+             if (result.next()) {
+                int area = result.getInt(1);
+                con.close();
+                statement.close();
+                return area;
+             }
+             con.close();
+             statement.close();
+             return -1;
+          } else return -1;
+       } catch (Exception e) {
+          System.err.println(e.getClass().getName() + ": " + e.getMessage());
+          return -1;
+       }
+    }
 }

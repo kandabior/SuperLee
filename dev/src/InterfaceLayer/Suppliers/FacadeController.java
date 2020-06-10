@@ -3,6 +3,7 @@ package src.InterfaceLayer.Suppliers;
 import javafx.util.Pair;
 import src.BusinessLayer.TransportModule.Pool;
 
+import java.time.LocalDate;
 import java.util.*;
 
 public class FacadeController {
@@ -60,10 +61,9 @@ public class FacadeController {
     }
 
 
-    public Map<Integer,Pair<Integer,Double>> makeOrder(int branchId, List<Pair<Integer,Integer>> list , int day)//return <itemId,local Item Id> , <Quantity , FinalCost>
+    public Map<Pair<Integer,Integer>,Pair<Integer,Double>> makeOrder(int branchId, List<Pair<Integer,Integer>> list , int day) //return <itemId,local Item Id> , <Quantity , FinalCost>
     {
-        //Map<Pair<Integer,Integer>, Pair<Integer, Double>> map = new HashMap();
-        Map<Integer, Pair<Integer, Double>> map = new HashMap();
+        Map<Pair<Integer,Integer>, Pair<Integer, Double>> map = new HashMap();
         Map<Integer, List<List<Object>>> orderMap = new HashMap<>();
         //Map<Integer, List<List<Object>>> pendingOrders = new HashMap<>();
         Map<Integer, List<Object>> suppliersMap = new HashMap<>();
@@ -145,8 +145,7 @@ public class FacadeController {
                         Pair<Integer, Double> p = new Pair(quantity, costForItem);
                         int localItemId = getLocalItemId(itemId,bestSuppForItem);
                         Pair<Integer,Integer> pair = new Pair<>(itemId,localItemId);
-                        //map.put(pair, p); //TODO NO COOMENT
-                        map.put(localItemId,p);//TODO DELETE
+                        map.put(pair, p); //TODO NO COOMENT
                         //add orders
                         if (orderMap.containsKey(bestSuppForItem)) {
                             orderMap.get(bestSuppForItem).add(addToOrder(localItemId,itemId,quantity,bestSuppForItem,costForItem,"Pending"));
@@ -209,7 +208,12 @@ public class FacadeController {
         }
         //orderController.addToPendingOrders(branchId, pendingOrders, suppliersMap, day);
         orderController.makeOrders(branchId, orderMap, suppliersMap, day);
-        Pool.getInstance().makeOrders(branchId,transportOrders);
+        try {
+            Pool.getInstance().makeOrders(branchId, transportOrders);
+        }
+        catch (Exception e){
+
+        }
         return map;
     }
 
@@ -322,8 +326,10 @@ public class FacadeController {
         return supplierController.addSupplierDays(suppId, daysInt);
     }
 
-    public void PromoteDay(int day) {
-         this.orderController.PromoteDay(day);
+    public void PromoteDay(LocalDate day) {
+        Map<Pair<Integer,Integer>, Pair<Integer, Double>> map = new HashMap();
+        map=this.orderController.getOrdersByDat(day);
+
     }
 
     public List<Integer> getLocalItemsIds(int suppId,List<Integer> temp) {
