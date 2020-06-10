@@ -355,7 +355,6 @@ public class OrderMapper {
     }
 
     private List<Pair<Integer,Integer>> getOrdersIdByDate(String date) {
-        //TODO check date and if its waiting
         List<Pair<Integer,Integer>> ordersIds = new LinkedList<>();
         try {
             if (tryOpen()) {
