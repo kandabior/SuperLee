@@ -131,7 +131,7 @@ public class SupplierMapper {
         return false;
     }
 
-    public void addItemToSupplier(int suppId, int itemId, int itemLocalId) {
+    public boolean addItemToSupplier(int suppId, int itemId, int itemLocalId) {
         try {
             if (tryOpen()) {
                 PreparedStatement st = conn.prepareStatement("INSERT INTO SupplierItems VALUES (?,?,?);");
@@ -143,16 +143,20 @@ public class SupplierMapper {
                     conn.commit();
                     conn.close();
                     st.close();
+                    return true;
                 } else {
                     conn.rollback();
                     conn.close();
                     st.close();
+                    return false;
                 }
             }
         } catch (Exception e) {
             tryClose();
-            System.err.println(e.getClass().getName() + ": " + e.getMessage());
+            //System.err.println(e.getClass().getName() + ": " + e.getMessage());
+            return false;
         }
+        return false;
     }
 
     public int getItemsListSize(int suppId) {
@@ -596,15 +600,16 @@ public class SupplierMapper {
 
     }
 
-    public int getLocalItemId(int itemId) {
+    public int getLocalItemId(int itemId,int suppId) {
         int localItemId = -1;
         try {
             if (tryOpen()) {
-                PreparedStatement st = conn.prepareStatement("SELECT localItemId FROM SupplierItems WHERE itemId = ?;");
+                PreparedStatement st = conn.prepareStatement("SELECT localItemId FROM SupplierItems WHERE itemId = ? AND SupplierId = ?;");
                 st.setInt(1, itemId);
+                st.setInt(2, suppId);
                 ResultSet res = st.executeQuery();
                 if (res.next()) {
-                    localItemId = res.getInt("counter");
+                    localItemId = res.getInt("localItemId");
                 }
                 st.close();
                 conn.close();
@@ -677,7 +682,7 @@ public class SupplierMapper {
         List<Integer> days = new LinkedList();
         try {
             if (tryOpen()) {
-                PreparedStatement st = conn.prepareStatement("SELECT day FROM SuppliersDays WHERE suppId = ?;");
+                PreparedStatement st = conn.prepareStatement("SELECT day FROM SupplierDays WHERE suppId = ?;");
                 st.setInt(1, suppId);
                 ResultSet res = st.executeQuery();
                 while (res.next()) {
@@ -692,5 +697,31 @@ public class SupplierMapper {
             tryClose();
         }
         return days;
+    }
+
+    public List<Integer> getLocalItemsIds(int suppId,List<Integer> temp) {
+        List<Integer> ids = new LinkedList();
+        try {
+            if (tryOpen()) {
+                for (int i = 0; i < temp.size(); i++) {
+                    PreparedStatement st = conn.prepareStatement("SELECT localItemId FROM SupplierItems WHERE SupplierId = ? AND ItemId =?;");
+                    st.setInt(1, suppId);
+                    st.setInt(2, temp.get(i));
+                    ResultSet res = st.executeQuery();
+                    if (res.next()) {
+                        ids.add(res.getInt("localItemId"));
+                    }
+                    st.close();
+
+                }
+                conn.close();
+                return ids;
+            }
+        } catch (Exception e) {
+            System.err.println(e.getClass().getName() + ": " + e.getMessage());
+            tryClose();
+        }
+        return ids;
+
     }
 }

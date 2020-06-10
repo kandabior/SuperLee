@@ -5,7 +5,7 @@ import src.DataAccessLayer.Suppliers.OrderMapper;
 import java.time.LocalDate;
 import java.util.List;
 
-enum Status{Pending,Complete,Cancel}
+enum Status{Pending,Complete,Cancel,Waiting}
 
 public class OrderDTO {
     private int id;
@@ -22,7 +22,7 @@ public class OrderDTO {
     private OrderMapper orderMapper;
 
 
-    public OrderDTO(int branchId , int id, int supplierId, String suppName, String phoneNumber, String address, LocalDate date) {
+    public OrderDTO(int branchId , int id, int supplierId, String suppName, String phoneNumber, String address, LocalDate date,String status) {
         this.branchId = branchId;
         this.id = id;
         this.suppName = suppName;
@@ -31,10 +31,22 @@ public class OrderDTO {
         this.orderDate = date;
         this.phoneNumber = phoneNumber;
         totalCost = 0;
-        status = Status.Pending;
+        switch (status){
+            case "Pending":
+            {
+                this.status=Status.Pending;
+                break;
+            }
+            case "Waiting":
+            {
+                this.status=Status.Waiting;
+                break;
+            }
+
+        }
     }
 
-    public OrderDTO(int branchId , int id, int supplierId , String suppName, String phoneNumber , String address , List<Integer> days) {
+    public OrderDTO(int branchId , int id, int supplierId , String suppName, String phoneNumber , String address , List<Integer> days,String status) {
         this.branchId = branchId;
         this.id = id;
         this.suppName = suppName;
@@ -43,7 +55,19 @@ public class OrderDTO {
         this.orderDays = days;
         this.phoneNumber = phoneNumber;
         totalCost = 0;
-        status = Status.Pending;
+        switch (status){
+            case "Pending":
+            {
+                this.status=Status.Pending;
+                break;
+            }
+            case "Waiting":
+            {
+                this.status=Status.Waiting;
+                break;
+            }
+
+        }
     }
 
     public void setItems(List<DataAccessLayer.Suppliers.DTO.OrderLineDTO> lines) {

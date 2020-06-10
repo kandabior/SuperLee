@@ -20,7 +20,7 @@ public class InventoryMapper {
         PreparedStatement stmt = null;
         try {
             
-            c = DriverManager.getConnection("jdbc:sqlite:EOEDdatabase.db");
+            c = DriverManager.getConnection("jdbc:sqlite:dev\\EOEDdatabase.db");
             c.setAutoCommit(false);
             stmt = c.prepareStatement("INSERT INTO InventoryManagers VALUES (?,?,?);");
             stmt.setInt(1, branchId);
@@ -46,7 +46,7 @@ public class InventoryMapper {
         PreparedStatement stmt = null;
         try {
             
-            c = DriverManager.getConnection("jdbc:sqlite:EOEDdatabase.db");
+            c = DriverManager.getConnection("jdbc:sqlite:dev\\EOEDdatabase.db");
             c.setAutoCommit(false);
             stmt = c.prepareStatement("INSERT INTO GlobalManagers VALUES (?,?,?);");
             stmt.setInt(1, branchId);
@@ -72,7 +72,7 @@ public class InventoryMapper {
         PreparedStatement stmt = null;
         try {
             
-            c = DriverManager.getConnection("jdbc:sqlite:EOEDdatabase.db");
+            c = DriverManager.getConnection("jdbc:sqlite:dev\\EOEDdatabase.db");
             c.setAutoCommit(false);
             stmt = c.prepareStatement("SELECT * FROM InventoryManagers WHERE branchId=? AND userName=?;");
             stmt.setInt(1, branchId);
@@ -100,7 +100,7 @@ public class InventoryMapper {
         PreparedStatement stmt = null;
         try {
             
-            c = DriverManager.getConnection("jdbc:sqlite:EOEDdatabase.db");
+            c = DriverManager.getConnection("jdbc:sqlite:dev\\EOEDdatabase.db");
             c.setAutoCommit(false);
             stmt = c.prepareStatement("SELECT * FROM GlobalManagers WHERE branchId=? AND userName=?;");
             stmt.setInt(1, branchId);
@@ -128,7 +128,7 @@ public class InventoryMapper {
         PreparedStatement stmt = null;
         try {
             
-            c = DriverManager.getConnection("jdbc:sqlite:EOEDdatabase.db");
+            c = DriverManager.getConnection("jdbc:sqlite:dev\\EOEDdatabase.db");
             c.setAutoCommit(false);
             stmt = c.prepareStatement("SELECT password FROM GlobalManagers WHERE branchId=? AND userName=?;");
             stmt.setInt(1, branchId);
@@ -157,7 +157,7 @@ public class InventoryMapper {
         PreparedStatement stmt = null;
         try {
             
-            c = DriverManager.getConnection("jdbc:sqlite:EOEDdatabase.db");
+            c = DriverManager.getConnection("jdbc:sqlite:dev\\EOEDdatabase.db");
             c.setAutoCommit(false);
             stmt = c.prepareStatement("SELECT password FROM InventoryManagers WHERE branchId=? AND userName=?;");
             stmt.setInt(1, branchId);
@@ -183,7 +183,7 @@ public class InventoryMapper {
         PreparedStatement stmt = null;
         try {
             
-            c = DriverManager.getConnection("jdbc:sqlite:EOEDdatabase.db");
+            c = DriverManager.getConnection("jdbc:sqlite:dev\\EOEDdatabase.db");
             c.setAutoCommit(false);
             stmt = c.prepareStatement("DELETE FROM InventoryManagers WHERE branchId=? AND userName=?;");
             stmt.setInt(1, branchId);
@@ -208,7 +208,7 @@ public class InventoryMapper {
         PreparedStatement stmt = null;
         try {
             
-            c = DriverManager.getConnection("jdbc:sqlite:EOEDdatabase.db");
+            c = DriverManager.getConnection("jdbc:sqlite:dev\\EOEDdatabase.db");
             c.setAutoCommit(false);
             stmt = c.prepareStatement("DELETE FROM GlobalManagers WHERE branchId=? AND userName=? AND password=?;");
             stmt.setInt(1, branchId);
@@ -237,7 +237,7 @@ public class InventoryMapper {
         PreparedStatement stmt = null;
         try {
             
-            c = DriverManager.getConnection("jdbc:sqlite:EOEDdatabase.db");
+            c = DriverManager.getConnection("jdbc:sqlite:dev\\EOEDdatabase.db");
             c.setAutoCommit(false);
             stmt = c.prepareStatement("INSERT INTO Inventory VALUES (?,1);");
             stmt.setString(1, String.valueOf(branchId));
@@ -261,7 +261,7 @@ public class InventoryMapper {
         PreparedStatement stmt=null;
         try{
             
-            c = DriverManager.getConnection("jdbc:sqlite:EOEDdatabase.db");
+            c = DriverManager.getConnection("jdbc:sqlite:dev\\EOEDdatabase.db");
             c.setAutoCommit(false);
             stmt = c.prepareStatement("INSERT INTO Products VALUES (?,?,?,?,?,?,?,?,?);");
             stmt.setInt(1, branchId);
@@ -311,7 +311,7 @@ public class InventoryMapper {
         PreparedStatement stmt=null;
         try{
             
-            c = DriverManager.getConnection("jdbc:sqlite:EOEDdatabase.db");
+            c = DriverManager.getConnection("jdbc:sqlite:dev\\EOEDdatabase.db");
             c.setAutoCommit(false);
             stmt = c.prepareStatement("SELECT name FROM Products WHERE branchId=? AND productId=?;");
             stmt.setInt(1, branchId);
@@ -333,7 +333,7 @@ public class InventoryMapper {
         PreparedStatement stmt=null;
         try{
             
-            c = DriverManager.getConnection("jdbc:sqlite:EOEDdatabase.db");
+            c = DriverManager.getConnection("jdbc:sqlite:dev\\EOEDdatabase.db");
             c.setAutoCommit(false);
             stmt = c.prepareStatement("DELETE FROM Products WHERE branchId=? AND productId=?;");
             stmt.setInt(1, branchId);
@@ -376,7 +376,7 @@ public class InventoryMapper {
         PreparedStatement stmt=null;
         try{
             
-            c = DriverManager.getConnection("jdbc:sqlite:EOEDdatabase.db");
+            c = DriverManager.getConnection("jdbc:sqlite:dev\\EOEDdatabase.db");
             c.setAutoCommit(false);
             stmt = c.prepareStatement("INSERT INTO Quantities VALUES (?,?,?,?);");
             stmt.setInt(1, branchId);
@@ -401,7 +401,7 @@ public class InventoryMapper {
         PreparedStatement stmt = null;
         try{
             
-            c = DriverManager.getConnection("jdbc:sqlite:EOEDdatabase.db");
+            c = DriverManager.getConnection("jdbc:sqlite:dev\\EOEDdatabase.db");
             c.setAutoCommit(false);
             stmt = c.prepareStatement("UPDATE Quantities SET storageQuantity=? WHERE branchId=? AND productId=?;");
             stmt.setInt(1, toAddAmount+currentAmount);
@@ -426,7 +426,7 @@ public class InventoryMapper {
         PreparedStatement stmt=null;
         try{
             
-            c = DriverManager.getConnection("jdbc:sqlite:EOEDdatabase.db");
+            c = DriverManager.getConnection("jdbc:sqlite:dev\\EOEDdatabase.db");
             c.setAutoCommit(false);
             stmt = c.prepareStatement("UPDATE Quantities SET shelfQuantity = shelfQuantity-? WHERE branchId=? AND productId=? ;");
             stmt.setInt(1, amount);
@@ -450,7 +450,7 @@ public class InventoryMapper {
         PreparedStatement stmt=null;
         try{
             
-            c = DriverManager.getConnection("jdbc:sqlite:EOEDdatabase.db");
+            c = DriverManager.getConnection("jdbc:sqlite:dev\\EOEDdatabase.db");
             c.setAutoCommit(false);
             stmt = c.prepareStatement("UPDATE Quantities SET storageQuantity = storageQuantity-? WHERE branchId=? AND productId=? ;");
             stmt.setInt(1, amount);
@@ -474,7 +474,7 @@ public class InventoryMapper {
         PreparedStatement stmt=null;
         try{
             
-            c = DriverManager.getConnection("jdbc:sqlite:EOEDdatabase.db");
+            c = DriverManager.getConnection("jdbc:sqlite:dev\\EOEDdatabase.db");
             c.setAutoCommit(false);
             stmt = c.prepareStatement("UPDATE Products SET salePrice = ? WHERE branchId=? AND productId=?;");
             stmt.setDouble(1, price);
@@ -503,7 +503,7 @@ public class InventoryMapper {
     public  int getProductMin(int branchId, int prodId) {
         PreparedStatement stmt=null;
         try{
-            c = DriverManager.getConnection("jdbc:sqlite:EOEDdatabase.db");
+            c = DriverManager.getConnection("jdbc:sqlite:dev\\EOEDdatabase.db");
             c.setAutoCommit(false);
             stmt = c.prepareStatement("SELECT minAmount FROM Products WHERE branchId=? AND productId=?;");
             stmt.setInt(1,branchId);
@@ -526,7 +526,7 @@ public class InventoryMapper {
         PreparedStatement stmt=null;
         try{
             
-            c = DriverManager.getConnection("jdbc:sqlite:EOEDdatabase.db");
+            c = DriverManager.getConnection("jdbc:sqlite:dev\\EOEDdatabase.db");
             c.setAutoCommit(false);
             //remove previous categories
             for(String cat: category) {
@@ -562,7 +562,7 @@ public class InventoryMapper {
         PreparedStatement stmt=null;
         try{
             
-            c = DriverManager.getConnection("jdbc:sqlite:EOEDdatabase.db");
+            c = DriverManager.getConnection("jdbc:sqlite:dev\\EOEDdatabase.db");
             c.setAutoCommit(false);
             stmt = c.prepareStatement("SELECT amount FROM Expireds WHERE branchId=? AND productId=?;");
             stmt.setString(1, String.valueOf(branchId));
@@ -602,7 +602,7 @@ public class InventoryMapper {
         PreparedStatement stmt=null;
         try{
             
-            c = DriverManager.getConnection("jdbc:sqlite:EOEDdatabase.db");
+            c = DriverManager.getConnection("jdbc:sqlite:dev\\EOEDdatabase.db");
             c.setAutoCommit(false);
             stmt=c.prepareStatement("INSERT INTO Expireds values (?,?,?)");
             stmt.setInt(1,branchId);
@@ -628,7 +628,7 @@ public class InventoryMapper {
         PreparedStatement stmt=null;
         try{
             
-            c = DriverManager.getConnection("jdbc:sqlite:EOEDdatabase.db");
+            c = DriverManager.getConnection("jdbc:sqlite:dev\\EOEDdatabase.db");
             c.setAutoCommit(false);
             stmt = c.prepareStatement("SELECT shelfQuantity, storageQuantity FROM Quantities WHERE branchId=? AND productId=?;");
             stmt.setString(1, String.valueOf(branchId));
@@ -677,7 +677,7 @@ public class InventoryMapper {
         PreparedStatement stmt=null;
         try{
             
-            c = DriverManager.getConnection("jdbc:sqlite:EOEDdatabase.db");
+            c = DriverManager.getConnection("jdbc:sqlite:dev\\EOEDdatabase.db");
             c.setAutoCommit(false);
             stmt = c.prepareStatement("SELECT shelfQuantity, storageQuantity FROM Quantities WHERE branchId=? AND productId=?;");
             stmt.setString(1, String.valueOf(branchId));
@@ -726,7 +726,7 @@ public class InventoryMapper {
     public  int getProductQuantity(int branchId, Integer id) {
         PreparedStatement stmt=null;
         try{
-                        c = DriverManager.getConnection("jdbc:sqlite:EOEDdatabase.db");
+                        c = DriverManager.getConnection("jdbc:sqlite:dev\\EOEDdatabase.db");
             c.setAutoCommit(false);
             stmt = c.prepareStatement("SELECT shelfQuantity, storageQuantity FROM Quantities WHERE branchId=? AND productId=?;");
             stmt.setInt(1, branchId);
@@ -756,7 +756,7 @@ public class InventoryMapper {
     public  int getShelfQunatity(int branchId, Integer id) {
         PreparedStatement stmt=null;
         try{
-                        c = DriverManager.getConnection("jdbc:sqlite:EOEDdatabase.db");
+                        c = DriverManager.getConnection("jdbc:sqlite:dev\\EOEDdatabase.db");
             c.setAutoCommit(false);
             stmt = c.prepareStatement("SELECT shelfQuantity FROM Quantities WHERE branchId=? AND productId=?;");
             stmt.setInt(1, branchId);
@@ -784,7 +784,7 @@ public class InventoryMapper {
     public  int getStorageQunatity(int branchId, Integer id) {
         PreparedStatement stmt=null;
         try{
-            c = DriverManager.getConnection("jdbc:sqlite:EOEDdatabase.db");
+            c = DriverManager.getConnection("jdbc:sqlite:dev\\EOEDdatabase.db");
             c.setAutoCommit(false);
             stmt = c.prepareStatement("SELECT storageQuantity FROM Quantities WHERE branchId=? AND productId=?;");
             stmt.setInt(1, branchId);
@@ -811,7 +811,7 @@ public class InventoryMapper {
     public  int getExpiredQuantity(int branchId, Integer id) {
         PreparedStatement stmt=null;
         try{
-            c = DriverManager.getConnection("jdbc:sqlite:EOEDdatabase.db");
+            c = DriverManager.getConnection("jdbc:sqlite:dev\\EOEDdatabase.db");
             c.setAutoCommit(false);
             stmt = c.prepareStatement("SELECT amount FROM Expireds WHERE branchId=? AND productId=?;");
             stmt.setInt(1, branchId);
@@ -839,7 +839,7 @@ public class InventoryMapper {
         PreparedStatement stmt=null;
         try{
             List<Double> output=new LinkedList<>();
-            c = DriverManager.getConnection("jdbc:sqlite:EOEDdatabase.db");
+            c = DriverManager.getConnection("jdbc:sqlite:dev\\EOEDdatabase.db");
             c.setAutoCommit(false);
             stmt = c.prepareStatement("SELECT lastSalePrice FROM LastSalePrices WHERE branchId=? AND productId=?;");
             stmt.setInt(1, branchId);
@@ -861,7 +861,7 @@ public class InventoryMapper {
         PreparedStatement stmt=null;
         try {
             List<Double> output = new LinkedList<>();
-            c = DriverManager.getConnection("jdbc:sqlite:EOEDdatabase.db");
+            c = DriverManager.getConnection("jdbc:sqlite:dev\\EOEDdatabase.db");
             c.setAutoCommit(false);
             stmt = c.prepareStatement("SELECT lastCostPrice FROM LastCostPrices WHERE branchId=? AND productId=?;");
             stmt.setInt(1, branchId);
@@ -886,7 +886,7 @@ public class InventoryMapper {
         PreparedStatement stmt=null;
         try {
             List<Integer> output = new LinkedList<>();
-            c = DriverManager.getConnection("jdbc:sqlite:EOEDdatabase.db");
+            c = DriverManager.getConnection("jdbc:sqlite:dev\\EOEDdatabase.db");
             c.setAutoCommit(false);
             stmt = c.prepareStatement("SELECT branchId FROM Inventory WHERE dayForWeeklyOrder=?;");
             stmt.setInt(1, dayOfTheWeek);
@@ -919,7 +919,7 @@ public class InventoryMapper {
     public  boolean isBranchExist(int branchId) {
         PreparedStatement stmt=null;
         try{
-            c = DriverManager.getConnection("jdbc:sqlite:EOEDdatabase.db");
+            c = DriverManager.getConnection("jdbc:sqlite:dev\\EOEDdatabase.db");
             c.setAutoCommit(false);
             stmt = c.prepareStatement("SELECT branchId FROM Inventory WHERE branchId=?;");
             stmt.setInt(1, branchId);
@@ -946,7 +946,7 @@ public class InventoryMapper {
     public  boolean isInventoryConteinsProd(int branchId, int prodId) {
         PreparedStatement stmt=null;
         try{
-            c = DriverManager.getConnection("jdbc:sqlite:EOEDdatabase.db");
+            c = DriverManager.getConnection("jdbc:sqlite:dev\\EOEDdatabase.db");
             c.setAutoCommit(false);
             stmt = c.prepareStatement("SELECT * FROM Products WHERE branchId=? AND productId=?;");
             stmt.setInt(1, branchId);
@@ -973,7 +973,7 @@ public class InventoryMapper {
     public  double getCurrentCostPrices(int branchId, Integer prodId) {
         PreparedStatement stmt=null;
         try{
-            c = DriverManager.getConnection("jdbc:sqlite:EOEDdatabase.db");
+            c = DriverManager.getConnection("jdbc:sqlite:dev\\EOEDdatabase.db");
             c.setAutoCommit(false);
             stmt = c.prepareStatement("SELECT costPrice FROM Products WHERE branchId=? AND productId=?;");
             stmt.setInt(1, branchId);
@@ -1003,7 +1003,7 @@ public class InventoryMapper {
     public  void setCostPrice(int branchId, Integer prodId, double newPrice) {
         PreparedStatement stmt=null;
         try{
-            c = DriverManager.getConnection("jdbc:sqlite:EOEDdatabase.db");
+            c = DriverManager.getConnection("jdbc:sqlite:dev\\EOEDdatabase.db");
             c.setAutoCommit(false);
             stmt = c.prepareStatement("UPDATE Products SET costPrice= ? WHERE branchId=? AND productId=?;");
             stmt.setDouble(1, newPrice);
@@ -1039,7 +1039,7 @@ public class InventoryMapper {
         PreparedStatement stmt=null;
         try{
             List<Integer> output=new LinkedList<>();
-            c = DriverManager.getConnection("jdbc:sqlite:EOEDdatabase.db");
+            c = DriverManager.getConnection("jdbc:sqlite:dev\\EOEDdatabase.db");
             c.setAutoCommit(false);
             stmt = c.prepareStatement("SELECT productId FROM Products WHERE branchId=?;");
             stmt.setInt(1, branchId);
@@ -1063,7 +1063,7 @@ public class InventoryMapper {
         PreparedStatement stmt=null;
         try{
             List<String> output=new LinkedList<>();
-            c = DriverManager.getConnection("jdbc:sqlite:EOEDdatabase.db");
+            c = DriverManager.getConnection("jdbc:sqlite:dev\\EOEDdatabase.db");
             c.setAutoCommit(false);
             stmt = c.prepareStatement("SELECT category FROM Categories WHERE branchId=? AND productId=?;");
             stmt.setInt(1, branchId);
@@ -1087,7 +1087,7 @@ public class InventoryMapper {
         PreparedStatement stmt=null;
         try{
             List<Integer> output=new LinkedList<>();
-            c = DriverManager.getConnection("jdbc:sqlite:EOEDdatabase.db");
+            c = DriverManager.getConnection("jdbc:sqlite:dev\\EOEDdatabase.db");
             c.setAutoCommit(false);
             stmt = c.prepareStatement("SELECT productId FROM Expireds WHERE branchId=?;");
             stmt.setInt(1, branchId);
@@ -1109,7 +1109,7 @@ public class InventoryMapper {
     public  boolean isExpiredContainProduct(int branchId, int productId) {
         PreparedStatement stmt=null;
         try{
-            c = DriverManager.getConnection("jdbc:sqlite:EOEDdatabase.db");
+            c = DriverManager.getConnection("jdbc:sqlite:dev\\EOEDdatabase.db");
             c.setAutoCommit(false);
             stmt = c.prepareStatement("SELECT * FROM Expireds WHERE branchId=? AND productId=?;");
             stmt.setInt(1, branchId);
@@ -1138,7 +1138,7 @@ public class InventoryMapper {
     public  boolean setWeeklyOrder(int branchId, int day) {
         PreparedStatement stmt=null;
         try{
-            c = DriverManager.getConnection("jdbc:sqlite:EOEDdatabase.db");
+            c = DriverManager.getConnection("jdbc:sqlite:dev\\EOEDdatabase.db");
             c.setAutoCommit(false);
             stmt = c.prepareStatement("INSERT INTO Inventory VALUES (?,?)");
             stmt.setInt(1, branchId);
@@ -1162,7 +1162,7 @@ public class InventoryMapper {
     public  boolean AddToWeeklyOrder(int branchId, Integer key, Integer value, int day) {
         PreparedStatement stmt=null;
         try{
-            c = DriverManager.getConnection("jdbc:sqlite:EOEDdatabase.db");
+            c = DriverManager.getConnection("jdbc:sqlite:dev\\EOEDdatabase.db");
             c.setAutoCommit(false);
             stmt=c.prepareStatement("INSERT INTO WeeklyOrders values (?,?,?,?)");
             stmt.setInt(1,branchId);
@@ -1190,7 +1190,7 @@ public class InventoryMapper {
     public  boolean isWeeklyContainProd(int branchId,Integer ids,int day) {
         PreparedStatement stmt=null;
         try{
-            c = DriverManager.getConnection("jdbc:sqlite:EOEDdatabase.db");
+            c = DriverManager.getConnection("jdbc:sqlite:dev\\EOEDdatabase.db");
             c.setAutoCommit(false);
             stmt = c.prepareStatement("SELECT * FROM WeeklyOrders WHERE branchId=? AND dayOfTheWeek=?;");
             stmt.setInt(1, branchId);
@@ -1219,7 +1219,7 @@ public class InventoryMapper {
     public  void removeFromWeeklyOrder(int branchId, Integer id, int day) {
         PreparedStatement stmt=null;
         try{
-            c = DriverManager.getConnection("jdbc:sqlite:EOEDdatabase.db");
+            c = DriverManager.getConnection("jdbc:sqlite:dev\\EOEDdatabase.db");
             c.setAutoCommit(false);
             stmt=c.prepareStatement("DELETE FROM WeeklyOrders WHERE branchId=? AND productId=? AND dayOfTheWeek=?");
             stmt.setInt(1,branchId);
@@ -1246,7 +1246,7 @@ public class InventoryMapper {
         PreparedStatement stmt=null;
         try{
             List<Pair<Integer,Integer>> output=new LinkedList<>();
-            c = DriverManager.getConnection("jdbc:sqlite:EOEDdatabase.db");
+            c = DriverManager.getConnection("jdbc:sqlite:dev\\EOEDdatabase.db");
             c.setAutoCommit(false);
             stmt = c.prepareStatement("SELECT productId, amount FROM WeeklyOrders WHERE branchId=? AND dayOfTheWeek=?;");
             stmt.setInt(1, branchId);
@@ -1272,7 +1272,7 @@ public class InventoryMapper {
     public boolean weeklyOrderDayExist(int branchId, int day) {
         PreparedStatement stmt=null;
         try{
-            c = DriverManager.getConnection("jdbc:sqlite:EOEDdatabase.db");
+            c = DriverManager.getConnection("jdbc:sqlite:dev\\EOEDdatabase.db");
             c.setAutoCommit(false);
             stmt = c.prepareStatement("SELECT * FROM Inventory WHERE branchId=? AND dayForWeeklyOrder=?;");
             stmt.setInt(1, branchId);

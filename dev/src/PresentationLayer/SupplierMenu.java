@@ -149,17 +149,23 @@ public class SupplierMenu {
             scanner = new Scanner(System.in);
             System.out.print("Enter local identifier: ");
             int itemLocalId = scanner.nextInt();
+
+            while(!fc.addItemToSupplier(suppId, itemId,itemLocalId))
+            {
+                System.out.print("\nThis supplier already has this Local Item ID, Please try again ");
+                System.out.print("\nEnter local identifier: ");
+                itemLocalId = scanner.nextInt();
+            }
+            newItems++;
             String name = fc.getItemNameById(itemId);
             System.out.print("Name: " + name);
-            fc.addItemToSupplier(suppId, itemId,itemLocalId);
-            newItems++;
             System.out.print("\nInsert more items? [Y/N] ");
         }
         else
         {
             System.out.print("Item was not found. Insert more items? [Y/N] ");
         }
-        return newItems;
+        return itemId;
     }
 
     private static int addSupplier(int supplierIdCounter) {
@@ -254,24 +260,23 @@ public class SupplierMenu {
                     String toAdd= "Y";
                     int counter = fc.getItemsListSize(suppId);
                     int newItems = counter;
+                    List<Integer> newItemsIds = new LinkedList<>();
                     while (toAdd.equals("Y") | toAdd.equals("y")) {
-                        newItems += addItems(suppId);
+                        newItemsIds.add(addItems(suppId));
+                        newItems+=newItemsIds.size();
                         toAdd = scanner.nextLine();
                     }
                     if(fc.getItemsListSize(suppId) == 0) {
                         System.out.println("Supplier has no items.");
                         break;
                     }
-                    List<String> supplierItemsName = fc.getSupplierItemsNames(suppId);
-                    List<Integer> supplierItemsId = fc.getSupplierItemsId(suppId);
-
                     if (newItems > counter) { //add items to agreement
                         System.out.println("Please insert supplier's agreement (for each item insert it's cost).");
-                        for (int i = newItems-1; i > counter-1; i--) {
-                            System.out.print(supplierItemsName.get(i) + ": ");
+                        for (int i = 0; i < newItemsIds.size(); i++) {
+                            System.out.print(fc.getItemNameById((newItemsIds.get(i))) + ": ");
                             double itemPrice = scanner.nextDouble();
-                            if (!fc.addItemToAgreement(suppId, supplierItemsId.get(i), itemPrice))
-                                System.out.println("Error: Item '" + supplierItemsName.get(i) + "' does not belong to the agreement.");
+                            if (!fc.addItemToAgreement(suppId, newItemsIds.get(i), itemPrice))
+                                System.out.println("Error: Item '" + fc.getItemNameById((newItemsIds.get(i))) + "' does not belong to the agreement.");
                         }
                     }
                     break;
@@ -390,16 +395,28 @@ public class SupplierMenu {
 
     private static void displayItems(int suppId) {
         LinkedHashMap<Integer, Double> terms = fc.showSuppItems(suppId);
+        List<Integer> listLocalId = getLocalItemsIds(suppId,terms);
         Iterator<Integer> iter = terms.keySet().iterator();
         for (int i = 0; i < terms.size(); i++) {
             if (iter.hasNext()) {
                 int itemId = iter.next();
                 String itemName = fc.getItemNameById(itemId);
                 double itemPrice = terms.get(itemId);
-                System.out.println(itemId + ". " + itemName + ", " + itemPrice + " NIS");
+                System.out.println("Global Id: "+itemId+"Local Item Id: "+listLocalId.get(i)  + ". " + itemName + ", " + itemPrice + " NIS");
             }
         }
     }
+
+    private static List<Integer> getLocalItemsIds(int suppId,  LinkedHashMap<Integer, Double> terms) {
+        List<Integer> temp = new LinkedList<>();
+        Iterator<Integer> iter = terms.keySet().iterator();
+        for (int i = 0; i < terms.size(); i++) {
+            if (iter.hasNext())
+                temp.add(iter.next());
+        }
+        return fc.getLocalItemsIds(suppId,temp);
+    }
+
 
     private static String editAgreement(int suppId){
         Scanner scanner = new Scanner(System.in);

@@ -39,7 +39,7 @@ public class TransportsMenu {
                     case 1://new transport
                         System.out.println("Updating...");
                         List<Integer> successful = pool.UpdateWaitingTransports();
-                        /*System.out.print("To order a transport first enter an area which the transport will take place\narea: ");
+                        System.out.print("To order a transport first enter an area which the transport will take place\narea: ");
                         int area = input.nextInt();
                         input.nextLine();
                         if (!pool.validArea(area)) {
@@ -147,7 +147,7 @@ public class TransportsMenu {
                         pool.addDateToTruck(truckId, date);
                         pool.addDateToDriver(driverId, date);
                        // pool.addDoc(area, date, truckId, driverId, driverName, stores, suppliers);
-                        System.out.println("new transport was added !:)");*/
+                        System.out.println("new transport was added !:)");
                         break;
                     case 2://add weight
                         System.out.print("Enter transport id\nId: ");

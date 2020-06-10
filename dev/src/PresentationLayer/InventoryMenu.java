@@ -153,22 +153,22 @@ public class InventoryMenu {
     }
     private static void addToWeeklyOrder() {
         boolean stop=false;
-        System.out.println("Enter branch id");
-        String branchId= scanner.next();
-        System.out.println("Enter a day for weekly order:");
-        String day= scanner.next();
-        System.out.println("please enter product id and amount with a single ':' between.\n" +
-                "To stop insert products, insert '0:0'.\n");
-        List<Pair<Integer,Integer>> id_amount=new LinkedList<>();
-        while(!stop) {
-            Printer.Print("product Id and amount: ");
-            String prodId = scanner.next();
-            String[] str= (prodId.split(":"));
-            if((str[0].equals("0")) && (str[1].equals("0"))){
-                stop=true;
-            }
-            else{
-                id_amount.add(new Pair<>(Integer.parseInt(str[0]),Integer.parseInt(str[1])));
+                        System.out.println("Enter branch id");
+                String branchId= scanner.next();
+                System.out.println("Enter a day for weekly order:");
+                String day= scanner.next();
+                System.out.println("please enter product id and amount with a single ':' between.\n" +
+                        "To stop insert products, insert '0:0'.\n");
+                List<Pair<Integer,Integer>> id_amount=new LinkedList<>();
+                while(!stop) {
+                    Printer.Print("product Id and amount: ");
+                    String prodId = scanner.next();
+                    String[] str= (prodId.split(":"));
+                    if((str[0].equals("0")) && (str[1].equals("0"))){
+                        stop=true;
+                    }
+                    else{
+                        id_amount.add(new Pair<>(Integer.parseInt(str[0]),Integer.parseInt(str[1])));
             }
         }
         Printer.Print(inventoryController.AddToWeeklyOrder(Integer.parseInt(branchId),Integer.parseInt(day),id_amount));

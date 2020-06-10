@@ -97,8 +97,8 @@ public class SupplierController {
         return this.item.getName(itemId);
     }
 
-    public void addItemToSupplier(int suppId, int itemId, int itemLocalId) {
-        this.supplier.addItemToSupplier(suppId,itemId,itemLocalId);
+    public boolean addItemToSupplier(int suppId, int itemId, int itemLocalId) {
+        return this.supplier.addItemToSupplier(suppId,itemId,itemLocalId);
     }
 
     public int getItemsListSize(int suppId) {
@@ -165,8 +165,8 @@ public class SupplierController {
         return this.supplier.getAllSuppliers();
     }
 
-    public int getLocalItemId(int itemId) {
-        return this.supplier.getLocalItemId(itemId);
+    public int getLocalItemId(int itemId,int suppId) {
+        return this.supplier.getLocalItemId(itemId,suppId);
     }
 
     public boolean addSupplierDays(int suppId, int[] daysInt) {
@@ -179,5 +179,9 @@ public class SupplierController {
 
     public List<Integer> getSupplyDays(int suppId) {
         return this.supplier.getSupplyDays(suppId);
+    }
+
+    public List<Integer> getLocalItemsIds(int suppId,List<Integer> temp) {
+        return this.supplier.getLocalItemsIds(suppId,temp);
     }
 }
