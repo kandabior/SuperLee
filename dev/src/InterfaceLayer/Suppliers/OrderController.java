@@ -9,6 +9,7 @@ import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.ExecutionException;
 
 public class OrderController {
 
@@ -142,7 +143,12 @@ public class OrderController {
                 }
             }
         }
-        Pool.getInstance().makeOrders(1,orders);//todo change all the unction!
+        try {
+            Pool.getInstance().makeOrders(1,orders);//todo change all the unction!
+        }
+        catch (Exception e){
+
+        }
     }
 }
 
