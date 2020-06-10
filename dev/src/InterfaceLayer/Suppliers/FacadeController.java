@@ -146,6 +146,7 @@ public class FacadeController {
                         int localItemId = getLocalItemId(itemId,bestSuppForItem);
                         Pair<Integer,Integer> pair = new Pair<>(itemId,localItemId);
                         //map.put(pair, p); //TODO NO COOMENT
+                        map.put(localItemId,p);//TODO DELETE
                         //add orders
                         if (orderMap.containsKey(bestSuppForItem)) {
                             orderMap.get(bestSuppForItem).add(addToOrder(localItemId,itemId,quantity,bestSuppForItem,costForItem,"Pending"));
@@ -250,8 +251,8 @@ public class FacadeController {
 
     public int getOrdersSize() { return orderController.getOrdersSize(); }
 
-    public void addItemToSupplier(int suppId, int itemId, int itemLocalId) {
-        supplierController.addItemToSupplier(suppId, itemId,itemLocalId);
+    public boolean addItemToSupplier(int suppId, int itemId, int itemLocalId) {
+       return supplierController.addItemToSupplier(suppId, itemId,itemLocalId);
     }
 
     public int getItemsListSize(int suppId) { return supplierController.getItemsListSize(suppId); }
@@ -323,5 +324,9 @@ public class FacadeController {
 
     public void PromoteDay(int day) {
          this.orderController.PromoteDay(day);
+    }
+
+    public List<Integer> getLocalItemsIds(int suppId,List<Integer> temp) {
+        return supplierController.getLocalItemsIds(suppId,temp);
     }
 }
