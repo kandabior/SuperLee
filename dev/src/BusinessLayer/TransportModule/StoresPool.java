@@ -152,4 +152,8 @@ public class StoresPool {
         return false;*/
         return mapper.validArea(area);
     }
+
+    public int getArea(int storId) {
+        return mapper.getArea(storId);
+    }
 }

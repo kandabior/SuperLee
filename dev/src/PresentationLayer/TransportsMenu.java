@@ -13,54 +13,19 @@ public class TransportsMenu {
     private static Scanner input;
     public static void main() {
        pool = Pool.getInstance();
-       // start();
         input = new Scanner(System.in);
 
         menu();
     }
 
 
-    private static void start() {
-        //pool.addDriver("100","a","C1");
-        //pool.addDriver("101","b","C");
-        pool.addTruck("200","1000",12,20);
-        pool.addTruck("201","1000",13,20);
-        pool.addStore("ashdod1","111111","a1",1);
-        pool.addStore("ashdod2","222222","a2",1);
-        pool.addStore("ashdod3","333333","a3",2);
-        pool.addSupplier("ashdod4","444444","a4",1);
-        pool.addSupplier("ashdod5","555555","a5",1);
-        List<Integer> stores = new LinkedList<>();
-        stores.add(1);
-        stores.add(2);
-        List<Integer> suppliers = new LinkedList<>();
-        suppliers.add(4);
-        Calendar cal = Calendar.getInstance();
-        cal.set(Calendar.YEAR, 2020);
-        cal.set(Calendar.MONTH, 12-1);//Calendar.DECEMBER);
-        cal.set(Calendar.DAY_OF_MONTH, 1);
-        Date date = cal.getTime();
-        //Calendar cal2 = Calendar.getInstance();
-        cal.set(Calendar.YEAR, 2020);
-        cal.set(Calendar.MONTH, 11-1);//Calendar.NOVEMBER);
-        cal.set(Calendar.DAY_OF_MONTH, 1);
-        Date date2 = cal.getTime();
-        pool.addDoc(1,date,"200",100,"a",stores,suppliers);
-        //pool.addDateToDriver("100",date);
-        pool.addDateToTruck("200",date);
-        pool.addDoc(1,date2,"201",100,"b",stores,suppliers);
-        //pool.addDateToDriver("101",date2);
-        pool.addDateToTruck("201",date2);
-
-
-    }
 
     private static void menu() {
 
         while (true) {
             System.out.println("Welcome to Transport's system!\n" +
                     "Please enter option number:\n" +
-                    "1. New transport\n" +
+                    "1. Update missing employees's Transport\n" +
                     "2. Add weight to transport\n" +
                     "3. Add items to transport\n" +
                     "4. View system data\n"+
@@ -72,6 +37,8 @@ public class TransportsMenu {
                 input.nextLine();
                 switch (option) {
                     case 1://new transport
+                        System.out.println("Updating...");
+                        List<Integer> successful = pool.UpdateWaitingTransports();
                         System.out.print("To order a transport first enter an area which the transport will take place\narea: ");
                         int area = input.nextInt();
                         input.nextLine();
@@ -179,7 +146,7 @@ public class TransportsMenu {
                         String driverName = pool.getDriverName(driverId);
                         pool.addDateToTruck(truckId, date);
                         pool.addDateToDriver(driverId, date);
-                        pool.addDoc(area, date, truckId, driverId, driverName, stores, suppliers);
+                       // pool.addDoc(area, date, truckId, driverId, driverName, stores, suppliers);
                         System.out.println("new transport was added !:)");
                         break;
                     case 2://add weight

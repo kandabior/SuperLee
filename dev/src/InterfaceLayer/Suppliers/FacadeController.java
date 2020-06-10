@@ -61,7 +61,7 @@ public class FacadeController {
     }
 
 
-    public Map<Integer,Pair<Integer,Double>> makeOrder(int branchId, List<Pair<Integer,Integer>> list , int day)//return <itemId,local Item Id> , <Quantity , FinalCost>
+    public Map<Integer,Pair<Integer,Double>> makeOrder(int branchId, List<Pair<Integer,Integer>> list , int day) //return <itemId,local Item Id> , <Quantity , FinalCost>
     {
         //Map<Pair<Integer,Integer>, Pair<Integer, Double>> map = new HashMap();
         Map<Integer, Pair<Integer, Double>> map = new HashMap();
@@ -210,7 +210,12 @@ public class FacadeController {
         }
         //orderController.addToPendingOrders(branchId, pendingOrders, suppliersMap, day);
         orderController.makeOrders(branchId, orderMap, suppliersMap, day);
-        Pool.getInstance().makeOrders(branchId,transportOrders);
+        try {
+            Pool.getInstance().makeOrders(branchId, transportOrders);
+        }
+        catch (Exception e){
+
+        }
         return map;
     }
 

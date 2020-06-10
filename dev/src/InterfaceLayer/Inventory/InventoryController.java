@@ -188,7 +188,8 @@ public class InventoryController {
     public String MakeMissingOrder(int branchId) {
         try {
             List<Pair<Integer, Integer>> toBuy= inventory.NeedToBuyProductsForOrder(branchId);
-            Map<Integer,Pair<Integer,Double>> orders= FacadeController.getFacadeController().makeOrder(branchId,toBuy, Main.DayOfTheWeek);
+            //map(pair<GlobalItemId,localItemId>, pair<amount, costPrice>)
+            Map<Pair<Integer,Integer>,Pair<Integer,Double>> orders = FacadeController.getFacadeController().makeOrder(branchId,toBuy, Main.DayOfTheWeek);
             return inventory.manageOrders(branchId,orders);
         }
         catch (Exception e){
@@ -211,7 +212,7 @@ public class InventoryController {
             if (!noOrder.isEmpty()){
                 output="cant Order the Products: "+noOrder+"\n";
             }
-            Map<Integer,Pair<Integer,Double>> orders= FacadeController.getFacadeController().makeOrder(branchId,toOrder, Main.DayOfTheWeek);
+            Map<Pair<Integer,Integer>,Pair<Integer,Double>> orders= FacadeController.getFacadeController().makeOrder(branchId,toOrder, Main.DayOfTheWeek);
             output=output+inventory.manageOrders(branchId,orders);
             return output;
         }
@@ -220,23 +221,23 @@ public class InventoryController {
             return "can't execute the action";
         }
     }
-    public String AddToWeeklyOrder(int branchId,int day, List<Pair<Integer, Integer>> id_amount) {
-        return inventory.addToWeeklyOrder(branchId,day,id_amount);
-    }
-    public String RemoveFromWeeklyOrder(int branchId, List<Integer> ids,int day) {
-        return inventory.removeFromWeeklyOrder(branchId,ids,day);
-    }
     public String PromoteDay(Integer dayOfTheWeek) {
         String output="";
         List<Integer> branchIds= inventory.getBranchIdsToWeeklyOrders(dayOfTheWeek);
         for(Integer branchId : branchIds){
             List<Pair<Integer,Integer>> toOrder= inventory.getWeeklyOrder(branchId,dayOfTheWeek);
             if(!toOrder.isEmpty()) {
-                Map<Integer, Pair<Integer, Double>> orders = FacadeController.getFacadeController().makeOrder(branchId,toOrder,dayOfTheWeek);
+                Map<Pair<Integer,Integer>, Pair<Integer, Double>> orders = FacadeController.getFacadeController().makeOrder(branchId,toOrder,dayOfTheWeek);
                 output = output + inventory.manageOrders(branchId,orders) + "\n";
             }
         }
         return output;
+    }
+    public String AddToWeeklyOrder(int branchId,int day, List<Pair<Integer, Integer>> id_amount) {
+        return inventory.addToWeeklyOrder(branchId,day,id_amount);
+    }
+    public String RemoveFromWeeklyOrder(int branchId, List<Integer> ids,int day) {
+        return inventory.removeFromWeeklyOrder(branchId,ids,day);
     }
     public String PrintWeeklyOrder(int branchId,int day) {
         try{

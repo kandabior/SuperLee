@@ -5,6 +5,7 @@ import src.DataAccessLayer.Transport.DTO.DTO_TransportDoc;
 
 import java.sql.*;
 import java.util.*;
+import java.util.Date;
 
 public class DocsMapper {
     private Connection con;
@@ -541,6 +542,170 @@ public class DocsMapper {
                 Class.forName("org.sqlite.JDBC");
                 con.setAutoCommit(false);
                 PreparedStatement st = con.prepareStatement("DELETE FROM TransportDocs WHERE ID= (?);");
+                st.setInt(1, id);
+                int rowNum = st.executeUpdate();
+                st.close();
+                if (rowNum != 0) {
+                    con.commit();
+                    con.close();
+                } else {
+                    con.rollback();
+                    con.close();
+                }
+            }
+        } catch (Exception e) {
+            tryClose();
+            System.err.println(e.getClass().getName() + ": " + e.getMessage());
+        }
+    }
+
+    public void addTransportOrders(int docId, List<Integer> ordersId) {
+        try {
+            if (tryOpen()) {
+                Class.forName("org.sqlite.JDBC");
+                con.setAutoCommit(false);
+                Iterator<Integer> itr1 = ordersId.iterator();
+                while (itr1.hasNext()) {
+                    int orderId = itr1.next();
+                    PreparedStatement statement = con.prepareStatement("INSERT INTO TransportOrders VALUES (?,?);");
+                    statement.setInt(1, docId);
+                    statement.setInt(2, orderId);
+                    int rowNum = statement.executeUpdate();
+                    if (rowNum != 0) {
+                        con.commit();
+                        statement.close();
+                    } else {
+                        con.rollback();
+                        con.close();
+                        System.err.println("Problem in inserting items");
+                        break;
+                    }
+                }
+                con.close();
+            }
+        } catch (Exception e) {
+            System.err.println(e.getClass().getName() + ": " + e.getMessage());
+        }
+    }
+
+    public void addMissingEmployees(int docId, int hasStoreKeeper, int hasDriver) {
+        try {
+            if (tryOpen()) {
+                Class.forName("org.sqlite.JDBC");
+                con.setAutoCommit(false);
+                PreparedStatement statement = con.prepareStatement("INSERT INTO MissingEmployees VALUES (?,?,?);");
+                statement.setInt(1, docId);
+                statement.setInt(2, hasStoreKeeper);
+                statement.setInt(3, hasDriver);
+                int rowNum = statement.executeUpdate();
+                if (rowNum != 0) {
+                    con.commit();
+                    con.close();
+                } else {
+                    con.rollback();
+                    con.close();
+                }
+                statement.close();
+            }
+        } catch (Exception e) {
+            System.err.println(e.getClass().getName() + ": " + e.getMessage());
+        }
+    }
+
+    public void addMissingMsg(int docId, String msg) {
+        try {
+            if (tryOpen()) {
+                Class.forName("org.sqlite.JDBC");
+                con.setAutoCommit(false);
+                PreparedStatement statement = con.prepareStatement("INSERT INTO MessagesToEM VALUES (?,?);");
+                statement.setInt(1, docId);
+                statement.setString(2, msg);
+                int rowNum = statement.executeUpdate();
+                if (rowNum != 0) {
+                    con.commit();
+                    con.close();
+                } else {
+                    con.rollback();
+                    con.close();
+                }
+                statement.close();
+            }
+        } catch (Exception e) {
+            System.err.println(e.getClass().getName() + ": " + e.getMessage());
+        }
+    }
+
+    public boolean notMissing(int docId) {
+        try {
+            if (tryOpen()) {
+                Class.forName("org.sqlite.JDBC");
+                con.setAutoCommit(false);
+                PreparedStatement statement = con.prepareStatement("SELECT * FROM MissingEmployees WHERE DocId = ?;");
+                statement.setInt(1, docId);
+                ResultSet res = statement.executeQuery();
+                if (res.next()) {
+                    con.commit();
+                    con.close();
+                    statement.close();
+                    return false;
+                } else {
+                    con.rollback();
+                    con.close();
+                    statement.close();
+                    return true;
+                }
+            }
+        } catch (Exception e) {
+            tryClose();
+            System.err.println(e.getClass().getName() + ": " + e.getMessage());
+            return true;
+        }
+        return true;
+    }
+
+    public List<Integer> getOrdersId(int docId) {
+        List<Integer> ordersId = new LinkedList<>();
+        try {
+            Class.forName("org.sqlite.JDBC");
+            con.setAutoCommit(false);
+            PreparedStatement statement = con.prepareStatement("SELECT OrderId FROM TransportOrders WHERE DocID = ?;");
+            statement.setInt(1, docId);
+            ResultSet result = statement.executeQuery();
+            while (result.next()) {
+                ordersId.add(result.getInt("OrderId"));
+            }
+            statement.close();
+            return ordersId;
+        } catch (Exception e) {
+            System.err.println(e.getClass().getName() + ": " + e.getMessage());
+            return null;
+        }
+    }
+
+    public List<Integer> getWaitingTransportIds() {
+        List<Integer> transportsId = new LinkedList<>();
+        try {
+            Class.forName("org.sqlite.JDBC");
+            con.setAutoCommit(false);
+            PreparedStatement statement = con.prepareStatement("SELECT DocId FROM MissingEmployees;");
+            ResultSet result = statement.executeQuery();
+            while (result.next()) {
+                transportsId.add(result.getInt("DocId"));
+            }
+            statement.close();
+            return transportsId;
+        } catch (Exception e) {
+            System.err.println(e.getClass().getName() + ": " + e.getMessage());
+            return null;
+        }
+    }
+
+    public void removeWaitingTransport(int id) {
+        try {
+            if (tryOpen()) {
+                Class.forName("org.sqlite.JDBC");
+                con.setAutoCommit(false);
+                PreparedStatement st = con.prepareStatement("DELETE FROM MissingEmployees WHERE DocId= (?);");
                 st.setInt(1, id);
                 int rowNum = st.executeUpdate();
                 st.close();
