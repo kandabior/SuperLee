@@ -1296,4 +1296,56 @@ public class InventoryMapper {
             return false;
         }
     }
+
+    public boolean setItemsIds(int globalItemId, int localItemId) {
+        PreparedStatement stmt=null;
+        try{
+            c = DriverManager.getConnection("jdbc:sqlite:dev\\EOEDdatabase.db");
+            c.setAutoCommit(false);
+            stmt=c.prepareStatement("INSERT INTO ItemsIds values (?,?)");
+            stmt.setInt(1,globalItemId);
+            stmt.setInt(2,localItemId);
+            int numOfUpdates=stmt.executeUpdate();
+            boolean output=false;
+            if(numOfUpdates!=0){
+                output=true;
+            }
+            stmt.close();
+            c.commit();
+            c.close();
+            return output;
+
+        } catch ( Exception e ) {
+            tryClose(c);
+            return false;
+        }
+    }
+
+    public boolean getItemsIdsExist(int globalItemId, int localItemId) {
+        PreparedStatement stmt=null;
+        try{
+            c = DriverManager.getConnection("jdbc:sqlite:dev\\EOEDdatabase.db");
+            c.setAutoCommit(false);
+            stmt = c.prepareStatement("SELECT * FROM ItemsIds WHERE globalId=? AND localId=?;");
+            stmt.setInt(1, globalItemId);
+            stmt.setInt(2, localItemId);
+            ResultSet rs = stmt.executeQuery();
+            if(rs.next()) {
+                rs.close();
+                stmt.close();
+                c.close();
+                return true;
+            }
+            else {
+                rs.close();
+                stmt.close();
+                c.close();
+                return false;
+            }
+        } catch ( Exception e ) {
+            tryClose(c);
+            //System.err.println( e.getClass().getName() + ": " + e.getMessage() );
+            return false;
+        }
+    }
 }

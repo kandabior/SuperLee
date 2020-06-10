@@ -74,18 +74,21 @@ public class Inventory {
     public  List<Integer> getBranchIdsToWeeklyOrders(int dayOfTheWeek) {
         return inventoryMapper.getBranchIdsToWeeklyOrders(dayOfTheWeek);
     }
-    public  String manageOrders(int branchId, Map<Integer,Pair<Integer,Double>> orders) {
+
+    public  String manageOrders(int branchId, Map<Pair<Integer,Integer>,Pair<Integer,Double>> orders) {
         if(inventoryMapper.isBranchExist(branchId)) {
-            for (Integer prodId : orders.keySet()) {
-                addAmountToProduct(branchId, prodId, orders.get(prodId).getKey());
+            for (Pair<Integer,Integer> prodId : orders.keySet()) {
+                addAmountToProduct(branchId, prodId.getKey(), orders.get(prodId).getKey());
                 int amount = orders.get(prodId).getKey();
                 double totalPrice = orders.get(prodId).getValue();
                 double newPrice = totalPrice / amount;
-                List<Double> listPrices = inventoryMapper.getCostPrices(branchId, prodId);
-                double currentPrice= inventoryMapper.getCurrentCostPrices(branchId,prodId);
+                List<Double> listPrices = inventoryMapper.getCostPrices(branchId, prodId.getKey());
+                double currentPrice= inventoryMapper.getCurrentCostPrices(branchId,prodId.getKey());
                 if (!listPrices.contains(newPrice) && currentPrice!=newPrice) {
-                    setCostPrice(branchId, prodId, newPrice);
+                    setCostPrice(branchId, prodId.getKey(), newPrice);
                 }
+                if(!inventoryMapper.getItemsIdsExist(prodId.getKey(),prodId.getValue()))
+                    inventoryMapper.setItemsIds(prodId.getKey(),prodId.getValue());
             }
             return "Order Completed Successfully for branch: " + branchId;
         }
