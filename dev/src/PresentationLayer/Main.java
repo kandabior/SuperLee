@@ -18,17 +18,19 @@ public class Main {
 
     private static void mainLoop() {
         int choose;
-        Printer.Print("Welcome To EOEDHRES !\n");
+        Printer.Print("Welcome To EOEHRES !\n");
         do {
             Printer.Print("\nDay: " + (LocalDate.now().plusDays(plusDay).toString()));
             Printer.Print("\nPlease choose an action:\n" +
                     "1. Enter Inventory & Reports Menu\n" +
                     "2. Enter Suppliers Menu\n" +
-                    "3. Show Global Products\n" +
-                    //TODO //לרביעייה הפחות מוצלחת תוסיפו לפה את הקריאה לתפריטים שלכם
-                    "4. Add Global Product\n" +
-                    "5. Promote Day\n" +
-                    "6. Quit\n");
+                    "3. Enter Transports Menu\n"+
+                    "4. Enter Personal manager Menu\n"+
+                    "5. Add New Branch\n"+
+                    "6. Show Global Products\n" +
+                    "7. Add Global Product\n" +
+                    "8. Promote Day\n" +
+                    "9. Quit\n");
             choose = scanner.nextInt();
             try {
                 switch (choose) {
@@ -39,23 +41,29 @@ public class Main {
                         SupplierMenu.displaySupplierMenu();
                         break;
                     case 3:
-                        ShowGlobalProduct();
+                        TransportsMenu.main();
                         break;
                     case 4:
-                        AddGlobalProduct();
+                        EmployeesMenu.main();
                         break;
                     case 5:
+                        ShowGlobalProduct();
+                        break;
+                    case 6:
+                        AddGlobalProduct();
+                        break;
+                    case 7:
                         plusDay++;
                         SupplierMenu.PromoteDay((DayOfTheWeek + plusDay) % 7);
                         InventoryMenu.PromoteDay((DayOfTheWeek + plusDay) % 7);
-                    case 6:
+                    case 8:
                         break;
                 }
             } catch (Exception e) {
                 Printer.Print("Can't execute the action.");
             }
         }
-        while (choose != 6);
+        while (choose != 8);
         System.out.println("Shutting down the system...");
     }
 
