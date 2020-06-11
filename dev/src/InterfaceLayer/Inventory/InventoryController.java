@@ -8,6 +8,7 @@ import javafx.util.Pair;
 import src.PresentationLayer.Main;
 
 import java.time.LocalDate;
+import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
@@ -238,13 +239,28 @@ public class InventoryController {
         inventory.manageOrders(branchId,items);
     }
 
-    public void getProducts(Map<Pair<Integer,Integer>,Pair<Integer,Double>> items){
-
-       // inventory.manageOrders(items);
+    public void getProducts(Map<Pair<Integer,Integer>,List<Object>> items){// list[0]= quantity, list[1]=cost, list[2]=branchid
+        List<Integer>branches=new LinkedList<>();
+        for(List<Object> list: items.values()){
+            if(branches.contains(list.get(2))){
+                branches.add((Integer)list.get(2));
+            }
+        }
+        for(Integer branchId: branches){
+            Map<Pair<Integer,Integer>,Pair<Integer,Double>> itemsForBranch=new HashMap<>();
+            for(Pair<Integer,Integer>p1 : items.keySet()){
+                if(items.get(p1).get(2)==branchId){
+                    itemsForBranch.put(p1,new Pair(items.get(p1).get(0),items.get(p1).get(1)));
+                }
+            }
+            inventory.manageOrders(branchId,itemsForBranch);
+        }
     }
+
     public String AddToWeeklyOrder(int branchId,int day, List<Pair<Integer, Integer>> id_amount) {
         return inventory.addToWeeklyOrder(branchId,day,id_amount);
     }
+
     public String RemoveFromWeeklyOrder(int branchId, List<Integer> ids,int day) {
         return inventory.removeFromWeeklyOrder(branchId,ids,day);
     }
