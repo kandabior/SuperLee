@@ -51,7 +51,7 @@ public class Main {
                         plusDay++;
                         SupplierMenu.PromoteDay(LocalDate.now().plusDays(plusDay));
                         InventoryMenu.PromoteDay((DayOfTheWeek + plusDay) % 7);
-                    case 6:
+                    case 7:
                         break;
                 }
             } catch (Exception e) {
