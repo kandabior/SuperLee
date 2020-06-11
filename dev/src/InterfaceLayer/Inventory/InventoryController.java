@@ -234,9 +234,13 @@ public class InventoryController {
         return output;
     }
 
-    public void getProducts(Map<Pair<Integer,Integer>,Pair<Integer,Double>> items){
-        //todo
+    public void getProductsOneBranch(Integer branchId,Map<Pair<Integer,Integer>,Pair<Integer,Double>> items){
+        inventory.manageOrders(branchId,items);
+    }
 
+    public void getProducts(Map<Pair<Integer,Integer>,Pair<Integer,Double>> items){
+
+       // inventory.manageOrders(items);
     }
     public String AddToWeeklyOrder(int branchId,int day, List<Pair<Integer, Integer>> id_amount) {
         return inventory.addToWeeklyOrder(branchId,day,id_amount);
