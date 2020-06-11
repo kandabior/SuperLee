@@ -1,7 +1,9 @@
 package src.InterfaceLayer.Suppliers;
 
 import javafx.util.Pair;
+import src.BusinessLayer.Inventory.Inventory;
 import src.BusinessLayer.TransportModule.Pool;
+import src.InterfaceLayer.Inventory.InventoryController;
 import src.PresentationLayer.Main;
 
 import java.time.LocalDate;
@@ -377,7 +379,7 @@ public class FacadeController {
     public void PromoteDay(LocalDate day) {
         Map<Pair<Integer,Integer>, Pair<Integer, Double>> map = new HashMap();
         map=this.orderController.getOrdersByDat(day);
-
+        InventoryController.getInventoryController().getProducts(map);
     }
 
     public List<Integer> getLocalItemsIds(int suppId,List<Integer> temp) {
