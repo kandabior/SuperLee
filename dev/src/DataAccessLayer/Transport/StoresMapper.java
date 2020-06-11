@@ -12,7 +12,7 @@ public class StoresMapper {
 
    private boolean tryOpen() {
       try {
-         String url = "jdbc:sqlite:EOEDdatabase.db";
+         String url = "jdbc:sqlite:dev\\EOEDdatabase.db";
          con = DriverManager.getConnection(url);
          return true;
       } catch (SQLException e) {

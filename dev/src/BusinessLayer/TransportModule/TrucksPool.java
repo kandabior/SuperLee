@@ -141,4 +141,5 @@ public class TrucksPool {
         calendar.setTime(date);
         return calendar.get(Calendar.DATE)+"/"+(calendar.get(Calendar.MONTH)+1) +"/" + calendar.get(Calendar.YEAR);
     }
+
 }
