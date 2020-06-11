@@ -5,6 +5,7 @@ import src.BusinessLayer.EmployeeModule.EmployeeService;
 import src.DataAccessLayer.Transport.DTO.DTO_TransportDoc;
 import javafx.util.Pair;
 import org.omg.PortableInterceptor.SYSTEM_EXCEPTION;
+import src.InterfaceLayer.Inventory.InventoryController;
 import src.InterfaceLayer.Suppliers.FacadeController;
 
 import java.util.*;
@@ -162,25 +163,25 @@ public class Pool {
             double maxWeight = trucksPool.getMaxWeight(dto_doc.getTruckId());
             double different = docsPool.addWeight(dto_doc, total, maxWeight);
             List<Integer> ordersId = docsPool.getOrdersId(docId);
-            if (different == 0)
-                updateTransportStatus(true, ordersId);
+            if (different == 0) {
+                informSupplier(ordersId, true);
+                InventoryController.getInventoryController().getProductsOneBranch(docsPool.getStoresFromDoc(docId).get(0), docsPool.getFullItems(docId));
+            }
             else
-                updateTransportStatus(false, ordersId);
+                informSupplier(ordersId, false);
 
             return different;
         }
         return -1;
     }
 
-    private void updateTransportStatus(boolean status, List<Integer> ordersId) {
-        //or and elad ->
-        if (true) {
-            //give or the map of items
-            //success to or and elad
-        } else {
-            //fail to or and elad
+    private void informSupplier(List<Integer> ordersId, boolean status) {
+        Iterator<Integer> itr = ordersId.iterator();
+        while (itr.hasNext()){
+            //FacadeController.getFacadeController().updateOrderStatus(itr.next(), status);
         }
     }
+
 
     public List<Integer> getStoresFromDoc(int docId) {
         return docsPool.getStoresFromDoc(docId);
@@ -355,7 +356,7 @@ public class Pool {
                     List<Map<Pair<Integer, Integer>, Pair<Integer, Double>>> transportsItems = mapsUnion(items);
                     addItems(docId, stores, transportsItems);
                 } else {//no truck
-                    updateTransportStatus(false, ordersId);
+                    informSupplier(ordersId, false);
                 }
             }
         }
@@ -387,15 +388,16 @@ public class Pool {
             Date now = new Date();
             Date date = stringToDate(doc.getDate());
             List<Integer> ordersId = docsPool.getOrdersId(doc.getId());
-            if (date.after(now)) {
-                docsPool.removeWaitingTransport(doc.getId());
-              //  FacadeController.getFacadeController().updateOrderStatus(orderId, false);
+            if (date.before(now)) {
+                docsPool.removeFromWaitingTransport(doc.getId());
+                docsPool.updateFailTransport(doc.getId());
+                informSupplier(ordersId, false);
                 if (doc.getDriverId() != -1) {
                     freeDriverDate(doc.getDriverId(), date);
                     freeTruckDate(doc.getTruckId(), date);
                 }
             }
-            else {
+            else { // date hasnt passed
                 if (employeeService.getStores(date).contains(doc.getStores().get(0))) {
                     double weight = trucksPool.getWeight (doc.getTruckId());
                     String license;
@@ -410,8 +412,9 @@ public class Pool {
                         driverName = employeeService.getDriverName(driverId);
                         addDateToDriver(driverId,date);
                         docsPool.addDriverToTransport(doc.getId(), driverId, driverName);
+                        docsPool.removeFromWaitingTransport(doc.getId());
+                        output.add(doc.getId());
                     }
-
                 }
             }
         }
@@ -430,4 +433,8 @@ public class Pool {
     }
 
 
+    public boolean transportIsToday(int docId) {
+        //TODO
+        return true;
+    }
 }

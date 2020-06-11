@@ -27,11 +27,10 @@ public class TransportsMenu {
                     "Please enter option number:\n" +
                     "1. Update missing employees's Transport\n" +
                     "2. Add weight to transport\n" +
-                    "3. Add items to transport\n" +
+                    "3. View Cancellation Requests\n" +
                     "4. View system data\n"+
-                    "5. Add, delete or update a supplier\n" +
-                    "6. Add or delete a truck\n" +
-                    "7. exit");
+                    "5. Add or delete a truck\n" +
+                    "6. exit");
             try {
                 int option = input.nextInt();
                 input.nextLine();
@@ -39,7 +38,11 @@ public class TransportsMenu {
                     case 1://new transport
                         System.out.println("Updating...");
                         List<Integer> successful = pool.UpdateWaitingTransports();
-                        System.out.print("To order a transport first enter an area which the transport will take place\narea: ");
+                        System.out.println("Update successfuly:\n");
+                        for (int i = 0; i < successful.size() ; i++) {
+                            System.out.println((i+1) + ". Transport number " + successful.get(i));
+                        }
+                        /*System.out.print("To order a transport first enter an area which the transport will take place\narea: ");
                         int area = input.nextInt();
                         input.nextLine();
                         if (!pool.validArea(area)) {
@@ -147,7 +150,7 @@ public class TransportsMenu {
                         pool.addDateToTruck(truckId, date);
                         pool.addDateToDriver(driverId, date);
                        // pool.addDoc(area, date, truckId, driverId, driverName, stores, suppliers);
-                        System.out.println("new transport was added !:)");
+                        System.out.println("new transport was added !:)");*/
                         break;
                     case 2://add weight
                         System.out.print("Enter transport id\nId: ");
@@ -162,22 +165,27 @@ public class TransportsMenu {
                             docId = input.nextInt();
                             input.nextLine();
                         }
-                        System.out.print("Please enter the truck total weight\nTotal weight: ");
-                        double total = input.nextDouble();
-                        input.nextLine();
-                        double difference = pool.addWeight(docId, total);
-                        if (difference == 0) {
-                            System.out.println("The weight is valid!");
-                        } else {
-                            System.out.println("The weight is Invalid! therefore the transport failed,\nthe weight exceeded in " + difference
-                                    + " tons,\nyou can see the transport detail under failed transports,\n" +
-                                    " and create new one if you want.");
-                            pool.freeTruckDate(docId);
-                            pool.freeDriverDate(docId);
+                        if(!pool.transportIsToday(docId)) {
+                            System.out.print("Please enter the truck total weight\nTotal weight: ");
+                            double total = input.nextDouble();
+                            input.nextLine();
+                            double difference = pool.addWeight(docId, total);
+                            if (difference == 0) {
+                                System.out.println("The weight is valid!");
+                            } else {
+                                System.out.println("The weight is Invalid! therefore the transport failed,\nthe weight exceeded in " + difference
+                                        + " tons,\nyou can see the transport detail under failed transports,\n" +
+                                        " and create new one if you want.");
+                                pool.freeTruckDate(docId);
+                                pool.freeDriverDate(docId);
+                            }
+                        }
+                        else{
+                            System.out.println("Weight can be added only at the transport's date!");
                         }
                         break;
-                    case 3://add items
-                        System.out.print("Enter transport id\nId: ");
+                    case 3://View Cancellation Requests
+                   /*     System.out.print("Enter transport id\nId: ");
                         docId = input.nextInt();
                         input.nextLine();
                         while (!pool.validTransport(docId)) {
@@ -215,7 +223,7 @@ public class TransportsMenu {
                             allItems.add(items);
                         }
                         pool.addItems(docId, stores, allItems);
-                        System.out.println("Items was added successfully");
+                        System.out.println("Items was added successfully");*/
                         break;
                     case 4://View transport system data
                         System.out.println("Please enter option number:\n" +
@@ -253,7 +261,7 @@ public class TransportsMenu {
 
                         }
                         break;
-                    case 5: //add/delete/update supplier
+                   /* case 5: //add/delete/update supplier
                         System.out.println("Please enter option number:\n" +
                                 "1. Add supplier\n" +
                                 "2. Delete supplier\n" +
@@ -315,8 +323,8 @@ public class TransportsMenu {
                                 System.out.println("Invalid option number!");
                                 break;
                         }
-                        break;
-                    case 6://add/delete truck
+                        break;*/
+                    case 5://add/delete truck
                         System.out.println("Please enter option number:\n" +
                                 "1. Add truck\n2. Delete truck");
                         option = input.nextInt();
@@ -359,7 +367,7 @@ public class TransportsMenu {
                                 break;
                         }
                         break;
-                    case 7:
+                    case 6:
                         return;
                     default:
                         System.out.println("Invalid option number!");

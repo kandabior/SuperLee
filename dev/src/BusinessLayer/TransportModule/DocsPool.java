@@ -249,12 +249,18 @@ public class DocsPool {
         return mapper.getWaitingTransportIds();
     }
 
-    public void removeWaitingTransport(int id) {
-        mapper.updateTransportDoc(-1 ,"FAIL", id);
+    public void removeFromWaitingTransport(int id) {
         mapper.removeWaitingTransport(id);
+    }
+    public void updateFailTransport(int id) {
+        mapper.updateTransportDoc(-1 ,"FAIL", id);
     }
 
     public void addDriverToTransport(int id, int driverId, String driverName) {
         mapper.addDriverToTransport(id, driverId, driverName);
+    }
+
+    public Map<Pair<Integer, Integer>, Pair<Integer, Double>> getFullItems(int docId) {
+        return mapper.getFullItems(docId);
     }
 }

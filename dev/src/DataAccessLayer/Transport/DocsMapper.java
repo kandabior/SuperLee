@@ -758,7 +758,7 @@ public class DocsMapper {
                 int rowNum = statement.executeUpdate();
                 if (rowNum != 0) {
                     statement.close();
-                    ;
+
                     con.commit();
                     con.close();
                 } else {
