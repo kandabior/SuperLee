@@ -2,6 +2,7 @@ package src.InterfaceLayer.Suppliers;
 
 import javafx.util.Pair;
 import src.BusinessLayer.TransportModule.Pool;
+import src.PresentationLayer.Main;
 
 import java.time.LocalDate;
 import java.util.*;
@@ -65,7 +66,6 @@ public class FacadeController {
     {
         Map<Pair<Integer,Integer>, Pair<Integer, Double>> map = new HashMap();
         Map<Integer, List<List<Object>>> orderMap = new HashMap<>();
-        //Map<Integer, List<List<Object>>> pendingOrders = new HashMap<>();
         Map<Integer, List<Object>> suppliersMap = new HashMap<>();
         List<List<Object>> transportOrders = new LinkedList<>();
         for (int i = 0; i < list.size(); i++) {
@@ -84,11 +84,17 @@ public class FacadeController {
                             orderMap.get(bestSuppForItem).add(addToOrder(localItemId,itemId,quantity,bestSuppForItem,costForItem,"Waiting"));
                             //pendingOrders.get(bestSuppForItem).add(addToOrder(localItemId,itemId,quantity,bestSuppForItem,costForItem));
                         } else {
-                            orderMap.put(bestSuppForItem, addNewSuppOrder(localItemId, itemId, quantity, bestSuppForItem, costForItem,"Waiting"));
-                            //pendingOrders.put(bestSuppForItem, addNewSuppOrder(localItemId, itemId, quantity, bestSuppForItem, costForItem));
-                            //add supplier details
                             List<Object> suppList = supplierController.getSuppDetails(bestSuppForItem);
                             suppList.add(supplierController.getSupplyDays(bestSuppForItem));
+                                int day1 =((List<Integer>)suppList.get(4)).get(0)-getCurrentDay(LocalDate.now().plusDays(Main.plusDay));
+                                LocalDate date;
+                                if(day1>=0)
+                                   date =  LocalDate.now().plusDays(Main.plusDay+day1);
+                                else
+                                    date =LocalDate.now().plusDays(Main.plusDay+(7+day1));
+                            orderMap.put(bestSuppForItem, addNewSuppOrder(localItemId, itemId, quantity, bestSuppForItem, costForItem,"Waiting",date));
+                            //pendingOrders.put(bestSuppForItem, addNewSuppOrder(localItemId, itemId, quantity, bestSuppForItem, costForItem));
+                            //add supplier details
                             suppList.add(orderIdCounter);
                             orderIdCounter++;
                             suppliersMap.put(bestSuppForItem, suppList);
@@ -132,7 +138,7 @@ public class FacadeController {
                         if (orderMap.containsKey(bestSuppForItem)) {
                             orderMap.get(bestSuppForItem).add(addToOrder(localItemId,itemId,quantity,bestSuppForItem,costForItem,"Pending"));
                         } else {
-                            orderMap.put(bestSuppForItem, addNewSuppOrder(localItemId, itemId, quantity, bestSuppForItem, costForItem,"Pending"));
+                            orderMap.put(bestSuppForItem, addNewSuppOrder(localItemId, itemId, quantity, bestSuppForItem, costForItem,"Pending",LocalDate.now().plusDays(Main.plusDay)));
                             //add supplier details
                             List<Object> suppList = supplierController.getSuppDetails(bestSuppForItem);
                             suppList.add(orderIdCounter);
@@ -145,12 +151,12 @@ public class FacadeController {
                         Pair<Integer, Double> p = new Pair(quantity, costForItem);
                         int localItemId = getLocalItemId(itemId,bestSuppForItem);
                         Pair<Integer,Integer> pair = new Pair<>(itemId,localItemId);
-                        map.put(pair, p); //TODO NO COOMENT
+                        map.put(pair, p);
                         //add orders
                         if (orderMap.containsKey(bestSuppForItem)) {
                             orderMap.get(bestSuppForItem).add(addToOrder(localItemId,itemId,quantity,bestSuppForItem,costForItem,"Pending"));
                         } else {
-                            orderMap.put(bestSuppForItem, addNewSuppOrder(localItemId, itemId, quantity, bestSuppForItem, costForItem,"Pending"));
+                            orderMap.put(bestSuppForItem, addNewSuppOrder(localItemId, itemId, quantity, bestSuppForItem, costForItem,"Pending",LocalDate.now().plusDays(Main.plusDay)));
                             //add supplier details
                             List<Object> suppList = supplierController.getSuppDetails(bestSuppForItem);
                             suppList.add(orderIdCounter);
@@ -195,7 +201,7 @@ public class FacadeController {
                         if (orderMap.containsKey(bestSuppForItem)) {
                             orderMap.get(bestSuppForItem).add(addToOrder(localItemId,itemId,quantity,bestSuppForItem,costForItem,"Pending"));
                         } else {
-                            orderMap.put(bestSuppForItem, addNewSuppOrder(localItemId, itemId, quantity, bestSuppForItem, costForItem,"Pending"));
+                            orderMap.put(bestSuppForItem, addNewSuppOrder(localItemId, itemId, quantity, bestSuppForItem, costForItem,"Pending",LocalDate.now().plusDays(Main.plusDay)));
                             //add supplier details
                             List<Object> suppList = supplierController.getSuppDetails(bestSuppForItem);
                             suppList.add(orderIdCounter);
@@ -237,7 +243,7 @@ public class FacadeController {
         return orderList;
     }
 
-    private List<List<Object>> addNewSuppOrder(int localItemId,int itemId,int quantity,int bestSuppForItem,double costForItem,String status) {
+    private List<List<Object>> addNewSuppOrder(int localItemId,int itemId,int quantity,int bestSuppForItem,double costForItem,String status , LocalDate date) {
         List<List<Object>> outOrders = new LinkedList<>();
         List<Object> orderList = new LinkedList<>();
         orderList.add(localItemId);// Item Id
@@ -249,10 +255,53 @@ public class FacadeController {
         orderList.add(discount);// Item discount
         orderList.add(costForItem);// Item finalCost
         orderList.add(status);// Order Status
+        orderList.add(date);//orderDate
         outOrders.add(orderList);
         return outOrders;
     }
 
+
+    private Integer getCurrentDay() {
+        String day = LocalDate.now().getDayOfWeek().toString();
+        switch (day) {
+            case "SUNDAY":
+                return 1;
+            case "MONDAY":
+                return 2;
+            case "TUESDAY":
+                return 3;
+            case "WEDNESDAY":
+                return 4;
+            case "THURSDAY":
+                return 5;
+            case "FRIDAY":
+                return 6;
+            case "SATURDAY":
+                return 0;
+        }
+        return 1;
+    }
+
+    private Integer getCurrentDay(LocalDate date) {
+        String day = date.getDayOfWeek().toString();
+        switch (day) {
+            case "SUNDAY":
+                return 1;
+            case "MONDAY":
+                return 2;
+            case "TUESDAY":
+                return 3;
+            case "WEDNESDAY":
+                return 4;
+            case "THURSDAY":
+                return 5;
+            case "FRIDAY":
+                return 6;
+            case "SATURDAY":
+                return 0;
+        }
+        return 1;
+    }
     public int getOrdersSize() { return orderController.getOrdersSize(); }
 
     public boolean addItemToSupplier(int suppId, int itemId, int itemLocalId) {
