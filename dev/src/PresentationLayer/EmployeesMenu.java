@@ -16,31 +16,41 @@ public class EmployeesMenu {
     public static void main() {
         EmployeesMenu view = new EmployeesMenu();
         view.startSystem();
+
+    }
+    private void startSystem(){
+        Scanner ans = new Scanner(System.in);
+
+            try {
+                while (true) {
+
+                    System.out.println("Welcome to the employee department!\n" +
+                            "Select a branch:\n" +
+                            "for drivers area, enter:\n     0 \n" +
+                            "Otherwise enter a valid store number\n" +
+                            "To see messages enter \n       -2\n"+
+                            "To return to the main menu, enter\n     -1\n");
+                    int branch = ans.nextInt();
+                    if (branch == -1)
+                        return;
+                    if(branch==-2)
+                        showMessages();
+                    else {
+                        currentBranch = branch;
+                        service.loadBranch(branch);
+                        startPersonnelManager();
+                    }
+                }
+            }
+             catch (Exception e) {
+                System.out.println("\nSorry, you have entered invalid input in this action\n");
+                return;
+            }
+        }
+
+    private void showMessages() {
     }
 
-    private void startSystem(){
-        try {
-            while (true) {
-                System.out.println("Welcome to the employee department!\n" +
-                        "Select a branch:\n" +
-                        "for drivers area, enter:\n     0 \n" +
-                        "Otherwise enter a store number, a number between\n     1-9\n" +
-                        "To return to the main menu, enter\n     10\n");
-                int branch = numberFromRange(0,10);
-                if (branch >= 0 & branch <= 9) {
-                    currentBranch = branch;
-                    service.loadBranch(branch);
-                    startPersonnelManager();
-                } else if (branch == 10)
-                    return;
-                else
-                    System.out.println("\nInvalid selection\n");
-            }
-        }catch (Exception e){
-            System.out.println("\nSorry, you have entered invalid input in this action\n");
-            return;
-        }
-    }
 
     private void startPersonnelManager(){
         boolean stop = false;

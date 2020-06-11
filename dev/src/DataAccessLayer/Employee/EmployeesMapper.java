@@ -40,6 +40,8 @@ public class EmployeesMapper {
     }
 
     public List<EmployeeDTO> getAllEmployeesFromBranch(int branch) {
+        if(!checkBranchExists(branch))
+            throw new IllegalArgumentException("No such store!");
         List<EmployeeDTO> employeeDTOS=new LinkedList<>();
         try {
             if (tryOpen()) {
@@ -66,6 +68,29 @@ public class EmployeesMapper {
         }
 
         return employeeDTOS;
+    }
+
+    private boolean checkBranchExists(int branch) {
+        try {
+            if (tryOpen()) {
+                Class.forName("org.sqlite.JDBC");
+                con.setAutoCommit(false);
+                PreparedStatement statement = con.prepareStatement("SELECT * FROM Stores WHERE ID = ?;");
+                statement.setInt(1,branch);
+                ResultSet res = statement.executeQuery();
+                if (res.next()) {
+                    con.close();
+                    return true;
+                }
+            }
+        }
+
+        catch (Exception e) {
+            tryClose();
+            System.err.println(e.getClass().getName() + ": " + e.getMessage());
+        }
+        return false;
+
     }
 
     public void updateEmployee(EmployeeDTO employeeDTO) {

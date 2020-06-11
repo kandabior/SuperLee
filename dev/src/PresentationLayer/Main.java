@@ -19,7 +19,7 @@ public class Main {
 
     private static void mainLoop() {
         int choose;
-        Printer.Print("Welcome To EOEHRES !\n");
+        Printer.Print("Welcome To EOEHRES !\\n");
         do {
             Printer.Print("\nDay: " + (LocalDate.now().plusDays(plusDay).toString()));
             Printer.Print("\nPlease choose an action:\n" +
