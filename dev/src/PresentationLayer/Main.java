@@ -84,7 +84,7 @@ public class Main {
             case "FRIDAY":
                 return 6;
             case "SATURDAY":
-                return 7;
+                return 0;
         }
         return 1;
     }
