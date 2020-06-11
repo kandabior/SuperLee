@@ -28,10 +28,8 @@ public class Main {
                     "3. Enter Transports Menu\n"+
                     "4. Enter Personal manager Menu\n"+
                     "5. Add New Branch\n"+
-                    "6. Show Global Products\n" +
-                    "7. Add Global Product\n" +
-                    "8. Promote Day\n" +
-                    "9. Quit\n");
+                    "6. Promote Day\n" +
+                    "7. Quit\n");
             choose = scanner.nextInt();
             try {
                 switch (choose) {
@@ -48,24 +46,25 @@ public class Main {
                         EmployeesMenu.main();
                         break;
                     case 5:
-                        ShowGlobalProduct();
-                        break;
+                        AddNewBranch();
                     case 6:
-                        AddGlobalProduct();
-                        break;
-                    case 7:
                         plusDay++;
                         SupplierMenu.PromoteDay(LocalDate.now().plusDays(plusDay));
                         InventoryMenu.PromoteDay((DayOfTheWeek + plusDay) % 7);
-                    case 8:
+                    case 7:
                         break;
                 }
             } catch (Exception e) {
                 Printer.Print("Can't execute the action.");
             }
         }
-        while (choose != 8);
+        while (choose != 6);
         System.out.println("Shutting down the system...");
+    }
+
+    private static void AddNewBranch() {
+
+
     }
 
 
@@ -90,17 +89,5 @@ public class Main {
         return 1;
     }
 
-    private static void AddGlobalProduct() {
-        Printer.Print("\nPlease enter product Id:\n");
-        String prodId = scanner.next();
-        Printer.Print("\nPlease enter product name:\n");
-        String amount = scanner.next();
-        if (!Items.addItem(Integer.parseInt(prodId), amount)) {
-            System.out.println("Product already exists, please enter another product id.");
-        }
-    }
 
-    private static void ShowGlobalProduct() {
-        Items.PrintAllItems();
-    }
 }

@@ -58,8 +58,15 @@ public class OrderController {
     public void makeOrders(int branchId, Map<Integer, List<List<Object>>> orderMap, Map<Integer, List<Object>> suppliersList, int day) {
         for (Integer key : orderMap.keySet())//go over suppliers
         {
+            //String d =(String)orderMap.get(key).get(0).get(6);
+            int orderId =(Integer) suppliersList.get(key).get(4);
+            String suppName =(String) suppliersList.get(key).get(1);
+            String PhoneNu=  (String) suppliersList.get(key).get(2);
+            String Address=  (String) suppliersList.get(key).get(3);
+            LocalDate date = (LocalDate)orderMap.get(key).get(0).get(7);
+            String status = (String)orderMap.get(key).get(0).get(6);
 
-            OrderDTO o = new OrderDTO(branchId, (Integer) suppliersList.get(key).get(4), (Integer) suppliersList.get(key).get(0), (String) suppliersList.get(key).get(1), (String) suppliersList.get(key).get(2), (String) suppliersList.get(key).get(3), LocalDate.now().plusDays(day), "Pending" );
+            OrderDTO o = new OrderDTO(branchId, (Integer) suppliersList.get(key).get(4), (Integer) suppliersList.get(key).get(0), (String) suppliersList.get(key).get(1), (String) suppliersList.get(key).get(2), (String) suppliersList.get(key).get(3), date, (String)orderMap.get(key).get(0).get(6) );
             List<OrderLineDTO> lines = new LinkedList<>();
             for (int j = 0; j < orderMap.get(key).size(); j++)//go over the orders line
             {
@@ -96,33 +103,6 @@ public class OrderController {
         return this.order.getOrderIdCounter();
     }
 
-    public void addToPendingOrders(int branchId, Map<Integer, List<List<Object>>> pendingOrders, Map<Integer, List<Object>> suppliersList, int day) {
-        for (Integer key : pendingOrders.keySet())//go over suppliers
-        {
-            OrderDTO o = new OrderDTO(branchId, orderIdCounter, (Integer) suppliersList.get(key).get(0), (String) suppliersList.get(key).get(1), (String) suppliersList.get(key).get(2), (String) suppliersList.get(key).get(3),(List<Integer>) suppliersList.get(key).get(4) ,"Pending");
-            orderIdCounter++;
-            List<OrderLineDTO> lines = new LinkedList<>();
-            for (int j = 0; j < pendingOrders.get(key).size(); j++)//go over the orders line
-            {
-                int itemId = (int) pendingOrders.get(key).get(j).get(0);
-                String itemName = (String) pendingOrders.get(key).get(j).get(1);
-                int itemQuantity = (int) pendingOrders.get(key).get(j).get(2);
-                Double itemCost = (Double) pendingOrders.get(key).get(j).get(3);
-                Double itemDiscount = (Double) pendingOrders.get(key).get(j).get(4);
-                Double itemFinalCost = (Double) pendingOrders.get(key).get(j).get(5);
-                OrderLineDTO orderLine = new OrderLineDTO(o.getId(), itemId, itemName, itemQuantity, itemCost, itemDiscount, itemFinalCost);
-                lines.add(orderLine);
-            }
-            o.setItems(lines);
-            o.setTotalCost(getTotalCost(lines));
-            this.pendingOrders.put(o.getSuppId(), o);
-        }
-    }
-
-    public void PromoteDay(int day) {//get day of the week
-
-
-    }
 
     public Map<Pair<Integer,Integer>, Pair<Integer, Double>> getOrdersByDat(LocalDate day) {
         return this.order.getOrdersByDat(day);

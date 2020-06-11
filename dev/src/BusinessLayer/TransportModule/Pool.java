@@ -3,6 +3,7 @@ package src.BusinessLayer.TransportModule;
 import src.BusinessLayer.EmployeeModule.Employee;
 import src.BusinessLayer.EmployeeModule.EmployeeService;
 import src.DataAccessLayer.Transport.DTO.DTO_TransportDoc;
+import javafx.util.Pair;
 import org.omg.PortableInterceptor.SYSTEM_EXCEPTION;
 import src.InterfaceLayer.Suppliers.FacadeController;
 
@@ -189,7 +190,7 @@ public class Pool {
         return storesPool.getStoresStrings(stores);
     }
 
-    public void addItems(int docId, List<Integer> stores, List<Map<Integer, Integer>> allItems) {
+    public void addItems(int docId, List<Integer> stores, List<Map<Pair<Integer, Integer>, Pair<Integer, Double>>> allItems) {
         docsPool.addItems(docId, stores, allItems);
     }
 
@@ -289,7 +290,7 @@ public class Pool {
         occupiedDriversPool.freeDriver(driverId, dateToString(date));
     }
 
-    // List<orderId,suppId, List<date>|null,Map<int,int>>
+    // List<orderId,suppId, List<date>|null,Map<Pair<int,int>, Pair<int,int>>
     public void makeOrders(int storId, List<List<Object>> transportOrders) throws Exception {
         int day = 0;
         int area = storesPool.getArea(storId);
@@ -298,7 +299,7 @@ public class Pool {
                 List<List<Object>> temp = new LinkedList<>();
                 List<Object> order;
                 List<Integer> ordersId = new LinkedList<>();
-                List<Map<Integer, Integer>> items = new LinkedList<>();
+                List<Map<Pair<Integer, Integer>, Pair<Integer, Double>>> items = new LinkedList<>();
                 for (int i = 0; i < transportOrders.size(); i++) {
                     order = transportOrders.get(i);
                     List<Integer> dates = (List<Integer>) order.get(2);
@@ -306,7 +307,7 @@ public class Pool {
                         temp.add(order);
                         transportOrders.remove(order);
                         ordersId.add((Integer) order.get(0));
-                        items.add((Map<Integer, Integer>) order.get(3));
+                        items.add((Map<Pair<Integer, Integer>, Pair<Integer, Double>>) order.get(3));
                     }
                 }
                 day++;//day from 1-7
@@ -351,7 +352,7 @@ public class Pool {
                         docsPool.addMissingEmployees(docId, hasStoreKeeper, hasDriver);
                         docsPool.addMissingMsg(docId, hasStoreKeeper, hasDriver, date);
                     }
-                    List<Map<Integer, Integer>> transportsItems = mapsUnion(items);
+                    List<Map<Pair<Integer, Integer>, Pair<Integer, Double>>> transportsItems = mapsUnion(items);
                     addItems(docId, stores, transportsItems);
                 } else {//no truck
                     updateTransportStatus(false, ordersId);
@@ -360,14 +361,14 @@ public class Pool {
         }
     }
 
-    private List<Map<Integer, Integer>> mapsUnion(List<Map<Integer, Integer>> items) {
-        List<Map<Integer, Integer>> output = new LinkedList<>();
-        Iterator<Map<Integer, Integer>> iter = items.iterator();
-        Map<Integer, Integer> curr;
-        Map<Integer, Integer> allItems = new HashMap<>();
+    private List<Map<Pair<Integer, Integer>, Pair<Integer, Double>>> mapsUnion(List<Map<Pair<Integer, Integer>, Pair<Integer, Double>>> items) {
+        List<Map<Pair<Integer, Integer>, Pair<Integer, Double>>> output = new LinkedList<>();
+        Iterator<Map<Pair<Integer, Integer>, Pair<Integer, Double>>> iter = items.iterator();
+        Map<Pair<Integer, Integer>, Pair<Integer, Double>> curr;
+        Map<Pair<Integer, Integer>, Pair<Integer, Double>> allItems = new HashMap<>();
         while (iter.hasNext()) {
             curr = iter.next();
-            for (Map.Entry<Integer, Integer> entry : curr.entrySet()) {
+            for (Map.Entry<Pair<Integer, Integer>, Pair<Integer, Double>> entry : curr.entrySet()) {
                 allItems.put(entry.getKey(), entry.getValue());
             }
         }
@@ -414,8 +415,6 @@ public class Pool {
                 }
             }
         }
-
-
 
         return output;
 

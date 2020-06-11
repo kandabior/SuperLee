@@ -1,5 +1,6 @@
 package src.DataAccessLayer.Transport;
 
+import javafx.util.Pair;
 import src.BusinessLayer.TransportModule.Store;
 import src.DataAccessLayer.Transport.DTO.DTO_TransportDoc;
 
@@ -127,15 +128,34 @@ public class DocsMapper {
     private Map<Integer, Integer> getTransportsItems(int transportId, int storeId) {
         Map<Integer, Integer> storeItems = new HashMap<>();
         try {
-                PreparedStatement statement = con.prepareStatement("SELECT * FROM Items WHERE DocId = ? AND SID = ?;");
+                PreparedStatement statement = con.prepareStatement("SELECT GID,quantity FROM TransportItems WHERE DocId = ? AND SID = ?;");
                 statement.setInt(1, transportId);
                 statement.setInt(2, storeId);
                 ResultSet result = statement.executeQuery();
                 while (result.next()) {
-                    storeItems.put(result.getInt("item"), result.getInt("quantity"));
+                    storeItems.put(result.getInt("GID"), result.getInt("quantity"));
                 }
                 statement.close();
                 return storeItems;
+        } catch (Exception e) {
+            System.err.println(e.getClass().getName() + ": " + e.getMessage());
+            return null;
+        }
+    }
+
+    public Map<Pair<Integer, Integer>, Pair<Integer, Double>> getFullItems(int transportId) {
+        Map<Pair<Integer, Integer>, Pair<Integer, Double>> items = new HashMap<>();
+        try {
+            PreparedStatement statement = con.prepareStatement("SELECT GID,LID,quantity,price FROM TransportItems WHERE DocId = ?;");
+            statement.setInt(1, transportId);
+            ResultSet result = statement.executeQuery();
+            while (result.next()) {
+                Pair<Integer, Integer> first = new Pair<>(result.getInt("GID"), result.getInt("LID"));
+                Pair<Integer, Double> second = new Pair<>(result.getInt("quantity"), result.getDouble("price"));
+                items.put(first, second);
+            }
+            statement.close();
+            return items;
         } catch (Exception e) {
             System.err.println(e.getClass().getName() + ": " + e.getMessage());
             return null;
@@ -298,25 +318,27 @@ public class DocsMapper {
     }
 
 
-    public void addItemsToTransport(int docId, List<Integer> stores, List<Map<Integer, Integer>> allItems) {
+    public void addItemsToTransport(int docId, List<Integer> stores, List<Map<Pair<Integer, Integer>, Pair<Integer, Double>>> allItems) {
         try {
             if (tryOpen()) {
                 Class.forName("org.sqlite.JDBC");
                 con.setAutoCommit(false);
                 Iterator<Integer> itr1 = stores.iterator();
-                Iterator<Map<Integer, Integer>> itr2 = allItems.iterator();
+                Iterator<Map<Pair<Integer, Integer>, Pair<Integer, Double>>> itr2 = allItems.iterator();
                 int i = 0;
                 while (itr1.hasNext()) {
                     int storeId = itr1.next();
-                    Map<Integer, Integer> storesItems = itr2.next();
-                    for (Map.Entry<Integer, Integer> entry : storesItems.entrySet()) {
-                        /*System.out.println("Key = " + entry.getKey() +
-                                ", Value = " + entry.getValue());*/
-                        PreparedStatement statement1 = con.prepareStatement("INSERT INTO Items VALUES (?,?,?,?);");
+                    Map<Pair<Integer, Integer>, Pair<Integer, Double>> storesItems = itr2.next();
+                    for (Map.Entry<Pair<Integer, Integer>, Pair<Integer, Double>> entry : storesItems.entrySet()) {
+                        Pair<Integer,Integer> first = entry.getKey();
+                        Pair<Integer,Double> second = entry.getValue();
+                        PreparedStatement statement1 = con.prepareStatement("INSERT INTO TransportItems VALUES (?,?,?,?,?,?);");
                         statement1.setInt(1, docId);
-                        statement1.setInt(2, entry.getKey());
-                        statement1.setInt(3, entry.getValue());
-                        statement1.setInt(4, storeId);
+                        statement1.setInt(2, storeId);
+                        statement1.setInt(3, first.getKey());
+                        statement1.setInt(4, first.getValue());
+                        statement1.setInt(5, second.getKey());
+                        statement1.setDouble(6, second.getValue());
                         int rowNum = statement1.executeUpdate();
                         if (rowNum != 0) {
                             con.commit();
@@ -444,7 +466,7 @@ public class DocsMapper {
                     } else {
                         con.rollback();
                         con.close();
-                        System.err.println("Problem in inserting items");
+                        System.err.println("Problem in inserting stores");
                         break;
                     }
                 }
@@ -473,7 +495,7 @@ public class DocsMapper {
                     } else {
                         con.rollback();
                         con.close();
-                        System.err.println("Problem in inserting items");
+                        System.err.println("Problem in inserting suppliers");
                         break;
                     }
                 }

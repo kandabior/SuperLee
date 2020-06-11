@@ -1,5 +1,6 @@
 package src.PresentationLayer;
 
+import src.BusinessLayer.Suppliers.Items;
 import src.InterfaceLayer.Inventory.InventoryController;
 import javafx.util.Pair;
 
@@ -209,7 +210,9 @@ public class InventoryMenu {
                     "1. Enter Inventory Menu\n" +
                     "2. Order Menu\n" +
                     "3. Enter Reports Menu\n" +
-                    "4. Back to main menu\n");
+                    "4. Show Global Products\n" +
+                    "5. Add Global Product\n" +
+                    "6. Back to main menu\n");
             choose = scanner.nextInt();
             try {
                 switch (choose) {
@@ -223,6 +226,12 @@ public class InventoryMenu {
                         reportsLoop();
                         break;
                     case 4:
+                        ShowGlobalProduct();
+                        break;
+                    case 5:
+                        AddGlobalProduct();
+                        break;
+                    case 6:
                         break;
                 }
             }
@@ -230,7 +239,7 @@ public class InventoryMenu {
                 Printer.Print("can't execute the action");
             }
         }
-        while(choose!=4);
+        while(choose!=6);
     }
     private static void OrdersLoop() {
         int choose;
@@ -512,5 +521,19 @@ public class InventoryMenu {
         String password=scanner.next();
         Printer.Print(inventoryController.addGlobalManager(Integer.parseInt(branchId),userName, password));
 
+    }
+
+    private static void AddGlobalProduct() {
+        Printer.Print("\nPlease enter product Id:\n");
+        String prodId = scanner.next();
+        Printer.Print("\nPlease enter product name:\n");
+        String amount = scanner.next();
+        if (!Items.addItem(Integer.parseInt(prodId), amount)) {
+            System.out.println("Product already exists, please enter another product id.");
+        }
+    }
+
+    private static void ShowGlobalProduct() {
+        Items.PrintAllItems();
     }
 }

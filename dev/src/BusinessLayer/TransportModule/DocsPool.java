@@ -1,5 +1,6 @@
 package src.BusinessLayer.TransportModule;
 
+import javafx.util.Pair;
 import src.DataAccessLayer.Transport.DTO.DTO_Supplier;
 import src.DataAccessLayer.Transport.DTO.DTO_TransportDoc;
 import src.DataAccessLayer.Transport.DocsMapper;
@@ -67,7 +68,7 @@ public class DocsPool {
         return mapper.getTStores(docId);
     }
 
-    public void addItems(int docId,List<Integer> stores, List<Map<Integer, Integer>> allItems) {
+    public void addItems(int docId,List<Integer> stores, List<Map<Pair<Integer, Integer>, Pair<Integer, Double>>> allItems) {
        /* for (TransportDoc t : transportDocs) {
             if (t.getId() == docId) {
                 t.setItems(allItems);
