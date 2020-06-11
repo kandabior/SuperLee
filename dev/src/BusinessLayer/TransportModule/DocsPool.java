@@ -252,4 +252,8 @@ public class DocsPool {
         mapper.updateTransportDoc(-1 ,"FAIL", id);
         mapper.removeWaitingTransport(id);
     }
+
+    public void addDriverToTransport(int id, int driverId, String driverName) {
+        mapper.addDriverToTransport(id, driverId, driverName);
+    }
 }

@@ -4,6 +4,7 @@ import src.BusinessLayer.EmployeeModule.Employee;
 import src.BusinessLayer.EmployeeModule.EmployeeService;
 import src.DataAccessLayer.Transport.DTO.DTO_TransportDoc;
 import org.omg.PortableInterceptor.SYSTEM_EXCEPTION;
+import src.InterfaceLayer.Suppliers.FacadeController;
 
 import java.util.*;
 
@@ -331,6 +332,7 @@ public class Pool {
                 if (!trucks.isEmpty()) {
                     truckId = trucks.get(0); // first truck
                     hasTruck = 1;
+                    addDateToTruck(truckId, date);
                 }
                 int driverId = -1;
                 String driverName = "";
@@ -340,7 +342,6 @@ public class Pool {
                         hasDriver = 1;
                         driverId = availableDriver.get(0);
                         driverName = getDriverName(driverId);
-                        addDateToTruck(truckId, date);
                         addDateToDriver(driverId, date);
                     }
 
@@ -374,7 +375,9 @@ public class Pool {
         return output;
     }
 
-    public List<Integer> UpdateWaitingTransports() {
+    public List<Integer> UpdateWaitingTransports() throws Exception {
+        int driverId;
+        String driverName;
         List<Integer> output = docsPool.getWaitingTransportIds();
         Iterator<Integer> itr = output.iterator();
         while (itr.hasNext()) {
@@ -382,17 +385,38 @@ public class Pool {
             DTO_TransportDoc doc = docsPool.getDoc(tid);
             Date now = new Date();
             Date date = stringToDate(doc.getDate());
-            if(date.after(now)){
+            List<Integer> ordersId = docsPool.getOrdersId(doc.getId());
+            if (date.after(now)) {
                 docsPool.removeWaitingTransport(doc.getId());
+              //  FacadeController.getFacadeController().updateOrderStatus(orderId, false);
+                if (doc.getDriverId() != -1) {
+                    freeDriverDate(doc.getDriverId(), date);
+                    freeTruckDate(doc.getTruckId(), date);
+                }
             }
-
-            if (doc.getDate() == null) {
-                if (employeeService.getStores(stringToDate(doc.getDate())).contains(doc.getStores().get(0))) {
+            else {
+                if (employeeService.getStores(date).contains(doc.getStores().get(0))) {
+                    double weight = trucksPool.getWeight (doc.getTruckId());
+                    String license;
+                    if (weight > 12)
+                        license = "C";
+                    else
+                        license = "C1";
+                    List<Integer> drivers = employeeService.getDrivers(date, license);
+                    drivers = occupiedDriversPool.validDrivers(drivers, date);
+                    if(!drivers.isEmpty()){
+                        driverId = drivers.get(0);
+                        driverName = employeeService.getDriverName(driverId);
+                        addDateToDriver(driverId,date);
+                        docsPool.addDriverToTransport(doc.getId(), driverId, driverName);
+                    }
 
                 }
             }
-
         }
+
+
+
         return output;
 
     }

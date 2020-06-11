@@ -97,7 +97,7 @@
 //    @After
 //    public void deleteFromEmployeesTable(){
 //        try {
-//            String url = "jdbc:sqlite:EOEDdatabase.db";
+//            String url = "jdbc:sqlite:dev\\EOEDdatabase.db";
 //            con = DriverManager.getConnection(url);
 //                Class.forName("org.sqlite.JDBC");
 //                con.setAutoCommit(false);
@@ -131,7 +131,7 @@
 //    @After
 //    public void deleteFromEmployeeConstrainsTable(){
 //        try {
-//            String url = "jdbc:sqlite:EOEDdatabase.db";
+//            String url = "jdbc:sqlite:dev\\EOEDdatabase.db";
 //            con = DriverManager.getConnection(url);
 //            Class.forName("org.sqlite.JDBC");
 //            con.setAutoCommit(false);

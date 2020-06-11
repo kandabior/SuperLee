@@ -12,7 +12,7 @@ public class DocsMapper {
 
     private boolean tryOpen() {
         try {
-            String url = "jdbc:sqlite:EOEDdatabase.db";
+            String url = "jdbc:sqlite:dev\\EOEDdatabase.db";
             con = DriverManager.getConnection(url);
             return true;
         } catch (SQLException e) {
@@ -719,6 +719,34 @@ public class DocsMapper {
             }
         } catch (Exception e) {
             tryClose();
+            System.err.println(e.getClass().getName() + ": " + e.getMessage());
+        }
+    }
+
+    public void addDriverToTransport(int id, int driverId, String driverName) {
+        try {
+            if (tryOpen()) {
+                Class.forName("org.sqlite.JDBC");
+                con.setAutoCommit(false);
+
+                PreparedStatement statement = con.prepareStatement("UPDATE TransportDocs SET driverId = ? , driverName = ? WHERE ID = ? ;");
+                statement.setInt(1, driverId);
+                statement.setString(2, driverName);
+                statement.setInt(3, id);
+                int rowNum = statement.executeUpdate();
+                if (rowNum != 0) {
+                    statement.close();
+                    ;
+                    con.commit();
+                    con.close();
+                } else {
+                    con.rollback();
+                    con.close();
+                    statement.close();
+                    System.err.println("Update failed");
+                }
+            }
+        } catch (Exception e) {
             System.err.println(e.getClass().getName() + ": " + e.getMessage());
         }
     }
