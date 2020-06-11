@@ -239,7 +239,7 @@ public class InventoryMenu {
                 Printer.Print("can't execute the action");
             }
         }
-        while(choose!=4);
+        while(choose!=6);
     }
     private static void OrdersLoop() {
         int choose;
