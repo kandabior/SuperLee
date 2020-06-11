@@ -85,8 +85,9 @@ public class FacadeController {
                             //pendingOrders.get(bestSuppForItem).add(addToOrder(localItemId,itemId,quantity,bestSuppForItem,costForItem));
                         } else {
                             List<Object> suppList = supplierController.getSuppDetails(bestSuppForItem);
+                            suppList.add(orderIdCounter);
                             suppList.add(supplierController.getSupplyDays(bestSuppForItem));
-                                int day1 =((List<Integer>)suppList.get(4)).get(0)-getCurrentDay(LocalDate.now().plusDays(Main.plusDay));
+                                int day1 =((List<Integer>)suppList.get(5)).get(0)-getCurrentDay(LocalDate.now().plusDays(Main.plusDay));
                                 LocalDate date;
                                 if(day1>=0)
                                    date =  LocalDate.now().plusDays(Main.plusDay+day1);
@@ -95,7 +96,7 @@ public class FacadeController {
                             orderMap.put(bestSuppForItem, addNewSuppOrder(localItemId, itemId, quantity, bestSuppForItem, costForItem,"Waiting",date));
                             //pendingOrders.put(bestSuppForItem, addNewSuppOrder(localItemId, itemId, quantity, bestSuppForItem, costForItem));
                             //add supplier details
-                            suppList.add(orderIdCounter);
+
                             orderIdCounter++;
                             suppliersMap.put(bestSuppForItem, suppList);
                         }
@@ -141,9 +142,8 @@ public class FacadeController {
                             orderMap.put(bestSuppForItem, addNewSuppOrder(localItemId, itemId, quantity, bestSuppForItem, costForItem,"Pending",LocalDate.now().plusDays(Main.plusDay)));
                             //add supplier details
                             List<Object> suppList = supplierController.getSuppDetails(bestSuppForItem);
-                            suppList.add(orderIdCounter);
+                            suppList.add(orderIdCounter-1);
                             suppliersMap.put(bestSuppForItem, suppList );
-                            orderIdCounter++;
                         }
                     } break;
                     case "C": { //when needed , supply alone
@@ -204,9 +204,8 @@ public class FacadeController {
                             orderMap.put(bestSuppForItem, addNewSuppOrder(localItemId, itemId, quantity, bestSuppForItem, costForItem,"Pending",LocalDate.now().plusDays(Main.plusDay)));
                             //add supplier details
                             List<Object> suppList = supplierController.getSuppDetails(bestSuppForItem);
-                            suppList.add(orderIdCounter);
+                            suppList.add(orderIdCounter-1);
                             suppliersMap.put(bestSuppForItem, suppList );
-                            orderIdCounter++;
                         }
                     } break;
                 }

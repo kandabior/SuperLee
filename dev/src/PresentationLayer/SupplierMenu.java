@@ -135,7 +135,6 @@ public class SupplierMenu {
     }
 
     private static int addItems(int suppId) {
-        int newItems = 0;
         Scanner scanner = new Scanner(System.in);
         System.out.print("Item's Global identifier: ");
         int itemId = scanner.nextInt();
@@ -156,7 +155,6 @@ public class SupplierMenu {
                 System.out.print("\nEnter local identifier: ");
                 itemLocalId = scanner.nextInt();
             }
-            newItems++;
             String name = fc.getItemNameById(itemId);
             System.out.print("Name: " + name);
             System.out.print("\nInsert more items? [Y/N] ");
