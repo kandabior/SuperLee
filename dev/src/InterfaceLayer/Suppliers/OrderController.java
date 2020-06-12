@@ -47,8 +47,8 @@ public class OrderController {
        return this.order.checkIfOrderExists(orderId);
     }
 
-    public boolean updateOrderStatus(int orderId) {
-        return this.order.updateOrderStatus(orderId);
+    public boolean updateOrderStatus(int orderId,boolean status) {
+        return this.order.updateOrderStatus(orderId,status);
     }
 
     public String getOrderStatus(int orderId) {
@@ -104,7 +104,7 @@ public class OrderController {
     }
 
 
-    public Map<Pair<Integer,Integer>, Pair<Integer, Double>> getOrdersByDat(LocalDate day) {
+    public Map<Pair<Integer,Integer>, List<Object>> getOrdersByDat(LocalDate day) {
         return this.order.getOrdersByDat(day);
     }
 

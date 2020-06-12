@@ -297,12 +297,15 @@ public class OrderMapper {
         return false;
     }
 
-    public boolean updateOrderStatus(int orderId) {
+    public boolean updateOrderStatus(int orderId,boolean status) {
         try {
             if (tryOpen()) {
                 conn.setAutoCommit(false);
                 PreparedStatement st = conn.prepareStatement("UPDATE Orders SET status = ? WHERE id = ?;");
-                st.setString(1, "Complete");
+                if(status)
+                    st.setString(1, "Complete");
+                else
+                    st.setString(1, "Canceled");
                 st.setInt(2, orderId);
                 int rowNum = st.executeUpdate();
                 if (rowNum != 0) {
@@ -324,8 +327,8 @@ public class OrderMapper {
 
     }
 
-    public Map<Pair<Integer,Integer>, Pair<Integer, Double>> getOrdersByDat(LocalDate day) {
-        Map<Pair<Integer,Integer>, Pair<Integer, Double>> map = new HashMap<>();
+    public Map<Pair<Integer,Integer>, List<Object>>  getOrdersByDat(LocalDate day) {
+        Map<Pair<Integer,Integer>, List<Object>>  map = new HashMap<>();
         String date = day.toString();
         List<Pair<Integer,Integer>> ordersId = getOrdersIdByDate(date);
         try {
@@ -339,11 +342,20 @@ public class OrderMapper {
                     while (res.next()) {
                         Pair<Integer,Integer> GidLid = new Pair(res.getInt("itemId"),getLocalItemId(res.getInt("itemId"), ordersId.get(i).getValue()));
                         Pair<Integer,Double> QuantityCost =new Pair(res.getInt("itemQuantity"),res.getDouble("finalCost"));
-                        map.put(GidLid,QuantityCost);
+                        int branchId = getBranchId(ordersId.get(i).getKey());
+                        List<Object> temp = new LinkedList();
+                        temp.add(QuantityCost.getKey());
+                        temp.add(QuantityCost.getValue());
+                        temp.add(branchId);
+                        map.put(GidLid,temp);
                     }
                     st.close();
                 }
                 conn.close();
+                //update the orders status
+                for(int j=0 ; j<ordersId.size();j++) {
+                    updateOrderStatus(ordersId.get(j).getKey(),true);
+                }
                 return map;
             }
             else return null;
@@ -352,6 +364,28 @@ public class OrderMapper {
             tryClose();
             return null;
         }
+    }
+
+    private int getBranchId(Integer key) {
+        int branchId = -1;
+        try {
+            if (tryOpen()) {
+                conn.setAutoCommit(false);
+                PreparedStatement st = conn.prepareStatement("SELECT branchId  FROM Orders WHERE id = ?;");
+                st.setInt(1, key);
+                ResultSet res = st.executeQuery();
+                if (res.next()) {
+                    branchId = res.getInt("branchId");
+                }
+                st.close();
+                conn.close();
+                return branchId;
+            }
+        } catch (Exception e) {
+            //System.err.println(e.getClass().getName() + ": " + e.getMessage());
+            tryClose();
+        }
+        return branchId;
     }
 
     private List<Pair<Integer,Integer>> getOrdersIdByDate(String date) {

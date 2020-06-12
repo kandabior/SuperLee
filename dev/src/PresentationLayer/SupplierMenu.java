@@ -22,8 +22,7 @@ public class SupplierMenu {
                 System.out.println("3. Manage supplier");
                 System.out.println("4. View previous orders");
                 System.out.println("5. Show all suppliers");
-                System.out.println("6. Update order status");
-                System.out.println("7. Main menu");
+                System.out.println("6. Main menu");
                 System.out.print("Option: ");
                 Scanner scanner = new Scanner(System.in);
                 choice = scanner.nextLine();
@@ -50,9 +49,6 @@ public class SupplierMenu {
                         showSuppliers();
                         break;
                     case "6":
-                        updateOrderStatus();
-                        break;
-                    case "7":
                         exit = true;
                         break;
                 }
@@ -79,21 +75,21 @@ public class SupplierMenu {
         }
     }
 
-    private static void updateOrderStatus() {
-        Scanner scanner = new Scanner(System.in);
-        System.out.print("Enter id of the arrived order: ");
-        int choice = scanner.nextInt();
-        if (fc.checkIfOrderExists(choice)) {
-            if(fc.updateOrderStatus(choice))
-            {
-                System.out.println("Status order is updated to COMPLETE.");
-            }
-            else
-                System.out.println("Status order Fail to change");
-        } else {
-            System.out.println("Order id was not found.");
-        }
-    }
+//    private static void updateOrderStatus() {
+//        Scanner scanner = new Scanner(System.in);
+//        System.out.print("Enter id of the arrived order: ");
+//        int choice = scanner.nextInt();
+//        if (fc.checkIfOrderExists(choice)) {
+//            if(fc.updateOrderStatus(choice))
+//            {
+//                System.out.println("Status order is updated to COMPLETE.");
+//            }
+//            else
+//                System.out.println("Status order Fail to change");
+//        } else {
+//            System.out.println("Order id was not found.");
+//        }
+//    }
 
     private static void deleteSupplier(int suppId) {
         if(fc.deleteSupplier(suppId))

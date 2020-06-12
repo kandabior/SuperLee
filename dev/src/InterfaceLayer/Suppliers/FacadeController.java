@@ -331,8 +331,8 @@ public class FacadeController {
        return orderController.checkIfOrderExists(orderId);
     }
 
-    public boolean updateOrderStatus(int orderId) {
-        return orderController.updateOrderStatus(orderId);
+    public boolean updateOrderStatus(int orderId,boolean status) {
+        return orderController.updateOrderStatus(orderId,status);
     }
 
     public String getOrderStatus(int orderId) {
@@ -377,7 +377,7 @@ public class FacadeController {
     }
 
     public void PromoteDay(LocalDate day) {
-        Map<Pair<Integer,Integer>, Pair<Integer, Double>> map = new HashMap();
+        Map<Pair<Integer,Integer>, List<Object>> map = new HashMap();//list[0]= quantity, list[1]=cost, list[2]=branchid
         map=this.orderController.getOrdersByDat(day);
         InventoryController.getInventoryController().getProducts(map);
     }

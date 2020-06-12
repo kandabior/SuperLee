@@ -61,11 +61,11 @@ public class Order {
         return this.orderMapper.checkIfOrderExists(orderId);
     }
 
-    public boolean updateOrderStatus(int orderId) {
-        return this.orderMapper.updateOrderStatus(orderId);
+    public boolean updateOrderStatus(int orderId,boolean status) {
+        return this.orderMapper.updateOrderStatus(orderId,status);
     }
 
-    public Map<Pair<Integer,Integer>, Pair<Integer, Double>> getOrdersByDat(LocalDate day) {
+    public Map<Pair<Integer,Integer>, List<Object>> getOrdersByDat(LocalDate day) {
         return this.orderMapper.getOrdersByDat(day);
     }
 }
