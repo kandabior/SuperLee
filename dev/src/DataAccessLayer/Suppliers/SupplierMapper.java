@@ -74,7 +74,7 @@ public class SupplierMapper {
             } else return false;
         } catch (Exception e) {
             tryClose();
-            System.err.println(e.getClass().getName() + ": " + e.getMessage());
+           // System.err.println(e.getClass().getName() + ": " + e.getMessage());
             return false;
         }
         return false;
@@ -99,7 +99,7 @@ public class SupplierMapper {
             }
         } catch (Exception e) {
             tryClose();
-            System.err.println(e.getClass().getName() + ": " + e.getMessage());
+            //System.err.println(e.getClass().getName() + ": " + e.getMessage());
             return false;
         }
         return false;
@@ -125,7 +125,7 @@ public class SupplierMapper {
             }
         } catch (Exception e) {
             tryClose();
-            System.err.println(e.getClass().getName() + ": " + e.getMessage());
+            //System.err.println(e.getClass().getName() + ": " + e.getMessage());
             return false;
         }
         return false;
@@ -176,7 +176,7 @@ public class SupplierMapper {
             } else return 0;
         } catch (Exception e) {
             tryClose();
-            System.err.println(e.getClass().getName() + ": " + e.getMessage());
+           // System.err.println(e.getClass().getName() + ": " + e.getMessage());
             return 0;
         }
     }
@@ -196,7 +196,7 @@ public class SupplierMapper {
                 return supplierItemsId;
             } else return null;
         } catch (Exception e) {
-            System.err.println(e.getClass().getName() + ": " + e.getMessage());
+           // System.err.println(e.getClass().getName() + ": " + e.getMessage());
             tryClose();
             return null;
         }
@@ -218,7 +218,7 @@ public class SupplierMapper {
                 return supplierItemsId;
             } else return null;
         } catch (Exception e) {
-            System.err.println(e.getClass().getName() + ": " + e.getMessage());
+            //System.err.println(e.getClass().getName() + ": " + e.getMessage());
             tryClose();
             return null;
         }
@@ -244,7 +244,7 @@ public class SupplierMapper {
                 return true;
             } else return false;
         } catch (Exception e) {
-            System.err.println(e.getClass().getName() + ": " + e.getMessage());
+            //System.err.println(e.getClass().getName() + ": " + e.getMessage());
             return false;
         }
     }
@@ -270,7 +270,7 @@ public class SupplierMapper {
                 return true;
             } else return false;
         } catch (Exception e) {
-            System.err.println(e.getClass().getName() + ": " + e.getMessage());
+            //System.err.println(e.getClass().getName() + ": " + e.getMessage());
             return false;
         }
     }
@@ -296,7 +296,7 @@ public class SupplierMapper {
                 return false;
             }
         } catch (Exception e) {
-            System.err.println(e.getClass().getName() + ": " + e.getMessage());
+           // System.err.println(e.getClass().getName() + ": " + e.getMessage());
             tryClose();
             return false;
         }
@@ -340,7 +340,7 @@ public class SupplierMapper {
             }
         } catch (Exception e) {
             tryClose();
-            System.err.println(e.getClass().getName() + ": " + e.getMessage());
+            //System.err.println(e.getClass().getName() + ": " + e.getMessage());
             return null;
         }
         return items;
@@ -360,7 +360,7 @@ public class SupplierMapper {
                 return supplierId;
             } else return null;
         } catch (Exception e) {
-            System.err.println(e.getClass().getName() + ": " + e.getMessage());
+            //System.err.println(e.getClass().getName() + ": " + e.getMessage());
             tryClose();
             return null;
         }
@@ -388,7 +388,7 @@ public class SupplierMapper {
             }
         } catch (Exception e) {
             tryClose();
-            System.err.println(e.getClass().getName() + ": " + e.getMessage());
+            //System.err.println(e.getClass().getName() + ": " + e.getMessage());
             return false;
         }
         return false;
@@ -416,7 +416,7 @@ public class SupplierMapper {
             }
         } catch (Exception e) {
             tryClose();
-            System.err.println(e.getClass().getName() + ": " + e.getMessage());
+            //System.err.println(e.getClass().getName() + ": " + e.getMessage());
             return false;
         }
         return false;
@@ -440,7 +440,7 @@ public class SupplierMapper {
                 return discount;
             } else return 0.0;
         } catch (Exception e) {
-            System.err.println(e.getClass().getName() + ": " + e.getMessage());
+           // System.err.println(e.getClass().getName() + ": " + e.getMessage());
             tryClose();
             return 0.0;
         }
@@ -463,7 +463,7 @@ public class SupplierMapper {
                 return cost;
             } else return 0.0;
         } catch (Exception e) {
-            System.err.println(e.getClass().getName() + ": " + e.getMessage());
+            //System.err.println(e.getClass().getName() + ": " + e.getMessage());
             tryClose();
             return 0.0;
         }
@@ -485,7 +485,7 @@ public class SupplierMapper {
                 return counter;
             }
         } catch (Exception e) {
-            System.err.println(e.getClass().getName() + ": " + e.getMessage());
+           // System.err.println(e.getClass().getName() + ": " + e.getMessage());
             tryClose();
         }
         return counter;
@@ -509,7 +509,7 @@ public class SupplierMapper {
                 return supplierDetails;
             } else return null;
         } catch (Exception e) {
-            System.err.println(e.getClass().getName() + ": " + e.getMessage());
+            //System.err.println(e.getClass().getName() + ": " + e.getMessage());
             tryClose();
             return null;
         }
@@ -539,7 +539,7 @@ public class SupplierMapper {
                 }
             } else return;
         } catch (Exception e) {
-            System.err.println(e.getClass().getName() + ": " + e.getMessage());
+           // System.err.println(e.getClass().getName() + ": " + e.getMessage());
             tryClose();
         }
     }
@@ -565,7 +565,7 @@ public class SupplierMapper {
             }
         } catch (Exception e) {
             tryClose();
-            System.err.println(e.getClass().getName() + ": " + e.getMessage());
+            //System.err.println(e.getClass().getName() + ": " + e.getMessage());
             return false;
         }
         return false;
@@ -592,7 +592,7 @@ public class SupplierMapper {
                 return suppliers;
             } else return null;
         } catch (Exception e) {
-            System.err.println(e.getClass().getName() + ": " + e.getMessage());
+           // System.err.println(e.getClass().getName() + ": " + e.getMessage());
             tryClose();
             return null;
         }
@@ -616,7 +616,7 @@ public class SupplierMapper {
                 return localItemId;
             }
         } catch (Exception e) {
-            System.err.println(e.getClass().getName() + ": " + e.getMessage());
+            //System.err.println(e.getClass().getName() + ": " + e.getMessage());
             tryClose();
         }
         return localItemId;
@@ -652,7 +652,7 @@ public class SupplierMapper {
             } else return false;
         } catch (Exception e) {
             tryClose();
-            System.err.println(e.getClass().getName() + ": " + e.getMessage());
+            //System.err.println(e.getClass().getName() + ": " + e.getMessage());
             return false;
         }
     }
@@ -672,7 +672,7 @@ public class SupplierMapper {
                 return type;
             }
         } catch (Exception e) {
-            System.err.println(e.getClass().getName() + ": " + e.getMessage());
+            //System.err.println(e.getClass().getName() + ": " + e.getMessage());
             tryClose();
         }
         return type;
@@ -693,7 +693,7 @@ public class SupplierMapper {
                 return days;
             }
         } catch (Exception e) {
-            System.err.println(e.getClass().getName() + ": " + e.getMessage());
+            //System.err.println(e.getClass().getName() + ": " + e.getMessage());
             tryClose();
         }
         return days;
@@ -718,7 +718,7 @@ public class SupplierMapper {
                 return ids;
             }
         } catch (Exception e) {
-            System.err.println(e.getClass().getName() + ": " + e.getMessage());
+            //System.err.println(e.getClass().getName() + ": " + e.getMessage());
             tryClose();
         }
         return ids;

@@ -392,7 +392,7 @@ public class OrderMapper {
             }
             else return null;
         } catch(Exception e){
-            System.err.println(e.getClass().getName() + ": " + e.getMessage());
+            //System.err.println(e.getClass().getName() + ": " + e.getMessage());
             tryClose();
             return null;
         }
@@ -465,27 +465,6 @@ public class OrderMapper {
         }
     }
 
-    public int getLocalItemId(int itemId,int suppId) {
-        int localItemId = -1;
-        try {
-            if (tryOpen()) {
-                PreparedStatement st = conn.prepareStatement("SELECT localItemId FROM SupplierItems WHERE itemId = ? AND SupplierId = ?;");
-                st.setInt(1, itemId);
-                st.setInt(2, suppId);
-                ResultSet res = st.executeQuery();
-                if (res.next()) {
-                    localItemId = res.getInt("localItemId");
-                }
-                st.close();
-                conn.close();
-                return localItemId;
-            }
-        } catch (Exception e) {
-            System.err.println(e.getClass().getName() + ": " + e.getMessage());
-            tryClose();
-        }
-        return localItemId;
-    }
 
 
 }
