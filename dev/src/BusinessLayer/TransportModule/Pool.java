@@ -178,7 +178,7 @@ public class Pool {
     private void informSupplier(List<Integer> ordersId, boolean status) {
         Iterator<Integer> itr = ordersId.iterator();
         while (itr.hasNext()){
-            //FacadeController.getFacadeController().updateOrderStatus(itr.next(), status);
+            FacadeController.getFacadeController().updateOrderStatus(itr.next(), status);
         }
     }
 
