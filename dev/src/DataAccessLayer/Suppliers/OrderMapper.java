@@ -300,26 +300,53 @@ public class OrderMapper {
     public boolean updateOrderStatus(int orderId,boolean status) {
         try {
             if (tryOpen()) {
-                conn.setAutoCommit(false);
                 PreparedStatement st = conn.prepareStatement("UPDATE Orders SET status = ? WHERE id = ?;");
-                if(status)
+                st.setInt(2, orderId);
+                if (status)
                     st.setString(1, "Complete");
                 else
                     st.setString(1, "Canceled");
-                st.setInt(2, orderId);
                 int rowNum = st.executeUpdate();
                 if (rowNum != 0) {
                     conn.commit();
-                    conn.close();
+                    // conn.close();
                 } else {
                     conn.rollback();
-                    conn.close();
+                    // conn.close();
                     st.close();
                     return false;
                 }
                 st.close();
                 return true;
-            } else return false;
+            }
+            else
+                return false;
+        } catch (Exception e) {
+            //System.err.println(e.getClass().getName() + ": " + e.getMessage());
+            return false;
+        }
+
+    }
+    public boolean updateOrderStatus1(int orderId,boolean status) {
+        try {
+            PreparedStatement st = conn.prepareStatement("UPDATE Orders SET status = ? WHERE id = ?;");
+            st.setInt(2, orderId);
+            if(status)
+                st.setString(1, "Complete");
+            else
+                st.setString(1, "Canceled");
+            int rowNum = st.executeUpdate();
+            if (rowNum != 0) {
+                conn.commit();
+                // conn.close();
+            } else {
+                conn.rollback();
+                // conn.close();
+                st.close();
+                return false;
+            }
+            st.close();
+            return true;
         } catch (Exception e) {
             //System.err.println(e.getClass().getName() + ": " + e.getMessage());
             return false;
@@ -340,7 +367,8 @@ public class OrderMapper {
                     st.setInt(1, ordersId.get(i).getKey());
                     ResultSet res = st.executeQuery();
                     while (res.next()) {
-                        Pair<Integer,Integer> GidLid = new Pair(res.getInt("itemId"),getLocalItemId(res.getInt("itemId"), ordersId.get(i).getValue()));
+                        int globalId = getGlobalId(ordersId.get(i).getValue(),res.getInt("itemId"));
+                        Pair<Integer,Integer> GidLid = new Pair(globalId,res.getInt("itemId"));
                         Pair<Integer,Double> QuantityCost =new Pair(res.getInt("itemQuantity"),res.getDouble("finalCost"));
                         int branchId = getBranchId(ordersId.get(i).getKey());
                         List<Object> temp = new LinkedList();
@@ -351,25 +379,49 @@ public class OrderMapper {
                     }
                     st.close();
                 }
-                conn.close();
                 //update the orders status
                 for(int j=0 ; j<ordersId.size();j++) {
-                    updateOrderStatus(ordersId.get(j).getKey(),true);
+                    if(!updateOrderStatus1(ordersId.get(j).getKey(),true))
+                    {
+                        tryClose();
+                        return null;
+                    }
                 }
+                tryClose();
                 return map;
             }
             else return null;
         } catch(Exception e){
-            //System.err.println(e.getClass().getName() + ": " + e.getMessage());
+            System.err.println(e.getClass().getName() + ": " + e.getMessage());
             tryClose();
             return null;
         }
     }
 
+    private int getGlobalId(Integer suppId, int localItemId) {//get supplier id /lovalitemID
+        int GlobalId = -1;
+        try {
+                conn.setAutoCommit(false);
+                PreparedStatement st = conn.prepareStatement("SELECT ItemId  FROM SupplierItems WHERE SupplierId = ? AND localItemId = ?;");
+                st.setInt(1, suppId);
+                st.setInt(2, localItemId);
+                ResultSet res = st.executeQuery();
+                if (res.next()) {
+                    GlobalId = res.getInt("ItemId");
+                }
+                st.close();
+                //conn.close();
+                return GlobalId;
+        } catch (Exception e) {
+            //System.err.println(e.getClass().getName() + ": " + e.getMessage());
+            tryClose();
+        }
+        return GlobalId;
+    }
+
     private int getBranchId(Integer key) {
         int branchId = -1;
         try {
-            if (tryOpen()) {
                 conn.setAutoCommit(false);
                 PreparedStatement st = conn.prepareStatement("SELECT branchId  FROM Orders WHERE id = ?;");
                 st.setInt(1, key);
@@ -378,9 +430,8 @@ public class OrderMapper {
                     branchId = res.getInt("branchId");
                 }
                 st.close();
-                conn.close();
+                //conn.close();
                 return branchId;
-            }
         } catch (Exception e) {
             //System.err.println(e.getClass().getName() + ": " + e.getMessage());
             tryClose();

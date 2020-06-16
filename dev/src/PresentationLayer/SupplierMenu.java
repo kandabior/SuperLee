@@ -246,7 +246,8 @@ public class SupplierMenu {
             System.out.println("2. Edit agreement");
             System.out.println("3. Add bill of quantities");
             System.out.println("4. Edit bill of quantities");
-            System.out.println("5. Back");
+            System.out.println("5. Show suppliers items");
+            System.out.println("6. Back");
             System.out.print("Option: ");
             choice = scanner.nextLine();
             switch (choice) {
@@ -287,11 +288,18 @@ public class SupplierMenu {
                     editBillOfQuantities(suppId);
                     break;
                 case "5":
+                    showSuppliersItems(suppId);
+                    break;
+                case "6":
                     backToManageSupplierMenu = true;
                     break;
             }
         }
         return backToManageSupplierMenu;
+    }
+
+    private static void showSuppliersItems(int suppId) {
+        displayItems(suppId);
     }
 
     private static void editBillOfQuantities(int suppId) {
@@ -396,7 +404,7 @@ public class SupplierMenu {
                 int itemId = iter.next();
                 String itemName = fc.getItemNameById(itemId);
                 double itemPrice = terms.get(itemId);
-                System.out.println("Global Id: "+itemId+" Local Item Id: "+listLocalId.get(i) + itemName + ", " + itemPrice + " NIS");
+                System.out.println("Global Id: "+itemId+" Local Item Id: "+listLocalId.get(i) +" item name: "+ itemName + ", " + itemPrice + " NIS");
             }
         }
     }

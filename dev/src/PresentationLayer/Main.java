@@ -58,7 +58,7 @@ public class Main {
                 Printer.Print("Can't execute the action.");
             }
         }
-        while (choose != 6);
+        while (choose != 7);
         System.out.println("Shutting down the system...");
     }
 

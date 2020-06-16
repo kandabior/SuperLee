@@ -89,7 +89,8 @@ public class FacadeController {
                             List<Object> suppList = supplierController.getSuppDetails(bestSuppForItem);
                             suppList.add(orderIdCounter);
                             suppList.add(supplierController.getSupplyDays(bestSuppForItem));
-                                int day1 =((List<Integer>)suppList.get(5)).get(0)-getCurrentDay(LocalDate.now().plusDays(Main.plusDay));
+                                int day1 =getBestDay((List<Integer>)suppList.get(5),getCurrentDay(LocalDate.now().plusDays(Main.plusDay)));
+                                       // ((List<Integer>)suppList.get(5)).get(0)-getCurrentDay(LocalDate.now().plusDays(Main.plusDay));
                                 LocalDate date;
                                 if(day1>=0)
                                    date =  LocalDate.now().plusDays(Main.plusDay+day1);
@@ -222,6 +223,16 @@ public class FacadeController {
 
         }
         return map;
+    }
+
+    private int getBestDay(List<Integer> integers, Integer currentDay) {
+        int min =8;
+        for(int i=0;i<integers.size();i++)
+        {
+         if(Math.abs(currentDay-integers.get(i))<min)
+             min =integers.get(i);
+        }
+        return min;
     }
 
 
