@@ -301,7 +301,7 @@ public class DocsMapper {
                 int rowNum = statement.executeUpdate();
                 if (rowNum != 0) {
                     statement.close();
-                    ;
+
                     con.commit();
                     con.close();
                 } else {
@@ -770,6 +770,168 @@ public class DocsMapper {
             }
         } catch (Exception e) {
             System.err.println(e.getClass().getName() + ": " + e.getMessage());
+        }
+    }
+
+    public boolean hasTransport(String date) {
+        try {
+            if (tryOpen()) {
+                Class.forName("org.sqlite.JDBC");
+                con.setAutoCommit(false);
+                PreparedStatement statement = con.prepareStatement("SELECT * FROM TransportDocs WHERE date = ? AND status = ?;");
+                statement.setString(1, date);
+                statement.setString(2, "PENDING");
+                ResultSet res = statement.executeQuery();
+                if (res.next()) {
+                    con.commit();
+                    con.close();
+                    statement.close();
+                    return true;
+                } else {
+                    con.rollback();
+                    con.close();
+                    statement.close();
+                    return false;
+                }
+            }
+        } catch (Exception e) {
+            tryClose();
+            System.err.println(e.getClass().getName() + ": " + e.getMessage());
+            return false;
+        }
+        return false;
+    }
+
+    public boolean hasTransport(int brunchId, String date) {
+        try {
+            if (tryOpen()) {
+                Class.forName("org.sqlite.JDBC");
+                con.setAutoCommit(false);
+                PreparedStatement statement = con.prepareStatement("SELECT * FROM TransportDocs JOIN DocStores on DocId = ID WHERE date = ? AND status = ? AND SID = ? ;");
+                statement.setString(1, date);
+                statement.setString(2, "PENDING");
+                statement.setInt(3, brunchId);
+                ResultSet res = statement.executeQuery();
+                if (res.next()) {
+                    con.commit();
+                    con.close();
+                    statement.close();
+                    return true;
+                } else {
+                    con.rollback();
+                    con.close();
+                    statement.close();
+                    return false;
+                }
+            }
+        } catch (Exception e) {
+            tryClose();
+            System.err.println(e.getClass().getName() + ": " + e.getMessage());
+            return false;
+        }
+        return false;
+    }
+
+    public List<Integer> getRequest() {
+        List<Integer> orders = new LinkedList<>();
+        try {
+            Class.forName("org.sqlite.JDBC");
+            con.setAutoCommit(false);
+            PreparedStatement statement = con.prepareStatement("SELECT orderId FROM CancellationRequests WHERE answerEmployee = ?;");
+            statement.setInt(1, 2);
+            ResultSet result = statement.executeQuery();
+            while (result.next()) {
+                orders.add(result.getInt("orderId"));
+            }
+            statement.close();
+            return orders;
+        } catch (Exception e) {
+            System.err.println(e.getClass().getName() + ": " + e.getMessage());
+            return null;
+        }
+    }
+
+    public String getReqString(Integer orderId) {
+        try {
+            if (tryOpen()) {
+                Class.forName("org.sqlite.JDBC");
+                con.setAutoCommit(false);
+                PreparedStatement statement = con.prepareStatement("SELECT orderId,docId,date FROM TransportDocs JOIN TransportOrders ON ID = DocId WHERE orderID = ? AND status = ?;");
+                statement.setInt(1, orderId);
+                statement.setString(2, "PENDING");
+                ResultSet result = statement.executeQuery();
+                if (result.next()) {
+                    String s = "Order number " +  result.getInt(1) + " from Transport number " + result.getInt(2) + " on date " + result.getString(3);
+                    statement.close();
+                    con.close();
+                    return s;
+                } else
+                    return "Invalid Order ID";
+            } else return null;
+        } catch (Exception e) {
+            System.err.println(e.getClass().getName() + ": " + e.getMessage());
+            tryClose();
+            return null;
+        }
+    }
+
+    public int getTransportId(int orderId) {
+
+        try {
+            Class.forName("org.sqlite.JDBC");
+            con.setAutoCommit(false);
+            PreparedStatement statement = con.prepareStatement("SELECT DocId FROM transportOrders WHERE orderId = ?;");
+            statement.setInt(1, orderId);
+            ResultSet result = statement.executeQuery();
+            if (result.next()) {
+                return result.getInt(1);
+            }
+            statement.close();
+            return -1;
+        } catch (Exception e) {
+            System.err.println(e.getClass().getName() + ": " + e.getMessage());
+            return -1;
+        }
+    }
+
+    public void removeRequest(int orderId) {
+        try {
+            if (tryOpen()) {
+                Class.forName("org.sqlite.JDBC");
+                con.setAutoCommit(false);
+                PreparedStatement st = con.prepareStatement("DELETE FROM CancellationRequests WHERE orderId = (?);");
+                st.setInt(1, orderId);
+                int rowNum = st.executeUpdate();
+                st.close();
+                if (rowNum != 0) {
+                    con.commit();
+                    con.close();
+                } else {
+                    con.rollback();
+                    con.close();
+                }
+            }
+        } catch (Exception e) {
+            tryClose();
+            System.err.println(e.getClass().getName() + ": " + e.getMessage());
+        }
+    }
+
+    public String getTransportDate(int docId) {
+        try {
+            Class.forName("org.sqlite.JDBC");
+            con.setAutoCommit(false);
+            PreparedStatement statement = con.prepareStatement("SELECT date FROM transportDocs WHERE ID = ?;");
+            statement.setInt(1, docId);
+            ResultSet result = statement.executeQuery();
+            if (result.next()) {
+                return result.getString(1);
+            }
+            statement.close();
+            return "";
+        } catch (Exception e) {
+            System.err.println(e.getClass().getName() + ": " + e.getMessage());
+            return "";
         }
     }
 }

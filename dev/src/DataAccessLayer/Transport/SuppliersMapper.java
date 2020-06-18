@@ -10,7 +10,7 @@ import java.util.List;
 public class SuppliersMapper {
     private Connection con;
 
-    public void addSupplier(DTO_Supplier s) {
+   /* public void addSupplier(DTO_Supplier s) {
         try {
             if (tryOpen()) {
                 Class.forName("org.sqlite.JDBC");
@@ -34,7 +34,7 @@ public class SuppliersMapper {
         } catch (Exception e) {
             System.err.println(e.getClass().getName() + ": " + e.getMessage());
         }
-    }
+    }*/
 
 
     public int getSupplierId() {
@@ -42,7 +42,7 @@ public class SuppliersMapper {
             if (tryOpen()) {
                 Class.forName("org.sqlite.JDBC");
                 con.setAutoCommit(false);
-                PreparedStatement statement = con.prepareStatement("SELECT max(ID)  FROM Suppliers;");
+                PreparedStatement statement = con.prepareStatement("SELECT max(id)  FROM Suppliers;");
                 ResultSet result = statement.executeQuery();
                 if (result.next()) {
                     int maxId = result.getInt(1);
@@ -89,7 +89,7 @@ public class SuppliersMapper {
         return false;
     }
 
-    public void removeSupplier(int id) {
+    /*public void removeSupplier(int id) {
         try {
             if (tryOpen()) {
                 Class.forName("org.sqlite.JDBC");
@@ -110,7 +110,7 @@ public class SuppliersMapper {
             tryClose();
             System.err.println(e.getClass().getName() + ": " + e.getMessage());
         }
-    }
+    }*/
 
     private boolean tryOpen() {
         try {
@@ -138,10 +138,10 @@ public class SuppliersMapper {
             if (tryOpen()) {
                 Class.forName("org.sqlite.JDBC");
                 con.setAutoCommit(false);
-                PreparedStatement statement = con.prepareStatement("SELECT * FROM Suppliers;");
+                PreparedStatement statement = con.prepareStatement("SELECT id,supplyLocation,phoneNum,name FROM Suppliers;");
                 ResultSet result = statement.executeQuery();
                 while (result.next()) {
-                    DTO_Supplier s = new DTO_Supplier(result.getInt(1), result.getString(2),result.getString(3), result.getString(4), result.getInt(5));
+                    DTO_Supplier s = new DTO_Supplier(result.getInt(1), result.getString(2),result.getString(3), result.getString(4), 0);
                     suppliers.add(s.toString());
                 }
                 statement.close();
@@ -155,7 +155,7 @@ public class SuppliersMapper {
         }
     }
 
-    public void updateSupplier(int supplierId, String address, String phoneNumber, String contactName) {
+   /* public void updateSupplier(int supplierId, String address, String phoneNumber, String contactName) {
         try {
             if (tryOpen()) {
                 Class.forName("org.sqlite.JDBC");
@@ -184,9 +184,9 @@ public class SuppliersMapper {
             System.err.println(e.getClass().getName() + ": " + e.getMessage());
         }
 
-    }
+    }*/
 
-    public boolean validArea(int area) {
+    /*public boolean validArea(int area) {
         try {
             if (tryOpen()) {
                 Class.forName("org.sqlite.JDBC");
@@ -212,9 +212,9 @@ public class SuppliersMapper {
             return false;
         }
         return false;
-    }
+    }*/
 
-    public List<DTO_Supplier> getSupplierInArea(int area) {
+    /*public List<DTO_Supplier> getSupplierInArea(int area) {
         List<DTO_Supplier> SuppliersInArea = new LinkedList<>();
         try {
             if (tryOpen()) {
@@ -238,5 +238,5 @@ public class SuppliersMapper {
             tryClose();
             return null;
         }
-    }
+    }*/
 }

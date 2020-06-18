@@ -7,7 +7,9 @@ import javafx.util.Pair;
 import org.omg.PortableInterceptor.SYSTEM_EXCEPTION;
 import src.InterfaceLayer.Inventory.InventoryController;
 import src.InterfaceLayer.Suppliers.FacadeController;
+import src.PresentationLayer.Main;
 
+import java.time.LocalDate;
 import java.util.*;
 
 
@@ -61,7 +63,7 @@ public class Pool {
         return occupiedDriversPool.toString();
     }
 
-    public void addSupplier(String address, String phoneNumber, String contactName, int area) {
+   /* public void addSupplier(String address, String phoneNumber, String contactName, int area) {
         suppliersPool.addSupplier(address, phoneNumber, contactName, area);
     }
 
@@ -71,7 +73,7 @@ public class Pool {
 
     public void removeSupplier(int id) {
         suppliersPool.deleteSupplier(id);
-    }
+    }*/
 
     public List<String> SupplierToString() {
         return suppliersPool.SupplierstoString();
@@ -99,19 +101,19 @@ public class Pool {
 
     }
 
-    public List<String> getSuppliers(int area) {
+   /* public List<String> getSuppliers(int area) {
         return suppliersPool.getSuppliers(area);
     }
-
+*/
 
     public boolean validStore(int id, int area) {
         return storesPool.validStore(id, area);
     }
-
+/*
     public boolean validSupplier(int id, int area) {
         return suppliersPool.validSupplier(id, area);
     }
-
+*/
     public boolean validTruck(String id, Date date) {
         return trucksPool.validTruck(id, date);
     }
@@ -164,7 +166,7 @@ public class Pool {
             double different = docsPool.addWeight(dto_doc, total, maxWeight);
             List<Integer> ordersId = docsPool.getOrdersId(docId);
             if (different == 0) {
-                informSupplier(ordersId, true);
+               // informSupplier(ordersId, true);
                 InventoryController.getInventoryController().getProductsOneBranch(docsPool.getStoresFromDoc(docId).get(0), docsPool.getFullItems(docId));
             }
             else
@@ -203,9 +205,9 @@ public class Pool {
         return storesPool.isExistsId(id);
     }
 
-    public void UpdateSupplier(int id, String address, String phoneNumber, String contactName) {
+/*    public void UpdateSupplier(int id, String address, String phoneNumber, String contactName) {
         suppliersPool.Update(id, address, phoneNumber, contactName);
-    }
+    }*/
 
     public void UpdateStore(int id, String address, String phoneNumber, String contactName) {
         storesPool.Update(id, address, phoneNumber, contactName);
@@ -218,10 +220,10 @@ public class Pool {
     public List<String> PrintPendingDoc() {
         return docsPool.getPendingDocs();
     }
-
+/*
     public boolean validArea(int area) {
         return (storesPool.validArea(area) & suppliersPool.validArea(area));
-    }
+    }*/
     //public boolean validLicense(String license){return driversPool.isValidLicense(license);}
 
     public void addDateToDriver(int driverId, Date date) {
@@ -385,32 +387,32 @@ public class Pool {
         while (itr.hasNext()) {
             int tid = itr.next();
             DTO_TransportDoc doc = docsPool.getDoc(tid);
-            Date now = new Date();
-            Date date = stringToDate(doc.getDate());
+            Date date1 = stringToDate(doc.getDate());
+            LocalDate date2 = stringToLocalDate(doc.getDate());
             List<Integer> ordersId = docsPool.getOrdersId(doc.getId());
-            if (date.before(now)) {
+            if (date2.isBefore(LocalDate.now().plusDays(Main.plusDay))) {
                 docsPool.removeFromWaitingTransport(doc.getId());
                 docsPool.updateFailTransport(doc.getId());
                 informSupplier(ordersId, false);
                 if (doc.getDriverId() != -1) {
-                    freeDriverDate(doc.getDriverId(), date);
-                    freeTruckDate(doc.getTruckId(), date);
+                    freeDriverDate(doc.getDriverId(), date1);
+                    freeTruckDate(doc.getTruckId(), date1);
                 }
             }
             else { // date hasnt passed
-                if (employeeService.getStores(date).contains(doc.getStores().get(0))) {
+                if (employeeService.getStores(date1).contains(doc.getStores().get(0))) {
                     double weight = trucksPool.getWeight (doc.getTruckId());
                     String license;
                     if (weight > 12)
                         license = "C";
                     else
                         license = "C1";
-                    List<Integer> drivers = employeeService.getDrivers(date, license);
-                    drivers = occupiedDriversPool.validDrivers(drivers, date);
+                    List<Integer> drivers = employeeService.getDrivers(date1, license);
+                    drivers = occupiedDriversPool.validDrivers(drivers, date1);
                     if(!drivers.isEmpty()){
                         driverId = drivers.get(0);
                         driverName = employeeService.getDriverName(driverId);
-                        addDateToDriver(driverId,date);
+                        addDateToDriver(driverId,date1);
                         docsPool.addDriverToTransport(doc.getId(), driverId, driverName);
                         docsPool.removeFromWaitingTransport(doc.getId());
                         output.add(doc.getId());
@@ -434,7 +436,50 @@ public class Pool {
 
 
     public boolean transportIsToday(int docId) {
-        //TODO
-        return true;
+        String stringDate = docsPool.getTransportDate(docId);
+        LocalDate transportDate = stringToLocalDate(stringDate);
+        return LocalDate.now().plusDays(Main.plusDay).isEqual(transportDate);
+    }
+
+    public boolean hasTransport(int brunchId, String date) {
+        if(brunchId == 0)
+            return docsPool.hasTransport(date);
+        else
+            return docsPool.hasTransport(brunchId, date);
+    }
+
+    public List<Integer> getRequest() {
+        return docsPool.getRequest();
+    }
+
+    public String getReqString(Integer orderId) {
+        return docsPool.getReqString(orderId);
+    }
+
+    public void CancelRequest(int orderId) {
+        int docId = getTransportId(orderId);
+        DTO_TransportDoc doc = docsPool.getDoc(docId);
+        List<Integer> orders = docsPool.getOrdersId(docId);
+        docsPool.removeRequest(orderId);
+        docsPool.removeFromWaitingTransport(doc.getId());
+        informSupplier(orders, false);
+        docsPool.updateFailTransport(docId);
+        if (doc.getDriverId() != -1) {
+            freeDriverDate(doc.getDriverId(), stringToDate(doc.getDate()));
+            freeTruckDate(doc.getTruckId(),stringToDate(doc.getDate()));
+        }
+
+    }
+
+    private int getTransportId(int orderId) {
+       return docsPool.getTransportId(orderId);
+    }
+
+    private LocalDate stringToLocalDate(String stringDate){
+        String[] parts = stringDate.split("/");
+        int day = Integer.parseInt(parts[0]);
+        int month = Integer.parseInt(parts[1]);
+        int year = Integer.parseInt(parts[2]);
+        return LocalDate.of(year, month, day);
     }
 }

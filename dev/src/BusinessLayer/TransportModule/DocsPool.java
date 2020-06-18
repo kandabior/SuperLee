@@ -112,13 +112,13 @@ public class DocsPool {
         return new Date();
     }
 
-    public String getDriverId(int docId) {
+    /*public String getDriverId(int docId) {
         for (TransportDoc t:transportDocs){
             if(t.getId() == docId)
                 return t.getDriverId();
         }
         return "";
-    }
+    }*/
 
     public void removeDoc(int id) {
         /*TransportDoc doc = null;
@@ -262,5 +262,33 @@ public class DocsPool {
 
     public Map<Pair<Integer, Integer>, Pair<Integer, Double>> getFullItems(int docId) {
         return mapper.getFullItems(docId);
+    }
+
+    public boolean hasTransport(String date) {
+        return mapper.hasTransport(date);
+    }
+
+    public boolean hasTransport(int brunchId, String date) {
+        return mapper.hasTransport(brunchId, date);
+    }
+
+    public List<Integer> getRequest() {
+        return mapper.getRequest();
+    }
+
+    public String getReqString(Integer orderId) {
+        return mapper.getReqString(orderId);
+    }
+
+    public int getTransportId(int orderId) {
+        return mapper.getTransportId(orderId);
+    }
+
+    public void removeRequest(int orderId) {
+        mapper.removeRequest(orderId);
+    }
+
+    public String getTransportDate(int docId) {
+        return mapper.getTransportDate(docId);
     }
 }

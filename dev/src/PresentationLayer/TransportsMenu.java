@@ -2,10 +2,7 @@ package src.PresentationLayer;
 
 import src.BusinessLayer.TransportModule.Pool;
 
-import javax.swing.text.html.parser.DTDConstants;
-import java.sql.Driver;
 import java.util.*;
-import java.util.Date;
 
 
 public class TransportsMenu {
@@ -165,7 +162,7 @@ public class TransportsMenu {
                             docId = input.nextInt();
                             input.nextLine();
                         }
-                        if(!pool.transportIsToday(docId)) {
+                        if(pool.transportIsToday(docId)) {
                             System.out.print("Please enter the truck total weight\nTotal weight: ");
                             double total = input.nextDouble();
                             input.nextLine();
@@ -185,49 +182,34 @@ public class TransportsMenu {
                         }
                         break;
                     case 3://View Cancellation Requests
-                   /*     System.out.print("Enter transport id\nId: ");
-                        docId = input.nextInt();
+                        System.out.println("Please choose the option of the transport you would like to cancel or -1 to return to menu:");
+                        List<Integer> requests = pool.getRequest();
+                        List<String> reqString = new LinkedList<>();
+                        for (int i = 0; i < requests.size(); i++) {
+                            String s = pool.getReqString(requests.get(i));
+                            System.out.println(i +". " + s);
+                        }
+                        System.out.print("Option number: ");
+                        int op = input.nextInt();
                         input.nextLine();
-                        while (!pool.validTransport(docId)) {
-                            System.out.println("Invalid id,please enter a correct id");
-                            System.out.println("If you want to try again enter 1,else enter somthing else");
-                            if (!input.nextLine().equals("1"))
-                                menu();
-                            System.out.print("Id: ");
-                            docId = input.nextInt();
-                            input.nextLine();
-                        }
-                        System.out.println("Transport's stores:");
-                        stores = pool.getStoresFromDoc(docId);
-                        print(pool.getStoresStrings(stores));
-                        int i = 0;
-                        int itemId;
-                        int quantity;
-                        List<Map<Integer, Integer>> allItems = new LinkedList<>();
-                        while (i < stores.size()) {
-                            Map<Integer, Integer> items = new HashMap<>();
-                            addMore = true;
-                            System.out.println("Insert items id and quantitys for store: " + stores.get(i));
-                            while (addMore) {
-                                System.out.print("Item id: ");
-                                itemId = input.nextInt();
-                                input.nextLine();
-                                System.out.print("Quantity: ");
-                                quantity = input.nextInt();
-                                input.nextLine();
-                                items.put(itemId, quantity);
-                                System.out.println("In order to insert more items to store " + stores.get(i) + ", enter 1,else enter something else");
-                                addMore = input.nextLine().equals("1");
+                        if(op != -1) {
+                            if ((op < 0 | op >= requests.size()) || reqString.get(op).equals("Invalid Order ID"))
+                                System.out.println("Invalid option");
+                            else {
+                                int orderId = requests.get(op);
+                                pool.CancelRequest(orderId);
+                                System.out.println("Transport Canceled successfully");
                             }
-                            i++;
-                            allItems.add(items);
                         }
-                        pool.addItems(docId, stores, allItems);
-                        System.out.println("Items was added successfully");*/
+
                         break;
                     case 4://View transport system data
                         System.out.println("Please enter option number:\n" +
-                                "1. View pending transports\n2. View failed transports\n3. View successful transports\n4. View trucks\n5. View stores\n6. View suppliers\n");
+                                "1. View pending transports\n" +
+                                "2. View failed transports\n" +
+                                "3. View successful transports\n" +
+                                "4. View trucks\n" +
+                                "5. View stores\n");
                         option = input.nextInt();
                         input.nextLine();
                         switch (option) {
@@ -251,82 +233,16 @@ public class TransportsMenu {
                                 System.out.println("stores");
                                 print(pool.StoreToString());
                                 break;
-                            case 6:
-                                System.out.println("suppliers");
-                                print(pool.SupplierToString());
-                                break;
                             default:
                                 System.out.println("Invalid input");
                                 break;
 
                         }
                         break;
-                   /* case 5: //add/delete/update supplier
-                        System.out.println("Please enter option number:\n" +
-                                "1. Add supplier\n" +
-                                "2. Delete supplier\n" +
-                                "3. Update supplier");
-                        option = input.nextInt();
-                        input.nextLine();
-                        switch (option) {
-                            case 1://add supplier
-                                System.out.println("Enter address, phone number, contact name and area of the Supplier");
-                                System.out.print("address: ");
-                                String address = input.nextLine();
-                                System.out.print("phone number: ");
-                                String phoneNumber = input.nextLine();
-                                System.out.print("contact name: ");
-                                String contactName = input.nextLine();
-                                System.out.print("area: ");
-                                area = input.nextInt();
-                                input.nextLine();
-                                pool.addSupplier(address, phoneNumber, contactName, area);
-                                System.out.println("Supplier add successfully");
-                                break;
-                            case 2:// delete supplier
-                                System.out.println("Suppliers:");
-                                print(pool.SupplierToString());
-                                System.out.println("Enter the id of the supplier you want to delete");
-                                idNum = input.nextInt();
-                                input.nextLine();
-                                if (!pool.isExistsSupplier(idNum))
-                                    System.out.println("Invalid supplier id");
-                                else {
-                                    if (pool.supplierIsBusy(idNum))
-                                        System.out.println("Supplier is in a pending transport,therefore - cannot be removed");
-                                    else {
-                                        pool.removeSupplier(idNum);
-                                        System.out.println("Supplier removed successfully");
-                                    }
-                                }
-                                break;
-                            case 3: // update supplier
-                                print(pool.SupplierToString());
-                                System.out.println("Enter the id of the supplier you want to update");
-                                idNum = input.nextInt();
-                                input.nextLine();
-                                if (!pool.isExistsSupplier(idNum))
-                                    System.out.println("Invalid supplier id");
-                                else {
-                                    System.out.println("Enter address, phone number, contact name and area of the Supplier");
-                                    System.out.print("address: ");
-                                    address = input.nextLine();
-                                    System.out.print("phone number: ");
-                                    phoneNumber = input.nextLine();
-                                    System.out.print("contact name: ");
-                                    contactName = input.nextLine();
-                                    pool.UpdateSupplier(idNum, address, phoneNumber, contactName);
-                                    System.out.println("Supplier update successfully");
-                                }
-                                break;
-                            default:
-                                System.out.println("Invalid option number!");
-                                break;
-                        }
-                        break;*/
                     case 5://add/delete truck
                         System.out.println("Please enter option number:\n" +
-                                "1. Add truck\n2. Delete truck");
+                                "1. Add truck\n" +
+                                "2. Delete truck");
                         option = input.nextInt();
                         input.nextLine();
                         switch (option) {
@@ -349,10 +265,10 @@ public class TransportsMenu {
                             case 2://delete truck
                                 System.out.println("Trucks in the system:");
                                 print(pool.TtoString());
-                                System.out.println("Enter the id of the truck you want to delete\nid: ");
+                                System.out.print("Enter the id of the truck you want to delete\nid: ");
                                 id = input.nextLine();
                                 if (pool.isUniqueTruck(id)) //the truck doesnt exists
-                                    System.out.println("this truck doesn't exist");
+                                    System.out.println("Truck doesn't exist");
                                 else {
                                     if (pool.truckIsBusy(id))
                                         System.out.println("Truck is in a pending transport,therefore - cannot be removed");

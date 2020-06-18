@@ -24,7 +24,7 @@ public class SuppliersPool {
         mapper = new SuppliersMapper();
     }
 
-    public void addSupplier(String address, String phoneNumber, String contactName, int area){
+   /* public void addSupplier(String address, String phoneNumber, String contactName, int area){
         int maxId = mapper.getSupplierId();
         if(maxId >= 0) {
             DTO_Supplier s = new DTO_Supplier(maxId + 1, address, phoneNumber, contactName, area);
@@ -42,7 +42,7 @@ public class SuppliersPool {
             if(s.getId() == id)
                 sp = s;
         }
-        suppliers.remove(sp);*/
+        suppliers.remove(sp);
         mapper.removeSupplier(id);
     }
 
@@ -71,14 +71,14 @@ public class SuppliersPool {
             return true;
         }
         return false;
-    }
+    }*/
 
     public List<String> SupplierstoString(){
        return mapper.getSuppliersString();
     }
-    public void Update(int supplierId,String address, String phoneNumber, String contactName){
+    /*public void Update(int supplierId,String address, String phoneNumber, String contactName){
         mapper.updateSupplier(supplierId,address,phoneNumber,contactName);
-    }
+    }*/
 
     public boolean isExistsId (int id){
       /*  boolean isExists = false;
@@ -91,14 +91,14 @@ public class SuppliersPool {
     }
 
 
-    public boolean validArea(int area) {
+   /* public boolean validArea(int area) {
        /* for (Supplier s:suppliers){
             if (s.getArea() == area)
                 return true;
         }
-        return false;*/
+        return false;
         return mapper.validArea(area);
-    }
+    }*/
 
    /* public Supplier getSupplier(int suppId) {
         for (Supplier s:suppliers){
