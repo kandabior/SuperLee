@@ -1,5 +1,6 @@
 package src.BusinessLayer.EmployeeModule;
 
+import javafx.util.Pair;
 import src.DataAccessLayer.Employee.EmployeeDTO;
 import src.DataAccessLayer.Employee.EmployeesMapper;
 
@@ -17,6 +18,22 @@ public class EmployeesManager {
         employeesMapper=new EmployeesMapper();
     }
 
+    public List<Pair<Integer, String>> getEmployeesMessages() {
+        return employeesMapper.getEmployeesMessages();
+    }
+
+    public void deleteEmployeeMessage(int id) {
+        employeesMapper.deleteEmployeeMessage(id);
+    }
+
+    public List<Integer> getOrdersMessages() {
+        return employeesMapper.getOrdersMessages();
+    }
+
+    public void respondOrderMessage(int id, int respond) {
+        employeesMapper.respondOrderMessage(id,respond);
+
+    }
 
     public  String addWorker(String name, String id, String hiringConditions, String bankId,
                              int salary, Date startOfEmployment,String license){

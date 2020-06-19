@@ -1,4 +1,5 @@
 package src.PresentationLayer;
+import javafx.util.Pair;
 
 
 import src.BusinessLayer.EmployeeModule.Service;
@@ -15,42 +16,140 @@ public class EmployeesMenu {
 
     public static void main() {
         EmployeesMenu view = new EmployeesMenu();
-        view.startSystem();
-
+        view.mainMenu();
     }
-    private void startSystem(){
+
+    private void mainMenu(){
+        try {
+            while (true) {
+                System.out.println("Welcome to the employee department!\n" +
+                        "Select a branch:\n" +
+                        "For Branch Actions, Enter:\t\t1 \n" +
+                        "For messages regarding Orders Enter:\t 2\n" +
+                        "For messages regarding Employees Enter:\t 3\n" +
+                        "To return to the main  menu, enter\t   4\n");
+                int selection = numberFromRange(1,4);
+                if (selection ==1)
+                    branchActions();
+                else if (selection == 2)
+                    OrdersMessages();
+                else if (selection == 3)
+                    EmployeesMessages();
+                else if (selection == 4)
+                    return;
+            }
+        }catch (Exception e){
+            System.out.println("\nSorry, you have entered invalid input in this action\n");
+            return;
+        }
+    }
+
+    private void EmployeesMessages() {
         Scanner ans = new Scanner(System.in);
-
-            try {
-                while (true) {
-
-                    System.out.println("Welcome to the employee department!\n" +
-                            "Select a branch:\n" +
-                            "for drivers area, enter:\n     0 \n" +
-                            "Otherwise enter a valid store number\n" +
-                            "To see messages enter \n       -2\n"+
-                            "To return to the main menu, enter\n     -1\n");
-                    int branch = ans.nextInt();
-                    if (branch == -1)
-                        return;
-                    if(branch==-2)
-                        showMessages();
-                    else {
-                        currentBranch = branch;
-                        service.loadBranch(branch);
-                        startPersonnelManager();
-                    }
+        System.out.println("Employees Messages:\n");
+        List<Pair<Integer,String>> messages=service.getEmployeesMessages();
+        for(Pair<Integer,String> message:messages){
+            System.out.println("ID of message: " +message.getKey() +"\t  content: "+message.getValue() + "\n");
+        }
+        try {
+            while (true) {
+                System.out.println("Enter a message ID to delete it, or -1 to return \n");
+                int id = ans.nextInt();
+                if (id==-1)
+                    return;
+                else if(!checkExistsMessage(messages,id))
+                {
+                    System.out.println("\nSorry, you have entered invalid message ID\n");
+                }
+                else {
+                    deleteMessage(messages,id);
+                    service.deleteEmployeeMessage(id);
+                    System.out.println("message deleted!");
                 }
             }
-             catch (Exception e) {
-                System.out.println("\nSorry, you have entered invalid input in this action\n");
-                return;
-            }
+        }catch (Exception e){
+            System.out.println("\nSorry, you have entered invalid input in this action\n");
+            return;
         }
 
-    private void showMessages() {
     }
 
+    private void deleteMessage(List<Pair<Integer, String>> messages, int id) {
+        Pair<Integer, String> temp=null;
+
+        for (Pair<Integer,String> message:messages) {
+            if(message.getKey()==id)
+                temp=message;
+        }
+        messages.remove(temp);
+    }
+
+    private boolean checkExistsMessage(List<Pair<Integer, String>> messages, int id) {
+
+        for (Pair<Integer,String> message:messages) {
+            if(message.getKey()==id)
+                return true;
+        }
+        return false;
+    }
+
+    private void OrdersMessages() {
+        Scanner ans = new Scanner(System.in);
+        System.out.println("Orders Messages:\n");
+        List<Pair<Integer,String>> messages=service.getOrdersMessages();
+        for(Pair<Integer,String> message:messages){
+            System.out.println("ID of message: " +message.getKey() +"\t  content: "+message.getValue() + "\n");
+        }
+        try {
+            while (true) {
+                System.out.println("Enter a message ID to respond , or -1 to return \n");
+                int id = ans.nextInt();
+                if (id==-1)
+                    return;
+                else if(!checkExistsMessage(messages,id))
+                {
+                    System.out.println("\nSorry, you have entered invalid message ID\n");
+                }
+                else {
+                    respondOrderMessage(messages,id);
+                }
+            }
+        }catch (Exception e){
+            System.out.println("\nSorry, you have entered invalid input in this action\n");
+            return;
+        }
+
+    }
+
+    private void respondOrderMessage(List<Pair<Integer, String>> messages, int id) {
+        System.out.println("Enter respond : 1 - decline , 2 - approve\n");
+        int respond =numberFromRange(1,2);
+        service.respondOrderMessage(id,respond);
+        deleteMessage(messages,id);
+    }
+
+    private void branchActions(){
+        try {
+            while (true) {
+                System.out.println("Select a branch:\n" +
+                        "for drivers area, enter:\n     0 \n" +
+                        "Otherwise enter a store number, a number between\n     1-9\n" +
+                        "To return to the main HR menu, enter\n     10\n");
+                int branch = numberFromRange(0,10);
+                if (branch >= 0 & branch <= 9) {
+                    currentBranch = branch;
+                    service.loadBranch(branch);
+                    startPersonnelManager();
+                } else if (branch == 10)
+                    return;
+                else
+                    System.out.println("\nInvalid selection\n");
+            }
+        }catch (Exception e){
+            System.out.println("\nSorry, you have entered invalid input in this action\n");
+            return;
+        }
+    }
 
     private void startPersonnelManager(){
         boolean stop = false;
@@ -88,7 +187,7 @@ public class EmployeesMenu {
             int selectedAction = numberFromRange(1,4);
             switch (selectedAction) {
                 case 1:
-                    System.out.println(service.getAllEmplyees());
+                    System.out.println(service.getAllEmployees());
                     break;
                 case 2:
                     System.out.println("enter employee ID:");
@@ -196,7 +295,7 @@ public class EmployeesMenu {
                     else {
                         //ask = "enter role to delete:";
                         String role1 = roleFromList();
-                        service.deletRole(ID, role1);
+                        service.deleteRole(ID, role1);
                     }
                     break;
                 case 6:

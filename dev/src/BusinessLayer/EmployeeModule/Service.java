@@ -1,16 +1,16 @@
 package src.BusinessLayer.EmployeeModule;
 
-import java.util.Date;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Map;
+import javafx.util.Pair;
+import src.BusinessLayer.TransportModule.TransportService;
+
+import java.util.*;
 
 
 public class Service {
     private static Service service;
     private ShiftManager shiftManager;
     private EmployeesManager employeesManager;
-
+    private TransportService transportService;
     public  static Service getInstance()
     {
         if(service==null)
@@ -20,7 +20,9 @@ public class Service {
     private Service(){
         shiftManager = new ShiftManager();
         employeesManager=new EmployeesManager();
+        transportService=new TransportService();
     }
+
 
     public void editRequirements(String day, String shiftType, Map<String, Integer> roles) {
         shiftManager.editRequirements(stringToDay(day),stringToShiftType(shiftType),roles);
@@ -84,7 +86,7 @@ public class Service {
     public void addRole(String employeeID,String role) {
         employeesManager.addRole(employeeID,role);
     }
-    public void deletRole(String employeeID,String role)
+    public void deleteRole(String employeeID, String role)
     {
         employeesManager.deleteRole(employeeID,role);
     }
@@ -113,10 +115,10 @@ public class Service {
 
     }
 
-    public String employeeDetails(String emolyeeID){
-        return employeesManager.getEmployeeDetails(emolyeeID);
+    public String employeeDetails(String employeeID){
+        return employeesManager.getEmployeeDetails(employeeID);
     }
-    public String getAllEmplyees() {
+    public String getAllEmployees() {
         return employeesManager.getAllEmployees();
     }
     private Day stringToDay(String day) {
@@ -168,4 +170,29 @@ public class Service {
     public String getDriveName(int employeeID) throws Exception {
         return employeesManager.getDriverName(employeeID);
     }
+
+    public List<Pair<Integer, String>> getEmployeesMessages() {
+        return employeesManager.getEmployeesMessages();
+    }
+
+    public void deleteEmployeeMessage(int id) {
+        employeesManager.deleteEmployeeMessage(id);
+    }
+
+    public List<Pair<Integer, String>> getOrdersMessages() {
+        List<Integer> messagesInput = employeesManager.getOrdersMessages();
+        List<Pair<Integer, String>> output = new LinkedList<>();
+        for (Integer orderID : messagesInput)
+        {
+            String s=transportService.getStringRequest(orderID);
+            if(!s.equals("Invalid Order ID"))
+                output.add(new Pair<>(orderID,s));
+        }
+        return output;
+    }
+
+    public void respondOrderMessage(int id, int respond) {
+        employeesManager.respondOrderMessage(id,respond);
+
+}
 }

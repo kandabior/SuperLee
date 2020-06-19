@@ -1,6 +1,6 @@
 package src.DataAccessLayer.Employee;
 
-import sun.security.pkcs11.wrapper.CK_ATTRIBUTE;
+import javafx.util.Pair;
 
 import java.sql.*;
 import java.text.SimpleDateFormat;
@@ -210,6 +210,109 @@ public class EmployeesMapper {
 
     }
 
+    public List<Pair<Integer, String>> getEmployeesMessages() {
+        List<Pair<Integer, String>> messages=new LinkedList<>();
+        try {
+            if (tryOpen()) {
+                Class.forName("org.sqlite.JDBC");
+                con.setAutoCommit(false);
+                PreparedStatement statement = con.prepareStatement("SELECT * FROM MessagesToEM");
+
+                ResultSet res = statement.executeQuery();
+                while (res.next()) {
+                    messages.add(new Pair<>(res.getInt("ID"),res.getString("message")));
+                }
+                con.close();
+
+            }
+
+
+        }
+        catch (Exception e) {
+            tryClose();
+            System.err.println(e.getClass().getName() + ": " + e.getMessage());
+        }
+
+
+
+                return messages;
+    }
+
+    public void deleteEmployeeMessage(int id) {
+        try {
+            if (tryOpen()) {
+                Class.forName("org.sqlite.JDBC");
+                con.setAutoCommit(false);
+                PreparedStatement deleteStatement = con.prepareStatement("Delete FROM MessagesToEM WHERE ID = ? ;");
+                deleteStatement.setInt(1, id);
+                int rowNum=deleteStatement.executeUpdate();
+                if(rowNum!=0){
+                     con.commit();
+                     con.close();
+                 }
+                 else
+                     con.close();
+            }
+        }
+        catch (Exception e) {
+            tryClose();
+            System.err.println(e.getClass().getName() + ": " + e.getMessage());
+        }
+
+
+    }
+
+    public List<Integer> getOrdersMessages(){
+        List<Integer> messages=new LinkedList<>();
+
+        try {
+            if (tryOpen()) {
+                Class.forName("org.sqlite.JDBC");
+                con.setAutoCommit(false);
+                PreparedStatement statement = con.prepareStatement("SELECT * FROM CancellationRequests where answerEmployee=0");
+
+                ResultSet res = statement.executeQuery();
+                while (res.next()) {
+                    messages.add(res.getInt("ID"));
+                }
+                con.close();
+            }
+        }
+        catch (Exception e) {
+            tryClose();
+            System.err.println(e.getClass().getName() + ": " + e.getMessage());
+        }
+        return messages;
+    }
+
+    public void respondOrderMessage(int id, int respond) {
+
+        try {
+            if (tryOpen()) {
+                Class.forName("org.sqlite.JDBC");
+                con.setAutoCommit(false);
+
+                PreparedStatement statement = con.prepareStatement(
+                        "UPDATE CancellationRequests SET answerEmployee = ? WHERE orderId = ? ;  ");
+                statement.setInt(1,respond);
+                statement.setInt(2,id);
+                int rowNum = statement.executeUpdate();
+                if (rowNum != 0) {
+                    con.commit();
+                    con.close();
+                } else {
+                    con.rollback();
+                    con.close();
+                }
+            }
+        }
+        catch (Exception e){
+            tryClose();
+            System.err.println(e.getClass().getName() + ": " + e.getMessage());
+        }
+
+
+    }
 
     private boolean tryOpen() {
         try {
@@ -354,4 +457,6 @@ public class EmployeesMapper {
     private String unParseDate(Date startOfEmployment) {
         return new SimpleDateFormat("dd/MM/yyyy").format(startOfEmployment);
     }
+
+
 }
