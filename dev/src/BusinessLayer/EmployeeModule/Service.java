@@ -195,4 +195,12 @@ public class Service {
         employeesManager.respondOrderMessage(id,respond);
 
 }
+
+    public boolean existsShipment(Date date, int branch) {
+            Calendar calendar = Calendar.getInstance();
+            calendar.setTime(date);
+            String d=calendar.get(Calendar.DATE)+"/"+(calendar.get(Calendar.MONTH)+1) +"/" + calendar.get(Calendar.YEAR);
+            return transportService.hasTransport(branch,d);
+        }
+
 }
