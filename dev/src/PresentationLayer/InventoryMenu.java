@@ -18,59 +18,47 @@ public class InventoryMenu {
         Printer.Print("Inventory:");
         do {
             Printer.Print("\n\nPlease choose an action:\n" +
-                    "1. Add new branch\n" +
-                    "2. Register global manager\n" +
-                    "3. Register inventory manager\n" +
-                    "4. Add product   (Manager Only)\n" +
-                    "5. Remove product   (Manager Only)\n" +
-                    "6. Change product price by id   (Global Manager Only)\n" +
-                    "7. Change product price by category   (Global Manager Only)\n" +
-                    "8. Remove amount from Product\n" +
-                    "9. Change categories to Product\n" +
-                    "10. Transfer amount of Product from the storage to the shelf\n" +
-                    "11. Transfer amount of Product from the shelf to the storage\n" +
-                    "12. Set amount of defective products\n" +
-                    "13. Back to Inventory&reports menu\n");
+                    "1. Add product   (Manager Only)\n" +
+                    "2. Remove product   (Manager Only)\n" +
+                    "3. Change product price by id   (Global Manager Only)\n" +
+                    "4. Change product price by category   (Global Manager Only)\n" +
+                    "5. Remove amount from Product\n" +
+                    "6. Change categories to Product\n" +
+                    "7. Transfer amount of Product from the storage to the shelf\n" +
+                    "8. Transfer amount of Product from the shelf to the storage\n" +
+                    "9. Set amount of defective products\n" +
+                    "10. Back to Inventory&reports menu\n");
             choose = scanner.nextInt();
             try {
                 switch (choose) {
                     case 1:
-                        AddNewBranch();
-                        break;
-                    case 2:
-                        AddGlobalManager();
-                        break;
-                    case 3:
-                        AddInventoryManager();
-                        break;
-                    case 4:
                         AddProduct();
                         break;
-                    case 5:
+                    case 2:
                         RemoveProduct();
                         break;
-                    case 6:
+                    case 3:
                         ChangePriceById();
                         break;
-                    case 7:
+                    case 4:
                         changeProductByCategory();
                         break;
-                    case 8:
+                    case 5:
                         removeAmountFromProduct();
                         break;
-                    case 9:
+                    case 6:
                         changeCategory();
                         break;
-                    case 10:
+                    case 7:
                         StorageToShelf();
                         break;
-                    case 11:
+                    case 8:
                         shelfToStorage();
                         break;
-                    case 12:
+                    case 9:
                         setDefectiveProducts();
                         break;
-                    case 13:
+                    case 10:
                         break;
                 }
             }
@@ -78,7 +66,7 @@ public class InventoryMenu {
                 Printer.Print("can't execute the action");
             }
         }
-        while (choose != 13) ;
+        while (choose != 10) ;
     }
     private static void reportsLoop(){
         int choose;
@@ -251,7 +239,8 @@ public class InventoryMenu {
                     "3. Add to weekly order\n" +
                     "4. Remove from weekly order\n"+
                     "5. Print Weekly Order\n" +
-                    "6. Back to inventory&reports menu\n");
+                    "6. Cancel order\n"+
+                    "7. Back to inventory&reports menu\n");
             choose = scanner.nextInt();
             try {
                 switch (choose) {
@@ -271,6 +260,9 @@ public class InventoryMenu {
                         PrintWeeklyOrder();
                         break;
                     case 6:
+                        cancelOrder();
+                        break;
+                    case 7:
                         break;
                 }
             }
@@ -278,9 +270,16 @@ public class InventoryMenu {
                 Printer.Print("can't execute the action");
             }
         }
-        while (choose != 6) ;
+        while (choose != 7) ;
 
     }
+
+    private static void cancelOrder() {
+        System.out.println("\nEnter order id: ");
+        String orderId= scanner.next();
+        Printer.Print(inventoryController.cancelOrder(Integer.parseInt(orderId)));
+    }
+
     private static void PrintWeeklyOrder() {
         System.out.println("\nEnter branch id: ");
         String branchId= scanner.next();

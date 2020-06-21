@@ -28,9 +28,8 @@ public class Main {
                     "2. Enter Suppliers Menu\n" +
                     "3. Enter Transports Menu\n"+
                     "4. Enter Personal manager Menu\n"+
-                    "5. Add New Branch\n"+
-                    "6. Promote Day\n" +
-                    "7. Quit\n");
+                    "5. Promote Day\n" +
+                    "6. Quit\n");
             choose = scanner.nextInt();
             try {
                 switch (choose) {
@@ -47,19 +46,17 @@ public class Main {
                         EmployeesMenu.main();
                         break;
                     case 5:
-                        AddNewBranch();
-                    case 6:
                         plusDay++;
                         SupplierMenu.PromoteDay(LocalDate.now().plusDays(plusDay));
                         InventoryMenu.PromoteDay((DayOfTheWeek + plusDay) % 7);
-                    case 7:
+                    case 6:
                         break;
                 }
             } catch (Exception e) {
                 Printer.Print("Can't execute the action.");
             }
         }
-        while (choose != 7);
+        while (choose != 6);
         System.out.println("Shutting down the system...");
     }
 

@@ -1348,4 +1348,58 @@ public class InventoryMapper {
             return false;
         }
     }
+
+    public boolean isOrderExists(int orderId) {
+        PreparedStatement stmt = null;
+        try {
+            c = DriverManager.getConnection("jdbc:sqlite:dev\\EOEDdatabase.db");
+            c.setAutoCommit(false);
+            stmt = c.prepareStatement("SELECT * FROM Orders WHERE id=?;");
+            stmt.setInt(1, orderId);
+            ResultSet rs = stmt.executeQuery();
+            if(rs.next()) {
+                rs.close();
+                stmt.close();
+                c.close();
+                return true;
+            }
+            else {
+                rs.close();
+                stmt.close();
+                c.close();
+                return false;
+            }
+        }
+        catch ( Exception e ) {
+            tryClose(c);
+            //System.err.println( e.getClass().getName() + ": " + e.getMessage() );
+            return false;
+        }
+    }
+
+    public boolean cancelOrder(int orderId) {
+        PreparedStatement stmt = null;
+        try {
+            c = DriverManager.getConnection("jdbc:sqlite:dev\\EOEDdatabase.db");
+            c.setAutoCommit(false);
+            stmt = c.prepareStatement("INSERT INTO CancellationRequests VALUES (?,?);");
+            stmt.setInt(1,orderId);
+            stmt.setInt(2, 0);
+            stmt.executeUpdate();
+            stmt.close();
+            c.commit();
+            return true;
+        } catch (Exception e) {
+            if (c != null) {
+                try {
+                    //System.err.print("Transaction is being rolled back");
+                    c.rollback();
+                } catch (SQLException excep) {
+                }
+            }
+            //System.err.println(e.getClass().getName() + ": " + e.getMessage());
+            return false;
+        }
+
+    }
 }

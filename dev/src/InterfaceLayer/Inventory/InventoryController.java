@@ -235,8 +235,12 @@ public class InventoryController {
         return output;
     }
 
-    public void getProductsOneBranch(Integer branchId,Map<Pair<Integer,Integer>,Pair<Integer,Double>> items){
+    public void getProductsOneBranch(Integer branchId,Map<Pair<Integer,Integer>,Pair<Integer,Double>> items, List<Integer> orderID){
         inventory.manageOrders(branchId,items);
+        for (Integer order:orderID) {
+            FacadeController.getFacadeController().updateOrderStatus(order,true);
+
+        }
     }
 
     public void getProducts(Map<Pair<Integer,Integer>,List<Object>> items){// list[0]= quantity, list[1]=cost, list[2]=branchid
@@ -343,6 +347,21 @@ public class InventoryController {
         try {
             Pair<Integer, List<Double>> prices = inventory.CostPricesById(branchId,id);
             return reportMaker.printCostProductPrices(branchId,prices);
+        }
+        catch (Exception e){
+            return "can't execute the action";
+        }
+    }
+
+    public String cancelOrder(int orderId) {
+        try{
+            if(inventory.cancelOrder(orderId)){
+                return "oder cancellation request was initialized successfully";
+            }
+            else{
+                return "can't execute the action";
+            }
+
         }
         catch (Exception e){
             return "can't execute the action";

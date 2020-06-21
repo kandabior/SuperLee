@@ -448,6 +448,16 @@ public class Inventory {
 
     }
 
+    public boolean cancelOrder(int orderId) {
+        if(inventoryMapper.isOrderExists(orderId)){
+            return inventoryMapper.cancelOrder(orderId);
+        }
+        else{
+            return false;
+        }
+    }
+
+
 
 /*
     //Tests Methods
