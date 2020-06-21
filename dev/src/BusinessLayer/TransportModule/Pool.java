@@ -167,7 +167,7 @@ public class Pool {
             List<Integer> ordersId = docsPool.getOrdersId(docId);
             if (different == 0) {
                // informSupplier(ordersId, true);
-                InventoryController.getInventoryController().getProductsOneBranch(docsPool.getStoresFromDoc(docId).get(0), docsPool.getFullItems(docId));
+                InventoryController.getInventoryController().getProductsOneBranch(docsPool.getStoresFromDoc(docId).get(0), docsPool.getFullItems(docId),ordersId);
             }
             else
                 informSupplier(ordersId, false);
