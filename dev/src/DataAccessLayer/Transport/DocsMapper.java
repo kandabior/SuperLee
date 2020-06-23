@@ -688,19 +688,21 @@ public class DocsMapper {
     public List<Integer> getOrdersId(int docId) {
         List<Integer> ordersId = new LinkedList<>();
         try {
-            Class.forName("org.sqlite.JDBC");
-            con.setAutoCommit(false);
-            PreparedStatement statement = con.prepareStatement("SELECT OrderId FROM TransportOrders WHERE DocID = ?;");
-            statement.setInt(1, docId);
-            ResultSet result = statement.executeQuery();
-            while (result.next()) {
-                ordersId.add(result.getInt("OrderId"));
+            if(tryOpen()) {
+                Class.forName("org.sqlite.JDBC");
+                con.setAutoCommit(false);
+                PreparedStatement statement = con.prepareStatement("SELECT OrderId FROM TransportOrders WHERE DocID = ?;");
+                statement.setInt(1, docId);
+                ResultSet result = statement.executeQuery();
+                while (result.next()) {
+                    ordersId.add(result.getInt("OrderId"));
+                }
+                statement.close();
             }
-            statement.close();
             return ordersId;
         } catch (Exception e) {
             System.err.println(e.getClass().getName() + ": " + e.getMessage());
-            return null;
+            return new LinkedList<>();
         }
     }
 

@@ -111,7 +111,7 @@ public class ShiftMapper {
             if (tryOpen()) {
                 Class.forName("org.sqlite.JDBC");
                 con.setAutoCommit(false);
-                PreparedStatement st = con.prepareStatement("DELETE FROM ShiftsMandaer WHERE date = (?) AND shiftType= (?) AND branch = (?);");
+                PreparedStatement st = con.prepareStatement("DELETE FROM ShiftsManager WHERE date = (?) AND shiftType= (?) AND branch = (?);");
                 st.setString(1, date);
                 st.setString(2, shiftType);
                 st.setInt(3, branch);
