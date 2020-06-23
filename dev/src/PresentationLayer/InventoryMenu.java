@@ -322,16 +322,12 @@ public class InventoryMenu {
         Printer.Print("\nPlease Enter the following by given order:\n");
         System.out.println("Enter branch id: ");
         String branchId= scanner.next();
-        Printer.Print("username: ");
-        String userName=scanner.next();
-        Printer.Print("password: ");
-        String password=scanner.next();
         Printer.Print("product Id: ");
         String prodId=scanner.next();
         Printer.Print("categories: (with ',' between them)");
         String cat=scanner.next();
         List<String> categoriesList= Arrays.asList(cat.split(","));
-        Printer.Print(inventoryController.setCategory(Integer.parseInt(branchId),userName,password,Integer.parseInt(prodId),categoriesList));
+        Printer.Print(inventoryController.setCategory(Integer.parseInt(branchId),Integer.parseInt(prodId),categoriesList));
     }
     private static void shelfToStorage(){
         System.out.println("\nEnter branch id: ");
@@ -400,51 +396,36 @@ public class InventoryMenu {
         Printer.Print("\nPlease Enter the following by given order:\n");
         System.out.println("Enter branch id: ");
         String branchId= scanner.next();
-        Printer.Print("username: ");
-        String userName=scanner.next();
-        Printer.Print("password: ");
-        String password=scanner.next();
         Printer.Print("categories: (with ',' between them)");
         String categories=scanner.next();
         Printer.Print("price: ");
         String price=scanner.next();
         List<String> categoriesList= Arrays.asList(categories.split(","));
-        Printer.Print(inventoryController.setPriceByCategory(Integer.parseInt(branchId),userName,password,categoriesList ,Double.parseDouble(price)));
+        Printer.Print(inventoryController.setPriceByCategory(Integer.parseInt(branchId),categoriesList ,Double.parseDouble(price)));
     }
     private static void ChangePriceById() {
         Printer.Print("\nPlease Enter the following by given order:\n");
         System.out.println("Enter branch id: ");
         String branchId= scanner.next();
-        Printer.Print("username: ");
-        String userName=scanner.next();
-        Printer.Print("password: ");
-        String password=scanner.next();
         Printer.Print("product Id: ");
         String prodId=scanner.next();
         Printer.Print("price: ");
         String price=scanner.next();
-        Printer.Print(inventoryController.setSalePriceById(Integer.parseInt(branchId),userName,password,Integer.parseInt(prodId),Double.parseDouble(price)));
+        Printer.Print(inventoryController.setSalePriceById(Integer.parseInt(branchId),Integer.parseInt(prodId),Double.parseDouble(price)));
     }
     private static void RemoveProduct() {
         Printer.Print("\nPlease Enter the following by given order:\n");
         System.out.println("Enter branch id: ");
         String branchId= scanner.next();
-        Printer.Print("username: ");
-        String userName=scanner.next();
-        Printer.Print("password: ");
-        String password=scanner.next();
         Printer.Print("product Id: ");
         String prodId=scanner.next();
-        Printer.Print(inventoryController.removeProduct(Integer.parseInt(branchId),userName,password,Integer.parseInt( prodId)));
+        Printer.Print(inventoryController.removeProduct(Integer.parseInt(branchId),Integer.parseInt( prodId)));
     }
     private static void AddProduct() {
         Printer.Print("\nPlease Enter the following by given order:\n");
         System.out.println("Enter branch id: ");
         String branchId= scanner.next();
-        Printer.Print("username: ");
-        String userName=scanner.next();
-        Printer.Print("password: ");
-        String password=scanner.next();
+
         Printer.Print("product Id: ");
         String prodId=scanner.next();
         /*Printer.Print("name: ");
@@ -468,7 +449,7 @@ public class InventoryMenu {
         List<String> categoriesList= Arrays.asList(categories.split(","));
         String []dateArr=expdate.split("/");
         LocalDate date = LocalDate.of(Integer.parseInt(dateArr[2]),Integer.parseInt(dateArr[1]),Integer.parseInt(dateArr[0]));
-        Printer.Print(inventoryController.addProduct(Integer.parseInt(branchId),userName,password,Integer.parseInt(prodId),Integer.parseInt(amount),Double.parseDouble(costPrice),Double.parseDouble(salePrice), date,categoriesList,manufacturer,Integer.parseInt(minAmount),place));
+        Printer.Print(inventoryController.addProduct(Integer.parseInt(branchId),Integer.parseInt(prodId),Integer.parseInt(amount),Double.parseDouble(costPrice),Double.parseDouble(salePrice), date,categoriesList,manufacturer,Integer.parseInt(minAmount),place));
     }
     public static void initiateSystem(){
         try {
@@ -482,14 +463,14 @@ public class InventoryMenu {
             List<String> cat1 = new LinkedList<>();
             cat1.add("Shimurim");
             LocalDate date1 = LocalDate.of(20, 12, 31);
-            inventoryController.addProduct(1, "Erez", "1234", 1, 20, 5.0,
+            inventoryController.addProduct(1,  1, 20, 5.0,
                     8.0, date1, cat1, "Osem", 10, "area1");
 
             List<String> cat2 = new LinkedList<>();
             cat2.add("Halavi");
             cat2.add("Cartons");
             LocalDate date2 = LocalDate.of(20, 8, 31);
-            inventoryController.addProduct(1, "Or", "1234", 2, 30, 3.0,
+            inventoryController.addProduct(1,  2, 30, 3.0,
                     6.0, date2, cat2, "Tnuva", 20, "area2");
             Printer.Print("System initiate successfully (:");
         }
