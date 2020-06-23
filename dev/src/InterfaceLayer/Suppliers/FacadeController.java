@@ -121,15 +121,19 @@ public class FacadeController {
                             order.add(bestSuppForItem);
                             orderIdCounter++;
                             order.add(supplierController.getSupplyDays(bestSuppForItem));//no date);
-                            Map<Integer,Integer> tempMap = new HashMap();
-                            tempMap.put(itemId,quantity);
+                            Map<Pair<Integer,Integer>,Pair<Integer,Double>> tempMap = new HashMap();
+                            Pair<Integer,Integer> p1  = new Pair(itemId,getLocalItemId(itemId,bestSuppForItem));
+                            Pair<Integer,Double> p2 = new Pair(quantity,costForItem);
+                            tempMap.put(p1,p2);
                             order.add(tempMap);
                         }
                         else {
                             for(List<Object> o : transportOrders) {
                                 if ((int) o.get(0) == bestSuppForItem) {
-                                    Map<Integer,Integer> ot = (Map<Integer,Integer>)o.get(3);
-                                    ot.put(itemId,quantity);
+                                    Map<Pair<Integer,Integer>,Pair<Integer,Double>> ot = (Map<Pair<Integer,Integer>,Pair<Integer,Double>>)o.get(3);
+                                    Pair<Integer,Integer> p1  = new Pair(itemId,getLocalItemId(itemId,bestSuppForItem));
+                                    Pair<Integer,Double> p2 = new Pair(quantity,costForItem);
+                                    ot.put(p1,p2);
                                     o.remove(3);
                                     o.add(ot);
                                 }
