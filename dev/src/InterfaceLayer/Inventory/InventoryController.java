@@ -91,29 +91,27 @@ public class InventoryController {
             return "can't execute the action";
         }
     }
-    public String addProduct(int branchId,String username, String password, int prodid, int amount, Double costPrice, Double salePrice, LocalDate expDate, List<String> category, String manufacturer, int minAmount, String place){
+    public String addProduct(int branchId, int prodid, int amount, Double costPrice, Double salePrice, LocalDate expDate, List<String> category, String manufacturer, int minAmount, String place){
         String prodName;
         try {
-            if (inventory.checkGlobalManager(branchId,username,password)||inventory.checkInventoryManager(branchId,username,password)) {
+
                 prodName = inventory.getItemName(prodid);
                 if(prodName!=null) {
                     return inventory.addProduct(branchId,prodid, amount, prodName, costPrice, salePrice, expDate, category, manufacturer, minAmount, place);
                 }
                 return "can not execute the action";
 
-            }
-            return "can't add product - you are need to be a Manager";
+
         }catch (Exception e){
             //System.err.println(e.getClass().getName() + ": " + e.getMessage());
             return "can't execute the action";
         }
     }
-    public String removeProduct(int branchId,String username, String password, int prodid){
+    public String removeProduct(int branchId, int prodid){
         try {
-            if (inventory.checkGlobalManager(branchId,username,password)||inventory.checkInventoryManager(branchId,username,password)) {
+
                 return inventory.removeProduct(branchId, prodid);
-            }
-            return "can't remove product - you are need to be a Manager";
+
         }
         catch (Exception e){
             return "can't execute the action";
@@ -128,34 +126,32 @@ public class InventoryController {
             return "can't execute the action";
         }
     }
-    public String setSalePriceById(int branchId,String username, String password ,int prodid, Double price){
+    public String setSalePriceById(int branchId,int prodid, Double price){
         try{
-            if(inventory.checkGlobalManager(branchId,username, password)) {
+
                 return inventory.setSalePrice(branchId, prodid, price);
-            }
-            return "can't change price of product - you are need to be a Global Manager";
+
         }
         catch (Exception e){
             return "can't execute the action";
         }
     }
-    public String setPriceByCategory(int branchId,String username, String password , List<String> category,Double price){
+    public String setPriceByCategory(int branchId, List<String> category,Double price){
         try {
-            if (inventory.checkGlobalManager(branchId,username, password)) {
+
                 return inventory.setPriceByCategory(branchId, category, price);
-            }
-            return "can't change price of product - you are need to be a Global Manager";
+
         }
         catch (Exception e){
             return "can't execute the action";
         }
     }
-    public String setCategory(int branchId,String username, String password, int id, List<String> category){
+    public String setCategory(int branchId, int id, List<String> category){
         try{
-            if(inventory.checkGlobalManager(branchId,username, password)||inventory.checkInventoryManager(branchId,username, password)) {
+
                 return inventory.setCategory(branchId, id, category);
-            }
-            return "can't remove product - you are need to be a Manager";
+
+
         }
         catch (Exception e){
             return "can't execute the action";

@@ -101,6 +101,16 @@ public class TrucksPool {
         return output;
     }
 
+    public List<String> getTrucksID(Date date){//returns the trucks that available at this date
+        List<String> output = new LinkedList<>();
+        for (Truck t:trucks) {
+            if (t.isFree(date)){
+                output.add(t.getId());
+            }
+        }
+        return output;
+    }
+
 
     public void addDateToTruck(String truckId, Date date) {
         Truck truck = null;
