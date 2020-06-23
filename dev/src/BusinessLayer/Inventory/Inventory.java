@@ -219,7 +219,8 @@ public class Inventory {
     }
     public  String addAmountToProduct(int branchId, int id, int amount) {
         if (inventoryMapper.isInventoryConteinsProd(branchId, id)) {
-            inventoryMapper.addAmountToProduct(branchId, id,inventoryMapper.getProductQuantity(branchId,id), amount);
+            int currAmount= inventoryMapper.getStorageQunatity(branchId,id);
+            inventoryMapper.addAmountToProduct(branchId, id,currAmount, amount);
             return "product id: " + id + " - amount of " + amount + " added to the inventory";
         }
         return "product id does not exist";

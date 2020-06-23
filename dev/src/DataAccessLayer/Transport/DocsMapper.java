@@ -146,20 +146,25 @@ public class DocsMapper {
     public Map<Pair<Integer, Integer>, Pair<Integer, Double>> getFullItems(int transportId) {
         Map<Pair<Integer, Integer>, Pair<Integer, Double>> items = new HashMap<>();
         try {
-            PreparedStatement statement = con.prepareStatement("SELECT GID,LID,quantity,price FROM TransportItems WHERE DocId = ?;");
-            statement.setInt(1, transportId);
-            ResultSet result = statement.executeQuery();
-            while (result.next()) {
-                Pair<Integer, Integer> first = new Pair<>(result.getInt("GID"), result.getInt("LID"));
-                Pair<Integer, Double> second = new Pair<>(result.getInt("quantity"), result.getDouble("price"));
-                items.put(first, second);
+            if (tryOpen()) {
+                PreparedStatement statement = con.prepareStatement("SELECT GID,LID,quantity,price FROM TransportItems WHERE DocId = ?;");
+                statement.setInt(1, transportId);
+                ResultSet result = statement.executeQuery();
+                while (result.next()) {
+                    Pair<Integer, Integer> first = new Pair<>(result.getInt("GID"), result.getInt("LID"));
+                    Pair<Integer, Double> second = new Pair<>(result.getInt("quantity"), result.getDouble("price"));
+                    items.put(first, second);
+                }
+                statement.close();
+                con.close();
+                return items;
             }
-            statement.close();
-            return items;
         } catch (Exception e) {
+            tryClose();
             System.err.println(e.getClass().getName() + ": " + e.getMessage());
             return null;
         }
+        return null;
     }
 
 
@@ -289,7 +294,7 @@ public class DocsMapper {
     }
 
     public void updateTransportDoc(double finalWeight, String status, int docId) {
-        try {
+        /*try {
             if (tryOpen()) {
                 Class.forName("org.sqlite.JDBC");
                 con.setAutoCommit(false);
@@ -300,10 +305,10 @@ public class DocsMapper {
                 statement.setInt(3, docId);
                 int rowNum = statement.executeUpdate();
                 if (rowNum != 0) {
-                    statement.close();
 
                     con.commit();
                     con.close();
+                    statement.close();
                 } else {
                     con.rollback();
                     con.close();
@@ -313,7 +318,7 @@ public class DocsMapper {
             }
         } catch (Exception e) {
             System.err.println(e.getClass().getName() + ": " + e.getMessage());
-        }
+        }*/
 
     }
 
@@ -697,11 +702,13 @@ public class DocsMapper {
                 while (result.next()) {
                     ordersId.add(result.getInt("OrderId"));
                 }
+                con.close();
                 statement.close();
             }
             return ordersId;
         } catch (Exception e) {
             System.err.println(e.getClass().getName() + ": " + e.getMessage());
+            tryClose();
             return new LinkedList<>();
         }
     }
@@ -922,20 +929,29 @@ public class DocsMapper {
     }
 
     public String getTransportDate(int docId) {
+
         try {
-            Class.forName("org.sqlite.JDBC");
-            con.setAutoCommit(false);
-            PreparedStatement statement = con.prepareStatement("SELECT date FROM transportDocs WHERE ID = ?;");
-            statement.setInt(1, docId);
-            ResultSet result = statement.executeQuery();
-            if (result.next()) {
-                return result.getString(1);
+            if (tryOpen()) {
+                Class.forName("org.sqlite.JDBC");
+                con.setAutoCommit(false);
+                PreparedStatement statement = con.prepareStatement("SELECT date FROM transportDocs WHERE ID = ?;");
+                statement.setInt(1, docId);
+                ResultSet result = statement.executeQuery();
+                if (result.next()) {
+                    String output = result.getString(1);
+                    con.close();
+                    statement.close();
+                    return output;
+                }
+                con.close();
+                statement.close();
+                return "";
             }
-            statement.close();
-            return "";
         } catch (Exception e) {
+            tryClose();
             System.err.println(e.getClass().getName() + ": " + e.getMessage());
             return "";
         }
+        return "";
     }
 }

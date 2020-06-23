@@ -245,7 +245,7 @@ public class ShiftMapper {
                 con.setAutoCommit(false);
                 PreparedStatement statement = con.prepareStatement("SELECT distinct branch FROM Shifts where role =(?) and shiftType =(?) and date = (?);");
                 statement.setString(1, "storekeeper");
-                statement.setString(2, "Morning");
+                statement.setString(    2, "Morning");
                 statement.setString(3, dateToString(date));
 
                 ResultSet result = statement.executeQuery();

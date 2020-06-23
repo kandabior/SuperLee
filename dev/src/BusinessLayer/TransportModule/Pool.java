@@ -167,7 +167,9 @@ public class Pool {
             List<Integer> ordersId = docsPool.getOrdersId(docId);
             if (different == 0) {
                // informSupplier(ordersId, true);
-                InventoryController.getInventoryController().getProductsOneBranch(docsPool.getStoresFromDoc(docId).get(0), docsPool.getFullItems(docId),ordersId);
+                int store = docsPool.getStoresFromDoc(docId).get(0);
+                Map<Pair<Integer,Integer>,Pair<Integer,Double>> items =  docsPool.getFullItems(docId);
+                InventoryController.getInventoryController().getProductsOneBranch(store, items,ordersId);
             }
             else
                 informSupplier(ordersId, false);
@@ -313,58 +315,64 @@ public class Pool {
                         items.add((Map<Pair<Integer, Integer>, Pair<Integer, Double>>) order.get(3));
                     }
                 }
-                day++;//day from 1-7
-                LocalDate systemDate = LocalDate.now().plusDays(Main.plusDay);
-                //Calendar cal = Calendar.getInstance();
-                while(getCurrentDay(systemDate.getDayOfWeek().toString()) != day){
-                    systemDate = systemDate.plusDays(1);
-                }
-                //Date date = cal.getTime();
-                Calendar cal = Calendar.getInstance();
-                cal.set(systemDate.getYear(), systemDate.getMonthValue(), systemDate.getDayOfMonth());
-                Date date = cal.getTime();
-                List<Integer> stores = new LinkedList<>();
-                stores.add(storId);
-                List<Integer> suppliers = new LinkedList<>();
-                Iterator<List<Object>> iter = temp.iterator();
-                while (iter.hasNext()) {
-                    suppliers.add((Integer) iter.next().get(1));
-                }
-                int hasStoreKeeper = 0;
-                int hasDriver = 0;
-                int hasTruck = 0;
-                List<Integer> availableStores = employeeService.getStores(date);
-                if (availableStores.contains(storId)) // has storeKeeper
-                    hasStoreKeeper = 1;
-                List<String> trucks = trucksPool.getTrucksID(date);
-                String truckId = "";
-                if (!trucks.isEmpty()) {
-                    truckId = trucks.get(0); // first truck
-                    hasTruck = 1;
-                    addDateToTruck(truckId, date);
-                }
-                int driverId = -1;
-                String driverName = "";
-                if (hasTruck == 1) {
-                    List<Integer> availableDriver = getDrivers(truckId, date);
-                    if (!availableDriver.isEmpty()) {
-                        hasDriver = 1;
-                        driverId = availableDriver.get(0);
-                        driverName = getDriverName(driverId);
-                        addDateToDriver(driverId, date);
+                if (!ordersId.isEmpty()) {
+                    if (day == 0)
+                        day = 7;
+                    LocalDate systemDate = LocalDate.now().plusDays(Main.plusDay);
+                    //Calendar cal = Calendar.getInstance();
+                    while (getCurrentDay(systemDate.getDayOfWeek().toString()) != day) {
+                        systemDate = systemDate.plusDays(1);
                     }
-
-                    int docId = addDoc(area, date, truckId, driverId, driverName, stores, suppliers, ordersId);
-
-                    if (hasDriver == 0 | hasStoreKeeper == 0) {
-                        docsPool.addMissingEmployees(docId, hasStoreKeeper, hasDriver);
-                        docsPool.addMissingMsg(docId, hasStoreKeeper, hasDriver, date);
+                    //Date date = cal.getTime();
+                    Calendar cal = Calendar.getInstance();
+                    cal.set(systemDate.getYear(), systemDate.getMonthValue() - 1, systemDate.getDayOfMonth());
+                    Date date = cal.getTime();
+                    List<Integer> stores = new LinkedList<>();
+                    stores.add(storId);
+                    List<Integer> suppliers = new LinkedList<>();
+                    Iterator<List<Object>> iter = temp.iterator();
+                    while (iter.hasNext()) {
+                        suppliers.add((Integer) iter.next().get(1));
                     }
-                    List<Map<Pair<Integer, Integer>, Pair<Integer, Double>>> transportsItems = mapsUnion(items);
-                    addItems(docId, stores, transportsItems);
-                } else {//no truck
-                    informSupplier(ordersId, false);
+                    int hasStoreKeeper = 0;
+                    int hasDriver = 0;
+                    int hasTruck = 0;
+                    List<Integer> availableStores = employeeService.getStores(date);
+                    if (availableStores.contains(storId)) // has storeKeeper
+                        hasStoreKeeper = 1;
+                    List<String> trucks = trucksPool.getTrucksID(date);
+                    String truckId = "";
+                    if (!trucks.isEmpty()) {
+                        truckId = trucks.get(0); // first truck
+                        hasTruck = 1;
+                        addDateToTruck(truckId, date);
+                    }
+                    int driverId = -1;
+                    String driverName = "";
+                    if (hasTruck == 1) {
+                        List<Integer> availableDriver = getDrivers(truckId, date);
+                        if (!availableDriver.isEmpty()) {
+                            hasDriver = 1;
+                            driverId = availableDriver.get(0);
+                            driverName = getDriverName(driverId);
+                            addDateToDriver(driverId, date);
+                        }
+
+                        int docId = addDoc(area, date, truckId, driverId, driverName, stores, suppliers, ordersId);
+
+                        if (hasDriver == 0 | hasStoreKeeper == 0) {
+                            docsPool.addMissingEmployees(docId, hasStoreKeeper, hasDriver);
+                            docsPool.addMissingMsg(docId, hasStoreKeeper, hasDriver, date);
+                        }
+                        List<Map<Pair<Integer, Integer>, Pair<Integer, Double>>> transportsItems = mapsUnion(items);
+                        addItems(docId, stores, transportsItems);
+                    } else {//no truck
+                        informSupplier(ordersId, false);
+                    }
                 }
+                if(day ==7)
+                    day = 0;
+                    day++;
             }
         }
     }
@@ -387,8 +395,9 @@ public class Pool {
     public List<Integer> UpdateWaitingTransports() throws Exception {
         int driverId;
         String driverName;
-        List<Integer> output = docsPool.getWaitingTransportIds();
-        Iterator<Integer> itr = output.iterator();
+        List<Integer> output = new LinkedList<>();
+        List<Integer> waiting = docsPool.getWaitingTransportIds();
+        Iterator<Integer> itr = waiting.iterator();
         while (itr.hasNext()) {
             int tid = itr.next();
             DTO_TransportDoc doc = docsPool.getDoc(tid);

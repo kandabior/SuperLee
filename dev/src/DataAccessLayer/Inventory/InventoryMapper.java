@@ -386,6 +386,7 @@ public class InventoryMapper {
             stmt.executeUpdate();
             stmt.close();
             c.commit();
+            c.close();
             return true;
         } catch ( Exception e ) {
             try {
@@ -400,16 +401,14 @@ public class InventoryMapper {
     public  boolean addAmountToProduct(int branchId, int id, int currentAmount,int toAddAmount) { //adding half to storage half to shelf
         PreparedStatement stmt = null;
         try{
-            
             c = DriverManager.getConnection("jdbc:sqlite:dev\\EOEDdatabase.db");
-            c.setAutoCommit(false);
             stmt = c.prepareStatement("UPDATE Quantities SET storageQuantity=? WHERE branchId=? AND productId=?;");
             stmt.setInt(1, toAddAmount+currentAmount);
             stmt.setInt(2, branchId);
             stmt.setInt(3, id);
             stmt.executeUpdate();
-            stmt.close();
-            c.commit();
+                stmt.close();
+
             c.close();
             return true;
         } catch ( Exception e ) {
@@ -418,7 +417,7 @@ public class InventoryMapper {
             } catch (SQLException ex) {
                 ex.printStackTrace();
             }
-            //System.out.println(e.getClass().getName() + ": " + e.getMessage());
+            System.out.println(e.getClass().getName() + ": " + e.getMessage());
         }
         return false;
     }
@@ -435,6 +434,7 @@ public class InventoryMapper {
             stmt.executeUpdate();
             stmt.close();
             c.commit();
+            c.close();
             return "Amount of " + amount + " removed successfully";
         } catch ( Exception e ) {
             try {
@@ -459,6 +459,7 @@ public class InventoryMapper {
             stmt.executeUpdate();
             stmt.close();
             c.commit();
+            c.close();
             return "Amount of " + amount + " removed successfully";
         } catch ( Exception e ) {
             try {
