@@ -18,46 +18,51 @@ public class Main {
     }
 
     private static void mainLoop() {
-        int choose;
-        Printer.Print("Welcome To EOEHRES !\n");
-        printShape();
-        do {
-            Printer.Print("\nDay: " + (LocalDate.now().plusDays(plusDay).toString()));
-            Printer.Print("\nPlease choose an action:\n" +
-                    "1. Enter Inventory & Reports Menu\n" +
-                    "2. Enter Suppliers Menu\n" +
-                    "3. Enter Transports Menu\n"+
-                    "4. Enter Personal manager Menu\n"+
-                    "5. Promote Day\n" +
-                    "6. Quit\n");
-            choose = scanner.nextInt();
-            try {
-                switch (choose) {
-                    case 1:
-                        InventoryMenu.mainLoop();
-                        break;
-                    case 2:
-                        SupplierMenu.displaySupplierMenu();
-                        break;
-                    case 3:
-                        TransportsMenu.main();
-                        break;
-                    case 4:
-                        EmployeesMenu.main();
-                        break;
-                    case 5:
-                        plusDay++;
-                        SupplierMenu.PromoteDay(LocalDate.now().plusDays(plusDay));
-                        InventoryMenu.PromoteDay((DayOfTheWeek + plusDay) % 7);
-                    case 6:
-                        break;
+
+
+            Printer.Print("Welcome To EOEHRES !\n");
+            printShape();
+        int choose =0;
+            do {
+                try {
+
+                Printer.Print("\nDay: " + (LocalDate.now().plusDays(plusDay).toString()));
+                Printer.Print("\nPlease choose an action:\n" +
+                        "1. Enter Inventory & Reports Menu\n" +
+                        "2. Enter Suppliers Menu\n" +
+                        "3. Enter Transports Menu\n" +
+                        "4. Enter Personal manager Menu\n" +
+                        "5. Promote Day\n" +
+                        "6. Quit\n");
+
+
+                    choose = scanner.nextInt();
+                    switch (choose) {
+                        case 1:
+                            InventoryMenu.mainLoop();
+                            break;
+                        case 2:
+                            SupplierMenu.displaySupplierMenu();
+                            break;
+                        case 3:
+                            TransportsMenu.main();
+                            break;
+                        case 4:
+                            EmployeesMenu.main();
+                            break;
+                        case 5:
+                            plusDay++;
+                            SupplierMenu.PromoteDay(LocalDate.now().plusDays(plusDay));
+                            InventoryMenu.PromoteDay((DayOfTheWeek + plusDay) % 7);
+                        case 6:
+                            break;
+                    }
+                } catch (Exception e) {
+                    Printer.Print("Can't execute the action.");
                 }
-            } catch (Exception e) {
-                Printer.Print("Can't execute the action.");
             }
-        }
-        while (choose != 6);
-        System.out.println("Shutting down the system...");
+            while (choose != 6);
+            System.out.println("Shutting down the system...");
     }
 
     private static void printShape() {
