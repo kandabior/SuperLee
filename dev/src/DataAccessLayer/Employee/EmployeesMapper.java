@@ -40,8 +40,8 @@ public class EmployeesMapper {
     }
 
     public List<EmployeeDTO> getAllEmployeesFromBranch(int branch) {
-        if(!checkBranchExists(branch))
-            throw new IllegalArgumentException("No such store!");
+            if(!checkBranchExists(branch))
+                throw new IllegalArgumentException("No such store!");
         List<EmployeeDTO> employeeDTOS=new LinkedList<>();
         try {
             if (tryOpen()) {
