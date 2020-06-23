@@ -314,10 +314,14 @@ public class Pool {
                     }
                 }
                 day++;//day from 1-7
-                Calendar cal = Calendar.getInstance();
-                while (cal.get(Calendar.DAY_OF_WEEK) != day) {
-                    cal.add(Calendar.DATE, 1);
+                LocalDate systemDate = LocalDate.now().plusDays(Main.plusDay);
+                //Calendar cal = Calendar.getInstance();
+                while(getCurrentDay(systemDate.getDayOfWeek().toString()) != day){
+                    systemDate = systemDate.plusDays(1);
                 }
+                //Date date = cal.getTime();
+                Calendar cal = Calendar.getInstance();
+                cal.set(systemDate.getYear(), systemDate.getMonthValue(), systemDate.getDayOfMonth());
                 Date date = cal.getTime();
                 List<Integer> stores = new LinkedList<>();
                 stores.add(storId);
@@ -329,9 +333,10 @@ public class Pool {
                 int hasStoreKeeper = 0;
                 int hasDriver = 0;
                 int hasTruck = 0;
-                if (employeeService.getStores(date).contains(storId)) // has storeKeeper
+                List<Integer> availableStores = employeeService.getStores(date);
+                if (availableStores.contains(storId)) // has storeKeeper
                     hasStoreKeeper = 1;
-                List<String> trucks = getTrucks(date);
+                List<String> trucks = trucksPool.getTrucksID(date);
                 String truckId = "";
                 if (!trucks.isEmpty()) {
                     truckId = trucks.get(0); // first truck
@@ -481,5 +486,26 @@ public class Pool {
         int month = Integer.parseInt(parts[1]);
         int year = Integer.parseInt(parts[2]);
         return LocalDate.of(year, month, day);
+    }
+
+    private Integer getCurrentDay(String day) {
+
+        switch (day) {
+            case "SUNDAY":
+                return 1;
+            case "MONDAY":
+                return 2;
+            case "TUESDAY":
+                return 3;
+            case "WEDNESDAY":
+                return 4;
+            case "THURSDAY":
+                return 5;
+            case "FRIDAY":
+                return 6;
+            case "SATURDAY":
+                return 0;
+        }
+        return 1;
     }
 }
