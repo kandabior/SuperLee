@@ -425,7 +425,6 @@ public class InventoryMenu {
         Printer.Print("\nPlease Enter the following by given order:\n");
         System.out.println("Enter branch id: ");
         String branchId= scanner.next();
-
         Printer.Print("product Id: ");
         String prodId=scanner.next();
         /*Printer.Print("name: ");

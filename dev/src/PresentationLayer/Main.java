@@ -5,6 +5,7 @@ import src.InterfaceLayer.Suppliers.FacadeController;
 
 import java.time.LocalDate;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.Scanner;
 
 public class Main {
@@ -21,11 +22,25 @@ public class Main {
 
 
             Printer.Print("Welcome To EOEHRES !\n");
-            printShape();
+            //printShape();
         int choose =0;
             do {
                 try {
 
+                   /* LocalDate systemDate = LocalDate.now().plusDays(Main.plusDay);
+                    //Calendar cal = Calendar.getInstance();
+                    System.out.println(systemDate.getDayOfWeek().toString());
+                    int i =0;
+                    while (i<10 && getCurrentDay(systemDate.getDayOfWeek().toString()) != 1){
+                        systemDate = systemDate.plusDays(1);
+                        System.out.println(systemDate.getDayOfWeek().toString());
+                        i++;
+                    }
+                    //Date date = cal.getTime();
+                    Calendar cal = Calendar.getInstance();
+                    cal.set(systemDate.getYear(), systemDate.getMonthValue(), systemDate.getDayOfMonth());
+                    Date date = cal.getTime();
+                    System.out.println(date.toString());*/
                 Printer.Print("\nDay: " + (LocalDate.now().plusDays(plusDay).toString()));
                 Printer.Print("\nPlease choose an action:\n" +
                         "1. Enter Inventory & Reports Menu\n" +
@@ -135,5 +150,26 @@ public class Main {
         return 1;
     }
 
+
+    private static Integer getCurrentDay(String day) {
+
+        switch (day) {
+            case "SUNDAY":
+                return 1;
+            case "MONDAY":
+                return 2;
+            case "TUESDAY":
+                return 3;
+            case "WEDNESDAY":
+                return 4;
+            case "THURSDAY":
+                return 5;
+            case "FRIDAY":
+                return 6;
+            case "SATURDAY":
+                return 0;
+        }
+        return 1;
+    }
 
 }
