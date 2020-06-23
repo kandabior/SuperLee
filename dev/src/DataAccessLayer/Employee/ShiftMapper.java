@@ -1,10 +1,8 @@
 package src.DataAccessLayer.Employee;
 
 import java.sql.*;
+import java.util.*;
 import java.util.Date;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Map;
 
 public class ShiftMapper {
 
@@ -245,9 +243,11 @@ public class ShiftMapper {
             if (tryOpen()) {
                 Class.forName("org.sqlite.JDBC");
                 con.setAutoCommit(false);
-                PreparedStatement statement = con.prepareStatement("SELECT distinct branch FROM Shifts where role =(?) and shiftType =(?);");
+                PreparedStatement statement = con.prepareStatement("SELECT distinct branch FROM Shifts where role =(?) and shiftType =(?) and date = (?);");
                 statement.setString(1, "storekeeper");
                 statement.setString(2, "Morning");
+                statement.setString(3, dateToString(date));
+
                 ResultSet result = statement.executeQuery();
                 while (result.next()) {
                     Stores.add(result.getInt(1));
@@ -339,5 +339,12 @@ public class ShiftMapper {
             e.printStackTrace();
         }
     }
+
+    private String dateToString(Date date){
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTime(date);
+        return calendar.get(Calendar.DATE)+"/"+(calendar.get(Calendar.MONTH)+1) +"/" + calendar.get(Calendar.YEAR);
+    }
+
 }
 
