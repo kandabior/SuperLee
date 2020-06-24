@@ -63,7 +63,7 @@ public class ShiftManager {
 
     public void deleteShift(Date date, ShiftType shiftType) {
         for (Shift s: Shifts) {
-            if(s.getDate().equals(date) && s.getShiftType().equals(shiftType)) {
+            if(dateToString(s.getDate()).equals(dateToString(date)) && stToString(s.getShiftType()).equals(stToString(shiftType))) {
                 Shifts.remove(s);
                 shiftMapper.deleteShift(dateToString(s.getDate()),stToString(s.getShiftType()),currentBranch);
                 shiftMapper.deleteSM(dateToString(date),stToString(shiftType),currentBranch);
@@ -295,7 +295,7 @@ public class ShiftManager {
         List <String> dri = shiftMapper. getDriversAvailableAtDate(dateToString(date));
         List<Integer> drivers = new LinkedList<>();
         for (String s: dri) {
-            drivers.add(Integer.parseInt(s.substring(0,s.indexOf(";"))));
+            drivers.add(Integer.parseInt(s.substring(s.indexOf(";")+1)));
         }
         return drivers;
     }

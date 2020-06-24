@@ -230,14 +230,14 @@ public class DocsPool {
         mapper.addMissingEmployees(docId, hasStoreKeeper, hasDriver);
     }
 
-    public void addMissingMsg(int docId, int hasStoreKeeper, int hasDriver, Date date) {
+    public void addMissingMsg(int storeId, int docId, int hasStoreKeeper, int hasDriver, Date date) {
         String storeKeeper = "";
         String driver = "";
         if(hasStoreKeeper == 0)
             storeKeeper = "storeKeeper";
         if(hasDriver == 0)
             driver = "driver";
-        String msg = "Dear Employees Manager, On " + dateToString(date) + " missing " + storeKeeper +  " " + driver;
+        String msg = "Dear Employees Manager, In store " + storeId +" On " + dateToString(date) + " missing " + storeKeeper +  " " + driver;
         mapper.addMissingMsg(docId, msg);
     }
 
@@ -264,11 +264,11 @@ public class DocsPool {
         return mapper.getFullItems(docId);
     }
 
-    public boolean hasTransport(String date) {
+    public List<Integer> hasTransport(String date) {
         return mapper.hasTransport(date);
     }
 
-    public boolean hasTransport(int brunchId, String date) {
+    public List<Integer> hasTransport(int brunchId, String date) {
         return mapper.hasTransport(brunchId, date);
     }
 

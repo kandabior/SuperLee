@@ -283,8 +283,10 @@ public class DocsMapper {
                     statement.close();
                     con.close();
                     return s;
-                } else
+                } else {
+                    con.close();
                     return null;
+                }
             } else return null;
         } catch (Exception e) {
             System.err.println(e.getClass().getName() + ": " + e.getMessage());
@@ -294,7 +296,7 @@ public class DocsMapper {
     }
 
     public void updateTransportDoc(double finalWeight, String status, int docId) {
-        /*try {
+        try {
             if (tryOpen()) {
                 Class.forName("org.sqlite.JDBC");
                 con.setAutoCommit(false);
@@ -318,7 +320,8 @@ public class DocsMapper {
             }
         } catch (Exception e) {
             System.err.println(e.getClass().getName() + ": " + e.getMessage());
-        }*/
+            tryClose();
+        }
 
     }
 
@@ -725,9 +728,12 @@ public class DocsMapper {
                     transportsId.add(result.getInt("DocId"));
                 }
                 statement.close();
+                con.close();
+                return transportsId;
             }
-            return transportsId;
+           return null;
         } catch (Exception e) {
+            tryClose();
             System.err.println(e.getClass().getName() + ": " + e.getMessage());
             return new LinkedList<>();
         }
@@ -741,7 +747,7 @@ public class DocsMapper {
                 PreparedStatement st = con.prepareStatement("DELETE FROM MissingEmployees WHERE DocId= (?);");
                 st.setInt(1, id);
                 int rowNum = st.executeUpdate();
-                st.close();
+
                 if (rowNum != 0) {
                     con.commit();
                     con.close();
@@ -749,6 +755,7 @@ public class DocsMapper {
                     con.rollback();
                     con.close();
                 }
+                st.close();
             }
         } catch (Exception e) {
             tryClose();
@@ -784,7 +791,7 @@ public class DocsMapper {
         }
     }
 
-    public boolean hasTransport(String date) {
+    public boolean hasTransport1(String date) {
         try {
             if (tryOpen()) {
                 Class.forName("org.sqlite.JDBC");
@@ -813,7 +820,33 @@ public class DocsMapper {
         return false;
     }
 
-    public boolean hasTransport(int brunchId, String date) {
+    public List<Integer> hasTransport(String date) {
+        List<Integer> ids = new LinkedList<>();
+        try {
+            if (tryOpen()) {
+                Class.forName("org.sqlite.JDBC");
+                con.setAutoCommit(false);
+                PreparedStatement statement = con.prepareStatement("SELECT ID FROM TransportDocs WHERE date = ? AND status = ?;");
+                statement.setString(1, date);
+                statement.setString(2, "PENDING");
+                ResultSet res = statement.executeQuery();
+                while (res.next()) {
+                    ids.add(res.getInt("ID"));
+                }
+                    con.close();
+                    statement.close();
+                    return ids;
+
+            }
+        } catch (Exception e) {
+            tryClose();
+            System.err.println(e.getClass().getName() + ": " + e.getMessage());
+            return null;
+        }
+        return null;
+    }
+
+    public boolean hasTransport1(int brunchId, String date) {
         try {
             if (tryOpen()) {
                 Class.forName("org.sqlite.JDBC");
@@ -843,23 +876,54 @@ public class DocsMapper {
         return false;
     }
 
-    public List<Integer> getRequest() {
-        List<Integer> orders = new LinkedList<>();
+    public List<Integer> hasTransport(int brunchId, String date) {
+        List<Integer> ids = new LinkedList<>();
         try {
-            Class.forName("org.sqlite.JDBC");
-            con.setAutoCommit(false);
-            PreparedStatement statement = con.prepareStatement("SELECT orderId FROM CancellationRequests WHERE answerEmployee = ?;");
-            statement.setInt(1, 2);
-            ResultSet result = statement.executeQuery();
-            while (result.next()) {
-                orders.add(result.getInt("orderId"));
+            if (tryOpen()) {
+                Class.forName("org.sqlite.JDBC");
+                con.setAutoCommit(false);
+                PreparedStatement statement = con.prepareStatement("SELECT ID FROM TransportDocs JOIN DocStores on DocId = ID WHERE date = ? AND status = ? AND SID = ? ;");
+                statement.setString(1, date);
+                statement.setString(2, "PENDING");
+                statement.setInt(3, brunchId);
+                ResultSet res = statement.executeQuery();
+                while (res.next()) {
+                    ids.add(res.getInt("ID"));
+                }
+                con.close();
+                statement.close();
+                return ids;
             }
-            statement.close();
-            return orders;
         } catch (Exception e) {
+            tryClose();
             System.err.println(e.getClass().getName() + ": " + e.getMessage());
             return null;
         }
+        return null;
+    }
+    public List<Integer> getRequest() {
+        List<Integer> orders = new LinkedList<>();
+        try {
+            if(tryOpen()) {
+                Class.forName("org.sqlite.JDBC");
+                con.setAutoCommit(false);
+                PreparedStatement statement = con.prepareStatement("SELECT orderId FROM CancellationRequests WHERE answerEmployee = ?;");
+                statement.setInt(1, 2);
+                ResultSet result = statement.executeQuery();
+                while (result.next()) {
+                    orders.add(result.getInt("orderId"));
+                }
+                statement.close();
+                con.close();
+
+                return orders;
+            }
+        } catch (Exception e) {
+            tryClose();
+            System.err.println(e.getClass().getName() + ": " + e.getMessage());
+            return null;
+        }
+        return null;
     }
 
     public String getReqString(Integer orderId) {
@@ -876,8 +940,11 @@ public class DocsMapper {
                     statement.close();
                     con.close();
                     return s;
-                } else
+                } else {
+                    statement.close();
+                    con.close();
                     return "Invalid Order ID";
+                }
             } else return null;
         } catch (Exception e) {
             System.err.println(e.getClass().getName() + ": " + e.getMessage());
@@ -889,20 +956,28 @@ public class DocsMapper {
     public int getTransportId(int orderId) {
 
         try {
-            Class.forName("org.sqlite.JDBC");
-            con.setAutoCommit(false);
-            PreparedStatement statement = con.prepareStatement("SELECT DocId FROM transportOrders WHERE orderId = ?;");
-            statement.setInt(1, orderId);
-            ResultSet result = statement.executeQuery();
-            if (result.next()) {
-                return result.getInt(1);
+            if(tryOpen()) {
+                Class.forName("org.sqlite.JDBC");
+                con.setAutoCommit(false);
+                PreparedStatement statement = con.prepareStatement("SELECT DocId FROM transportOrders WHERE orderId = ?;");
+                statement.setInt(1, orderId);
+                ResultSet result = statement.executeQuery();
+                if (result.next()) {
+                    int id = result.getInt(1);
+                    statement.close();
+                    con.close();
+                    return id;
+                }
+                statement.close();
+                con.close();
+                return -1;
             }
-            statement.close();
-            return -1;
         } catch (Exception e) {
+            tryClose();
             System.err.println(e.getClass().getName() + ": " + e.getMessage());
             return -1;
         }
+        return -1;
     }
 
     public void removeRequest(int orderId) {
@@ -913,7 +988,7 @@ public class DocsMapper {
                 PreparedStatement st = con.prepareStatement("DELETE FROM CancellationRequests WHERE orderId = (?);");
                 st.setInt(1, orderId);
                 int rowNum = st.executeUpdate();
-                st.close();
+
                 if (rowNum != 0) {
                     con.commit();
                     con.close();
@@ -921,6 +996,7 @@ public class DocsMapper {
                     con.rollback();
                     con.close();
                 }
+                st.close();
             }
         } catch (Exception e) {
             tryClose();

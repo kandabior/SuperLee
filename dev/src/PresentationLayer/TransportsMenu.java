@@ -187,6 +187,7 @@ public class TransportsMenu {
                         List<String> reqString = new LinkedList<>();
                         for (int i = 0; i < requests.size(); i++) {
                             String s = pool.getReqString(requests.get(i));
+                            reqString.add(s);
                             System.out.println(i +". " + s);
                         }
                         System.out.print("Option number: ");

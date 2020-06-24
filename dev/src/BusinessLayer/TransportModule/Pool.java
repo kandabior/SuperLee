@@ -316,8 +316,8 @@ public class Pool {
                     }
                 }
                 if (!ordersId.isEmpty()) {
-                    if (day == 0)
-                        day = 7;
+                    //if (day == 0)
+                     //   day = 7;
                     LocalDate systemDate = LocalDate.now().plusDays(Main.plusDay);
                     //Calendar cal = Calendar.getInstance();
                     while (getCurrentDay(systemDate.getDayOfWeek().toString()) != day) {
@@ -362,7 +362,7 @@ public class Pool {
 
                         if (hasDriver == 0 | hasStoreKeeper == 0) {
                             docsPool.addMissingEmployees(docId, hasStoreKeeper, hasDriver);
-                            docsPool.addMissingMsg(docId, hasStoreKeeper, hasDriver, date);
+                            docsPool.addMissingMsg(storId, docId, hasStoreKeeper, hasDriver, date);
                         }
                         List<Map<Pair<Integer, Integer>, Pair<Integer, Double>>> transportsItems = mapsUnion(items);
                         addItems(docId, stores, transportsItems);
@@ -370,8 +370,8 @@ public class Pool {
                         informSupplier(ordersId, false);
                     }
                 }
-                if(day ==7)
-                    day = 0;
+               // if(day ==7)
+                //    day = 0;
                     day++;
             }
         }
@@ -456,10 +456,15 @@ public class Pool {
     }
 
     public boolean hasTransport(int brunchId, String date) {
+        List<Integer> goodT;
+        List<Integer> badT;
         if(brunchId == 0)
-            return docsPool.hasTransport(date);
+            goodT = docsPool.hasTransport(date);
         else
-            return docsPool.hasTransport(brunchId, date);
+            goodT =  docsPool.hasTransport(brunchId, date);
+        badT = docsPool.getWaitingTransportIds();
+       goodT.removeAll(badT);
+        return !goodT.isEmpty();
     }
 
     public List<Integer> getRequest() {

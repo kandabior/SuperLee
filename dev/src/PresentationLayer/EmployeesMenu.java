@@ -459,12 +459,12 @@ public class EmployeesMenu {
                 shiftType = chooseShiftType();
             }
         }
-        if(shiftType=="Morning" && service.existsShipment(date,currentBranch)){
-            System.out.println("There is a shipment in that day, therefore a change cannot be made");
-            return;
-        }
         boolean Exists = service.ShiftExists(date, shiftType);
         if (Exists) {
+            if(shiftType=="Morning" && service.existsShipment(date,currentBranch)){
+                System.out.println("There is a shipment in that day, therefore a change cannot be made");
+                return;
+            }
             String ask = "There is already an inlay for this date, would you like to replace the existing one? Select y/n";
             String needMore = yesOrNo(ask);
             if (needMore.equals("n")) {
