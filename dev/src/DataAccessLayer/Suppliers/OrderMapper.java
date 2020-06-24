@@ -309,10 +309,10 @@ public class OrderMapper {
                 int rowNum = st.executeUpdate();
                 if (rowNum != 0) {
                     conn.commit();
-                    // conn.close();
+                    conn.close();
                 } else {
                     conn.rollback();
-                    // conn.close();
+                     conn.close();
                     st.close();
                     return false;
                 }
@@ -322,6 +322,7 @@ public class OrderMapper {
             else
                 return false;
         } catch (Exception e) {
+            tryClose();
             //System.err.println(e.getClass().getName() + ": " + e.getMessage());
             return false;
         }

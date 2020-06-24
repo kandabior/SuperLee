@@ -638,6 +638,7 @@ public class DocsMapper {
                 statement.close();
             }
         } catch (Exception e) {
+            tryClose();
             System.err.println(e.getClass().getName() + ": " + e.getMessage());
         }
     }
